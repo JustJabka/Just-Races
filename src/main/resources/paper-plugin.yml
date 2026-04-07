@@ -1,0 +1,5 @@
+name: Welten-Races
+version: '1.0'
+main: justjabka.weltenRaces.WeltenRaces
+bootstrapper: justjabka.weltenRaces.WeltenRacesBootstrap
+api-version: '1.21'
