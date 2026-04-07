@@ -5,6 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -39,11 +40,10 @@ public class RaceManager {
             if (instance == null) continue;
 
             // Remove all attribute modifiers
-            instance.removeModifier(new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell"));
+            instance.getModifiers().forEach(instance::removeModifier);
 
             // Reset base value of an attribute
             instance.setBaseValue(instance.getDefaultValue());
-            WeltenRaces.LOGGER.info("{}: {}", instance.getAttribute().getKey(), instance.getDefaultValue());
         }
     }
 }
