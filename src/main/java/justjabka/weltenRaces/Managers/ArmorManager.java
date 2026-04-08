@@ -23,11 +23,11 @@ public class ArmorManager {
         }
 
         // Get first item piece
-        ArmorSet firstType = ArmorSet.fromMaterialName(equipment[0].getType().name());
+        ArmorSet firstType = ArmorSet.fromMaterialName(equipment[0].getType().name().toLowerCase());
 
         // Check if all armor pieces are the same
         for (int i = 1; i < equipment.length; i++) {
-            ArmorSet currentType = ArmorSet.fromMaterialName(equipment[i].getType().name());
+            ArmorSet currentType = ArmorSet.fromMaterialName(equipment[i].getType().name().toLowerCase());
 
             if (currentType != firstType) {
                 setStoredArmor(player, ArmorSet.NONE);
