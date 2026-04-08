@@ -1,4 +1,4 @@
-package justjabka.weltenRaces.Races.Listeners;
+package justjabka.weltenRaces.Races.Generic;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -7,7 +7,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import static justjabka.weltenRaces.Manager.RaceManager.RACE_KEY;
 
-public abstract class GenericRaceListener implements Listener {
+public abstract class BaseRaceListener implements Listener {
     // Utils
     public String getRace(Player player) {
         String race = player.getPersistentDataContainer().get(RACE_KEY, PersistentDataType.STRING);

@@ -1,6 +1,7 @@
-package justjabka.weltenRaces.Races.Listeners;
+package justjabka.weltenRaces.Races.Armat;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.weltenRaces.Races.Generic.BaseRaceListener;
 import justjabka.weltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -21,15 +22,16 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Set;
 
-public class ArmatRaceListener extends GenericRaceListener {
+public class ArmatRaceListener extends BaseRaceListener {
+    private final ArmatConfig settings;
+
+    public ArmatRaceListener(ArmatConfig settings) {
+        this.settings = settings;
+    }
+
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
     private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "armor_set");
     private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
-
-    private static final double SINK_GRAVITY_VALUE = 0.42;
-    private static final double VULNERABLE_DAMAGE_MULTIPLIER = 1.5;
-    private static final double DAMAGE_INVERSION_LOWER_BOUND = 3.0;
-    private static final double DAMAGE_INVERSION_UPPER_BOUND = 30.0;
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
             EntityDamageEvent.DamageCause.FALL
@@ -40,7 +42,7 @@ public class ArmatRaceListener extends GenericRaceListener {
             EntityDamageEvent.DamageCause.WITHER,
             EntityDamageEvent.DamageCause.THORNS
     );
-    
+
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
@@ -53,7 +55,7 @@ public class ArmatRaceListener extends GenericRaceListener {
 
         // Damage vulnerability and immunity logic
         if (VULNERABLE_TO.contains(damageCause)) {
-            event.setDamage(event.getDamage() * VULNERABLE_DAMAGE_MULTIPLIER);
+            event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
             return;
         } else if (IMMUNE_TO.contains(damageCause) && hasAnyArmor(player)) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
@@ -64,9 +66,9 @@ public class ArmatRaceListener extends GenericRaceListener {
         // Damage inversion logic
         // TODO: add toggle
         if (hasArmorSetBonus(player, "LEATHER")) {
-            if (!(damage >= DAMAGE_INVERSION_LOWER_BOUND && damage <= DAMAGE_INVERSION_UPPER_BOUND)) return;
+            if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
 
-            double finalDamage = (DAMAGE_INVERSION_UPPER_BOUND + DAMAGE_INVERSION_LOWER_BOUND) - damage;
+            double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
 
             event.setDamage(finalDamage);
         }
@@ -89,7 +91,7 @@ public class ArmatRaceListener extends GenericRaceListener {
         if (shouldSink && !hasModifier) {
             AttributeModifier modifier = new AttributeModifier(
                     SINK_GRAVITY_KEY,
-                    SINK_GRAVITY_VALUE,
+                    settings.sinkGravity,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
@@ -116,17 +118,22 @@ public class ArmatRaceListener extends GenericRaceListener {
 
         if (!raceEquals(player, "armat")) return;
 
-        if (hasArmorSetBonus(player, "GOLDEN")) return;
+        if (!hasArmorSetBonus(player, "GOLDEN")) return;
 
-        ItemStack item = event.getItem();
+        ItemStack consumedItem = event.getItem();
 
-        Material goldenVersion = switch (item.getType()) {
+        Material goldenVersion = switch (consumedItem.getType()) {
             case APPLE -> Material.GOLDEN_APPLE;
             case CARROT -> Material.GOLDEN_CARROT;
             default -> null;
         };
 
-        if (goldenVersion != null) event.setItem(ItemStack.of(goldenVersion));
+        if (goldenVersion == null) return;
+
+        ItemStack resultItem = new ItemStack(goldenVersion).asOne();
+
+        event.setItem(resultItem);
+        event.setReplacement(consumedItem.subtract());
     }
 
     private static void applyBoundShellBonus(Player player) {

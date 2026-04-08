@@ -1,0 +1,7 @@
+Races:
+  Armat:
+    Vulnerable-Damage-Multiplier: 1.5
+    Sink-Gravity-Value: 0.42
+    Damage-Inversion:
+      Lower-Bound: 3.0
+      Upper-Bound: 30.0

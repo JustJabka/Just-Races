@@ -1,6 +1,7 @@
 package justjabka.weltenRaces;
 
-import justjabka.weltenRaces.Races.Listeners.ArmatRaceListener;
+import justjabka.weltenRaces.Races.Armat.ArmatConfig;
+import justjabka.weltenRaces.Races.Armat.ArmatRaceListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -13,9 +14,14 @@ public final class WeltenRaces extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        saveDefaultConfig();
+
+        ArmatConfig armatSettings = new ArmatConfig(getConfig());
+
+        // Event listeners
         PluginManager pluginManager = getServer().getPluginManager();
 
-        pluginManager.registerEvents(new ArmatRaceListener(), this);
+        pluginManager.registerEvents(new ArmatRaceListener(armatSettings), this);
     }
 
     @Override
