@@ -2,7 +2,7 @@ package justjabka.weltenRaces.Races.Armat;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.weltenRaces.Managers.ArmorManager;
-import justjabka.weltenRaces.Races.Generic.BaseRaceListener;
+import justjabka.weltenRaces.Managers.RaceManager;
 import justjabka.weltenRaces.Types.ArmorSet;
 import justjabka.weltenRaces.Types.Race;
 import justjabka.weltenRaces.WeltenRaces;
@@ -16,6 +16,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -23,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
 
-public class ArmatRaceListener extends BaseRaceListener {
+public class ArmatRaceListener implements Listener {
     private final ArmatConfig settings;
 
     public ArmatRaceListener(ArmatConfig settings) {
@@ -48,7 +49,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player player)) return;
 
-        if (!raceEquals(player, Race.ARMAT)) return;
+        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         double damage = event.getDamage();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
@@ -80,7 +81,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         Player player = event.getPlayer();
 
-        if (!raceEquals(player, Race.ARMAT)) return;
+        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
@@ -106,7 +107,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player player)) return;
 
-        if (!raceEquals(player, Race.ARMAT)) return;
+        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         applyBoundShellBonus(player);
     }
@@ -115,7 +116,7 @@ public class ArmatRaceListener extends BaseRaceListener {
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (!raceEquals(player, Race.ARMAT)) return;
+        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         if (!ArmorManager.hasArmorSet(player, ArmorSet.GOLDEN)) return;
 
