@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import static justjabka.weltenRaces.Manager.RaceManager.RACE_KEY;
+import static justjabka.weltenRaces.Managers.RaceManager.RACE_KEY;
 
 public abstract class BaseRaceListener implements Listener {
     // Utils
