@@ -4,6 +4,7 @@ import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.weltenRaces.Managers.ArmorManager;
 import justjabka.weltenRaces.Races.Generic.BaseRaceListener;
 import justjabka.weltenRaces.Types.ArmorSet;
+import justjabka.weltenRaces.Types.Race;
 import justjabka.weltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -47,7 +48,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player player)) return;
 
-        if (!raceEquals(player, "armat")) return;
+        if (!raceEquals(player, Race.ARMAT)) return;
 
         double damage = event.getDamage();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
@@ -79,7 +80,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         Player player = event.getPlayer();
 
-        if (!raceEquals(player, "armat")) return;
+        if (!raceEquals(player, Race.ARMAT)) return;
 
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
@@ -105,7 +106,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player player)) return;
 
-        if (!raceEquals(player, "armat")) return;
+        if (!raceEquals(player, Race.ARMAT)) return;
 
         applyBoundShellBonus(player);
     }
@@ -114,7 +115,7 @@ public class ArmatRaceListener extends BaseRaceListener {
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (!raceEquals(player, "armat")) return;
+        if (!raceEquals(player, Race.ARMAT)) return;
 
         if (!ArmorManager.hasArmorSet(player, ArmorSet.GOLDEN)) return;
 
