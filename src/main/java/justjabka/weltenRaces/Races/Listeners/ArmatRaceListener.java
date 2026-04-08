@@ -28,6 +28,9 @@ public class ArmatRaceListener extends GenericRaceListener {
 
     private static final double SINK_GRAVITY_VALUE = 0.42;
     private static final double VULNERABLE_DAMAGE_MULTIPLIER = 1.5;
+    private static final double DAMAGE_INVERSION_LOWER_BOUND = 3.0;
+    private static final double DAMAGE_INVERSION_UPPER_BOUND = 30.0;
+
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
             EntityDamageEvent.DamageCause.FALL
     );
@@ -45,13 +48,27 @@ public class ArmatRaceListener extends GenericRaceListener {
 
         if (!raceEquals(player, "armat")) return;
 
+        double damage = event.getDamage();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
+        // Damage vulnerability and immunity logic
         if (VULNERABLE_TO.contains(damageCause)) {
             event.setDamage(event.getDamage() * VULNERABLE_DAMAGE_MULTIPLIER);
+            return;
         } else if (IMMUNE_TO.contains(damageCause) && hasAnyArmor(player)) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
+            return;
+        }
+
+        // Damage inversion logic
+        // TODO: add toggle
+        if (hasArmorSetBonus(player, "LEATHER")) {
+            if (!(damage >= DAMAGE_INVERSION_LOWER_BOUND && damage <= DAMAGE_INVERSION_UPPER_BOUND)) return;
+
+            double finalDamage = (DAMAGE_INVERSION_UPPER_BOUND + DAMAGE_INVERSION_LOWER_BOUND) - damage;
+
+            event.setDamage(finalDamage);
         }
     }
 
