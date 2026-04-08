@@ -1,7 +1,9 @@
 package justjabka.weltenRaces.Races.Armat;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.weltenRaces.Managers.ArmorManager;
 import justjabka.weltenRaces.Races.Generic.BaseRaceListener;
+import justjabka.weltenRaces.Types.ArmorSet;
 import justjabka.weltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,8 +19,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Set;
 
@@ -30,7 +30,6 @@ public class ArmatRaceListener extends BaseRaceListener {
     }
 
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
-    private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "armor_set");
     private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
@@ -57,7 +56,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (VULNERABLE_TO.contains(damageCause)) {
             event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
             return;
-        } else if (IMMUNE_TO.contains(damageCause) && hasAnyArmor(player)) {
+        } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
             return;
@@ -65,7 +64,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         // Damage inversion logic
         // TODO: add toggle
-        if (hasArmorSetBonus(player, "LEATHER")) {
+        if (ArmorManager.hasArmorSet(player, ArmorSet.LEATHER)) {
             if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
 
             double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
@@ -85,7 +84,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
 
-        boolean shouldSink = player.isInWater() && hasAnyArmor(player);
+        boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmor(player);
         boolean hasModifier = gravityInstance.getModifier(SINK_GRAVITY_KEY) != null;
 
         if (shouldSink && !hasModifier) {
@@ -109,7 +108,6 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (!raceEquals(player, "armat")) return;
 
         applyBoundShellBonus(player);
-        updateArmorSetBonus(player);
     }
 
     @EventHandler
@@ -118,7 +116,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         if (!raceEquals(player, "armat")) return;
 
-        if (!hasArmorSetBonus(player, "GOLDEN")) return;
+        if (!ArmorManager.hasArmorSet(player, ArmorSet.GOLDEN)) return;
 
         ItemStack consumedItem = event.getItem();
 
@@ -157,34 +155,5 @@ public class ArmatRaceListener extends BaseRaceListener {
                 AttributeModifier.Operation.ADD_NUMBER
         );
         maxHealthInstance.addModifier(modifier);
-    }
-
-    private void updateArmorSetBonus(Player player) {
-        ItemStack[] equipment = player.getEquipment().getArmorContents();
-        String material = null;
-
-        for (ItemStack item : equipment) {
-            if (item == null || item.isEmpty()) {
-                material = "NONE";
-                break;
-            }
-
-            String currentMat = item.getType().name().split("_")[0];
-            if (material == null) {
-                material = currentMat;
-            } else if (!material.equals(currentMat)) {
-                material = "MIXED";
-                break;
-            }
-        }
-
-        player.getPersistentDataContainer().set(ARMOR_SET_KEY, PersistentDataType.STRING, material);
-    }
-
-    private static boolean hasArmorSetBonus(Player player, String material) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        String armorSet = data.get(ARMOR_SET_KEY, PersistentDataType.STRING);
-
-        return material.equals(armorSet);
     }
 }
