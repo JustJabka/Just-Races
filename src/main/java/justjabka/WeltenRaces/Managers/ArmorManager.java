@@ -1,7 +1,7 @@
-package justjabka.weltenRaces.Managers;
+package justjabka.WeltenRaces.Managers;
 
-import justjabka.weltenRaces.Types.ArmorSet;
-import justjabka.weltenRaces.WeltenRaces;
+import justjabka.WeltenRaces.Types.ArmorSet;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -1,11 +1,11 @@
-package justjabka.weltenRaces.Races.Armat;
+package justjabka.WeltenRaces.Races.Armat;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.weltenRaces.Managers.ArmorManager;
-import justjabka.weltenRaces.Managers.RaceManager;
-import justjabka.weltenRaces.Types.ArmorSet;
-import justjabka.weltenRaces.Types.Race;
-import justjabka.weltenRaces.WeltenRaces;
+import justjabka.WeltenRaces.Managers.ArmorManager;
+import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Types.ArmorSet;
+import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;

@@ -1,8 +1,8 @@
-package justjabka.weltenRaces;
+package justjabka.WeltenRaces;
 
-import justjabka.weltenRaces.Races.Armat.ArmatConfig;
-import justjabka.weltenRaces.Races.Armat.ArmatRaceListener;
-import justjabka.weltenRaces.Races.Generic.BaseRaceListener;
+import justjabka.WeltenRaces.Races.Armat.ArmatConfig;
+import justjabka.WeltenRaces.Races.Armat.ArmatRaceListener;
+import justjabka.WeltenRaces.Races.Generic.BaseRaceListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
-package justjabka.weltenRaces.Races.Generic;
+package justjabka.WeltenRaces.Races.Generic;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.weltenRaces.Managers.ArmorManager;
+import justjabka.WeltenRaces.Managers.ArmorManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,4 +1,4 @@
-package justjabka.weltenRaces.Commands;
+package justjabka.WeltenRaces.Commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -6,10 +6,10 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
-import justjabka.weltenRaces.Commands.Arguments.RaceArgument;
-import justjabka.weltenRaces.Managers.RaceManager;
-import justjabka.weltenRaces.Types.Race;
-import justjabka.weltenRaces.WeltenRaces;
+import justjabka.WeltenRaces.Commands.Arguments.RaceArgument;
+import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.entity.Player;
 
 public class SetRaceCommand {

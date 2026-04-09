@@ -1,7 +1,7 @@
-package justjabka.weltenRaces.Managers;
+package justjabka.WeltenRaces.Managers;
 
-import justjabka.weltenRaces.Types.Race;
-import justjabka.weltenRaces.WeltenRaces;
+import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;

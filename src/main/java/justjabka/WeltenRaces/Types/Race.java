@@ -1,4 +1,4 @@
-package justjabka.weltenRaces.Types;
+package justjabka.WeltenRaces.Types;
 
 public enum Race {
     ARMAT,

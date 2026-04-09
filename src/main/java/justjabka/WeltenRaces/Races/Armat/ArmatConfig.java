@@ -1,4 +1,4 @@
-package justjabka.weltenRaces.Races.Armat;
+package justjabka.WeltenRaces.Races.Armat;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
