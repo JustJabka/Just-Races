@@ -5,3 +5,6 @@ Races:
     Damage-Inversion:
       Lower-Bound: 3.0
       Upper-Bound: 30.0
+    Damage-Reduction:
+      Starting-Point: 8.0
+      Damage-Multiplier: 0.8

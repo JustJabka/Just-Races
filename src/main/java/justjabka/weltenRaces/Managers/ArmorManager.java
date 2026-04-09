@@ -50,15 +50,17 @@ public class ArmorManager {
         return false;
     }
 
-    public static boolean hasArmorSet(Player player, ArmorSet expected) {
+    public static ArmorSet getArmorSet(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
         String stored = data.get(ARMOR_SET_KEY, PersistentDataType.STRING);
 
-        if (stored == null) {
-            return expected == ArmorSet.NONE;
-        }
+        if (stored == null) return ArmorSet.NONE;
 
-        return stored.equals(expected.toString());
+        try {
+            return ArmorSet.valueOf(stored.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ArmorSet.NONE;
+        }
     }
 
     private static void setStoredArmor(Player player, ArmorSet set) {

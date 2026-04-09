@@ -64,14 +64,23 @@ public class ArmatRaceListener implements Listener {
             return;
         }
 
-        // Damage inversion logic
-        // TODO: add toggle
-        if (ArmorManager.hasArmorSet(player, ArmorSet.LEATHER)) {
-            if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
+        // ArmorSet bonus logic
+        if (ArmorManager.getArmorSet(player) == ArmorSet.NONE) return;
 
-            double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
+        switch (ArmorManager.getArmorSet(player)) {
+            // TODO: add toggle
+            case LEATHER -> {
+                if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
 
-            event.setDamage(finalDamage);
+                double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
+                event.setDamage(finalDamage);
+            }
+            case IRON -> {
+                if (damage < settings.reductionStart) return;
+
+                double finalDamage = damage * settings.reductionMultiplier;
+                event.setDamage(finalDamage);
+            }
         }
     }
 
@@ -118,7 +127,7 @@ public class ArmatRaceListener implements Listener {
 
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
-        if (!ArmorManager.hasArmorSet(player, ArmorSet.GOLDEN)) return;
+        if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
 
