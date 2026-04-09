@@ -40,8 +40,8 @@ public class RaceManager {
 
         // Init race
         if (race == Race.ARMAT) {
-            AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
-            if (maxHealth != null) maxHealth.setBaseValue(10.0);
+            AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
+            if (maxHealthInstance != null) maxHealthInstance.setBaseValue(10.0);
         }
     }
 

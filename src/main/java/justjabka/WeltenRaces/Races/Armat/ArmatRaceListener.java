@@ -13,7 +13,10 @@ import org.bukkit.SoundCategory;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +25,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Random;
 import java.util.Set;
 
 public class ArmatRaceListener implements Listener {
@@ -30,6 +34,8 @@ public class ArmatRaceListener implements Listener {
     public ArmatRaceListener(ArmatConfig settings) {
         this.settings = settings;
     }
+
+    private static final Random RANDOM = new Random();
 
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
     private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
@@ -51,7 +57,10 @@ public class ArmatRaceListener implements Listener {
 
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
+        Entity causingEntity = event.getDamageSource().getCausingEntity();
+
         double damage = event.getDamage();
+        DamageType damageType = event.getDamageSource().getDamageType();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         // Damage vulnerability and immunity logic
@@ -74,6 +83,24 @@ public class ArmatRaceListener implements Listener {
 
                 double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
                 event.setDamage(finalDamage);
+            }
+            case CHAINMAIL -> {
+                // TODO: remove hardcoded values!
+                if (RANDOM.nextDouble() < 0.4) return;
+
+                event.setCancelled(true);
+
+                if (!(causingEntity instanceof LivingEntity attacker)) return;
+
+                double parryDamage = damage * 0.6;
+
+                DamageSource parrySource = DamageSource.builder(damageType)
+                        .withCausingEntity(player)
+                        .withDirectEntity(player)
+                        .build();
+
+                attacker.damage(parryDamage, parrySource);
+                // TODO: damage armor by parryDamagePenalty
             }
             case IRON -> {
                 if (damage < settings.reductionStart) return;
