@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -41,7 +42,7 @@ public class RaceManager {
         // Init race
         if (race == Race.ARMAT) {
             AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
-            if (maxHealthInstance != null) maxHealthInstance.setBaseValue(10.0);
+            modifyBaseValue(maxHealthInstance, 10);
         }
     }
 
@@ -52,9 +53,24 @@ public class RaceManager {
 
             // Remove all attribute modifiers
             instance.getModifiers().forEach(instance::removeModifier);
-
-            // Reset base value of an attribute
-            instance.setBaseValue(instance.getDefaultValue());
         }
+    }
+
+    private static void modifyBaseValue(AttributeInstance instance, double newValue) {
+        if (instance == null) return;
+
+        NamespacedKey key = instance.getAttribute().getKey();
+        double baseValue = instance.getBaseValue();
+
+        double diff = newValue - baseValue;
+
+        if (diff == 0) return;
+
+        AttributeModifier modifier = new AttributeModifier(
+                key,
+                diff,
+                AttributeModifier.Operation.ADD_NUMBER
+        );
+        instance.addModifier(modifier);
     }
 }
