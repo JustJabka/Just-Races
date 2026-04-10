@@ -10,7 +10,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
 
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "race");
@@ -27,13 +26,7 @@ public class RaceManager {
     }
 
     public static void setRace(Player player, Race race) {
-        // Reset all attributes
-        resetAttributes(player);
-
-        // Clear potion effects
-        for (PotionEffect effect : player.getActivePotionEffects()) {
-            player.removePotionEffect(effect.getType());
-        }
+        resetRace(player);
 
         // Update race data
         PersistentDataContainer data = player.getPersistentDataContainer();
@@ -52,16 +45,24 @@ public class RaceManager {
         }
     }
 
-    private static void resetAttributes(Player player) {
+    public static void resetRace(Player player) {
+        // Clear potion effects
+        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+
+        // Reset all attributes
         for (Attribute attribute : Registry.ATTRIBUTE) {
             AttributeInstance instance = player.getAttribute(attribute);
-            String attributeNamespace = attribute.getKey().getNamespace();
 
             if (instance == null) continue;
-            if (attributeNamespace.equals("minecraft")) continue;
 
-            // Remove all attribute modifiers
-            instance.getModifiers().forEach(instance::removeModifier);
+            // Remove all modifiers
+            for (AttributeModifier modifier : instance.getModifiers()) {
+                String modifierNamespace = modifier.getKey().getNamespace();
+
+                if (modifierNamespace.equals(NamespacedKey.MINECRAFT)) continue;
+
+                instance.removeModifier(modifier);
+            }
         }
     }
 
