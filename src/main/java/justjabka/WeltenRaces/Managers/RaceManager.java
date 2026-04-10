@@ -33,13 +33,16 @@ public class RaceManager {
         data.set(RACE_KEY, PersistentDataType.STRING, race.toString());
 
         // Init race
+        AttributeInstance scaleInstance = player.getAttribute(Attribute.SCALE);
         AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
 
         switch (race) {
             case ARMAT -> {
+                modifyBaseValue(scaleInstance, 1);
                 modifyBaseValue(maxHealthInstance, 10);
             }
             case HUMAN -> {
+                modifyBaseValue(scaleInstance, 1);
                 modifyBaseValue(maxHealthInstance, 26);
             }
         }
