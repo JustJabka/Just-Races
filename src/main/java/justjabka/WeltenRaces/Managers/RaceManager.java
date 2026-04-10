@@ -40,16 +40,25 @@ public class RaceManager {
         data.set(RACE_KEY, PersistentDataType.STRING, race.toString());
 
         // Init race
-        if (race == Race.ARMAT) {
-            AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
-            modifyBaseValue(maxHealthInstance, 10);
+        AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
+
+        switch (race) {
+            case ARMAT -> {
+                modifyBaseValue(maxHealthInstance, 10);
+            }
+            case HUMAN -> {
+                modifyBaseValue(maxHealthInstance, 26);
+            }
         }
     }
 
     private static void resetAttributes(Player player) {
         for (Attribute attribute : Registry.ATTRIBUTE) {
             AttributeInstance instance = player.getAttribute(attribute);
+            String attributeNamespace = attribute.getKey().getNamespace();
+
             if (instance == null) continue;
+            if (attributeNamespace.equals("minecraft")) continue;
 
             // Remove all attribute modifiers
             instance.getModifiers().forEach(instance::removeModifier);
@@ -59,7 +68,7 @@ public class RaceManager {
     private static void modifyBaseValue(AttributeInstance instance, double newValue) {
         if (instance == null) return;
 
-        NamespacedKey key = instance.getAttribute().getKey();
+        NamespacedKey key = new NamespacedKey(WeltenRaces.PLUGIN_ID, instance.getAttribute().getKey().getKey());
         double baseValue = instance.getBaseValue();
 
         double diff = newValue - baseValue;

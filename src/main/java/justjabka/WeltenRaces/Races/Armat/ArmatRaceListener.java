@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -109,6 +110,18 @@ public class ArmatRaceListener implements Listener {
                 event.setDamage(finalDamage);
             }
         }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof LivingEntity victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+
+        if (!RaceManager.raceEquals(attacker, Race.ARMAT)) return;
+
+        if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
+
+        WeltenRaces.LOGGER.info("Attacked");
     }
 
     @EventHandler
