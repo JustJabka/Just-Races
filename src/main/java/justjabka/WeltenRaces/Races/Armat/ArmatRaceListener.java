@@ -1,6 +1,8 @@
 package justjabka.WeltenRaces.Races.Armat;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -40,6 +42,7 @@ public class ArmatRaceListener implements Listener {
 
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
     private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
+    private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "absolute_damage");
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
             EntityDamageEvent.DamageCause.FALL
@@ -121,8 +124,19 @@ public class ArmatRaceListener implements Listener {
 
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
-//        victim.da
-        WeltenRaces.LOGGER.info("Attacked");
+        if (attacker.getAttackCooldown() < 1.0f) return;
+
+        DamageType absoluteDamageType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getOrThrow(ABSOLUTE_DAMAGE_KEY);
+
+        // Prevent stack overflow
+        if (event.getDamageSource().getDamageType() == absoluteDamageType) return;
+
+        DamageSource absoluteDamageSource = DamageSource.builder(absoluteDamageType)
+                .withCausingEntity(attacker)
+                .withDirectEntity(attacker)
+                .build();
+
+        victim.damage(1, absoluteDamageSource);
     }
 
     @EventHandler

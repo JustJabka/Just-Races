@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces;
 
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.datapack.DatapackRegistrar;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -22,12 +23,14 @@ public class WeltenRacesBootstrap implements PluginBootstrap {
 
         context.getLifecycleManager().registerEventHandler(LifecycleEvents.DATAPACK_DISCOVERY.newHandler(
                 event -> {
+                    final DatapackRegistrar registrar = event.registrar();
+
                     try {
                         // Retrieve the URI of the datapack folder.
                         URI uri = this.getClass().getResource("/datapack").toURI();
                         // Discover the pack. The ID is set to "provided", which indicates to
                         // a server owner that your plugin includes this data pack.
-                        event.registrar().discoverPack(uri, "provided");
+                        registrar.discoverPack(uri, "provided");
                     } catch (URISyntaxException | IOException e) {
                         throw new RuntimeException(e);
                     }
