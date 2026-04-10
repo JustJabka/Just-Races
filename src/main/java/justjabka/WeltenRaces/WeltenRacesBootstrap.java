@@ -6,6 +6,10 @@ import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import justjabka.WeltenRaces.Commands.SetRaceCommand;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @SuppressWarnings("UnstableApiUsage")
 public class WeltenRacesBootstrap implements PluginBootstrap {
     @Override
@@ -15,5 +19,19 @@ public class WeltenRacesBootstrap implements PluginBootstrap {
 
             SetRaceCommand.register(registrar);
         });
+
+        context.getLifecycleManager().registerEventHandler(LifecycleEvents.DATAPACK_DISCOVERY.newHandler(
+                event -> {
+                    try {
+                        // Retrieve the URI of the datapack folder.
+                        URI uri = this.getClass().getResource("/datapack").toURI();
+                        // Discover the pack. The ID is set to "provided", which indicates to
+                        // a server owner that your plugin includes this data pack.
+                        event.registrar().discoverPack(uri, "provided");
+                    } catch (URISyntaxException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        ));
     }
 }

@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces;
 
+import io.papermc.paper.datapack.Datapack;
 import justjabka.WeltenRaces.Races.Armat.ArmatConfig;
 import justjabka.WeltenRaces.Races.Armat.ArmatRaceListener;
 import justjabka.WeltenRaces.Races.Generic.BaseRaceListener;
@@ -27,6 +28,18 @@ public final class WeltenRaces extends JavaPlugin {
 
         // Race Specific Listeners
         pluginManager.registerEvents(new ArmatRaceListener(armatSettings), this);
+    }
+
+    @Override
+    public void onLoad() {
+        Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/provided");
+        if (pack != null) {
+            if (pack.isEnabled()) {
+                LOGGER.info("The datapack loaded successfully!");
+            } else {
+                LOGGER.warn("The datapack failed to load :(");
+            }
+        }
     }
 
     @Override

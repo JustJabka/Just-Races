@@ -121,6 +121,7 @@ public class ArmatRaceListener implements Listener {
 
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
+//        victim.da
         WeltenRaces.LOGGER.info("Attacked");
     }
 
