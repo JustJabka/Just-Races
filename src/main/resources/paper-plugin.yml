@@ -1,4 +1,4 @@
-name: Welten-Races
+name: WeltenRaces
 version: '1.0'
 main: justjabka.WeltenRaces.WeltenRaces
 bootstrapper: justjabka.WeltenRaces.WeltenRacesBootstrap
