@@ -3,15 +3,13 @@ package justjabka.WeltenRaces.Races.Armat;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.util.Tick;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -24,9 +22,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 import java.util.Set;
@@ -43,6 +45,8 @@ public class ArmatRaceListener implements Listener {
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
     private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
     private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "absolute_damage");
+    private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "ignore_potion");
+
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
             EntityDamageEvent.DamageCause.FALL
@@ -56,9 +60,7 @@ public class ArmatRaceListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-
+        if (!(event.getEntity() instanceof Player player)) return;
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         Entity causingEntity = event.getDamageSource().getCausingEntity();
@@ -121,7 +123,6 @@ public class ArmatRaceListener implements Listener {
         if (!(event.getDamager() instanceof Player attacker)) return;
 
         if (!RaceManager.raceEquals(attacker, Race.ARMAT)) return;
-
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
         if (attacker.getAttackCooldown() < settings.absoluteDamageCooldown) return;
@@ -168,8 +169,7 @@ public class ArmatRaceListener implements Listener {
 
     @EventHandler
     public void onArmorChange(EntityEquipmentChangedEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
@@ -181,7 +181,6 @@ public class ArmatRaceListener implements Listener {
         Player player = event.getPlayer();
 
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
-
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
@@ -198,6 +197,37 @@ public class ArmatRaceListener implements Listener {
 
         event.setItem(resultItem);
         event.setReplacement(consumedItem.subtract());
+    }
+
+    @EventHandler
+    public void onPotionApply(EntityPotionEffectEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
+
+        EntityPotionEffectEvent.Action action = event.getAction();
+        if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
+
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+
+        // Prevent stack overflow
+        if (pdc.has(IGNORE_POTION_KEY)) {
+            pdc.remove(IGNORE_POTION_KEY);
+            return;
+        }
+
+        PotionEffect effect = event.getNewEffect();
+        if (effect == null) return;
+
+        // TODO: FIX TS PLS
+        event.setCancelled(true);
+
+        pdc.set(IGNORE_POTION_KEY, PersistentDataType.BOOLEAN, true);
+
+        int newDuration = (int) (effect.getDuration() * 1.25);
+
+        effect.withDuration(newDuration).apply(player);
     }
 
     private static void applyBoundShellBonus(Player player) {
