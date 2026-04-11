@@ -1,14 +1,16 @@
 package justjabka.WeltenRaces.Races.Generic;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import io.papermc.paper.event.player.PlayerPickItemEvent;
 import justjabka.WeltenRaces.Managers.ArmorManager;
+import justjabka.WeltenRaces.Managers.ItemManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class BaseRaceListener implements Listener {
     @EventHandler
@@ -20,12 +22,20 @@ public class BaseRaceListener implements Listener {
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent event) {
-        WeltenRaces.LOGGER.info("dropped item");
+    public void onPickupItem(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        ItemStack item = event.getItem().getItemStack();
+
+        ItemManager.addItemModifier(item);
+        WeltenRaces.LOGGER.info("Picked item");
     }
 
     @EventHandler
-    public void onItemDrop(PlayerPickItemEvent event) {
-        WeltenRaces.LOGGER.info("pickuped item");
+    public void onDropItem(PlayerDropItemEvent event) {
+        ItemStack item = event.getItemDrop().getItemStack();
+
+        ItemManager.removeItemModifier(item);
+        WeltenRaces.LOGGER.info("Dropped item");
     }
 }
