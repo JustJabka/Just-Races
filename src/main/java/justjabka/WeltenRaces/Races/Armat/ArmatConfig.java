@@ -19,7 +19,7 @@ public class ArmatConfig {
         this.inversionMax = config.getDouble("Races.Armat.Damage-Inversion.Upper-Bound", 30.0);
         this.reductionStart = config.getDouble("Races.Armat.Damage-Reduction.Starting-Point", 8.0);
         this.reductionMultiplier = config.getDouble("Races.Armat.Damage-Reduction.Damage-Multiplier", 0.8);
-        this.absoluteDamageAmount = config.getDouble("Races.Armat.Absolute-Damage.Amount", 0.8);
-        this.absoluteDamageCooldown = (float) config.getDouble("Races.Armat.Absolute-Damage.Min-Attack-Cooldown", 0.8);
+        this.absoluteDamageAmount = config.getDouble("Races.Armat.Absolute-Damage.Amount", 1.0);
+        this.absoluteDamageCooldown = (float) config.getDouble("Races.Armat.Absolute-Damage.Min-Attack-Cooldown", 1.0);
     }
 }
