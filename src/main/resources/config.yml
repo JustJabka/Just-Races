@@ -8,3 +8,6 @@ Races:
     Damage-Reduction:
       Starting-Point: 8.0
       Damage-Multiplier: 0.8
+    Absolute-Damage:
+      Amount: 1.0
+      Min-Attack-Cooldown: 1.0

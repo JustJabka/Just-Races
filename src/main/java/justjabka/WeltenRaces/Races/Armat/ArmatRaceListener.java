@@ -124,7 +124,7 @@ public class ArmatRaceListener implements Listener {
 
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
-        if (attacker.getAttackCooldown() < 1.0f) return;
+        if (attacker.getAttackCooldown() < settings.absoluteDamageCooldown) return;
 
         DamageType absoluteDamageType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getOrThrow(ABSOLUTE_DAMAGE_KEY);
 
@@ -136,7 +136,7 @@ public class ArmatRaceListener implements Listener {
                 .withDirectEntity(attacker)
                 .build();
 
-        victim.damage(1, absoluteDamageSource);
+        victim.damage(settings.absoluteDamageAmount, absoluteDamageSource);
     }
 
     @EventHandler
