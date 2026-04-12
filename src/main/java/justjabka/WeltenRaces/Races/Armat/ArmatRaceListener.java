@@ -3,11 +3,13 @@ package justjabka.WeltenRaces.Races.Armat;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.key.Key;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -45,6 +47,7 @@ public class ArmatRaceListener implements Listener {
     private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "absolute_damage");
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "ignore_potion");
     private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "copper_mining_efficiency");
+    private static final TagKey<DamageType> BYPASSES_DODGE = TagKey.create(RegistryKey.DAMAGE_TYPE, Key.key(WeltenRaces.PLUGIN_ID, "bypasses_dodge"));
 
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
@@ -62,10 +65,11 @@ public class ArmatRaceListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
-        Entity causingEntity = event.getDamageSource().getCausingEntity();
+        DamageSource damageSource = event.getDamageSource();
+        Entity causingEntity = damageSource.getCausingEntity();
 
         double damage = event.getDamage();
-        DamageType damageType = event.getDamageSource().getDamageType();
+        DamageType damageType = damageSource.getDamageType();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         // Damage vulnerability and immunity logic
@@ -73,6 +77,7 @@ public class ArmatRaceListener implements Listener {
             event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
             return;
         } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
+            // TODO: remove ts and use attribute instead
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
             return;
@@ -92,6 +97,10 @@ public class ArmatRaceListener implements Listener {
             case CHAINMAIL -> {
                 // TODO: remove hardcoded values!
                 if (RANDOM.nextDouble() < 0.4) return;
+
+                Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
+
+                if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return;
 
                 event.setCancelled(true);
 
@@ -126,7 +135,8 @@ public class ArmatRaceListener implements Listener {
 
         if (attacker.getAttackCooldown() < settings.absoluteDamageCooldown) return;
 
-        DamageType absoluteDamageType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getOrThrow(ABSOLUTE_DAMAGE_KEY);
+        Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
+        DamageType absoluteDamageType = registry.getOrThrow(ABSOLUTE_DAMAGE_KEY);
 
         // Prevent stack overflow
         if (event.getDamageSource().getDamageType() == absoluteDamageType) return;
