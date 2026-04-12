@@ -3,7 +3,6 @@ package justjabka.WeltenRaces.Races.Armat;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.util.Tick;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -43,9 +42,9 @@ public class ArmatRaceListener implements Listener {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
-    private static final NamespacedKey SINK_GRAVITY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "sink_gravity");
     private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "absolute_damage");
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "ignore_potion");
+    private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "copper_mining_efficiency");
 
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
@@ -152,18 +151,18 @@ public class ArmatRaceListener implements Listener {
         if (gravityInstance == null) return;
 
         boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmor(player);
-        boolean hasModifier = gravityInstance.getModifier(SINK_GRAVITY_KEY) != null;
+        boolean hasModifier = gravityInstance.getModifier(BOUND_SHELL_KEY) != null;
 
         if (shouldSink && !hasModifier) {
             AttributeModifier modifier = new AttributeModifier(
-                    SINK_GRAVITY_KEY,
+                    BOUND_SHELL_KEY,
                     settings.sinkGravity,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
             gravityInstance.addModifier(modifier);
         } else if (!shouldSink && hasModifier) {
-            gravityInstance.removeModifier(SINK_GRAVITY_KEY);
+            gravityInstance.removeModifier(BOUND_SHELL_KEY);
         }
     }
 
@@ -174,6 +173,7 @@ public class ArmatRaceListener implements Listener {
         if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
 
         applyBoundShellBonus(player);
+        applyCopperArmorBonus(player);
     }
 
     @EventHandler
@@ -251,5 +251,32 @@ public class ArmatRaceListener implements Listener {
                 AttributeModifier.Operation.ADD_NUMBER
         );
         maxHealthInstance.addModifier(modifier);
+    }
+
+    private static void applyCopperArmorBonus(Player player) {
+        // Get Attributes
+        AttributeInstance miningEfficiencyInstance = player.getAttribute(Attribute.MINING_EFFICIENCY);
+        if (miningEfficiencyInstance == null) return;
+
+        // Delete old attribute
+        miningEfficiencyInstance.removeModifier(COPPER_MINING_EFFICIENCY_KEY);
+
+        if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
+
+        // Calc new attribute
+        double durability = ArmorManager.getAverageDurability(player);
+        double maxDurability = 1.0;
+        
+        double miningBonus = Math.floor((maxDurability - durability) / 0.25);
+
+        // Apply new attribute
+        if (miningBonus <= 0) return;
+
+        AttributeModifier modifier = new AttributeModifier(
+                COPPER_MINING_EFFICIENCY_KEY,
+                miningBonus,
+                AttributeModifier.Operation.ADD_NUMBER
+        );
+        miningEfficiencyInstance.addModifier(modifier);
     }
 }

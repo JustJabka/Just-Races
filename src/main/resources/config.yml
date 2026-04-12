@@ -2,12 +2,15 @@ Races:
   Armat:
     Vulnerable-Damage-Multiplier: 1.5
     Sink-Gravity-Value: 0.42
+    # Leather armor set bonus
     Damage-Inversion:
       Lower-Bound: 3.0
       Upper-Bound: 30.0
+    # Iron armor set bonus
     Damage-Reduction:
       Starting-Point: 8.0
       Damage-Multiplier: 0.8
+    # Diamond armor set bonus
     Absolute-Damage:
       Amount: 1.0
       Min-Attack-Cooldown: 1.0

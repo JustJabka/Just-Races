@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -69,5 +70,29 @@ public class ArmorManager {
                 PersistentDataType.STRING,
                 set.toString()
         );
+    }
+    public static double getAverageDurability(Player player) {
+        double totalPercent = 0;
+        ItemStack[] equipment = player.getEquipment().getArmorContents();
+
+        int count = 0;
+
+        for (ItemStack item : equipment) {
+            if (item == null) continue;
+            if (item.isEmpty()) continue;
+
+            if (item.getItemMeta() instanceof Damageable itemMeta) {
+                int maxDamage = itemMeta.hasMaxDamage()
+                        ? itemMeta.getMaxDamage()
+                        : item.getType().getMaxDurability();
+
+                double percent = (double) (maxDamage - itemMeta.getDamage()) / maxDamage;
+
+                totalPercent += percent;
+                count++;
+            }
+        }
+
+        return count == 0 ? 0 : (totalPercent / count);
     }
 }
