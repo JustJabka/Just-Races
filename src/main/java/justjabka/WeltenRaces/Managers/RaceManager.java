@@ -14,15 +14,11 @@ import org.bukkit.persistence.PersistentDataType;
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "race");
 
-    public static String getRace(Player player) {
+    public static Race getRace(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
         String race = data.get(RACE_KEY, PersistentDataType.STRING);
 
-        return race != null ? race : "none";
-    }
-
-    public static boolean raceEquals(Player player, Race race) {
-        return race.toString().equals(getRace(player));
+        return Race.valueOf(race);
     }
 
     public static void setRace(Player player, Race race) {

@@ -63,7 +63,7 @@ public class ArmatRaceListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (RaceManager.getRace(player) != Race.ARMAT) return;
 
         DamageSource damageSource = event.getDamageSource();
         Entity causingEntity = damageSource.getCausingEntity();
@@ -130,7 +130,7 @@ public class ArmatRaceListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (!RaceManager.raceEquals(attacker, Race.ARMAT)) return;
+        if (RaceManager.getRace(attacker) != Race.ARMAT) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
         if (attacker.getAttackCooldown() < settings.absoluteDamageCooldown) return;
@@ -155,7 +155,7 @@ public class ArmatRaceListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (RaceManager.getRace(player) != Race.ARMAT) return;
 
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
@@ -180,7 +180,7 @@ public class ArmatRaceListener implements Listener {
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (RaceManager.getRace(player) != Race.ARMAT) return;
 
         applyBoundShellBonus(player);
         applyCopperArmorBonus(player);
@@ -190,7 +190,7 @@ public class ArmatRaceListener implements Listener {
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (RaceManager.getRace(player) != Race.ARMAT) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
@@ -213,7 +213,7 @@ public class ArmatRaceListener implements Listener {
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!RaceManager.raceEquals(player, Race.ARMAT)) return;
+        if (RaceManager.getRace(player) != Race.ARMAT) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         EntityPotionEffectEvent.Action action = event.getAction();
