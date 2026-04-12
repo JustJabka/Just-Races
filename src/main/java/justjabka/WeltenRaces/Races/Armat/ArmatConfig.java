@@ -11,6 +11,9 @@ public class ArmatConfig {
     public final double reductionMultiplier;
     public final double absoluteDamageAmount;
     public final float absoluteDamageCooldown;
+    public final double effectDurationMultiplier;
+    public final double miningBonusMax;
+    public final double miningBonusStep;
 
     public ArmatConfig(FileConfiguration config) {
         this.vulnerableMultiplier = config.getDouble("Races.Armat.Vulnerable-Damage-Multiplier", 1.5);
@@ -21,5 +24,8 @@ public class ArmatConfig {
         this.reductionMultiplier = config.getDouble("Races.Armat.Damage-Reduction.Damage-Multiplier", 0.8);
         this.absoluteDamageAmount = config.getDouble("Races.Armat.Absolute-Damage.Amount", 1.0);
         this.absoluteDamageCooldown = (float) config.getDouble("Races.Armat.Absolute-Damage.Min-Attack-Cooldown", 1.0);
+        this.effectDurationMultiplier = config.getDouble("Races.Armat.Alchemy.Effect-Duration-Multiplier", 1.25);
+        this.miningBonusMax = config.getDouble("Races.Armat.Mining-Bonus.Upper-Bound", 3.0);
+        this.miningBonusStep = config.getDouble("Races.Armat.Mining-Bonus.Step", 0.25);
     }
 }

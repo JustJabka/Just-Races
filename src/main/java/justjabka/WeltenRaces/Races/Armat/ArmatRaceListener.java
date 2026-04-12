@@ -225,7 +225,7 @@ public class ArmatRaceListener implements Listener {
 
         pdc.set(IGNORE_POTION_KEY, PersistentDataType.BOOLEAN, true);
 
-        int newDuration = (int) (effect.getDuration() * 1.25);
+        int newDuration = (int) (effect.getDuration() * settings.effectDurationMultiplier);
 
         effect.withDuration(newDuration).apply(player);
     }
@@ -253,7 +253,7 @@ public class ArmatRaceListener implements Listener {
         maxHealthInstance.addModifier(modifier);
     }
 
-    private static void applyCopperArmorBonus(Player player) {
+    private void applyCopperArmorBonus(Player player) {
         // Get Attributes
         AttributeInstance miningEfficiencyInstance = player.getAttribute(Attribute.MINING_EFFICIENCY);
         if (miningEfficiencyInstance == null) return;
@@ -266,8 +266,8 @@ public class ArmatRaceListener implements Listener {
         // Calc new attribute
         double durability = ArmorManager.getAverageDurability(player);
         double maxDurability = 1.0;
-        
-        double miningBonus = Math.floor((maxDurability - durability) / 0.25);
+
+        double miningBonus = Math.min(settings.miningBonusMax, Math.floor((maxDurability - durability) / settings.miningBonusStep));
 
         // Apply new attribute
         if (miningBonus <= 0) return;

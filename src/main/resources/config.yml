@@ -6,10 +6,17 @@ Races:
     Damage-Inversion:
       Lower-Bound: 3.0
       Upper-Bound: 30.0
+    # Copper armor set bonus
+    Mining-Bonus:
+      Upper-Bound: 3.0
+      Step: 0.25
     # Iron armor set bonus
     Damage-Reduction:
       Starting-Point: 8.0
       Damage-Multiplier: 0.8
+    # Golden armor set bonus
+    Alchemy:
+      Effect-Duration-Multiplier: 1.25
     # Diamond armor set bonus
     Absolute-Damage:
       Amount: 1.0
