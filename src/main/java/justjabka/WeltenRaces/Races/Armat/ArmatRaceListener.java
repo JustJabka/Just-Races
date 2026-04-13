@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -115,6 +116,14 @@ public class ArmatRaceListener implements Listener {
 
                 attacker.damage(parryDamage, parrySource);
                 // TODO: damage armor by parryDamagePenalty
+
+                // parry Damage Penalty
+                for (ItemStack armor : player.getEquipment().getArmorContents()) {
+                    if (armor != null && armor.getItemMeta() instanceof Damageable meta) {
+                        meta.setDamage(meta.getDamage() + 1);
+                        armor.setItemMeta(meta);
+                    }
+                }
             }
             case IRON -> {
                 if (damage < settings.reductionStart) return;

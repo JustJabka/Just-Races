@@ -18,7 +18,14 @@ public class RaceManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         String race = data.get(RACE_KEY, PersistentDataType.STRING);
 
-        return Race.valueOf(race);
+        if (race == null) return Race.HUMAN;
+
+        try {
+            return Race.valueOf(race.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            WeltenRaces.LOGGER.warn("Unknown race in PDC for {}: {}", player.getName(), race);
+            return Race.HUMAN;
+        }
     }
 
     public static void setRace(Player player, Race race) {
