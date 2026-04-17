@@ -1,30 +1,41 @@
 package justjabka.WeltenRaces.Managers;
 
+import justjabka.WeltenRaces.Types.ModifierType;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ItemManager {
-    private static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "item_modified");
+    public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "item_modified");
 
-    public static void addItemModifier(ItemStack item) {
-        if (isItemModified(item)) return;
+    public static void tryApply(Player player, ItemStack item) {
+        if (item == null || item.isEmpty()) return;
 
-        item.editPersistentDataContainer(pdc -> {
-            pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.BOOLEAN, true);
-        });
+        ModifierType type = RaceManager.getRace(player).getModifierFor(item.getType());
+
+        if (type != null) {
+            type.get().apply(item);
+            item.editMeta(meta -> meta.getPersistentDataContainer()
+                    .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.name()));
+        }
     }
 
-    public static void removeItemModifier(ItemStack item) {
-        if (!isItemModified(item)) return;
+    public static void tryUndo(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return;
 
-        item.editPersistentDataContainer(pdc -> {
-            pdc.remove(ITEM_MODIFIED_KEY);
-        });
-    }
+        String modName = item.getItemMeta().getPersistentDataContainer()
+                .get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
 
-    private static boolean isItemModified(ItemStack item) {
-        return item.getPersistentDataContainer().has(ITEM_MODIFIED_KEY);
+        if (modName != null) {
+            try {
+                ModifierType type = ModifierType.valueOf(modName);
+                type.get().undo(item);
+                item.editMeta(meta -> meta.getPersistentDataContainer().remove(ITEM_MODIFIED_KEY));
+            } catch (IllegalArgumentException e) {
+                WeltenRaces.LOGGER.warn("Unknown modifier: {}", modName);
+            }
+        }
     }
 }

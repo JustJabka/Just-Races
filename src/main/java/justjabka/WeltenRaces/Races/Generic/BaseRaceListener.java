@@ -24,16 +24,16 @@ public class BaseRaceListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
 
         ItemStack item = event.getItem().getItemStack();
+        ItemManager.tryApply(player, item);
 
-        ItemManager.addItemModifier(item);
         WeltenRaces.LOGGER.info("Picked item");
     }
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
         ItemStack item = event.getItemDrop().getItemStack();
+        ItemManager.tryUndo(item);
 
-        ItemManager.removeItemModifier(item);
         WeltenRaces.LOGGER.info("Dropped item");
     }
 }
