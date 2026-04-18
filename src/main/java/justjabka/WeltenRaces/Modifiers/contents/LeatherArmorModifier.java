@@ -12,8 +12,16 @@ import org.bukkit.persistence.PersistentDataType;
 import static justjabka.WeltenRaces.Managers.ItemManager.ITEM_MODIFIED_KEY;
 
 public class LeatherArmorModifier implements RaceModifier {
-    private final NamespacedKey attributeKey = new NamespacedKey(WeltenRaces.PLUGIN_ID, "leather_armor_modifier");
-    private final AttributeModifier attributeModifier = new AttributeModifier(attributeKey, 0.01, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR);
+    private final String id;
+    private final NamespacedKey attributeKey;
+    private final AttributeModifier attributeModifier;
+
+    public LeatherArmorModifier(String id) {
+        this.id = id;
+        this.attributeKey = new NamespacedKey(WeltenRaces.PLUGIN_ID, id.toLowerCase());
+        this.attributeModifier = new AttributeModifier(attributeKey, 0.01,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR);
+    }
 
     @Override
     public void apply(ItemStack item) {
@@ -23,7 +31,7 @@ public class LeatherArmorModifier implements RaceModifier {
                     attributeModifier
             );
 
-            meta.getPersistentDataContainer().set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, "leather_armor_modifier");
+            meta.getPersistentDataContainer().set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, id);
         });
     }
 

@@ -4,7 +4,7 @@ import justjabka.WeltenRaces.Modifiers.RaceModifier;
 import justjabka.WeltenRaces.Modifiers.contents.LeatherArmorModifier;
 
 public enum ModifierType {
-    LEATHER_ARMOR(new LeatherArmorModifier());
+    LEATHER_ARMOR(new LeatherArmorModifier("LEATHER_ARMOR"));
 
     private final RaceModifier modifier;
 
