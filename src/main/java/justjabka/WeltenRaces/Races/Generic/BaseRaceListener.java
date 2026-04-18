@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,6 +28,15 @@ public class BaseRaceListener implements Listener {
         ItemManager.tryApply(player, item);
 
         WeltenRaces.LOGGER.info("Picked item");
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+
+        ItemManager.tryApply((Player) event.getWhoClicked(), event.getCurrentItem());
+        ItemManager.tryApply((Player) event.getWhoClicked(), event.getCursor());
+
+        WeltenRaces.LOGGER.info("Inventory clicked");
     }
 
     @EventHandler

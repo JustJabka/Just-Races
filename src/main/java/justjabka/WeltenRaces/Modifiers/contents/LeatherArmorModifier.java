@@ -19,8 +19,12 @@ public class LeatherArmorModifier implements RaceModifier {
     public LeatherArmorModifier(String id) {
         this.id = id;
         this.attributeKey = new NamespacedKey(WeltenRaces.PLUGIN_ID, id.toLowerCase());
-        this.attributeModifier = new AttributeModifier(attributeKey, 0.01,
-                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR);
+        this.attributeModifier = new AttributeModifier(
+                attributeKey,
+                0.01,
+                AttributeModifier.Operation.ADD_NUMBER,
+                EquipmentSlotGroup.ARMOR
+        );
     }
 
     @Override
