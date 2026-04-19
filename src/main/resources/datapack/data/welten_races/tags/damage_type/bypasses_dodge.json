@@ -11,6 +11,7 @@
     "minecraft:outside_border",
     "minecraft:starve",
     "minecraft:thorns",
-    "minecraft:wither"
+    "minecraft:wither",
+    "minecraft:sonic_boom"
   ]
 }
