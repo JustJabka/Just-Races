@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class RaceArgument implements CustomArgumentType.Converted<Race, String> {
-    private static final DynamicCommandExceptionType ERROR_INVALID_FLAVOR = new DynamicCommandExceptionType(race -> {
+    private static final DynamicCommandExceptionType ERROR_INVALID_RACE = new DynamicCommandExceptionType(race -> {
         return MessageComponentSerializer.message().serialize(Component.text(race + " is not a valid race!"));
     });
 
@@ -25,7 +25,7 @@ public class RaceArgument implements CustomArgumentType.Converted<Race, String> 
         try {
             return Race.valueOf(nativeType.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ignored) {
-            throw ERROR_INVALID_FLAVOR.create(nativeType);
+            throw ERROR_INVALID_RACE.create(nativeType);
         }
     }
 
