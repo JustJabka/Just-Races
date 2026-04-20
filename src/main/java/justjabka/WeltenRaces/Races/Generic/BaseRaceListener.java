@@ -4,13 +4,16 @@ import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.ItemManager;
 import justjabka.WeltenRaces.WeltenRaces;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+
+import static justjabka.WeltenRaces.Managers.ItemManager.refreshModifiers;
 
 public class BaseRaceListener implements Listener {
     @EventHandler
@@ -21,29 +24,30 @@ public class BaseRaceListener implements Listener {
     }
 
     @EventHandler
-    public void onPickupItem(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+    public void onInventoryAction(InventoryClickEvent event) {
+        /*
+        Probably should bother about this, but there are possible bug
+        You can drop item and equip it to some other entity for example: zombie (зондре перец💀🌶️)
+        */
 
-        ItemStack item = event.getItem().getItemStack();
-        ItemManager.tryApply(player, item);
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        WeltenRaces.LOGGER.info("Picked item");
+        Bukkit.getScheduler().runTask(WeltenRaces.getProvidingPlugin(this.getClass()), () -> refreshModifiers(player));
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-
-        ItemManager.tryApply((Player) event.getWhoClicked(), event.getCurrentItem());
-        ItemManager.tryApply((Player) event.getWhoClicked(), event.getCursor());
-
-        WeltenRaces.LOGGER.info("Inventory clicked");
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        for (ItemStack item : event.getInventory().getContents()) {
+            if (item == null) continue;
+            ItemManager.tryUndo(item);
+        }
     }
 
     @EventHandler
-    public void onDropItem(PlayerDropItemEvent event) {
-        ItemStack item = event.getItemDrop().getItemStack();
-        ItemManager.tryUndo(item);
-
-        WeltenRaces.LOGGER.info("Dropped item");
+    public void onInventoryClose(InventoryCloseEvent event) {
+        for (ItemStack item : event.getInventory().getContents()) {
+            if (item == null) continue;
+            ItemManager.tryUndo(item);
+        }
     }
 }

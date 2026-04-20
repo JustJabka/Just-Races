@@ -43,6 +43,24 @@ public class ItemManager {
         }
     }
 
+    public static void refreshModifiers(Player player) {
+        ItemStack cursor = player.getItemOnCursor();
+        ItemStack[] inventoryContents = player.getInventory().getContents();
+
+        for (ItemStack item : inventoryContents) {
+            if (item == null) continue;
+            if (item.getType().isAir()) continue;
+
+            ItemManager.tryUndo(item);
+            ItemManager.tryApply(player, item);
+        }
+
+        if (!cursor.getType().isAir()) {
+            ItemManager.tryUndo(cursor);
+            ItemManager.tryApply(player, cursor);
+        }
+    }
+
     private static boolean isAlreadyModified(ItemStack item, ModifierType type) {
         String modifier = getModifier(item);
         return type.name().equals(modifier);

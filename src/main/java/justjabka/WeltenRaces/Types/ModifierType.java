@@ -1,10 +1,10 @@
 package justjabka.WeltenRaces.Types;
 
 import justjabka.WeltenRaces.Modifiers.RaceModifier;
-import justjabka.WeltenRaces.Modifiers.contents.IronArmorModifier;
-import justjabka.WeltenRaces.Modifiers.contents.LeatherArmorModifier;
 import justjabka.WeltenRaces.Modifiers.contents.CopperArmorModifier;
 import justjabka.WeltenRaces.Modifiers.contents.GoldenArmorModifier;
+import justjabka.WeltenRaces.Modifiers.contents.IronArmorModifier;
+import justjabka.WeltenRaces.Modifiers.contents.LeatherArmorModifier;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 
