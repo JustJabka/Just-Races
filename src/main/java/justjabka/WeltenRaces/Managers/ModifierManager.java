@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class ItemManager {
+public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "item_modified");
 
     public static void tryApply(Player player, ItemStack item) {
@@ -51,13 +51,13 @@ public class ItemManager {
             if (item == null) continue;
             if (item.getType().isAir()) continue;
 
-            ItemManager.tryUndo(item);
-            ItemManager.tryApply(player, item);
+            ModifierManager.tryUndo(item);
+            ModifierManager.tryApply(player, item);
         }
 
         if (!cursor.getType().isAir()) {
-            ItemManager.tryUndo(cursor);
-            ItemManager.tryApply(player, cursor);
+            ModifierManager.tryUndo(cursor);
+            ModifierManager.tryApply(player, cursor);
         }
     }
 

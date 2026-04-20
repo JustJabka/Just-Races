@@ -11,7 +11,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import static justjabka.WeltenRaces.Managers.ItemManager.ITEM_MODIFIED_KEY;
+import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BaseArmorModifier implements RaceModifier {

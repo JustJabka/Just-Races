@@ -2,7 +2,7 @@ package justjabka.WeltenRaces.Races.Generic;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.WeltenRaces.Managers.ArmorManager;
-import justjabka.WeltenRaces.Managers.ItemManager;
+import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static justjabka.WeltenRaces.Managers.ItemManager.refreshModifiers;
+import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 
 public class BaseRaceListener implements Listener {
     @EventHandler
@@ -39,7 +39,7 @@ public class BaseRaceListener implements Listener {
     public void onInventoryOpen(InventoryOpenEvent event) {
         for (ItemStack item : event.getInventory().getContents()) {
             if (item == null) continue;
-            ItemManager.tryUndo(item);
+            ModifierManager.tryUndo(item);
         }
     }
 
@@ -47,7 +47,7 @@ public class BaseRaceListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         for (ItemStack item : event.getInventory().getContents()) {
             if (item == null) continue;
-            ItemManager.tryUndo(item);
+            ModifierManager.tryUndo(item);
         }
     }
 }
