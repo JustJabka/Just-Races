@@ -73,19 +73,48 @@ public class ArmatRaceListener implements Listener {
         DamageType damageType = damageSource.getDamageType();
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
-        // Damage vulnerability and immunity logic
+        if (handleDamageCauses(event, player, damageCause)) return;
+        if (handleDodge(event, player, damageType)) return;
+
+        handleArmorSetBonusesOnDamage(event, player, damage, causingEntity, damageType);
+    }
+
+    private boolean handleDamageCauses(EntityDamageEvent event, Player player, EntityDamageEvent.DamageCause damageCause) {
         if (VULNERABLE_TO.contains(damageCause)) {
             // TODO: break boots depending on damage taken
             event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
-            return;
+            return true;
         } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
             // TODO: remove ts and use attribute instead
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
-            return;
+            return true;
         }
+        return false;
+    }
 
-        // ArmorSet bonus logic
+    private boolean handleDodge(EntityDamageEvent event, Player player, DamageType damageType) {
+        double dodgeChance;
+
+        // Calc Dodge Chance
+        AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
+        if (luckInstance == null) return true;
+
+        dodgeChance = luckInstance.getValue() * 0.1;
+        dodgeChance = Math.clamp(dodgeChance, 0, settings.maxDodgeChance);
+
+        // Try Dodge
+        if (RANDOM.nextDouble() > dodgeChance) return true;
+
+        // Dodge
+        Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
+        if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return true;
+
+        event.setCancelled(true);
+        return false;
+    }
+
+    private void handleArmorSetBonusesOnDamage(EntityDamageEvent event, Player player, double damage, Entity causingEntity, DamageType damageType) {
         if (ArmorManager.getArmorSet(player) == ArmorSet.NONE) return;
 
         switch (ArmorManager.getArmorSet(player)) {
@@ -97,23 +126,6 @@ public class ArmatRaceListener implements Listener {
                 event.setDamage(finalDamage);
             }
             case CHAINMAIL -> {
-                // Dodge logic
-                double dodgeChance = 0;
-
-                AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
-                if (luckInstance != null) {
-                    dodgeChance = luckInstance.getValue() * 0.1;
-                    dodgeChance = Math.clamp(dodgeChance, 0, settings.maxDodgeChance);
-                }
-
-                if (RANDOM.nextDouble() < dodgeChance) return;
-
-                Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-
-                if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return;
-
-                event.setCancelled(true);
-
                 // Parry Logic
                 if (!(causingEntity instanceof LivingEntity attacker)) return;
 
