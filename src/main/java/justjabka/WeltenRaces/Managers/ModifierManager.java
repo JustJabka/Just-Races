@@ -43,6 +43,13 @@ public class ModifierManager {
         }
     }
 
+    public static void tryUndoInventory(ItemStack[] inventoryContents) {
+        for (ItemStack item : inventoryContents) {
+            if (item == null) continue;
+            ModifierManager.tryUndo(item);
+        }
+    }
+
     public static void refreshModifiers(Player player) {
         ItemStack cursor = player.getItemOnCursor();
         ItemStack[] inventoryContents = player.getInventory().getContents();

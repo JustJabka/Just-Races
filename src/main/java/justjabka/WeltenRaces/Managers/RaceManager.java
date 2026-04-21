@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Managers;
 
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -10,6 +11,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "race");
@@ -70,6 +73,9 @@ public class RaceManager {
                 instance.removeModifier(modifier);
             }
         }
+
+        // Reset Item Modifiers
+        Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> refreshModifiers(player));
     }
 
     private static void modifyBaseValue(AttributeInstance instance, double newValue) {

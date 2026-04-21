@@ -2,7 +2,6 @@ package justjabka.WeltenRaces.Races.Generic;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.WeltenRaces.Managers.ArmorManager;
-import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.ItemStack;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
+import static justjabka.WeltenRaces.Managers.ModifierManager.tryUndoInventory;
 
 public class BaseRaceListener implements Listener {
     @EventHandler
@@ -32,22 +31,16 @@ public class BaseRaceListener implements Listener {
 
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Bukkit.getScheduler().runTask(WeltenRaces.getProvidingPlugin(this.getClass()), () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> refreshModifiers(player));
     }
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        for (ItemStack item : event.getInventory().getContents()) {
-            if (item == null) continue;
-            ModifierManager.tryUndo(item);
-        }
+        tryUndoInventory(event.getInventory().getContents());
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        for (ItemStack item : event.getInventory().getContents()) {
-            if (item == null) continue;
-            ModifierManager.tryUndo(item);
-        }
+        tryUndoInventory(event.getInventory().getContents());
     }
 }
