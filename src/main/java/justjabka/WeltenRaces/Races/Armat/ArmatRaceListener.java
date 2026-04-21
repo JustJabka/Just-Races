@@ -74,9 +74,9 @@ public class ArmatRaceListener implements Listener {
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         if (handleDamageCauses(event, player, damageCause)) return;
-        if (handleDodge(event, player, damageType)) return;
+        boolean successfullyDodged = handleDodge(event, player, damageType);
 
-        handleArmorSetBonusesOnDamage(event, player, damage, causingEntity, damageType);
+        handleArmorSetBonusesOnDamage(event, player, damage, causingEntity, damageType, successfullyDodged);
     }
 
     private boolean handleDamageCauses(EntityDamageEvent event, Player player, EntityDamageEvent.DamageCause damageCause) {
@@ -98,23 +98,23 @@ public class ArmatRaceListener implements Listener {
 
         // Calc Dodge Chance
         AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
-        if (luckInstance == null) return true;
+        if (luckInstance == null) return false;
 
         dodgeChance = luckInstance.getValue() * 0.1;
         dodgeChance = Math.clamp(dodgeChance, 0, settings.maxDodgeChance);
 
         // Try Dodge
-        if (RANDOM.nextDouble() > dodgeChance) return true;
+        if (RANDOM.nextDouble() > dodgeChance) return false;
 
         // Dodge
         Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-        if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return true;
+        if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return false;
 
         event.setCancelled(true);
-        return false;
+        return true;
     }
 
-    private void handleArmorSetBonusesOnDamage(EntityDamageEvent event, Player player, double damage, Entity causingEntity, DamageType damageType) {
+    private void handleArmorSetBonusesOnDamage(EntityDamageEvent event, Player player, double damage, Entity causingEntity, DamageType damageType, boolean successfullyDodged) {
         if (ArmorManager.getArmorSet(player) == ArmorSet.NONE) return;
 
         switch (ArmorManager.getArmorSet(player)) {
@@ -127,6 +127,7 @@ public class ArmatRaceListener implements Listener {
             }
             case CHAINMAIL -> {
                 // Parry Logic
+                if (!successfullyDodged) return;
                 if (!(causingEntity instanceof LivingEntity attacker)) return;
 
                 double parryDamage = damage * settings.parryDamagePercent;
