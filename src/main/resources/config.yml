@@ -10,6 +10,11 @@ Races:
     Mining-Bonus:
       Upper-Bound: 3.0
       Step: 0.25
+    # Chainmail armor set bonus
+    Damage-Dodge:
+      Max-Chance: 0.5
+      Parry-Damage-Percent: 0.6
+      Parry-Armor-Penalty: 1
     # Iron armor set bonus
     Damage-Reduction:
       Starting-Point: 8.0

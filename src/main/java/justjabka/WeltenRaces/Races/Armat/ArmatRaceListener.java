@@ -75,6 +75,7 @@ public class ArmatRaceListener implements Listener {
 
         // Damage vulnerability and immunity logic
         if (VULNERABLE_TO.contains(damageCause)) {
+            // TODO: break boots depending on damage taken
             event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
             return;
         } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
@@ -96,8 +97,16 @@ public class ArmatRaceListener implements Listener {
                 event.setDamage(finalDamage);
             }
             case CHAINMAIL -> {
-                // TODO: remove hardcoded values!
-                if (RANDOM.nextDouble() < 0.4) return;
+                // Dodge logic
+                double dodgeChance = 0;
+
+                AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
+                if (luckInstance != null) {
+                    dodgeChance = luckInstance.getValue() * 0.1;
+                    dodgeChance = Math.clamp(dodgeChance, 0, settings.maxDodgeChance);
+                }
+
+                if (RANDOM.nextDouble() < dodgeChance) return;
 
                 Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
 
@@ -105,22 +114,22 @@ public class ArmatRaceListener implements Listener {
 
                 event.setCancelled(true);
 
+                // Parry Logic
                 if (!(causingEntity instanceof LivingEntity attacker)) return;
 
-                double parryDamage = damage * 0.6;
-
+                double parryDamage = damage * settings.parryDamagePercent;
                 DamageSource parrySource = DamageSource.builder(damageType)
                         .withCausingEntity(player)
                         .withDirectEntity(player)
                         .build();
 
                 attacker.damage(parryDamage, parrySource);
-                // TODO: damage armor by parryDamagePenalty
 
-                // parry Damage Penalty
+                // Parry Armor Damage Penalty
                 for (ItemStack armor : player.getEquipment().getArmorContents()) {
-                    if (armor != null && armor.getItemMeta() instanceof Damageable meta) {
-                        meta.setDamage(meta.getDamage() + 1);
+                    if (armor == null) continue;
+                    if (armor.getItemMeta() instanceof Damageable meta) {
+                        meta.setDamage(meta.getDamage() + settings.parryArmorPenalty);
                         armor.setItemMeta(meta);
                     }
                 }
