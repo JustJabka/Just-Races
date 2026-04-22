@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Modifiers.contents.Generic;
+package justjabka.WeltenRaces.Modifiers.Contents.Generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;

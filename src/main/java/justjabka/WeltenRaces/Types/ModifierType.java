@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Types;
 
 import justjabka.WeltenRaces.Modifiers.RaceModifier;
-import justjabka.WeltenRaces.Modifiers.contents.*;
+import justjabka.WeltenRaces.Modifiers.Contents.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 

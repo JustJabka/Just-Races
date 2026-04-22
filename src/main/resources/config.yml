@@ -1,28 +1,36 @@
-Races:
-  Armat:
-    Vulnerable-Damage-Multiplier: 1.5
-    Sink-Gravity-Value: 0.42
+races:
+  armat:
+    vulnerable-damage-multiplier: 1.5
+    sink-gravity-value: 0.42
+
     # Leather armor set bonus
-    Damage-Inversion:
-      Lower-Bound: 3.0
-      Upper-Bound: 30.0
+    damage-inversion:
+      lower-bound: 3.0
+      upper-bound: 30.0
+
     # Copper armor set bonus
-    Mining-Bonus:
-      Upper-Bound: 3.0
-      Step: 0.25
+    mining-bonus:
+      upper-bound: 3.0
+      step: 0.25
+
     # Chainmail armor set bonus
-    Damage-Dodge:
-      Max-Chance: 0.5
-      Parry-Damage-Percent: 0.6
-      Parry-Armor-Penalty: 1
+    damage-dodge:
+      max-chance: 0.5
+      parry:
+        damage-percent: 0.6
+        armor-penalty: 1
+
     # Iron armor set bonus
-    Damage-Reduction:
-      Starting-Point: 8.0
-      Damage-Multiplier: 0.8
+    damage-reduction:
+      starting-point: 8.0
+      damage-multiplier: 0.8
+
     # Golden armor set bonus
-    Alchemy:
-      Effect-Duration-Multiplier: 1.25
+    alchemy:
+      effect-duration-multiplier: 1.25
+
     # Diamond armor set bonus
-    Absolute-Damage:
-      Amount: 1.0
-      Min-Attack-Cooldown: 1.0
+    absolute-damage:
+      amount: 1.0
+      min-attack-cooldown: 1.0
+

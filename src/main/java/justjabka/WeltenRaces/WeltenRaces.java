@@ -1,9 +1,9 @@
 package justjabka.WeltenRaces;
 
 import io.papermc.paper.datapack.Datapack;
-import justjabka.WeltenRaces.Races.Armat.ArmatConfig;
-import justjabka.WeltenRaces.Races.Armat.ArmatRaceListener;
-import justjabka.WeltenRaces.Races.Generic.BaseRaceListener;
+import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
+import justjabka.WeltenRaces.RaceListeners.ArmatRaceListener;
+import justjabka.WeltenRaces.RaceListeners.BaseRaceListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ public final class WeltenRaces extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         saveDefaultConfig();
 
         // Configs

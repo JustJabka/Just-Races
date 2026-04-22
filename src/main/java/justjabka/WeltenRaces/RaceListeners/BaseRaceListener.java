@@ -1,6 +1,7 @@
-package justjabka.WeltenRaces.Races.Generic;
+package justjabka.WeltenRaces.RaceListeners;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 import static justjabka.WeltenRaces.Managers.ModifierManager.tryUndoInventory;
@@ -42,5 +44,14 @@ public class BaseRaceListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         tryUndoInventory(event.getInventory().getContents());
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        if (!AbilityManager.hasActivationSlotSelected(player)) return;
+
+        WeltenRaces.LOGGER.info("slot 8");
     }
 }
