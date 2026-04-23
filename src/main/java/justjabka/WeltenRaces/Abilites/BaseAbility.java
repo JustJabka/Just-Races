@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,7 @@ public abstract class BaseAbility implements Listener {
     protected abstract boolean onActivation(Player player);
 
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
         return event.getAction().isRightClick();
     }
 }
