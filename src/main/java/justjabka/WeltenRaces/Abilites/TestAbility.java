@@ -1,12 +1,13 @@
 package justjabka.WeltenRaces.Abilites;
 
+import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class TestAbility extends BaseAbility implements Listener {
+public class TestAbility extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return 60;
@@ -15,6 +16,11 @@ public class TestAbility extends BaseAbility implements Listener {
     @Override
     public String getDisplayName() {
         return "TestAbility";
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return RaceManager.getRace(player) == Race.ARMAT;
     }
 
     @EventHandler

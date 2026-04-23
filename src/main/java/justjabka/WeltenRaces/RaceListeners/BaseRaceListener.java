@@ -25,7 +25,7 @@ public class BaseRaceListener implements Listener {
     @EventHandler
     public void onInventoryAction(InventoryClickEvent event) {
         /*
-        Probably should bother about this, but there are possible bug
+        Probably shouldn't bother about this, but there are possible bug
         You can drop item and equip it to some other entity for example: zombie (зондре перец💀🌶️)
         */
 
