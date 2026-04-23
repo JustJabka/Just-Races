@@ -38,7 +38,10 @@ public class RaceManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         data.set(RACE_KEY, PersistentDataType.STRING, race.toString());
 
-        // Init race
+        initRace(player, race);
+    }
+
+    private static void initRace(Player player, Race race) {
         AttributeInstance scaleInstance = player.getAttribute(Attribute.SCALE);
         AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
 
