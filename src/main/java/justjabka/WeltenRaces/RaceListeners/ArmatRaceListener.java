@@ -161,10 +161,7 @@ public class ArmatRaceListener implements Listener {
         // Parry Armor Damage Penalty
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
             if (armor == null) continue;
-            if (armor.getItemMeta() instanceof Damageable meta) {
-                meta.setDamage(meta.getDamage() + settings.parryArmorPenalty);
-                armor.setItemMeta(meta);
-            }
+            armor.damage(settings.parryArmorPenalty, player);
         }
     }
 

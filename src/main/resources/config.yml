@@ -33,4 +33,3 @@ races:
     absolute-damage:
       amount: 1.0
       min-attack-cooldown: 1.0
-
