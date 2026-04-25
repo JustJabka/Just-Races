@@ -123,41 +123,47 @@ public class ArmatRaceListener implements Listener {
 
         switch (ArmorManager.getArmorSet(player)) {
             // TODO: add toggle
-            case LEATHER -> {
-                if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
+            case LEATHER -> handleLeatherArmorSetBonus(event, player, damage);
+            case CHAINMAIL -> handleChainmailArmorSetBonus(player, damage, causingEntity, damageType, successfullyDodged);
+            case IRON -> handleIronArmorSetBonus(event, damage);
+        }
+    }
 
-                if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
+    private void handleLeatherArmorSetBonus(EntityDamageEvent event, Player player, double damage) {
+        if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
 
-                double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
-                event.setDamage(finalDamage);
-            }
-            case CHAINMAIL -> {
-                // Parry Logic
-                if (!successfullyDodged) return;
-                if (!(causingEntity instanceof LivingEntity attacker)) return;
+        if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
 
-                double parryDamage = damage * settings.parryDamagePercent;
-                DamageSource parrySource = DamageSource.builder(damageType)
-                        .withCausingEntity(player)
-                        .withDirectEntity(player)
-                        .build();
+        double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
+        event.setDamage(finalDamage);
+    }
 
-                attacker.damage(parryDamage, parrySource);
+    private void handleIronArmorSetBonus(EntityDamageEvent event, double damage) {
+        if (damage < settings.reductionStart) return;
 
-                // Parry Armor Damage Penalty
-                for (ItemStack armor : player.getEquipment().getArmorContents()) {
-                    if (armor == null) continue;
-                    if (armor.getItemMeta() instanceof Damageable meta) {
-                        meta.setDamage(meta.getDamage() + settings.parryArmorPenalty);
-                        armor.setItemMeta(meta);
-                    }
-                }
-            }
-            case IRON -> {
-                if (damage < settings.reductionStart) return;
+        double finalDamage = damage * settings.reductionMultiplier;
+        event.setDamage(finalDamage);
+    }
 
-                double finalDamage = damage * settings.reductionMultiplier;
-                event.setDamage(finalDamage);
+    private void handleChainmailArmorSetBonus(Player player, double damage, Entity causingEntity, DamageType damageType, boolean successfullyDodged) {
+        // Parry Logic
+        if (!successfullyDodged) return;
+        if (!(causingEntity instanceof LivingEntity attacker)) return;
+
+        double parryDamage = damage * settings.parryDamagePercent;
+        DamageSource parrySource = DamageSource.builder(damageType)
+                .withCausingEntity(player)
+                .withDirectEntity(player)
+                .build();
+
+        attacker.damage(parryDamage, parrySource);
+
+        // Parry Armor Damage Penalty
+        for (ItemStack armor : player.getEquipment().getArmorContents()) {
+            if (armor == null) continue;
+            if (armor.getItemMeta() instanceof Damageable meta) {
+                meta.setDamage(meta.getDamage() + settings.parryArmorPenalty);
+                armor.setItemMeta(meta);
             }
         }
     }
