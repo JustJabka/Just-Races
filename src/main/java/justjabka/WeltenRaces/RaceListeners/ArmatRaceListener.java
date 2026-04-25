@@ -5,6 +5,7 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -35,6 +36,8 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 import java.util.Set;
+
+import static justjabka.WeltenRaces.Abilites.DamageInversion.DAMAGE_INVERSION_KEY;
 
 public class ArmatRaceListener implements Listener {
     private final ArmatConfig settings;
@@ -121,6 +124,8 @@ public class ArmatRaceListener implements Listener {
         switch (ArmorManager.getArmorSet(player)) {
             // TODO: add toggle
             case LEATHER -> {
+                if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
+
                 if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
 
                 double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;

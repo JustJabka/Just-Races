@@ -49,6 +49,8 @@ public abstract class BaseAbility implements Listener {
 
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
         if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        return event.getAction().isRightClick();
+        if (!event.getAction().isRightClick()) return false;
+
+        return true;
     }
 }
