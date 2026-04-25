@@ -10,7 +10,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ArmorManager {
-    private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "armor_set");
+    private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "armor_set");
 
     public static void updateArmorSet(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();

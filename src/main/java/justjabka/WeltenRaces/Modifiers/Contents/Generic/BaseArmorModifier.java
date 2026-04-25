@@ -81,7 +81,7 @@ public class BaseArmorModifier implements RaceModifier {
     }
 
     private NamespacedKey getDynamicKey(ItemStack item) {
-        return new NamespacedKey(WeltenRaces.PLUGIN_ID, id.toLowerCase() + "." + getItemGroupSlot(item));
+        return new NamespacedKey(WeltenRaces.NAMESPACE, id.toLowerCase() + "." + getItemGroupSlot(item));
     }
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {

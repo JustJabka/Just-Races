@@ -15,7 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
-    public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "race");
+    public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "race");
 
     public static Race getRace(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
@@ -84,7 +84,7 @@ public class RaceManager {
     private static void modifyBaseValue(AttributeInstance instance, double newValue) {
         if (instance == null) return;
 
-        NamespacedKey key = new NamespacedKey(WeltenRaces.PLUGIN_ID, instance.getAttribute().getKey().getKey());
+        NamespacedKey key = new NamespacedKey(WeltenRaces.NAMESPACE, instance.getAttribute().getKey().getKey());
         double baseValue = instance.getBaseValue();
 
         double diff = newValue - baseValue;

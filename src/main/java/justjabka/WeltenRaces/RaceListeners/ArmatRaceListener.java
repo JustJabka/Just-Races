@@ -45,11 +45,11 @@ public class ArmatRaceListener implements Listener {
 
     private static final Random RANDOM = new Random();
 
-    private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "bound_shell");
-    private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "absolute_damage");
-    private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "ignore_potion");
-    private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "copper_mining_efficiency");
-    private static final TagKey<DamageType> BYPASSES_DODGE = TagKey.create(RegistryKey.DAMAGE_TYPE, Key.key(WeltenRaces.PLUGIN_ID, "bypasses_dodge"));
+    private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "bound_shell");
+    private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "absolute_damage");
+    private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
+    private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "copper_mining_efficiency");
+    private static final TagKey<DamageType> BYPASSES_DODGE = TagKey.create(RegistryKey.DAMAGE_TYPE, Key.key(WeltenRaces.NAMESPACE, "bypasses_dodge"));
 
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(

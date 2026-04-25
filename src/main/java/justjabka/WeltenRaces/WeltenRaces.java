@@ -8,12 +8,11 @@ import justjabka.WeltenRaces.RaceListeners.BaseRaceListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class WeltenRaces extends JavaPlugin {
     public static WeltenRaces INSTANCE;
-    public static final String PLUGIN_ID = "welten_races";
-    public static final Logger LOGGER = LoggerFactory.getLogger(PLUGIN_ID);
+    public static Logger LOGGER;
+    public static String NAMESPACE = "welten_races";
 
     @Override
     public void onEnable() {
@@ -36,6 +35,7 @@ public final class WeltenRaces extends JavaPlugin {
     @Override
     public void onLoad() {
         INSTANCE = this;
+        LOGGER = getSLF4JLogger();
 
         // Load Datapack
         Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/provided");

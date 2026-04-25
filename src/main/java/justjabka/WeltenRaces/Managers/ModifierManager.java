@@ -9,7 +9,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class ModifierManager {
-    public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.PLUGIN_ID, "item_modified");
+    public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "item_modified");
 
     public static void tryApply(Player player, ItemStack item) {
         if (item == null) return;
