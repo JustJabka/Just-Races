@@ -25,7 +25,7 @@ import java.util.UUID;
 public class Ecdysis extends BaseAbility {
     public static final NamespacedKey ECDYSIS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ecdysis");
 
-    private static final double suicidePercent = 0.15;
+    private static final double suicidePercent = 0.1;
     private static final int effectDuration = 11 * 20;
 
     private static final Set<PotionEffect> USER_EFFECTS = Set.of(
