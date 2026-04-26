@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Managers;
 
 import justjabka.WeltenRaces.Abilites.BaseAbility;
 import justjabka.WeltenRaces.Abilites.DamageInversion;
+import justjabka.WeltenRaces.Abilites.Ecdysis;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -16,7 +17,8 @@ public class AbilityManager {
 
     public void loadAbilityListeners() {
         List<BaseAbility> abilities = List.of(
-                new DamageInversion()
+                new DamageInversion(),
+                new Ecdysis()
         );
 
         for (BaseAbility ability : abilities) {
