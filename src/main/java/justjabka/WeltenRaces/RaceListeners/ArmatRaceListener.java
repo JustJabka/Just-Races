@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -29,7 +30,6 @@ import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -226,7 +226,7 @@ public class ArmatRaceListener implements Listener {
         applyCopperArmorBonus(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
@@ -247,6 +247,12 @@ public class ArmatRaceListener implements Listener {
 
         event.setItem(resultItem);
         event.setReplacement(consumedItem.subtract());
+
+        double current = player.getAbsorptionAmount();
+        double bonus = (goldenVersion == Material.GOLDEN_APPLE) ? 4.0 : 0;
+        double limit = player.getAttribute(Attribute.MAX_ABSORPTION).getValue();
+
+        player.setAbsorptionAmount(Math.min(current + bonus, limit));
     }
 
     @EventHandler
