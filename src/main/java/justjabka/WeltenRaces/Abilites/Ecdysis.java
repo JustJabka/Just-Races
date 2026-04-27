@@ -120,7 +120,7 @@ public class Ecdysis extends BaseAbility {
     }
 
     private static void onUseEffects(Player player) {
-        player.spawnParticle(
+        player.getWorld().spawnParticle(
                 Particle.BLOCK,
                 player.getLocation().add(0, 1, 0),
                 100,
@@ -129,7 +129,7 @@ public class Ecdysis extends BaseAbility {
                 2.5,
                 Bukkit.createBlockData(Material.NETHERITE_BLOCK)
         );
-        player.spawnParticle(
+        player.getWorld().spawnParticle(
                 Particle.EXPLOSION_EMITTER,
                 player.getLocation().add(0, 1, 0),
                 1,
@@ -139,8 +139,8 @@ public class Ecdysis extends BaseAbility {
                 1
         );
 
-        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.PLAYERS, 1, 2);
-        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 2, 1);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.PLAYERS, 1, 2);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 2, 1);
     }
 
     @Override

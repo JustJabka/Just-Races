@@ -52,8 +52,8 @@ public class DamageInversion extends BaseAbility {
 
         AbilityManager.updateAbilities(player, abilities);
 
-        player.playSound(player.getLocation(), Sound.BLOCK_CANDLE_EXTINGUISH, SoundCategory.PLAYERS, 1, 2);
-        player.spawnParticle(
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CANDLE_EXTINGUISH, SoundCategory.PLAYERS, 1, 2);
+        player.getWorld().spawnParticle(
                 Particle.CRIT,
                 player.getEyeLocation().subtract(0, 0.5, 0),
                 10,

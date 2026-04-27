@@ -90,7 +90,7 @@ public class ArmatRaceListener implements Listener {
             return true;
         } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
             // TODO: remove ts and use attribute instead
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
             return true;
         }
