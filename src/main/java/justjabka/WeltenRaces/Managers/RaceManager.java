@@ -54,6 +54,10 @@ public class RaceManager {
                 modifyBaseValue(scaleInstance, 1);
                 modifyBaseValue(maxHealthInstance, 26);
             }
+            case PHANTOM -> {
+                modifyBaseValue(scaleInstance, 1);
+                modifyBaseValue(maxHealthInstance, 20);
+            }
         }
     }
 

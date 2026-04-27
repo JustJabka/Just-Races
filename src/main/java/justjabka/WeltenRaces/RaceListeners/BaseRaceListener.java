@@ -56,7 +56,6 @@ public class BaseRaceListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
-        WeltenRaces.LOGGER.info(event.getItem().toString());
 
         AttributeInstance maxAbsorptionInstance = player.getAttribute(Attribute.MAX_ABSORPTION);
         if (maxAbsorptionInstance == null) return;

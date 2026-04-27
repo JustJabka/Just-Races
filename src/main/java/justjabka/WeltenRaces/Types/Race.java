@@ -30,7 +30,9 @@ public enum Race {
     EPIPHYTE(Map.of()),
     HUMAN(Map.of()),
     LIZARD(Map.of()),
-    PHANTOM(Map.of()),
+    PHANTOM(Map.of(
+            Material.PHANTOM_MEMBRANE, ModifierType.PHANTOM_MEMBRANE
+    )),
     SKYZERN(Map.of());
 
     private final Map<Material, ModifierType> itemModifiers;
