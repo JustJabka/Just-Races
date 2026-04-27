@@ -40,10 +40,10 @@ import java.util.Set;
 import static justjabka.WeltenRaces.Abilites.DamageInversion.DAMAGE_INVERSION_KEY;
 
 public class ArmatRaceListener implements Listener {
-    private final ArmatConfig settings;
+    private final ArmatConfig config;
 
-    public ArmatRaceListener(ArmatConfig settings) {
-        this.settings = settings;
+    public ArmatRaceListener(ArmatConfig config) {
+        this.config = config;
     }
 
     private static final Random RANDOM = new Random();
@@ -86,7 +86,7 @@ public class ArmatRaceListener implements Listener {
     private boolean handleDamageCauses(EntityDamageEvent event, Player player, EntityDamageEvent.DamageCause damageCause) {
         if (VULNERABLE_TO.contains(damageCause)) {
             // TODO: break boots depending on damage taken
-            event.setDamage(event.getDamage() * settings.vulnerableMultiplier);
+            event.setDamage(event.getDamage() * config.vulnerableMultiplier);
             return true;
         } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
             // TODO: remove ts and use attribute instead
@@ -105,7 +105,7 @@ public class ArmatRaceListener implements Listener {
         if (luckInstance == null) return false;
 
         dodgeChance = luckInstance.getValue() * 0.1;
-        dodgeChance = Math.clamp(dodgeChance, 0, settings.maxDodgeChance);
+        dodgeChance = Math.clamp(dodgeChance, 0, config.maxDodgeChance);
 
         // Try Dodge
         if (RANDOM.nextDouble() > dodgeChance) return false;
@@ -132,16 +132,16 @@ public class ArmatRaceListener implements Listener {
     private void handleLeatherArmorSetBonus(EntityDamageEvent event, Player player, double damage) {
         if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
 
-        if (!(damage >= settings.inversionMin && damage <= settings.inversionMax)) return;
+        if (!(damage >= config.inversionMin && damage <= config.inversionMax)) return;
 
-        double finalDamage = (settings.inversionMax + settings.inversionMin) - damage;
+        double finalDamage = (config.inversionMax + config.inversionMin) - damage;
         event.setDamage(finalDamage);
     }
 
     private void handleIronArmorSetBonus(EntityDamageEvent event, double damage) {
-        if (damage < settings.reductionStart) return;
+        if (damage < config.reductionStart) return;
 
-        double finalDamage = damage * settings.reductionMultiplier;
+        double finalDamage = damage * config.reductionMultiplier;
         event.setDamage(finalDamage);
     }
 
@@ -150,7 +150,7 @@ public class ArmatRaceListener implements Listener {
         if (!successfullyDodged) return;
         if (!(causingEntity instanceof LivingEntity attacker)) return;
 
-        double parryDamage = damage * settings.parryDamagePercent;
+        double parryDamage = damage * config.parryDamagePercent;
         DamageSource parrySource = DamageSource.builder(damageType)
                 .withCausingEntity(player)
                 .withDirectEntity(player)
@@ -161,7 +161,7 @@ public class ArmatRaceListener implements Listener {
         // Parry Armor Damage Penalty
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
             if (armor == null) continue;
-            armor.damage(settings.parryArmorPenalty, player);
+            armor.damage(config.parryArmorPenalty, player);
         }
     }
 
@@ -173,7 +173,7 @@ public class ArmatRaceListener implements Listener {
         if (RaceManager.getRace(attacker) != Race.ARMAT) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
-        if (attacker.getAttackCooldown() < settings.absoluteDamageCooldown) return;
+        if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
 
         Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
         DamageType absoluteDamageType = registry.getOrThrow(ABSOLUTE_DAMAGE_KEY);
@@ -186,7 +186,7 @@ public class ArmatRaceListener implements Listener {
                 .withDirectEntity(attacker)
                 .build();
 
-        victim.damage(settings.absoluteDamageAmount, absoluteDamageSource);
+        victim.damage(config.absoluteDamageAmount, absoluteDamageSource);
     }
 
     @EventHandler
@@ -206,7 +206,7 @@ public class ArmatRaceListener implements Listener {
         if (shouldSink && !hasModifier) {
             AttributeModifier modifier = new AttributeModifier(
                     BOUND_SHELL_KEY,
-                    settings.sinkGravity,
+                    config.sinkGravity,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
@@ -281,7 +281,7 @@ public class ArmatRaceListener implements Listener {
 
         pdc.set(IGNORE_POTION_KEY, PersistentDataType.BOOLEAN, true);
 
-        int newDuration = (int) (effect.getDuration() * settings.effectDurationMultiplier);
+        int newDuration = (int) (effect.getDuration() * config.effectDurationMultiplier);
 
         effect.withDuration(newDuration).apply(player);
     }
@@ -323,7 +323,7 @@ public class ArmatRaceListener implements Listener {
         double durability = ArmorManager.getAverageDurability(player);
         double maxDurability = 1.0;
 
-        double miningBonus = Math.min(settings.miningBonusMax, Math.floor((maxDurability - durability) / settings.miningBonusStep));
+        double miningBonus = Math.min(config.miningBonusMax, Math.floor((maxDurability - durability) / config.miningBonusStep));
 
         // Apply new attribute
         if (miningBonus <= 0) return;

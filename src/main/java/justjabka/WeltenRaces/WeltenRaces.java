@@ -21,8 +21,8 @@ public final class WeltenRaces extends JavaPlugin {
         // Configs
         saveDefaultConfig();
 
-        ArmatConfig armatSettings = new ArmatConfig(getConfig());
-        PhantomConfig phantomSettings = new PhantomConfig(getConfig());
+        ArmatConfig armatConfig = new ArmatConfig(getConfig());
+        PhantomConfig phantomConfig = new PhantomConfig(getConfig());
 
         // Global Listeners
         PluginManager pluginManager = getServer().getPluginManager();
@@ -32,8 +32,8 @@ public final class WeltenRaces extends JavaPlugin {
         abilityManager.loadAbilityListeners();
 
         // Race Specific Listeners
-        pluginManager.registerEvents(new ArmatRaceListener(armatSettings), this);
-        pluginManager.registerEvents(new PhantomRaceListener(phantomSettings), this);
+        pluginManager.registerEvents(new ArmatRaceListener(armatConfig), this);
+        pluginManager.registerEvents(new PhantomRaceListener(phantomConfig), this);
     }
 
     @Override
