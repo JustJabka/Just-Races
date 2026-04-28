@@ -31,16 +31,23 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             boolean isDayTime = player.getWorld().isDayTime();
             boolean isClearWeather = world.isClearWeather();
             boolean canSeeSky = location.getY() >= world.getHighestBlockYAt(location);
-            boolean hasFireResistance = player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE);
+            boolean isDark = location.getBlock().getLightLevel() <= 7;
 
-            boolean willBurn = isDayTime && isClearWeather && canSeeSky && !hasFireResistance;
+            boolean hasFireResistance = player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE);
+            boolean isInWater = player.isInWater();
+            boolean isInvulnerable = player.isInvulnerable();
+
             boolean hasHelmet = !player.getEquipment().getHelmet().isEmpty();
 
-            checkTime(player, willBurn, hasHelmet, isDayTime);
+            boolean immuneToBurn = hasFireResistance || isInWater || isInvulnerable;
+            boolean willBurn = isDayTime && isClearWeather && canSeeSky && !immuneToBurn;
+            boolean willReceiveBuff = !isDayTime || isDark;
+
+            checkTime(player, willBurn, hasHelmet, willReceiveBuff);
         }
     }
 
-    private static void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean isDayTime) {
+    private static void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean willReceiveBuff) {
         if (willBurn) {
             if (hasHelmet) {
                 player.getEquipment().getHelmet().damage(1, player);
@@ -48,7 +55,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             }
 
             player.setFireTicks(40);
-        } else if (!isDayTime) {
+        } else if (willReceiveBuff) {
             NIGHT_TIME_EFFECTS.forEach(player::addPotionEffect);
         }
     }
