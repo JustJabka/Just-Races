@@ -1,14 +1,6 @@
 package justjabka.WeltenRaces;
 
-import io.papermc.paper.datapack.Datapack;
-import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
-import justjabka.WeltenRaces.Configs.Race.PhantomConfig;
-import justjabka.WeltenRaces.Managers.AbilityManager;
-import justjabka.WeltenRaces.Listeners.ArmatRaceListener;
-import justjabka.WeltenRaces.Listeners.BaseRaceListener;
-import justjabka.WeltenRaces.Listeners.PhantomRaceListener;
-import justjabka.WeltenRaces.Runnables.PhantomRaceRunnable;
-import org.bukkit.plugin.PluginManager;
+import justjabka.WeltenRaces.Registries.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
@@ -19,25 +11,9 @@ public final class WeltenRaces extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Configs
-        saveDefaultConfig();
-
-        ArmatConfig armatConfig = new ArmatConfig(getConfig());
-        PhantomConfig phantomConfig = new PhantomConfig(getConfig());
-
-        // Global Listeners
-        PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new BaseRaceListener(), this);
-
-        AbilityManager abilityManager = new AbilityManager();
-        abilityManager.loadAbilityListeners();
-
-        // Race Specific Listeners
-        pluginManager.registerEvents(new ArmatRaceListener(armatConfig), this);
-        pluginManager.registerEvents(new PhantomRaceListener(phantomConfig), this);
-
-        // Runnables
-        new PhantomRaceRunnable().runTaskTimer(this, 0L, 20L);
+        ListenersRegistry.register(this);
+        RunnablesRegistry.register(this);
+        AbilitiesRegistry.register(this);
     }
 
     @Override
@@ -46,16 +22,7 @@ public final class WeltenRaces extends JavaPlugin {
         NAMESPACE = this.namespace();
         LOGGER = getSLF4JLogger();
 
-        // Load Datapack
-        Datapack pack = this.getServer().getDatapackManager().getPack(getPluginMeta().getName() + "/provided");
-
-        if (pack == null) return;
-
-        if (pack.isEnabled()) {
-            LOGGER.info("The datapack loaded successfully!");
-        } else {
-            LOGGER.warn("The datapack failed to load :(");
-        }
+        DatapackRegistry.register(this);
     }
 
     @Override
