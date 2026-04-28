@@ -13,9 +13,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Set;
 
 public class PhantomRaceRunnable extends BukkitRunnable {
-    private final static Set<PotionEffect> NIGHT_TIME_EFFECTS = Set.of(
-            new PotionEffect(PotionEffectType.NIGHT_VISION, 400, 0, false, false, false),
-            new PotionEffect(PotionEffectType.SPEED, 400, 0, false, false, true)
+    private static final int NIGHT_TIME_EFFECTS_DURATION = 12 * 20;
+
+    private static final Set<PotionEffect> NIGHT_TIME_EFFECTS = Set.of(
+            new PotionEffect(PotionEffectType.NIGHT_VISION, NIGHT_TIME_EFFECTS_DURATION, 0, false, false, false),
+            new PotionEffect(PotionEffectType.SPEED, NIGHT_TIME_EFFECTS_DURATION, 0, false, false, true)
     );
 
     @Override
@@ -29,15 +31,16 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             boolean isDayTime = player.getWorld().isDayTime();
             boolean isClearWeather = world.isClearWeather();
             boolean canSeeSky = location.getY() >= world.getHighestBlockYAt(location);
+            boolean hasFireResistance = player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE);
 
-            boolean willBurn = isDayTime && isClearWeather && canSeeSky;
+            boolean willBurn = isDayTime && isClearWeather && canSeeSky && !hasFireResistance;
             boolean hasHelmet = !player.getEquipment().getHelmet().isEmpty();
 
-            checkTime(player, willBurn, hasHelmet);
+            checkTime(player, willBurn, hasHelmet, isDayTime);
         }
     }
 
-    private static void checkTime(Player player, boolean willBurn, boolean hasHelmet) {
+    private static void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean isDayTime) {
         if (willBurn) {
             if (hasHelmet) {
                 player.getEquipment().getHelmet().damage(1, player);
@@ -45,7 +48,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             }
 
             player.setFireTicks(40);
-        } else {
+        } else if (!isDayTime) {
             NIGHT_TIME_EFFECTS.forEach(player::addPotionEffect);
         }
     }

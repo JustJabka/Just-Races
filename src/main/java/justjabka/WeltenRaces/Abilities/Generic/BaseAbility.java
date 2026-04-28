@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Abilities;
+package justjabka.WeltenRaces.Abilities.Generic;
 
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import net.kyori.adventure.text.Component;

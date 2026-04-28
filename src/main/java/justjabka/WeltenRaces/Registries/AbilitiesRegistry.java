@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Abilities.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Abilities.DamageInversion;
 import justjabka.WeltenRaces.Abilities.Ecdysis;
 import justjabka.WeltenRaces.WeltenRaces;
