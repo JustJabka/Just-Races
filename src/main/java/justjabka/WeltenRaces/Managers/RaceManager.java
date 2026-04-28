@@ -63,7 +63,7 @@ public class RaceManager {
 
     public static void resetRace(Player player) {
         // Clear potion effects
-        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+        player.clearActivePotionEffects();
 
         // Reset all attributes
         for (Attribute attribute : Registry.ATTRIBUTE) {

@@ -10,9 +10,11 @@ import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.Registry;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemType;
@@ -29,6 +31,22 @@ public class PhantomRaceListener implements Listener {
     private static final TagKey<ItemType> IS_MEAT = TagKey.create(RegistryKey.ITEM, Key.key(WeltenRaces.NAMESPACE, "is_meat"));
 
     @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+
+        if (RaceManager.getRace(attacker) != Race.PHANTOM) return;
+
+        int ticksSinceRest = victim.getStatistic(Statistic.TIME_SINCE_REST);
+        int daysSinceRest = ticksSinceRest / 24000;
+
+        boolean hasInsomnia = daysSinceRest >= 3;
+        if (!hasInsomnia) return;
+
+        victim.damage(config.insomniaDamageBonus, event.getDamageSource());
+    }
+
+    @EventHandler
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
@@ -41,10 +59,12 @@ public class PhantomRaceListener implements Listener {
         if (consumedMaterial == Material.PHANTOM_MEMBRANE) {
             player.heal(config.membraneHealAmount, EntityRegainHealthEvent.RegainReason.EATING);
         } else if (registry.getTagValues(IS_MEAT).contains(consumedType)) {
-            player.setFoodLevel(player.getFoodLevel() + 5);
+            int regenerationDuration = config.meatBonusRegenerationDuration * 20;
+
+            player.setFoodLevel(player.getFoodLevel() + config.meatBonusFoodAmount);
             player.addPotionEffect(new PotionEffect(
                     PotionEffectType.REGENERATION,
-                    40,
+                    regenerationDuration,
                     0,
                     false,
                     false,

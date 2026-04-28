@@ -1,1 +1,5 @@
 membrane-heal-amount: 1.0
+meat-bonus:
+  food-amount: 5
+  regeneration-duration: 2
+insomnia-damage-bonus: 3.0
