@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Abilites;
+package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;

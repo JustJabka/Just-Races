@@ -1,8 +1,8 @@
 package justjabka.WeltenRaces.Managers;
 
-import justjabka.WeltenRaces.Abilites.BaseAbility;
-import justjabka.WeltenRaces.Abilites.DamageInversion;
-import justjabka.WeltenRaces.Abilites.Ecdysis;
+import justjabka.WeltenRaces.Abilities.BaseAbility;
+import justjabka.WeltenRaces.Abilities.DamageInversion;
+import justjabka.WeltenRaces.Abilities.Ecdysis;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;

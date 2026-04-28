@@ -37,7 +37,7 @@ import org.bukkit.potion.PotionEffect;
 import java.util.Random;
 import java.util.Set;
 
-import static justjabka.WeltenRaces.Abilites.DamageInversion.DAMAGE_INVERSION_KEY;
+import static justjabka.WeltenRaces.Abilities.DamageInversion.DAMAGE_INVERSION_KEY;
 
 public class ArmatRaceListener implements Listener {
     private final ArmatConfig config;
