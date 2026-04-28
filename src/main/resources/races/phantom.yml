@@ -1,5 +1,15 @@
+# How much consuming
+# phantom membrane will heal player
 membrane-heal-amount: 1.0
+
 meat-bonus:
+  # additional food points
+  # from consumed meat
   food-amount: 5
+  # duration of regeneration effect
+  # that will be given after consumption
   regeneration-duration: 2
+
+# Additional damage to players
+# that have insomnia
 insomnia-damage-bonus: 3.0

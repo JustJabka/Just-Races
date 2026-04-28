@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Abilities.EcdysisConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
@@ -24,22 +25,27 @@ import java.util.Set;
 import java.util.UUID;
 
 public class Ecdysis extends BaseAbility {
+    private final EcdysisConfig config;
+
+    public Ecdysis(EcdysisConfig config) {
+        this.config = config;
+        this.USER_EFFECTS = Set.of(
+                new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
+                new PotionEffect(PotionEffectType.SPEED, (2 * 20) + 20, 1, false, true)
+        );
+        this.VICTIM_EFFECT = Set.of(
+                new PotionEffect(PotionEffectType.BLINDNESS, config.effectDuration, 0, false, false)
+        );
+    }
+
     public static final NamespacedKey ECDYSIS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ecdysis");
 
-    private static final double suicidePercent = 0.1;
-    private static final int effectDuration = 11 * 20;
-
-    private static final Set<PotionEffect> USER_EFFECTS = Set.of(
-            new PotionEffect(PotionEffectType.RESISTANCE, effectDuration, 4, false, true),
-            new PotionEffect(PotionEffectType.SPEED, (2 * 20) + 20, 1, false, true)
-    );
-    private static final Set<PotionEffect> VICTIM_EFFECT = Set.of(
-            new PotionEffect(PotionEffectType.BLINDNESS, effectDuration, 0, false, false)
-    );
+    private final Set<PotionEffect> USER_EFFECTS;
+    private final Set<PotionEffect> VICTIM_EFFECT;
 
     @Override
     public long getCooldownTicks() {
-        return 10 * 20;
+        return config.cooldown;
     }
 
     @Override
@@ -63,7 +69,7 @@ public class Ecdysis extends BaseAbility {
     @Override
     protected boolean onActivation(Player player) {
         double avrgDurability = ArmorManager.getAverageDurability(player);
-        boolean isSuicideUse = avrgDurability <= suicidePercent;
+        boolean isSuicideUse = avrgDurability <= config.suicideDurabilityPercent;
 
         // Store if this is suicide use for later
         PersistentDataContainer abilities = AbilityManager.getAbilities(player);
@@ -79,7 +85,7 @@ public class Ecdysis extends BaseAbility {
                     ? meta.getMaxDamage()
                     : armor.getType().getMaxDurability();
 
-            meta.setDamage(maxDamage - 1);
+            meta.setDamage(maxDamage - config.durabilityAfterUse);
             armor.setItemMeta(meta);
         }
 
@@ -98,7 +104,7 @@ public class Ecdysis extends BaseAbility {
         return true;
     }
 
-    private static void handleSuicideUse(Player player, boolean isSuicideUse) {
+    private void handleSuicideUse(Player player, boolean isSuicideUse) {
         if (!isSuicideUse) return;
 
         final UUID pid = player.getUniqueId();
@@ -117,7 +123,7 @@ public class Ecdysis extends BaseAbility {
 
             // DIE!
             suicidePlayer.setHealth(0);
-        }, effectDuration);
+        }, config.effectDuration);
     }
 
     private static void onUseEffects(Player player) {

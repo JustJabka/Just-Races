@@ -1,0 +1,14 @@
+# Cooldown of the ability
+cooldown: 10
+
+# Duration of the ability
+effect-duration: 11
+
+# Durability of the armor
+# that will last after ability use
+durability-after-use: 1
+
+# Average percent of armor durability
+# that will trigger death
+# after ability end (failed ecdysis)
+suicide-durability-percent: 0.1
