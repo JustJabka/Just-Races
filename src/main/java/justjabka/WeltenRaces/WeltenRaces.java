@@ -4,9 +4,10 @@ import io.papermc.paper.datapack.Datapack;
 import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
 import justjabka.WeltenRaces.Configs.Race.PhantomConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
-import justjabka.WeltenRaces.RaceListeners.ArmatRaceListener;
-import justjabka.WeltenRaces.RaceListeners.BaseRaceListener;
-import justjabka.WeltenRaces.RaceListeners.PhantomRaceListener;
+import justjabka.WeltenRaces.Listeners.ArmatRaceListener;
+import justjabka.WeltenRaces.Listeners.BaseRaceListener;
+import justjabka.WeltenRaces.Listeners.PhantomRaceListener;
+import justjabka.WeltenRaces.Runnables.PhantomRaceRunnable;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -34,6 +35,9 @@ public final class WeltenRaces extends JavaPlugin {
         // Race Specific Listeners
         pluginManager.registerEvents(new ArmatRaceListener(armatConfig), this);
         pluginManager.registerEvents(new PhantomRaceListener(phantomConfig), this);
+
+        // Runnables
+        new PhantomRaceRunnable().runTaskTimer(this, 0L, 20L);
     }
 
     @Override

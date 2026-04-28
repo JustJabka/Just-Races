@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.RaceListeners;
+package justjabka.WeltenRaces.Listeners;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;

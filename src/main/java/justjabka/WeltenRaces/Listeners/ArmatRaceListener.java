@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.RaceListeners;
+package justjabka.WeltenRaces.Listeners;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
