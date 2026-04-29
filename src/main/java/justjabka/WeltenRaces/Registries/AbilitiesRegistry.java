@@ -1,7 +1,6 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Abilities.DamageInversion;
-import justjabka.WeltenRaces.Abilities.Ecdysis;
+import justjabka.WeltenRaces.Abilities.*;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.EcdysisConfig;
 import justjabka.WeltenRaces.Configs.ConfigWrapper;
@@ -17,7 +16,8 @@ public class AbilitiesRegistry {
 
     private static final List<BaseAbility> ABILITIES = List.of(
             new DamageInversion(),
-            new Ecdysis(ecdysisConfig)
+            new Ecdysis(ecdysisConfig),
+            new Heartbeat()
     );
 
     public static void register(Plugin plugin) {
