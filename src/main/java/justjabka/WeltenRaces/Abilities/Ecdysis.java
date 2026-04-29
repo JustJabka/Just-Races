@@ -13,6 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -66,6 +67,14 @@ public class Ecdysis extends BaseAbility {
         super.handleInteract(event);
     }
 
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+
+        killPlayer(player, abilities);
+    }
+
     @Override
     protected boolean onActivation(Player player) {
         double avrgDurability = ArmorManager.getAverageDurability(player);
@@ -116,14 +125,18 @@ public class Ecdysis extends BaseAbility {
 
             // Prevent double death
             PersistentDataContainer currentAbilities = AbilityManager.getAbilities(suicidePlayer);
-            if (!AbilityManager.isAbilityActive(suicidePlayer, ECDYSIS_KEY)) return;
-
-            currentAbilities.set(ECDYSIS_KEY, PersistentDataType.BOOLEAN, false);
-            AbilityManager.updateAbilities(suicidePlayer, currentAbilities);
-
-            // DIE!
-            suicidePlayer.setHealth(0);
+            killPlayer(suicidePlayer, currentAbilities);
         }, config.effectDuration);
+    }
+
+    private static void killPlayer(Player suicidePlayer, PersistentDataContainer currentAbilities) {
+        if (!AbilityManager.isAbilityActive(suicidePlayer, ECDYSIS_KEY)) return;
+
+        currentAbilities.set(ECDYSIS_KEY, PersistentDataType.BOOLEAN, false);
+        AbilityManager.updateAbilities(suicidePlayer, currentAbilities);
+
+        // DIE!
+        suicidePlayer.setHealth(0);
     }
 
     private static void onUseEffects(Player player) {
