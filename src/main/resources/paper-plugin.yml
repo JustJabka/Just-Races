@@ -1,9 +1,14 @@
 name: WeltenRaces
 version: '${version}'
+authors: [ JustJabka ]
 
 main: justjabka.WeltenRaces.WeltenRaces
 bootstrapper: justjabka.WeltenRaces.WeltenRacesBootstrap
 api-version: '1.21.11'
 load: POSTWORLD
 
-authors: [ JustJabka ]
+dependencies:
+  server:
+    ProtocolLib:
+      load: BEFORE
+      required: true
