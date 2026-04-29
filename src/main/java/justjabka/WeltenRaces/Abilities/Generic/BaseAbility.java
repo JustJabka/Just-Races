@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Abilities.Generic;
 
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -27,7 +28,7 @@ public abstract class BaseAbility implements Listener {
         if (!AbilityManager.hasActivationSlotSelected(player)) return;
         if (!activateAction(event, player)) return;
 
-        long gameTime = player.getWorld().getGameTime();
+        long gameTime = Bukkit.getWorlds().getFirst().getGameTime();
         long expireStamp = cooldowns.getOrDefault(player.getUniqueId(), 0L);
 
         boolean onCooldown = gameTime < expireStamp;
