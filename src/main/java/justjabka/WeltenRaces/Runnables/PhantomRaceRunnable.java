@@ -42,7 +42,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
 
             boolean hasFireResistance = player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE);
             boolean isInWater = player.isInWater();
-            boolean isInvulnerable = player.isInvulnerable();
+            boolean isInvulnerable = player.getGameMode().isInvulnerable();
 
             boolean hasHelmet = !player.getEquipment().getHelmet().isEmpty();
 

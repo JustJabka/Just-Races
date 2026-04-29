@@ -43,7 +43,7 @@ public class PhantomRaceListener implements Listener {
         boolean hasInsomnia = daysSinceRest >= 3;
         if (!hasInsomnia) return;
 
-        victim.damage(config.insomniaDamageBonus, event.getDamageSource());
+        event.setDamage(event.getDamage() + config.insomniaDamageBonus);
     }
 
     @EventHandler
