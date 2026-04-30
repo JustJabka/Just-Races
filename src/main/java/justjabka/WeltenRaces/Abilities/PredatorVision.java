@@ -50,7 +50,7 @@ public class PredatorVision extends BaseAbility {
     @Override
     protected boolean onActivation(Player player) {
         // Apply glow
-        for (LivingEntity victim : player.getLocation().getNearbyLivingEntities(10)) {
+        for (LivingEntity victim : player.getLocation().getNearbyLivingEntities(config.radius)) {
             if (victim == player) continue;
 
             EntityType victimType = victim.getType();

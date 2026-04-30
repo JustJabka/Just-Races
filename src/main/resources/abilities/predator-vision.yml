@@ -3,3 +3,6 @@ cooldown: 15
 
 # Duration of the ability
 effect-duration: 10
+
+# Radius of the ability
+radius: 15
