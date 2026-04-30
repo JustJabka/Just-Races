@@ -1,0 +1,5 @@
+# Cooldown of the ability
+cooldown: 15
+
+# Duration of the ability
+effect-duration: 10

@@ -39,8 +39,7 @@ public class PredatorVision extends BaseAbility {
 
     @Override
     protected boolean canActivate(Player player) {
-        if (RaceManager.getRace(player) != Race.PHANTOM) return false;
-        return true;
+        return RaceManager.getRace(player) == Race.PHANTOM;
     }
 
     @EventHandler
