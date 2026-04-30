@@ -1,5 +1,5 @@
 # Cooldown of the ability
-cooldown: 15
+cooldown: 45
 
-# Duration of the ability
-effect-duration: 10
+# Strength of the jump
+jump-strength: 2

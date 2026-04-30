@@ -64,14 +64,19 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             player.setFireTicks(40);
         }
 
+        applyBuffs(player, willReceiveBuff);
+    }
+
+    private static void applyBuffs(Player player, boolean willReceiveBuff) {
         AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeedInstance == null) return;
 
         boolean hasModifier = movementSpeedInstance.getModifier(DREAMCATCHER_KEY) != null;
 
-        if (willReceiveBuff && !hasModifier) {
+        if (willReceiveBuff) {
             NIGHT_TIME_EFFECTS.forEach(player::addPotionEffect);
 
+            if (hasModifier) return;
             AttributeModifier modifier = new AttributeModifier(
                     DREAMCATCHER_KEY,
                     MOVEMENT_SPEED_BONUS,
@@ -79,11 +84,13 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             );
 
             movementSpeedInstance.addModifier(modifier);
-        } else if (!willReceiveBuff && hasModifier) {
+        } else {
             player.getActivePotionEffects().forEach(effect -> {
                 if (!(NIGHT_TIME_EFFECTS.contains(effect))) return;
                 player.removePotionEffect(effect.getType());
             });
+
+            if (!hasModifier) return;
             movementSpeedInstance.removeModifier(DREAMCATCHER_KEY);
         }
     }
