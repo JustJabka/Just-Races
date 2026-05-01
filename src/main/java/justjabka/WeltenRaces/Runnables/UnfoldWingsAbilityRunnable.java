@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Runnables;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,9 +26,30 @@ public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
         }
 
         boolean isGliding = player.isGliding();
-        if (isGliding) return;
+
+        if (isGliding) {
+            whileGliding(player);
+            return;
+        }
 
         removeWings(player);
         this.cancel();
+    }
+
+    private static void whileGliding(Player player) {
+        player.getWorld().spawnParticle(
+                Particle.MYCELIUM,
+                player.getBoundingBox().getMaxX(),
+                player.getLocation().getY(),
+                player.getLocation().getZ(),
+                1
+        );
+        player.getWorld().spawnParticle(
+                Particle.MYCELIUM,
+                player.getBoundingBox().getMinX(),
+                player.getLocation().getY(),
+                player.getLocation().getZ(),
+                1
+        );
     }
 }

@@ -107,6 +107,7 @@ public class UnfoldWings extends BaseAbility {
         ItemStack wingsItem = createWings();
         changeWingsState(player, wingsItem);
 
+        player.setGliding(true);
         new UnfoldWingsAbilityRunnable(player.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 10L, 2L);
     }
 
