@@ -5,7 +5,9 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Equippable;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.UnfoldWingsConfig;
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Runnables.UnfoldWingsAbilityRunnable;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
@@ -16,9 +18,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
 
@@ -30,7 +34,7 @@ public class UnfoldWings extends BaseAbility {
         this.config = config;
     }
 
-    NamespacedKey UNFOLD_WINGS = new NamespacedKey(WeltenRaces.NAMESPACE, "unfold_wings");
+    public static final NamespacedKey UNFOLD_WINGS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "unfold_wings");
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -57,16 +61,26 @@ public class UnfoldWings extends BaseAbility {
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return false;
 
-        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS) != null) return false;
+        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS_KEY) != null) return false;
+
         jumpStrengthInstance.addModifier(
                 new AttributeModifier(
-                        UNFOLD_WINGS,
+                        UNFOLD_WINGS_KEY,
                         config.jumpStrength,
                         AttributeModifier.Operation.ADD_NUMBER
                 )
         );
 
         return true;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (!AbilityManager.isAbilityActive(player, UNFOLD_WINGS_KEY)) return;
+
+        removeWings(player);
     }
 
     @EventHandler
@@ -78,37 +92,39 @@ public class UnfoldWings extends BaseAbility {
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return;
 
-        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS) == null) return;
-        jumpStrengthInstance.removeModifier(UNFOLD_WINGS);
+        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS_KEY) == null) return;
 
+        giveWings(player, jumpStrengthInstance);
         onUseEffects(player);
+    }
+
+    /// Gives player ability to fly with wings
+    public static void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
+        changeAbilityState(player, true);
+
+        jumpStrengthInstance.removeModifier(UNFOLD_WINGS_KEY);
 
         ItemStack wingsItem = createWings();
-        updateWingsState(player, wingsItem);
+        changeWingsState(player, wingsItem);
 
-        startLandingTask(player);
+        new UnfoldWingsAbilityRunnable(player.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 10L, 2L);
     }
 
-    private void startLandingTask(Player player) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                boolean flightEnded = !player.isOnline() || player.isOnGround();
-
-                if (!flightEnded) return;
-
-                updateWingsState(player, ItemStack.empty());
-                this.cancel();
-            }
-        }.runTaskTimer(WeltenRaces.INSTANCE, 10L, 2L);
+    /// Removes player's ability to fly with wings
+    public static void removeWings(Player player) {
+        changeAbilityState(player, false);
+        changeWingsState(player, ItemStack.empty());
     }
 
-    private static void updateWingsState(Player player, ItemStack item) {
+    /// Changes wings item.
+    /// Syncs equipment change with server and client
+    private static void changeWingsState(Player player, ItemStack item) {
         player.getEquipment().setItem(EquipmentSlot.SADDLE, item, true);
         player.sendEquipmentChange(player, EquipmentSlot.SADDLE, item);
     }
 
-    private ItemStack createWings() {
+    /// Creates wings item
+    private static ItemStack createWings() {
         ItemStack wings = new ItemStack(
                 Material.POISONOUS_POTATO
         );
@@ -129,6 +145,16 @@ public class UnfoldWings extends BaseAbility {
         return wings;
     }
 
+    private static void changeAbilityState(Player player, boolean state) {
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        abilities.set(UNFOLD_WINGS_KEY, PersistentDataType.BOOLEAN, state);
+        AbilityManager.updateAbilities(player, abilities);
+    }
+
+    private static AttributeInstance getJumpStrengthInstance(Player player) {
+        return player.getAttribute(Attribute.JUMP_STRENGTH);
+    }
+
     private static void onUseEffects(Player player) {
         player.getWorld().spawnParticle(
                 Particle.GUST_EMITTER_SMALL,
@@ -142,9 +168,5 @@ public class UnfoldWings extends BaseAbility {
                 1,
                 1
         );
-    }
-
-    private static AttributeInstance getJumpStrengthInstance(Player player) {
-        return player.getAttribute(Attribute.JUMP_STRENGTH);
     }
 }
