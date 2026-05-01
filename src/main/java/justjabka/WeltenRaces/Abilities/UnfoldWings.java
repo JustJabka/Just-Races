@@ -100,6 +100,8 @@ public class UnfoldWings extends BaseAbility {
 
     /// Gives player ability to fly with wings
     public static void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
+        // TODO: Add visual wings
+
         changeAbilityState(player, true);
 
         jumpStrengthInstance.removeModifier(UNFOLD_WINGS_KEY);

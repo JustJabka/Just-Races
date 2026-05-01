@@ -85,10 +85,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
 
             movementSpeedInstance.addModifier(modifier);
         } else {
-            player.getActivePotionEffects().forEach(effect -> {
-                if (!(NIGHT_TIME_EFFECTS.contains(effect))) return;
-                player.removePotionEffect(effect.getType());
-            });
+            NIGHT_TIME_EFFECTS.forEach(effect -> player.removePotionEffect(effect.getType()));
 
             if (!hasModifier) return;
             movementSpeedInstance.removeModifier(DREAMCATCHER_KEY);

@@ -22,7 +22,8 @@ public class AbilitiesRegistry {
             new DamageInversion(),
             new Ecdysis(ecdysisConfig),
             new PredatorVision(predatorVisionConfig),
-            new UnfoldWings(unfoldWingsConfig)
+            new UnfoldWings(unfoldWingsConfig),
+            new WildHunt()
     );
 
     public static void register(Plugin plugin) {

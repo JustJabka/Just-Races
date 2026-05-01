@@ -34,7 +34,7 @@ public class Ecdysis extends BaseAbility {
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
                 new PotionEffect(PotionEffectType.SPEED, (2 * 20) + 20, 1, false, true)
         );
-        this.VICTIM_EFFECT = Set.of(
+        this.VICTIM_EFFECTS = Set.of(
                 new PotionEffect(PotionEffectType.BLINDNESS, config.effectDuration, 0, false, false)
         );
     }
@@ -42,7 +42,7 @@ public class Ecdysis extends BaseAbility {
     public static final NamespacedKey ECDYSIS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ecdysis");
 
     private final Set<PotionEffect> USER_EFFECTS;
-    private final Set<PotionEffect> VICTIM_EFFECT;
+    private final Set<PotionEffect> VICTIM_EFFECTS;
 
     @Override
     public long getCooldownTicks() {
@@ -103,7 +103,7 @@ public class Ecdysis extends BaseAbility {
 
         for (LivingEntity victim : player.getLocation().getNearbyLivingEntities(10)) {
             if (victim == player) continue;
-            VICTIM_EFFECT.forEach(victim::addPotionEffect);
+            VICTIM_EFFECTS.forEach(victim::addPotionEffect);
         }
 
         onUseEffects(player);

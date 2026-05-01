@@ -57,7 +57,6 @@ public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
                 player.getZ() + offsetZ,
                 1
         );
-
         world.spawnParticle(
                 Particle.MYCELIUM,
                 player.getX() - offsetX,
