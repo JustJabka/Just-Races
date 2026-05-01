@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Runnables;
 
 import justjabka.WeltenRaces.Abilities.WildHunt;
+import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
@@ -10,10 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class WildHuntAbilityRunnable extends BukkitRunnable {
+    private final WildHuntConfig config;
     private final UUID playerId;
     private final UUID victimId;
 
-    public WildHuntAbilityRunnable(UUID playerId, UUID victimId) {
+    public WildHuntAbilityRunnable(WildHuntConfig config, UUID playerId, UUID victimId) {
+        this.config = config;
         this.playerId = playerId;
         this.victimId = victimId;
     }
@@ -33,7 +36,7 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        boolean isVictimInRadius = player.getLocation().distanceSquared(victim.getLocation()) < (120 * 120);
+        boolean isVictimInRadius = player.getLocation().distanceSquared(victim.getLocation()) < (config.radius * config.radius);
         if (!isVictimInRadius) {
             removeEffects(victim);
             return;

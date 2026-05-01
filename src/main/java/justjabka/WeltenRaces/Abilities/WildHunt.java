@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.WildHuntAbilityRunnable;
 import justjabka.WeltenRaces.Types.Race;
@@ -20,7 +21,11 @@ import org.bukkit.util.RayTraceResult;
 import java.util.Set;
 
 public class WildHunt extends BaseAbility {
-    // TODO: add config
+    private final WildHuntConfig config;
+
+    public WildHunt(WildHuntConfig config) {
+        this.config = config;
+    }
 
     public static final Set<PotionEffect> VICTIM_EFFECTS = Set.of(
             new PotionEffect(
@@ -40,7 +45,7 @@ public class WildHunt extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 40;
+        return config.cooldown;
     }
 
     @Override
@@ -60,7 +65,7 @@ public class WildHunt extends BaseAbility {
         RayTraceResult raycast = player.getWorld().rayTrace(
                 player.getEyeLocation(),
                 player.getEyeLocation().getDirection(),
-                120,
+                config.radius,
                 FluidCollisionMode.NEVER,
                 true,
                 0.5,
@@ -76,12 +81,12 @@ public class WildHunt extends BaseAbility {
         return true;
     }
 
-    private static void onVictimFound(Player player, LivingEntity victim) {
+    private void onVictimFound(Player player, LivingEntity victim) {
         VICTIM_EFFECTS.forEach(victim::addPotionEffect);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
         victim.getWorld().playSound(victim.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
 
-        new WildHuntAbilityRunnable(player.getUniqueId(), victim.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
+        new WildHuntAbilityRunnable(config, player.getUniqueId(), victim.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
     }
 
     @Override
