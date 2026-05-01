@@ -27,11 +27,6 @@ public class DamageInversion extends BaseAbility {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Damage Inversion";
-    }
-
-    @Override
     protected boolean canActivate(Player player) {
         if (RaceManager.getRace(player) != Race.ARMAT) return false;
         if (ArmorManager.getArmorSet(player) != ArmorSet.LEATHER) return false;

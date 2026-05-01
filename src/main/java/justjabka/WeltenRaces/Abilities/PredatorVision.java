@@ -33,11 +33,6 @@ public class PredatorVision extends BaseAbility {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Predator Vision";
-    }
-
-    @Override
     protected boolean canActivate(Player player) {
         return RaceManager.getRace(player) == Race.PHANTOM;
     }

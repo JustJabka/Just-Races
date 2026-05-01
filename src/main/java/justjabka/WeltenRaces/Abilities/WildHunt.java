@@ -49,11 +49,6 @@ public class WildHunt extends BaseAbility {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Wild Hunt";
-    }
-
-    @Override
     protected boolean canActivate(Player player) {
         return RaceManager.getRace(player) == Race.PHANTOM;
     }

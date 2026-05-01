@@ -50,11 +50,6 @@ public class Ecdysis extends BaseAbility {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Ecdysis";
-    }
-
-    @Override
     protected boolean canActivate(Player player) {
         if (RaceManager.getRace(player) != Race.ARMAT) return false;
         if (ArmorManager.getArmorSet(player) != ArmorSet.NETHERITE) return false;

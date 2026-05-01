@@ -47,11 +47,6 @@ public class UnfoldWings extends BaseAbility {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Unfold Wings";
-    }
-
-    @Override
     protected boolean canActivate(Player player) {
         return RaceManager.getRace(player) == Race.PHANTOM;
     }
