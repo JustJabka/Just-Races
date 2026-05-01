@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Runnables;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,18 +38,31 @@ public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
     }
 
     private static void whileGliding(Player player) {
-        player.getWorld().spawnParticle(
+        World world = player.getWorld();
+
+        double wingSpanFactor = 0.6;
+
+        double boundingBoxWidth = player.getBoundingBox().getWidthX();
+        double offset = boundingBoxWidth * wingSpanFactor;
+
+        double angle = Math.toRadians(player.getYaw());
+
+        double offsetX = Math.cos(angle) * offset;
+        double offsetZ = Math.sin(angle) * offset;
+
+        world.spawnParticle(
                 Particle.MYCELIUM,
-                player.getBoundingBox().getMaxX(),
-                player.getLocation().getY(),
-                player.getLocation().getZ(),
+                player.getX() + offsetX,
+                player.getY(),
+                player.getZ() + offsetZ,
                 1
         );
-        player.getWorld().spawnParticle(
+
+        world.spawnParticle(
                 Particle.MYCELIUM,
-                player.getBoundingBox().getMinX(),
-                player.getLocation().getY(),
-                player.getLocation().getZ(),
+                player.getX() - offsetX,
+                player.getY(),
+                player.getZ() - offsetZ,
                 1
         );
     }
