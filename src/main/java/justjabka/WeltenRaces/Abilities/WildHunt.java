@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Abilities;
 
+import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
@@ -7,10 +8,7 @@ import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.WildHuntAbilityRunnable;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.RayTraceResult;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class WildHunt extends BaseAbility {
     private final WildHuntConfig config;
@@ -62,7 +61,7 @@ public class WildHunt extends BaseAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!AbilityManager.isAbilityActive(player, WILD_HUNT_KEY)) return;
+        if (!AbilityManager.hasAbility(player, WILD_HUNT_KEY)) return;
         clearAbility(player);
     }
 
@@ -71,7 +70,7 @@ public class WildHunt extends BaseAbility {
         Player victim = event.getPlayer();
         Player attacker = victim.getKiller();
 
-        if (!AbilityManager.isAbilityActive(victim, WILD_HUNT_KEY)) return;
+        if (!AbilityManager.hasAbility(victim, WILD_HUNT_KEY)) return;
 
         if (attacker == null) return;
         if (RaceManager.getRace(attacker) != Race.PHANTOM) return;
@@ -97,26 +96,42 @@ public class WildHunt extends BaseAbility {
         if (target == null) return false;
         if (!(target instanceof  Player victim)) return false;
         
-        if (AbilityManager.isAbilityActive(victim, WILD_HUNT_KEY)) return false;
+        if (AbilityManager.hasAbility(victim, WILD_HUNT_KEY)) return false;
         giveAbility(player, victim);
         
         return true;
     }
 
-    public void giveAbility(Player player, Player victim) {
-        AbilityManager.changeAbilityState(victim, WILD_HUNT_KEY, true);
+    public void giveAbility(Player attacker, Player victim) {
+        UUID playerId = attacker.getUniqueId();
+        UUID victimId = victim.getUniqueId();
+
+        clearPreviousVictim(victimId, playerId);
+        AbilityManager.changeAbilityOwner(victim, WILD_HUNT_KEY, playerId);
         
         // Play sounds
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
+        attacker.getWorld().playSound(attacker.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
         victim.getWorld().playSound(victim.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
         
         // Add effects
         VICTIM_EFFECTS.forEach(victim::addPotionEffect);
-        new WildHuntAbilityRunnable(config, player.getUniqueId(), victim.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
+        new WildHuntAbilityRunnable(config, playerId, victimId).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
+    }
+
+    private static void clearPreviousVictim(UUID victimId, UUID playerId) {
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (online.getUniqueId().equals(victimId)) continue;
+
+            if (!AbilityManager.hasAbility(online, WILD_HUNT_KEY)) continue;
+
+            UUID currentOwner = AbilityManager.getAbilities(online).get(WILD_HUNT_KEY, DataType.UUID);
+            if (!playerId.equals(currentOwner)) continue;
+            clearAbility(online);
+        }
     }
 
     public static void clearAbility(Player victim) {
-        AbilityManager.changeAbilityState(victim, WILD_HUNT_KEY, false);
+        AbilityManager.removeAbility(victim, WILD_HUNT_KEY);
         WildHunt.VICTIM_EFFECTS.forEach(effect -> victim.removePotionEffect(effect.getType()));
     }
 

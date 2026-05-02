@@ -1,10 +1,13 @@
 package justjabka.WeltenRaces.Managers;
 
+import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.UUID;
 
 public class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
@@ -23,6 +26,10 @@ public class AbilityManager {
         return AbilityManager.getAbilities(player).getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
+    public static boolean hasAbility(Player player, NamespacedKey key) {
+        return AbilityManager.getAbilities(player).has(key);
+    }
+
     public static void updateAbilities(Player player, PersistentDataContainer abilities) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         pdc.set(
@@ -32,9 +39,21 @@ public class AbilityManager {
         );
     }
 
+    public static void removeAbility(Player player, NamespacedKey key) {
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        abilities.remove(key);
+        AbilityManager.updateAbilities(player, abilities);
+    }
+
     public static void changeAbilityState(Player player, NamespacedKey key, boolean state) {
         PersistentDataContainer abilities = AbilityManager.getAbilities(player);
         abilities.set(key, PersistentDataType.BOOLEAN, state);
+        AbilityManager.updateAbilities(player, abilities);
+    }
+
+    public static void changeAbilityOwner(Player player, NamespacedKey key, UUID uuid) {
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        abilities.set(key, DataType.UUID, uuid);
         AbilityManager.updateAbilities(player, abilities);
     }
 
