@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -60,9 +61,9 @@ public abstract class BaseAbility implements Listener {
                     .formatted(getDisplayName(), remaining)
             ).color(NamedTextColor.RED);
         } else {
-            return Component.text("%s: %s"
-                    .formatted(getDisplayName(), "Ready!")
-            ).color(NamedTextColor.GREEN);
+            return Component.text("%s"
+                    .formatted(getDisplayName())
+            ).color(NamedTextColor.GREEN).decorate(TextDecoration.UNDERLINED);
         }
     }
 
@@ -76,7 +77,7 @@ public abstract class BaseAbility implements Listener {
         Race race = RaceManager.getRace(player);
 
         // Check abilities of race
-        List<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesFor(race);
+        List<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
         if (!allowedAbilities.contains(this)) return;
 
         // Check activate conditions
@@ -90,12 +91,7 @@ public abstract class BaseAbility implements Listener {
 
         // If on cooldown
         boolean onCooldown = gameTime < expireStamp;
-        if (onCooldown) {
-            long remainingSeconds = getRemainingSeconds(player);
-
-            player.sendMessage(Component.text("%s is on cooldown wait %s sec.".formatted(getDisplayName(), remainingSeconds)));
-            return;
-        }
+        if (onCooldown) return;
 
         // On activation
         if (onActivation(player)) {

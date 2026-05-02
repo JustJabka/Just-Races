@@ -27,7 +27,7 @@ public class AbilityManager {
         );
     }
 
-    public static List<BaseAbility> getAbilitiesFor(Race race) {
+    public static List<BaseAbility> getAbilitiesForRace(Race race) {
         return RACE_ABILITIES.getOrDefault(race, List.of());
     }
 

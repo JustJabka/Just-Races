@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +31,13 @@ public class AbilitiesRegistry {
     private static final UnfoldWings UNFOLD_WINGS = new UnfoldWings(UNFOLD_WINGS_CONFIG);
     private static final WildHunt WILD_HUNT = new WildHunt(WILD_HUNT_CONFIG);
 
-    public static final Map<Race, List<BaseAbility>> RACE_ABILITIES = Map.of(
-            Race.ARMAT, List.of(DAMAGE_INVERSION, ECDYSIS),
-            Race.PHANTOM, List.of(PREDATOR_VISION, UNFOLD_WINGS, WILD_HUNT),
-            Race.HUMAN, List.of() // Human solo verse💀
-    );
+    public static final Map<Race, List<BaseAbility>> RACE_ABILITIES = new HashMap<>();
+
+    static {
+        RACE_ABILITIES.put(Race.ARMAT, List.of(DAMAGE_INVERSION, ECDYSIS));
+        RACE_ABILITIES.put( Race.PHANTOM, List.of(PREDATOR_VISION, UNFOLD_WINGS, WILD_HUNT));
+        RACE_ABILITIES.put(Race.HUMAN, List.of()); // Human solo verse💀
+    }
 
     public static void register(Plugin plugin) {
         for (List<BaseAbility> abilities : RACE_ABILITIES.values()) {
