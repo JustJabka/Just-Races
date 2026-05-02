@@ -59,12 +59,12 @@ public class PhantomRaceListener implements Listener {
         if (consumedMaterial == Material.PHANTOM_MEMBRANE) {
             player.heal(config.membraneHealAmount, EntityRegainHealthEvent.RegainReason.EATING);
         } else if (registry.getTagValues(IS_MEAT).contains(consumedType)) {
-            int regenerationDuration = config.meatBonusRegenerationDuration * 20;
-
             player.setFoodLevel(player.getFoodLevel() + config.meatBonusFoodAmount);
+
+            if (config.meatBonusRegenerationDuration <= 0) return;
             player.addPotionEffect(new PotionEffect(
                     PotionEffectType.REGENERATION,
-                    regenerationDuration,
+                    config.meatBonusRegenerationDuration,
                     0,
                     false,
                     false,
