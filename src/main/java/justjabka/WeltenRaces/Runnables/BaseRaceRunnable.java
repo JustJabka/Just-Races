@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -30,16 +31,14 @@ public class BaseRaceRunnable extends BukkitRunnable {
         List<BaseAbility> abilities = AbilityManager.getAbilitiesForRace(playerRace);
         if (abilities.isEmpty()) return;
 
-        Component message = Component.empty();
+        List<Component> displays = abilities.stream()
+                .map(ability -> ability.getAbilityDisplay(player))
+                .toList();
 
-        for (int i = 0; i < abilities.size(); i++) {
-            Component abilityDisplay = abilities.get(i).getAbilityDisplay(player);
-
-            message = message.append(abilityDisplay);
-
-            if (i > abilities.size() - 2) continue;
-            message = message.append(Component.text(" %s ".formatted(separator))).color(separatorColor);
-        }
+        Component message = Component.join(
+                JoinConfiguration.separator(Component.text(" %s ".formatted(separator), separatorColor)),
+                displays
+        );
 
         player.sendActionBar(message);
     }
