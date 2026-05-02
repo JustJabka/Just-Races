@@ -10,19 +10,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class WildHuntAbilityRunnable extends BukkitRunnable {
-    private final UUID playerId;
+    private final UUID attackerId;
     private final UUID victimId;
     private final double radiusSquared;
 
     public WildHuntAbilityRunnable(WildHuntConfig config, UUID playerId, UUID victimId) {
-        this.playerId = playerId;
+        this.attackerId = playerId;
         this.victimId = victimId;
         this.radiusSquared = config.radius * config.radius;
     }
 
     @Override
     public void run() {
-        Player player = Bukkit.getPlayer(playerId);
+        Player attacker = Bukkit.getPlayer(attackerId);
         Player victim = Bukkit.getPlayer(victimId);
 
         if (victim == null) {
@@ -30,14 +30,20 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        if (player == null) {
+        UUID currentOwner = WildHunt.getCurrentOwner(victim);
+        if (currentOwner == null || !currentOwner.equals(attackerId)) {
+            this.cancel();
+            return;
+        }
+
+        if (attacker == null) {
             WildHunt.clearAbility(victim);
 
             this.cancel();
             return;
         }
 
-        boolean isVictimInRadius = player.getLocation().distanceSquared(victim.getLocation()) < radiusSquared;
+        boolean isVictimInRadius = attacker.getLocation().distanceSquared(victim.getLocation()) < radiusSquared;
         if (!isVictimInRadius) {
             WildHunt.clearAbility(victim);
 
@@ -45,11 +51,11 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        onUseEffects(player, victim);
+        onUseEffects(attacker, victim);
     }
 
-    private static void onUseEffects(Player player, Player victim) {
-        player.spawnParticle(
+    private static void onUseEffects(Player attacker, Player victim) {
+        attacker.spawnParticle(
                 Particle.END_ROD,
                 victim.getX(),
                 victim.getBoundingBox().getCenterY(),

@@ -71,11 +71,10 @@ public class WildHunt extends BaseAbility {
         Player attacker = victim.getKiller();
 
         if (!AbilityManager.hasAbility(victim, WILD_HUNT_KEY)) return;
+        clearAbility(victim);
 
         if (attacker == null) return;
         if (RaceManager.getRace(attacker) != Race.PHANTOM) return;
-
-        clearAbility(victim);
         setCooldownTicks(attacker, 0L);
     }
 
@@ -124,10 +123,15 @@ public class WildHunt extends BaseAbility {
 
             if (!AbilityManager.hasAbility(online, WILD_HUNT_KEY)) continue;
 
-            UUID currentOwner = AbilityManager.getAbilities(online).get(WILD_HUNT_KEY, DataType.UUID);
+            UUID currentOwner = getCurrentOwner(online);
             if (!playerId.equals(currentOwner)) continue;
+
             clearAbility(online);
         }
+    }
+
+    public static UUID getCurrentOwner(Player player) {
+        return AbilityManager.getAbilities(player).get(WILD_HUNT_KEY, DataType.UUID);
     }
 
     public static void clearAbility(Player victim) {
