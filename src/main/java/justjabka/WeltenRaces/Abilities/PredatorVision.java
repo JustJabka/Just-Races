@@ -3,8 +3,6 @@ package justjabka.WeltenRaces.Abilities;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.PredatorVisionConfig;
 import justjabka.WeltenRaces.Managers.EffectManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Tag;
@@ -30,11 +28,6 @@ public class PredatorVision extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return config.cooldown;
-    }
-
-    @Override
-    protected boolean canActivate(Player player) {
-        return RaceManager.getRace(player) == Race.PHANTOM;
     }
 
     @EventHandler

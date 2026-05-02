@@ -45,11 +45,6 @@ public class UnfoldWings extends BaseAbility {
     }
 
     @Override
-    protected boolean canActivate(Player player) {
-        return RaceManager.getRace(player) == Race.PHANTOM;
-    }
-
-    @Override
     protected boolean onActivation(Player player) {
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return false;

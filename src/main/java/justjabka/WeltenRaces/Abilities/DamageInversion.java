@@ -3,9 +3,7 @@ package justjabka.WeltenRaces.Abilities;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -28,10 +26,7 @@ public class DamageInversion extends BaseAbility {
 
     @Override
     protected boolean canActivate(Player player) {
-        if (RaceManager.getRace(player) != Race.ARMAT) return false;
-        if (ArmorManager.getArmorSet(player) != ArmorSet.LEATHER) return false;
-
-        return true;
+        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
     }
 
     @EventHandler

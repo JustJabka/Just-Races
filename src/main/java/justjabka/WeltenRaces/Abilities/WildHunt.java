@@ -52,11 +52,6 @@ public class WildHunt extends BaseAbility {
         return config.cooldown;
     }
 
-    @Override
-    protected boolean canActivate(Player player) {
-        return RaceManager.getRace(player) == Race.PHANTOM;
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

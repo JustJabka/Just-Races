@@ -1,13 +1,18 @@
 package justjabka.WeltenRaces.Managers;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
 import java.util.UUID;
+
+import static justjabka.WeltenRaces.Registries.AbilitiesRegistry.RACE_ABILITIES;
 
 public class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
@@ -20,6 +25,10 @@ public class AbilityManager {
                 PersistentDataType.TAG_CONTAINER,
                 pdc.getAdapterContext().newPersistentDataContainer()
         );
+    }
+
+    public static List<BaseAbility> getAbilitiesFor(Race race) {
+        return RACE_ABILITIES.getOrDefault(race, List.of());
     }
 
     public static boolean isAbilityActive(Player player, NamespacedKey key) {

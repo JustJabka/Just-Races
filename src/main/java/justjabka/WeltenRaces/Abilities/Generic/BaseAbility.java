@@ -1,6 +1,8 @@
 package justjabka.WeltenRaces.Abilities.Generic;
 
 import justjabka.WeltenRaces.Managers.AbilityManager;
+import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -10,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -64,11 +67,19 @@ public abstract class BaseAbility implements Listener {
     }
 
     // Activation and Interaction
-    protected abstract boolean canActivate(Player player);
+    protected boolean canActivate(Player player) {
+        return true;
+    }
 
     public void handleInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        Race race = RaceManager.getRace(player);
 
+        // Check abilities of race
+        List<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesFor(race);
+        if (!allowedAbilities.contains(this)) return;
+
+        // Check activate conditions
         if (!canActivate(player)) return;
 
         if (!AbilityManager.hasActivationSlotSelected(player)) return;
@@ -77,6 +88,7 @@ public abstract class BaseAbility implements Listener {
         long gameTime = getGameTime();
         long expireStamp = getExpireStamp(player);
 
+        // If on cooldown
         boolean onCooldown = gameTime < expireStamp;
         if (onCooldown) {
             long remainingSeconds = getRemainingSeconds(player);
@@ -85,6 +97,7 @@ public abstract class BaseAbility implements Listener {
             return;
         }
 
+        // On activation
         if (onActivation(player)) {
             long expiresAt = gameTime + getCooldownTicks();
             cooldowns.put(player.getUniqueId(), expiresAt);

@@ -4,9 +4,7 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.EcdysisConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
@@ -51,10 +49,7 @@ public class Ecdysis extends BaseAbility {
 
     @Override
     protected boolean canActivate(Player player) {
-        if (RaceManager.getRace(player) != Race.ARMAT) return false;
-        if (ArmorManager.getArmorSet(player) != ArmorSet.NETHERITE) return false;
-
-        return true;
+        return ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
     }
 
     @EventHandler
