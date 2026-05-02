@@ -16,6 +16,9 @@ public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new HashMap<>();
 
     public abstract long getCooldownTicks();
+    public void setCooldownTicks(Player player, long newCooldown) {
+        cooldowns.put(player.getUniqueId(), newCooldown);
+    }
     public String getDisplayName() {
         String name = this.getClass().getSimpleName();
         String regex = "(\\p{Lu})";

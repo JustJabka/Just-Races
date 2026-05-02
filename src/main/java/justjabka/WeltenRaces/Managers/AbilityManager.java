@@ -11,13 +11,12 @@ public class AbilityManager {
 
     public static PersistentDataContainer getAbilities(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
-        PersistentDataContainer abilities = pdc.getOrDefault(
+
+        return pdc.getOrDefault(
                 ABILITIES_CONTAINER_KEY,
                 PersistentDataType.TAG_CONTAINER,
                 pdc.getAdapterContext().newPersistentDataContainer()
         );
-
-        return abilities;
     }
 
     public static boolean isAbilityActive(Player player, NamespacedKey key) {
@@ -31,6 +30,12 @@ public class AbilityManager {
                 PersistentDataType.TAG_CONTAINER,
                 abilities
         );
+    }
+
+    public static void changeAbilityState(Player player, NamespacedKey key, boolean state) {
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        abilities.set(key, PersistentDataType.BOOLEAN, state);
+        AbilityManager.updateAbilities(player, abilities);
     }
 
     public static boolean hasActivationSlotSelected(Player player) {

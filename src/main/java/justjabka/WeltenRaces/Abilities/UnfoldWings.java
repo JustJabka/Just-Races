@@ -21,8 +21,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
 
@@ -97,7 +95,7 @@ public class UnfoldWings extends BaseAbility {
     public static void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
         // TODO: Add visual wings
 
-        changeAbilityState(player, true);
+        AbilityManager.changeAbilityState(player, UNFOLD_WINGS_KEY, true);
 
         jumpStrengthInstance.removeModifier(UNFOLD_WINGS_KEY);
 
@@ -110,7 +108,7 @@ public class UnfoldWings extends BaseAbility {
 
     /// Removes player's ability to fly with wings
     public static void removeWings(Player player) {
-        changeAbilityState(player, false);
+        AbilityManager.changeAbilityState(player, UNFOLD_WINGS_KEY, false);
         changeWingsState(player, ItemStack.empty());
     }
 
@@ -141,12 +139,6 @@ public class UnfoldWings extends BaseAbility {
         ));
 
         return wings;
-    }
-
-    private static void changeAbilityState(Player player, boolean state) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(UNFOLD_WINGS_KEY, PersistentDataType.BOOLEAN, state);
-        AbilityManager.updateAbilities(player, abilities);
     }
 
     private static AttributeInstance getJumpStrengthInstance(Player player) {
