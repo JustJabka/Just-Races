@@ -20,8 +20,8 @@ import java.util.UUID;
 public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new HashMap<>();
 
-    private static final TextColor ABILITY_ON_COOLDOWN_COLOR = TextColor.fromHexString("#a42431");
-    private static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
+    protected static final TextColor ABILITY_ON_COOLDOWN_COLOR = TextColor.fromHexString("#a42431");
+    protected static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
 
     // Ability time
     public abstract long getCooldownTicks();
@@ -65,8 +65,7 @@ public abstract class BaseAbility implements Listener {
                 .translatable("ability.base.cooldown_message")
                 .fallback("%s: %s")
                 .arguments(displayName, Component.text(remainingTime))
-                .color(ABILITY_ON_COOLDOWN_COLOR)
-                .decorate(TextDecoration.UNDERLINED);
+                .color(ABILITY_ON_COOLDOWN_COLOR);
 
         Component abilityReadyMessage = Component
                 .translatable("ability.base.ready_message")

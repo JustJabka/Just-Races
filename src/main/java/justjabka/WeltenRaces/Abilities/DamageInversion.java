@@ -5,6 +5,9 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -22,6 +25,21 @@ public class DamageInversion extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return 20;
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        boolean isActive = AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY);
+
+        Component displayName = getDisplayName();
+        TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
+
+        return Component
+                .translatable("ability.damage_inversion.state")
+                .fallback("%s")
+                .arguments(displayName)
+                .color(displayColor)
+                .decorate(TextDecoration.UNDERLINED);
     }
 
     @Override
