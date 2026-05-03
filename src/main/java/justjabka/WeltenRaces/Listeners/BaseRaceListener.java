@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -60,7 +61,18 @@ public class BaseRaceListener implements Listener {
         tryUndoInventory(event.getInventory().getContents());
     }
 
-    //
+    // Interactions
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+
+        Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> {
+            ArmorManager.updateArmorSet(player);
+            refreshModifiers(player);
+        });
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(priority = EventPriority.NORMAL)
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
