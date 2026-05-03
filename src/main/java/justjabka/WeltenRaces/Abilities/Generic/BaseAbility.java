@@ -4,7 +4,7 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,7 +20,10 @@ import java.util.UUID;
 public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new HashMap<>();
 
-    // Time
+    private static final TextColor ABILITY_ON_COOLDOWN_COLOR = TextColor.fromHexString("#a42431");
+    private static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
+
+    // Ability time
     public abstract long getCooldownTicks();
 
     public void setCooldownTicks(Player player, long newCooldown) {
@@ -44,30 +47,39 @@ public abstract class BaseAbility implements Listener {
         return Bukkit.getWorlds().getFirst().getGameTime();
     }
 
-    // Display
-    public String getDisplayName() {
+    // Ability display
+    public Component getDisplayName() {
         String name = this.getClass().getSimpleName();
         String regex = "(\\p{Lu})";
         String replacement = " $1";
 
-        return name.replaceAll(regex, replacement).trim();
+        String formattedName = name.replaceAll(regex, replacement).trim();
+        return Component.text(formattedName);
     }
 
     public Component getAbilityDisplay(Player player) {
-        long remaining = getRemainingSeconds(player);
+        Component displayName = getDisplayName();
+        long remainingTime = getRemainingSeconds(player);
 
-        if (remaining > 0) {
-            return Component.text("%s: %s"
-                    .formatted(getDisplayName(), remaining)
-            ).color(NamedTextColor.RED);
-        } else {
-            return Component.text("%s"
-                    .formatted(getDisplayName())
-            ).color(NamedTextColor.GREEN).decorate(TextDecoration.UNDERLINED);
-        }
+        Component abilityOnCooldownMessage = Component
+                .translatable("ability.base.cooldown_message")
+                .fallback("%s: %s")
+                .arguments(displayName, Component.text(remainingTime))
+                .color(ABILITY_ON_COOLDOWN_COLOR)
+                .decorate(TextDecoration.UNDERLINED);
+
+        Component abilityReadyMessage = Component
+                .translatable("ability.base.ready_message")
+                .fallback("%s")
+                .arguments(displayName)
+                .color(ABILITY_READY_COLOR)
+                .decorate(TextDecoration.UNDERLINED);
+
+        if (remainingTime > 0) return abilityOnCooldownMessage;
+        return abilityReadyMessage;
     }
 
-    // Activation and Interaction
+    // Ability activation
     protected boolean canActivate(Player player) {
         return true;
     }
