@@ -58,6 +58,10 @@ public class RaceManager {
                 modifyBaseValue(scaleInstance, 1);
                 modifyBaseValue(maxHealthInstance, 20);
             }
+            case SKYZERN -> {
+                modifyBaseValue(scaleInstance, 1.05);
+                modifyBaseValue(maxHealthInstance, 20);
+            }
         }
     }
 

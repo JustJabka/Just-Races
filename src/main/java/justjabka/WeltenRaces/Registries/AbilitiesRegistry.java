@@ -35,6 +35,7 @@ public class AbilitiesRegistry {
         RACE_ABILITIES.put(Race.ARMAT, List.of(DAMAGE_INVERSION, ECDYSIS));
         RACE_ABILITIES.put( Race.PHANTOM, List.of(PREDATOR_VISION, UNFOLD_WINGS, WILD_HUNT));
         RACE_ABILITIES.put(Race.HUMAN, List.of()); // Human solo verse💀
+        RACE_ABILITIES.put(Race.SKYZERN, List.of());
     }
 
     public static void register(Plugin plugin) {

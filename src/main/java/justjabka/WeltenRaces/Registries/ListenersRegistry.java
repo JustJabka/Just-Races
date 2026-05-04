@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Configs.Race.PhantomConfig;
 import justjabka.WeltenRaces.Listeners.ArmatRaceListener;
 import justjabka.WeltenRaces.Listeners.BaseRaceListener;
 import justjabka.WeltenRaces.Listeners.PhantomRaceListener;
+import justjabka.WeltenRaces.Listeners.SkyzernRaceListener;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -29,6 +30,9 @@ public class ListenersRegistry {
         // Register
         pluginManager.registerEvents(new ArmatRaceListener(armatConfig), plugin);
         pluginManager.registerEvents(new PhantomRaceListener(phantomConfig), plugin);
+        pluginManager.registerEvents(new SkyzernRaceListener(), plugin);
+
+        WeltenRaces.LOGGER.info("Successfully registered race listeners!");
     }
 
     private static FileConfiguration loadRaceConfig(Plugin plugin, String name) {

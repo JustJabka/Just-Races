@@ -34,7 +34,7 @@ public class WildHunt extends BaseAbility {
     public static final Set<PotionEffect> VICTIM_EFFECTS = Set.of(
             new PotionEffect(
                     PotionEffectType.DARKNESS,
-                    -1,
+                    PotionEffect.INFINITE_DURATION,
                     0,
                     false,
                     true,
