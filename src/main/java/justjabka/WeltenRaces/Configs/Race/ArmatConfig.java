@@ -6,9 +6,6 @@ public class ArmatConfig {
     public final double vulnerableMultiplier;
     public final double sinkGravity;
 
-    public final double inversionMin;
-    public final double inversionMax;
-
     public final double miningBonusMax;
     public final double miningBonusStep;
 
@@ -28,10 +25,6 @@ public class ArmatConfig {
         // Base
         this.vulnerableMultiplier = config.getDouble("vulnerable-damage-multiplier", 1.5);
         this.sinkGravity = config.getDouble("sink-gravity-value", 0.32);
-
-        // Leather Armor
-        this.inversionMin = config.getDouble("damage-inversion.lower-bound", 3.0);
-        this.inversionMax = config.getDouble("damage-inversion.upper-bound", 30.0);
 
         // Copper Armor
         this.miningBonusMax = config.getDouble("mining-bonus.upper-bound", 3.0);

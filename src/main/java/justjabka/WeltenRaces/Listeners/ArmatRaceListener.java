@@ -5,7 +5,6 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
-import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -36,8 +35,6 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 import java.util.Set;
-
-import static justjabka.WeltenRaces.Abilities.DamageInversion.DAMAGE_INVERSION_KEY;
 
 public class ArmatRaceListener implements Listener {
     private final ArmatConfig config;
@@ -122,20 +119,9 @@ public class ArmatRaceListener implements Listener {
         if (ArmorManager.getArmorSet(player) == ArmorSet.NONE) return;
 
         switch (ArmorManager.getArmorSet(player)) {
-            // TODO: add toggle
-            case LEATHER -> handleLeatherArmorSetBonus(event, player, damage);
             case CHAINMAIL -> handleChainmailArmorSetBonus(player, damage, causingEntity, damageType, successfullyDodged);
             case IRON -> handleIronArmorSetBonus(event, damage);
         }
-    }
-
-    private void handleLeatherArmorSetBonus(EntityDamageEvent event, Player player, double damage) {
-        if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
-
-        if (!(damage >= config.inversionMin && damage <= config.inversionMax)) return;
-
-        double finalDamage = (config.inversionMax + config.inversionMin) - damage;
-        event.setDamage(finalDamage);
     }
 
     private void handleIronArmorSetBonus(EntityDamageEvent event, double damage) {

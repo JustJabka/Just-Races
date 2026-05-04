@@ -1,11 +1,6 @@
 vulnerable-damage-multiplier: 1.5
 sink-gravity-value: 0.42
 
-# Leather armor set bonus
-damage-inversion:
-  lower-bound: 3.0
-  upper-bound: 30.0
-
 # Copper armor set bonus
 mining-bonus:
   upper-bound: 3.0

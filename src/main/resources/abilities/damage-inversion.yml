@@ -1,2 +1,7 @@
 # Cooldown of the ability
 cooldown: 1
+
+# Lower and upper bounds
+# of ability activation
+lower-bound: 3.0
+upper-bound: 30.0
