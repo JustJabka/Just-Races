@@ -1,20 +1,20 @@
 package justjabka.WeltenRaces.Abilities;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.DamageInversionConfig;
+import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.Range;
-import org.bukkit.*;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
@@ -25,6 +25,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DAMAGE_INVERSION_TAG;
+
 public class DamageInversion extends BaseAbility {
     private final DamageInversionConfig config;
 
@@ -33,7 +35,6 @@ public class DamageInversion extends BaseAbility {
     }
 
     public static final NamespacedKey DAMAGE_INVERSION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "damage_inversion");
-    private static final TagKey<DamageType> BYPASSES_DAMAGE_INVERSION = TagKey.create(RegistryKey.DAMAGE_TYPE, Key.key(WeltenRaces.NAMESPACE, "bypasses_damage_inversion"));
 
     @Override
     public long getCooldownTicks() {
@@ -97,8 +98,7 @@ public class DamageInversion extends BaseAbility {
         DamageSource damageSource = event.getDamageSource();
         DamageType damageType = damageSource.getDamageType();
 
-        Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-        boolean canBypassInversion = registry.getTagValues(BYPASSES_DAMAGE_INVERSION).contains(damageType);
+        boolean canBypassInversion = DamageTypeProvider.getTagValues(BYPASSES_DAMAGE_INVERSION_TAG).contains(damageType);
 
         if (canBypassInversion) return;
 

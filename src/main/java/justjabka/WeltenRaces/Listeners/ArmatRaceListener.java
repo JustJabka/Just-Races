@@ -3,14 +3,12 @@ package justjabka.WeltenRaces.Listeners;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.key.Key;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -36,6 +34,8 @@ import org.bukkit.potion.PotionEffect;
 import java.util.Random;
 import java.util.Set;
 
+import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DODGE_TAG;
+
 public class ArmatRaceListener implements Listener {
     private final ArmatConfig config;
 
@@ -49,7 +49,6 @@ public class ArmatRaceListener implements Listener {
     private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "absolute_damage");
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
     private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "copper_mining_efficiency");
-    private static final TagKey<DamageType> BYPASSES_DODGE = TagKey.create(RegistryKey.DAMAGE_TYPE, Key.key(WeltenRaces.NAMESPACE, "bypasses_dodge"));
 
 
     private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
@@ -109,7 +108,7 @@ public class ArmatRaceListener implements Listener {
 
         // Dodge
         Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-        if (registry.getTagValues(BYPASSES_DODGE).contains(damageType)) return false;
+        if (registry.getTagValues(BYPASSES_DODGE_TAG).contains(damageType)) return false;
 
         event.setCancelled(true);
         return true;

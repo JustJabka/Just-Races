@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.datapack.DatapackRegistrar;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import justjabka.WeltenRaces.Commands.SetRaceCommand;
 
@@ -15,13 +16,15 @@ import java.net.URISyntaxException;
 public class WeltenRacesBootstrap implements PluginBootstrap {
     @Override
     public void bootstrap(BootstrapContext context) {
-        context.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+        final LifecycleEventManager<BootstrapContext> manager = context.getLifecycleManager();
+
+        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands registrar = event.registrar();
 
             SetRaceCommand.register(registrar);
         });
 
-        context.getLifecycleManager().registerEventHandler(LifecycleEvents.DATAPACK_DISCOVERY.newHandler(
+        manager.registerEventHandler(LifecycleEvents.DATAPACK_DISCOVERY.newHandler(
                 event -> {
                     final DatapackRegistrar registrar = event.registrar();
 
