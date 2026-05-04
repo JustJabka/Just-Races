@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Abilities.DamageInversionConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -20,12 +21,20 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class DamageInversion extends BaseAbility {
+    private final DamageInversionConfig config;
+
+    public DamageInversion(DamageInversionConfig config) {
+        this.config = config;
+    }
+
     public static final NamespacedKey DAMAGE_INVERSION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "damage_inversion");
 
     @Override
     public long getCooldownTicks() {
-        return 20;
+        return config.cooldown;
     }
+
+    // TODO: move ability logic from armat race to ability itself!
 
     @Override
     public Component getAbilityDisplay(Player player) {
