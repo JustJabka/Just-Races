@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
 import justjabka.WeltenRaces.Abilities.WildHuntAbility;
-import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
+import justjabka.WeltenRaces.Configs.Abilities.WildHuntAbilityConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
     private final UUID victimId;
     private final double radiusSquared;
 
-    public WildHuntAbilityRunnable(WildHuntConfig config, UUID playerId, UUID victimId) {
+    public WildHuntAbilityRunnable(WildHuntAbilityConfig config, UUID playerId, UUID victimId) {
         this.attackerId = playerId;
         this.victimId = victimId;
         this.radiusSquared = config.radius * config.radius;

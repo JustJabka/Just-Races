@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.DamageInversionConfig;
+import justjabka.WeltenRaces.Configs.Abilities.DamageInversionAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
@@ -28,9 +28,9 @@ import org.bukkit.persistence.PersistentDataType;
 import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DAMAGE_INVERSION_TAG;
 
 public class DamageInversionAbility extends BaseAbility {
-    private final DamageInversionConfig config;
+    private final DamageInversionAbilityConfig config;
 
-    public DamageInversionAbility(DamageInversionConfig config) {
+    public DamageInversionAbility(DamageInversionAbilityConfig config) {
         this.config = config;
     }
 

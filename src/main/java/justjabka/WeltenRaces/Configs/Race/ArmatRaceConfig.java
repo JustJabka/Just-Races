@@ -2,7 +2,7 @@ package justjabka.WeltenRaces.Configs.Race;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class ArmatConfig {
+public class ArmatRaceConfig {
     public final double vulnerableMultiplier;
     public final double sinkGravity;
 
@@ -21,7 +21,7 @@ public class ArmatConfig {
     public final double absoluteDamageAmount;
     public final float absoluteDamageCooldown;
 
-    public ArmatConfig(FileConfiguration config) {
+    public ArmatRaceConfig(FileConfiguration config) {
         // Base
         this.vulnerableMultiplier = config.getDouble("vulnerable-damage-multiplier", 1.5);
         this.sinkGravity = config.getDouble("sink-gravity-value", 0.32);

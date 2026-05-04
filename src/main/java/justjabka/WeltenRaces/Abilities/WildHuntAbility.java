@@ -2,7 +2,7 @@ package justjabka.WeltenRaces.Abilities;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
+import justjabka.WeltenRaces.Configs.Abilities.WildHuntAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.WildHuntAbilityRunnable;
@@ -24,9 +24,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class WildHuntAbility extends BaseAbility {
-    private final WildHuntConfig config;
+    private final WildHuntAbilityConfig config;
 
-    public WildHuntAbility(WildHuntConfig config) {
+    public WildHuntAbility(WildHuntAbilityConfig config) {
         this.config = config;
     }
 

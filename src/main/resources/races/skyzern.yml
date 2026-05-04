@@ -1,0 +1,3 @@
+damage-bonus:
+  value-per-step: 0.1
+  step: 5.0

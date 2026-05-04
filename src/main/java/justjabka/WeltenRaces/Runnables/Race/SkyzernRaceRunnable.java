@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -12,6 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SkyzernRaceRunnable extends BukkitRunnable {
+    private final SkyzernRaceConfig config;
+
+    public SkyzernRaceRunnable(SkyzernRaceConfig config) {
+        this.config = config;
+    }
+
     private static final NamespacedKey CELESTIAL_ORIGIN_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "celestial_origin");
 
     @Override
@@ -23,7 +30,7 @@ public class SkyzernRaceRunnable extends BukkitRunnable {
         }
     }
 
-    private static void applyCelestialOriginBonus(Player player) {
+    private void applyCelestialOriginBonus(Player player) {
         AttributeInstance attackDamageInstance = player.getAttribute(Attribute.ATTACK_DAMAGE);
         if (attackDamageInstance == null) return;
 
@@ -42,10 +49,10 @@ public class SkyzernRaceRunnable extends BukkitRunnable {
         attackDamageInstance.addModifier(modifier);
     }
 
-    private static double calcCelestialOriginBonus(Player player) {
+    private double calcCelestialOriginBonus(Player player) {
         double currentHeight = player.getY();
         double baseHeight = player.getWorld().getSeaLevel();
-        double step = 0.1 / 5.0;
+        double step = config.damageBonusPerStep / config.damageBonusStep;
 
         return (currentHeight - baseHeight) * step;
     }

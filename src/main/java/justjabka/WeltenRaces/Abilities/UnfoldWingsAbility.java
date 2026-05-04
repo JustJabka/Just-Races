@@ -4,7 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Equippable;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.UnfoldWingsConfig;
+import justjabka.WeltenRaces.Configs.Abilities.UnfoldWingsAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.UnfoldWingsAbilityRunnable;
@@ -26,9 +26,9 @@ import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
 public class UnfoldWingsAbility extends BaseAbility {
-    UnfoldWingsConfig config;
+    UnfoldWingsAbilityConfig config;
 
-    public UnfoldWingsAbility(UnfoldWingsConfig config) {
+    public UnfoldWingsAbility(UnfoldWingsAbilityConfig config) {
         this.config = config;
     }
 

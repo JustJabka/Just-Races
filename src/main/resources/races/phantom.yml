@@ -13,3 +13,6 @@ meat-bonus:
 # Additional damage to players
 # that have insomnia
 insomnia-damage-bonus: 3.0
+
+helmet-durability-drain: 1
+night-movement-speed-bonus: 0.02

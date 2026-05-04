@@ -3,7 +3,7 @@ package justjabka.WeltenRaces.Listeners;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import justjabka.WeltenRaces.Configs.Race.ArmatConfig;
+import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -37,9 +37,9 @@ import java.util.Set;
 import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DODGE_TAG;
 
 public class ArmatRaceListener implements Listener {
-    private final ArmatConfig config;
+    private final ArmatRaceConfig config;
 
-    public ArmatRaceListener(ArmatConfig config) {
+    public ArmatRaceListener(ArmatRaceConfig config) {
         this.config = config;
     }
 

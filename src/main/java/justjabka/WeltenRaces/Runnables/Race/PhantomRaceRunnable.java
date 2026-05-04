@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -18,11 +19,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Set;
 
 public class PhantomRaceRunnable extends BukkitRunnable {
+    private final PhantomRaceConfig config;
+
+    public PhantomRaceRunnable(PhantomRaceConfig config) {
+        this.config = config;
+    }
+
     private static final NamespacedKey DREAMCATCHER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "dreamcatcher");
 
-    private static final double MOVEMENT_SPEED_BONUS = 0.02;
-    private static final int NIGHT_TIME_EFFECTS_DURATION = -1;
-
+    private static final int NIGHT_TIME_EFFECTS_DURATION = PotionEffect.INFINITE_DURATION;
     private static final Set<PotionEffect> NIGHT_TIME_EFFECTS = Set.of(
             new PotionEffect(PotionEffectType.NIGHT_VISION, NIGHT_TIME_EFFECTS_DURATION, 0, false, false, false)
     );
@@ -54,10 +59,10 @@ public class PhantomRaceRunnable extends BukkitRunnable {
         }
     }
 
-    private static void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean willReceiveBuff) {
+    private void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean willReceiveBuff) {
         if (willBurn) {
             if (hasHelmet) {
-                player.getEquipment().getHelmet().damage(1, player);
+                player.getEquipment().getHelmet().damage(config.helmetDurabilityDrain, player);
                 return;
             }
 
@@ -67,7 +72,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
         applyBuffs(player, willReceiveBuff);
     }
 
-    private static void applyBuffs(Player player, boolean willReceiveBuff) {
+    private void applyBuffs(Player player, boolean willReceiveBuff) {
         AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeedInstance == null) return;
 
@@ -79,7 +84,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
             if (hasModifier) return;
             AttributeModifier modifier = new AttributeModifier(
                     DREAMCATCHER_KEY,
-                    MOVEMENT_SPEED_BONUS,
+                    config.nightMovementSpeedBonus,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 

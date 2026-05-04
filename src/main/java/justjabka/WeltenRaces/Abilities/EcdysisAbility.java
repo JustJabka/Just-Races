@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.EcdysisConfig;
+import justjabka.WeltenRaces.Configs.Abilities.EcdysisAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -24,9 +24,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class EcdysisAbility extends BaseAbility {
-    private final EcdysisConfig config;
+    private final EcdysisAbilityConfig config;
 
-    public EcdysisAbility(EcdysisConfig config) {
+    public EcdysisAbility(EcdysisAbilityConfig config) {
         this.config = config;
         this.USER_EFFECTS = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),

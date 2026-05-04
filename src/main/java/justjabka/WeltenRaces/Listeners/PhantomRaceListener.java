@@ -3,7 +3,7 @@ package justjabka.WeltenRaces.Listeners;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.tag.TagKey;
-import justjabka.WeltenRaces.Configs.Race.PhantomConfig;
+import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -22,9 +22,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class PhantomRaceListener implements Listener {
-    private final PhantomConfig config;
+    private final PhantomRaceConfig config;
 
-    public PhantomRaceListener(PhantomConfig config) {
+    public PhantomRaceListener(PhantomRaceConfig config) {
         this.config = config;
     }
 

@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Listeners;
 
+import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import org.bukkit.entity.Player;
@@ -10,6 +11,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class SkyzernRaceListener implements Listener {
+    private final SkyzernRaceConfig config;
+
+    public SkyzernRaceListener(SkyzernRaceConfig config) {
+        this.config = config;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();

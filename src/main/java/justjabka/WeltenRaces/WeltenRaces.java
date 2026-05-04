@@ -11,9 +11,11 @@ public final class WeltenRaces extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        ListenersRegistry.register(this);
-        RunnablesRegistry.register(this);
-        AbilitiesRegistry.register(this);
+        ConfigRegistry configs = new ConfigRegistry(this);
+
+        ListenersRegistry.register(this, configs);
+        RunnablesRegistry.register(this, configs);
+        AbilitiesRegistry.register(this, configs);
     }
 
     @Override

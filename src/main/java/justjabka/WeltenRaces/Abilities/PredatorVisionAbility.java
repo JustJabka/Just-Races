@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.PredatorVisionConfig;
+import justjabka.WeltenRaces.Configs.Abilities.PredatorVisionAbilityConfig;
 import justjabka.WeltenRaces.Managers.EffectManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PredatorVisionAbility extends BaseAbility {
-    PredatorVisionConfig config;
+    PredatorVisionAbilityConfig config;
 
-    public PredatorVisionAbility(PredatorVisionConfig config) {
+    public PredatorVisionAbility(PredatorVisionAbilityConfig config) {
         this.config = config;
     }
 
