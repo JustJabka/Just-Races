@@ -1,8 +1,8 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Runnables.BaseRaceRunnable;
-import justjabka.WeltenRaces.Runnables.PhantomRaceRunnable;
-import justjabka.WeltenRaces.Runnables.SkyzernRaceRunnable;
+import justjabka.WeltenRaces.Runnables.Race.BaseRaceRunnable;
+import justjabka.WeltenRaces.Runnables.Race.PhantomRaceRunnable;
+import justjabka.WeltenRaces.Runnables.Race.SkyzernRaceRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.plugin.Plugin;
 

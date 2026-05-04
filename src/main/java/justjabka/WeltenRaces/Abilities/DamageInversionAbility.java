@@ -27,10 +27,10 @@ import org.bukkit.persistence.PersistentDataType;
 
 import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DAMAGE_INVERSION_TAG;
 
-public class DamageInversion extends BaseAbility {
+public class DamageInversionAbility extends BaseAbility {
     private final DamageInversionConfig config;
 
-    public DamageInversion(DamageInversionConfig config) {
+    public DamageInversionAbility(DamageInversionConfig config) {
         this.config = config;
     }
 

@@ -5,7 +5,7 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Runnables.WildHuntAbilityRunnable;
+import justjabka.WeltenRaces.Runnables.Ability.WildHuntAbilityRunnable;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
@@ -23,10 +23,10 @@ import org.bukkit.util.RayTraceResult;
 import java.util.Set;
 import java.util.UUID;
 
-public class WildHunt extends BaseAbility {
+public class WildHuntAbility extends BaseAbility {
     private final WildHuntConfig config;
 
-    public WildHunt(WildHuntConfig config) {
+    public WildHuntAbility(WildHuntConfig config) {
         this.config = config;
     }
 
@@ -131,7 +131,7 @@ public class WildHunt extends BaseAbility {
 
     public static void clearAbility(Player victim) {
         AbilityManager.removeAbility(victim, WILD_HUNT_KEY);
-        WildHunt.VICTIM_EFFECTS.forEach(effect -> victim.removePotionEffect(effect.getType()));
+        WildHuntAbility.VICTIM_EFFECTS.forEach(effect -> victim.removePotionEffect(effect.getType()));
     }
 
     @Override

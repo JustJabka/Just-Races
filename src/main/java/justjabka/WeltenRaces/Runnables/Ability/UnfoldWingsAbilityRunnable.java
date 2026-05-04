@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Runnables;
+package justjabka.WeltenRaces.Runnables.Ability;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static justjabka.WeltenRaces.Abilities.UnfoldWings.removeWings;
+import static justjabka.WeltenRaces.Abilities.UnfoldWingsAbility.removeWings;
 
 public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
     private final UUID pid;

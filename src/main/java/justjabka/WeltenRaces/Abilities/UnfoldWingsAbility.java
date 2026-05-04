@@ -7,7 +7,7 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Abilities.UnfoldWingsConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Runnables.UnfoldWingsAbilityRunnable;
+import justjabka.WeltenRaces.Runnables.Ability.UnfoldWingsAbilityRunnable;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
@@ -25,10 +25,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
-public class UnfoldWings extends BaseAbility {
+public class UnfoldWingsAbility extends BaseAbility {
     UnfoldWingsConfig config;
 
-    public UnfoldWings(UnfoldWingsConfig config) {
+    public UnfoldWingsAbility(UnfoldWingsConfig config) {
         this.config = config;
     }
 

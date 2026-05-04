@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Runnables;
+package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;

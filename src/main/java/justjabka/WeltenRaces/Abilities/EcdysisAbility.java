@@ -23,10 +23,10 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Set;
 import java.util.UUID;
 
-public class Ecdysis extends BaseAbility {
+public class EcdysisAbility extends BaseAbility {
     private final EcdysisConfig config;
 
-    public Ecdysis(EcdysisConfig config) {
+    public EcdysisAbility(EcdysisConfig config) {
         this.config = config;
         this.USER_EFFECTS = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),

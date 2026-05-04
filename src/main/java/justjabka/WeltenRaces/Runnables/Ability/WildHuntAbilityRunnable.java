@@ -1,6 +1,6 @@
-package justjabka.WeltenRaces.Runnables;
+package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.WildHunt;
+import justjabka.WeltenRaces.Abilities.WildHuntAbility;
 import justjabka.WeltenRaces.Configs.Abilities.WildHuntConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -30,14 +30,14 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        UUID currentOwner = WildHunt.getCurrentOwner(victim);
+        UUID currentOwner = WildHuntAbility.getCurrentOwner(victim);
         if (currentOwner == null || !currentOwner.equals(attackerId)) {
             this.cancel();
             return;
         }
 
         if (attacker == null) {
-            WildHunt.clearAbility(victim);
+            WildHuntAbility.clearAbility(victim);
 
             this.cancel();
             return;
@@ -45,7 +45,7 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
 
         boolean isVictimInRadius = attacker.getLocation().distanceSquared(victim.getLocation()) < radiusSquared;
         if (!isVictimInRadius) {
-            WildHunt.clearAbility(victim);
+            WildHuntAbility.clearAbility(victim);
 
             this.cancel();
             return;

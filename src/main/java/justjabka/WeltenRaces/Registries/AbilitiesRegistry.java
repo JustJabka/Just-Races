@@ -23,11 +23,11 @@ public class AbilitiesRegistry {
     private static final WildHuntConfig WILD_HUNT_CONFIG = new WildHuntConfig(loadAbilityConfig(WeltenRaces.INSTANCE, "wild-hunt"));
 
     // Abilities
-    private static final DamageInversion DAMAGE_INVERSION = new DamageInversion(DAMAGE_INVERSION_CONFIG);
-    private static final Ecdysis ECDYSIS = new Ecdysis(ECDYSIS_CONFIG);
-    private static final PredatorVision PREDATOR_VISION = new PredatorVision(PREDATOR_VISION_CONFIG);
-    private static final UnfoldWings UNFOLD_WINGS = new UnfoldWings(UNFOLD_WINGS_CONFIG);
-    private static final WildHunt WILD_HUNT = new WildHunt(WILD_HUNT_CONFIG);
+    private static final DamageInversionAbility DAMAGE_INVERSION = new DamageInversionAbility(DAMAGE_INVERSION_CONFIG);
+    private static final EcdysisAbility ECDYSIS = new EcdysisAbility(ECDYSIS_CONFIG);
+    private static final PredatorVisionAbility PREDATOR_VISION = new PredatorVisionAbility(PREDATOR_VISION_CONFIG);
+    private static final UnfoldWingsAbility UNFOLD_WINGS = new UnfoldWingsAbility(UNFOLD_WINGS_CONFIG);
+    private static final WildHuntAbility WILD_HUNT = new WildHuntAbility(WILD_HUNT_CONFIG);
 
     public static final Map<Race, List<BaseAbility>> RACE_ABILITIES = new HashMap<>();
 

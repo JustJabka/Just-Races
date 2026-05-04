@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Runnables;
+package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Managers.AbilityManager;

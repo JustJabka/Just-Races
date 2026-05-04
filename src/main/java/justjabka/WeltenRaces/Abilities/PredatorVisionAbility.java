@@ -16,10 +16,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PredatorVision extends BaseAbility {
+public class PredatorVisionAbility extends BaseAbility {
     PredatorVisionConfig config;
 
-    public PredatorVision(PredatorVisionConfig config) {
+    public PredatorVisionAbility(PredatorVisionConfig config) {
         this.config = config;
     }
 
