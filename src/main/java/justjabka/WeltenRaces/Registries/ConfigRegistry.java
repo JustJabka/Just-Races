@@ -21,6 +21,7 @@ public class ConfigRegistry {
     public final PredatorVisionAbilityConfig predatorVisionAbilityConfig;
     public final UnfoldWingsAbilityConfig unfoldWingsAbilityConfig;
     public final WildHuntAbilityConfig wildHuntAbilityConfig;
+    public final WeightlessWillowSwayAbilityConfig weightlessWillowSwayAbilityConfig;
 
     public ConfigRegistry(Plugin plugin) {
         // Races
@@ -34,5 +35,6 @@ public class ConfigRegistry {
         this.predatorVisionAbilityConfig = new PredatorVisionAbilityConfig(loadAbilityConfig(plugin, "predator-vision"));
         this.unfoldWingsAbilityConfig = new UnfoldWingsAbilityConfig(loadAbilityConfig(plugin, "unfold-wings"));
         this.wildHuntAbilityConfig = new WildHuntAbilityConfig(loadAbilityConfig(plugin, "wild-hunt"));
+        this.weightlessWillowSwayAbilityConfig = new WeightlessWillowSwayAbilityConfig(loadAbilityConfig(plugin, "weightless-willow-sway"));
     }
 }
