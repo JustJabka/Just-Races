@@ -84,7 +84,6 @@ public abstract class BaseAbility implements Listener {
     protected boolean canActivate(Player player) {
         return true;
     }
-    // TODO: add auto deactivation
 
     public void handleInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();

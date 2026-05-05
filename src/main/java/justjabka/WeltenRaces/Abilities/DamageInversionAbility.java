@@ -93,6 +93,7 @@ public class DamageInversionAbility extends BaseAbility {
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
+        if (!canActivate(player)) return; // Temp fix! TODO: add auto deactivation
 
         double damage = event.getDamage();
         DamageSource damageSource = event.getDamageSource();
