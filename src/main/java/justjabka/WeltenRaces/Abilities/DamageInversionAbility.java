@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.DamageInversionAbilityConfig;
+import justjabka.WeltenRaces.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;

@@ -4,7 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Equippable;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.UnfoldWingsAbilityConfig;
+import justjabka.WeltenRaces.Configs.Ability.UnfoldWingsAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.UnfoldWingsAbilityRunnable;

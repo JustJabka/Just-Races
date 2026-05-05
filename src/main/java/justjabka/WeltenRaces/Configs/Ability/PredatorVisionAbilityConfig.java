@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Configs.Abilities;
+package justjabka.WeltenRaces.Configs.Ability;
 
 import org.bukkit.configuration.file.FileConfiguration;
 

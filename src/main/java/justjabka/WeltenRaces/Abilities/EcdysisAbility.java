@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.EcdysisAbilityConfig;
+import justjabka.WeltenRaces.Configs.Ability.EcdysisAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.ArmorSet;

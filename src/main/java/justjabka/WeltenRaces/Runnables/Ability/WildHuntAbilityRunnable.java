@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
 import justjabka.WeltenRaces.Abilities.WildHuntAbility;
-import justjabka.WeltenRaces.Configs.Abilities.WildHuntAbilityConfig;
+import justjabka.WeltenRaces.Configs.Ability.WildHuntAbilityConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;

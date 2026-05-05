@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.Configs.Abilities.PredatorVisionAbilityConfig;
+import justjabka.WeltenRaces.Configs.Ability.PredatorVisionAbilityConfig;
 import justjabka.WeltenRaces.Managers.EffectManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;

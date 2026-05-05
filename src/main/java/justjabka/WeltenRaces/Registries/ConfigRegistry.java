@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Configs.Abilities.*;
+import justjabka.WeltenRaces.Configs.Ability.*;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
