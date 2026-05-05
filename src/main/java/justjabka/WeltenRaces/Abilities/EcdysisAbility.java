@@ -4,6 +4,7 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.EcdysisAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
+import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -155,10 +155,6 @@ public class EcdysisAbility extends BaseAbility {
 
     @Override
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        if (!event.getAction().isRightClick()) return false;
-        if (!player.isSneaking()) return false;
-
-        return true;
+        return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }
 }

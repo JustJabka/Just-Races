@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Abilities.Generic;
 
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -10,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,10 +50,12 @@ public abstract class BaseAbility implements Listener {
     // Ability display
     public Component getDisplayName() {
         String name = this.getClass().getSimpleName();
+        String nameWithoutSuffix = name.replaceFirst("Ability$", "");
+
         String regex = "(\\p{Lu})";
         String replacement = " $1";
 
-        String formattedName = name.replaceAll(regex, replacement).trim();
+        String formattedName = nameWithoutSuffix.replaceAll(regex, replacement).trim();
         return Component.text(formattedName);
     }
 
@@ -115,10 +117,6 @@ public abstract class BaseAbility implements Listener {
     protected abstract boolean onActivation(Player player);
 
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        if (!event.getAction().isRightClick()) return false;
-        if (player.isSneaking()) return false;
-
-        return true;
+        return AbilityActivateAction.RIGHT_CLICK.check(event, player);
     }
 }

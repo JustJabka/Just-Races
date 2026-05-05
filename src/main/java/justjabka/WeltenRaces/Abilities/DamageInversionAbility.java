@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
+import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
@@ -21,7 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -113,10 +113,6 @@ public class DamageInversionAbility extends BaseAbility {
 
     @Override
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        if (!event.getAction().isRightClick()) return false;
-        if (!player.isSneaking()) return false;
-
-        return true;
+        return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }
 }

@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Abilities;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.PredatorVisionAbilityConfig;
 import justjabka.WeltenRaces.Managers.EffectManager;
+import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Tag;
@@ -11,7 +12,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +66,6 @@ public class PredatorVisionAbility extends BaseAbility {
 
     @Override
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        if (!event.getAction().isRightClick()) return false;
-        if (!player.isSneaking()) return false;
-
-        return true;
+        return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }
 }

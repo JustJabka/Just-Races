@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Configs.Ability.WildHuntAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.WildHuntAbilityRunnable;
+import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
@@ -15,7 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.RayTraceResult;
@@ -136,10 +136,6 @@ public class WildHuntAbility extends BaseAbility {
 
     @Override
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return false;
-        if (!event.getAction().isLeftClick()) return false;
-        if (!player.isSneaking()) return false;
-
-        return true;
+        return AbilityActivateAction.SHIFT_LEFT_CLICK.check(event, player);
     }
 }
