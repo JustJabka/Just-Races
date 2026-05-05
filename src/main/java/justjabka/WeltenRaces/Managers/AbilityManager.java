@@ -66,8 +66,12 @@ public class AbilityManager {
         AbilityManager.updateAbilities(player, abilities);
     }
 
+    public static int getActivationSlot() {
+        return 8;
+    }
+
     public static boolean hasActivationSlotSelected(Player player) {
         int hotbarSlot = player.getInventory().getHeldItemSlot();
-        return hotbarSlot == 8;
+        return hotbarSlot == getActivationSlot();
     }
 }

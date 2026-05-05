@@ -1,3 +1,10 @@
+# Additional bonus
+# that depends on the Y level
+# of the player
 damage-bonus:
+  # value that player will get every Y blocks
   value-per-step: 0.1
+  # amount of blocks
   step: 5.0
+
+additional-knockback-value: 1.0
