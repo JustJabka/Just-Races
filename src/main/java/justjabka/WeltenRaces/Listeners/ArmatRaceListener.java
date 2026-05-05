@@ -1,15 +1,17 @@
 package justjabka.WeltenRaces.Listeners;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
+import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.*;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -34,6 +36,7 @@ import org.bukkit.potion.PotionEffect;
 import java.util.Random;
 import java.util.Set;
 
+import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.ABSOLUTE_DAMAGE_KEY;
 import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DODGE_TAG;
 
 public class ArmatRaceListener implements Listener {
@@ -46,7 +49,6 @@ public class ArmatRaceListener implements Listener {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "bound_shell");
-    private static final NamespacedKey ABSOLUTE_DAMAGE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "absolute_damage");
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
     private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "copper_mining_efficiency");
 
@@ -107,8 +109,7 @@ public class ArmatRaceListener implements Listener {
         if (RANDOM.nextDouble() > dodgeChance) return false;
 
         // Dodge
-        Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-        if (registry.getTagValues(BYPASSES_DODGE_TAG).contains(damageType)) return false;
+        if (DamageTypeProvider.getTagValues(BYPASSES_DODGE_TAG).contains(damageType)) return false;
 
         event.setCancelled(true);
         return true;
@@ -160,8 +161,7 @@ public class ArmatRaceListener implements Listener {
 
         if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
 
-        Registry<DamageType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE);
-        DamageType absoluteDamageType = registry.getOrThrow(ABSOLUTE_DAMAGE_KEY);
+        DamageType absoluteDamageType = DamageTypeProvider.getKey(ABSOLUTE_DAMAGE_KEY);
 
         // Prevent stack overflow
         if (event.getDamageSource().getDamageType() == absoluteDamageType) return;
