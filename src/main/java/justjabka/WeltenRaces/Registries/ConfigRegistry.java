@@ -22,6 +22,7 @@ public class ConfigRegistry {
     public final UnfoldWingsAbilityConfig unfoldWingsAbilityConfig;
     public final WildHuntAbilityConfig wildHuntAbilityConfig;
     public final WeightlessWillowSwayAbilityConfig weightlessWillowSwayAbilityConfig;
+    public final CompressedSkyShardAbilityConfig compressedSkyShardAbilityConfig;
 
     public ConfigRegistry(Plugin plugin) {
         // Races
@@ -36,5 +37,6 @@ public class ConfigRegistry {
         this.unfoldWingsAbilityConfig = new UnfoldWingsAbilityConfig(loadAbilityConfig(plugin, "unfold-wings"));
         this.wildHuntAbilityConfig = new WildHuntAbilityConfig(loadAbilityConfig(plugin, "wild-hunt"));
         this.weightlessWillowSwayAbilityConfig = new WeightlessWillowSwayAbilityConfig(loadAbilityConfig(plugin, "weightless-willow-sway"));
+        this.compressedSkyShardAbilityConfig = new CompressedSkyShardAbilityConfig(loadAbilityConfig(plugin, "compressed-sky-shard"));
     }
 }

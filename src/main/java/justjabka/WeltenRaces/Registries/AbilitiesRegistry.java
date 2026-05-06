@@ -21,11 +21,12 @@ public class AbilitiesRegistry {
         final UnfoldWingsAbility unfoldWings = new UnfoldWingsAbility(configs.unfoldWingsAbilityConfig);
         final WildHuntAbility wildHunt = new WildHuntAbility(configs.wildHuntAbilityConfig);
         final WeightlessWillowSwayAbility weightlessWillowSway = new WeightlessWillowSwayAbility(configs.weightlessWillowSwayAbilityConfig);
+        final CompressedSkyShardAbility compressedSkyShard = new CompressedSkyShardAbility(configs.compressedSkyShardAbilityConfig);
 
         RACE_ABILITIES.put(Race.ARMAT, List.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, List.of(predatorVision, unfoldWings, wildHunt));
         RACE_ABILITIES.put(Race.HUMAN, List.of()); // Human solo verse💀
-        RACE_ABILITIES.put(Race.SKYZERN, List.of(weightlessWillowSway));
+        RACE_ABILITIES.put(Race.SKYZERN, List.of(weightlessWillowSway, compressedSkyShard));
     }
 
     public static void register(Plugin plugin, ConfigRegistry configs) {
