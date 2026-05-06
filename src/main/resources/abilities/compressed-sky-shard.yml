@@ -5,7 +5,7 @@ cooldown: 45
 radius: 16
 
 effect:
-  # duration of the ability
+  # duration of the effect
   duration: 11
-  # radius of the ability. 120 is the max value!
+  # radius of the effect. 120 is the max value!
   radius: 2.5

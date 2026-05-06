@@ -98,11 +98,14 @@ public class SkyzernRaceListener implements Listener {
         if (!hasModifier) return;
 
         victim.getWorld().spawnParticle(
-                Particle.GUST_EMITTER_SMALL,
+                Particle.SMALL_GUST,
                 victim.getX(),
                 victim.getBoundingBox().getCenterY(),
                 victim.getZ(),
-                1
+                20,
+                0.25,
+                0.5,
+                0.25
         );
 
         victim.getWorld().playSound(victim.getLocation(), Sound.ENTITY_WIND_CHARGE_WIND_BURST, SoundCategory.PLAYERS, 1, 1);
