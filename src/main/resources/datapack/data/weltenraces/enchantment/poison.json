@@ -1,0 +1,46 @@
+{
+  "anvil_cost": 0,
+  "description": {
+    "translate": "potion.withDuration",
+    "color": "red",
+    "with": [
+      {
+        "translate": "effect.minecraft.poison"
+      },
+      {
+        "text": "00:10"
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 0,
+    "per_level_above_first": 0
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 0,
+    "per_level_above_first": 0
+  },
+  "primary_items": "#minecraft:enchantable/melee_weapon",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/sharp_weapon",
+  "weight": 1,
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "to_apply": "minecraft:poison",
+          "min_duration": 10,
+          "max_duration": 10,
+          "min_amplifier": 0,
+          "max_amplifier": 0
+        },
+        "enchanted": "attacker",
+        "affected": "victim"
+      }
+    ]
+  }
+}
