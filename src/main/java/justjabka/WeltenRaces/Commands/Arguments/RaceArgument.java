@@ -11,14 +11,19 @@ import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class RaceArgument implements CustomArgumentType.Converted<Race, String> {
-    private static final DynamicCommandExceptionType ERROR_INVALID_RACE = new DynamicCommandExceptionType(race -> {
-        return MessageComponentSerializer.message().serialize(Component.text(race + " is not a valid race!"));
-    });
+    private static final DynamicCommandExceptionType ERROR_INVALID_RACE = new DynamicCommandExceptionType(race ->
+            MessageComponentSerializer.message().serialize(
+                    Component.translatable("commands.setrace.invalid_race")
+                            .fallback("%s is not a valid race!")
+                            .arguments(Component.text(race.toString()))
+            ));
 
     @Override
     public Race convert(String nativeType) throws CommandSyntaxException {

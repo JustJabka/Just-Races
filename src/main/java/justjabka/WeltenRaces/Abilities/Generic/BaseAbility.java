@@ -50,13 +50,15 @@ public abstract class BaseAbility implements Listener {
     // Ability display
     public Component getDisplayName() {
         String name = this.getClass().getSimpleName();
-        String nameWithoutSuffix = name.replaceFirst("Ability$", "");
 
-        String regex = "(\\p{Lu})";
-        String replacement = " $1";
+        // Regex go brrrrr😎
+        String removedSuffix = name.replaceFirst("Ability$", "");
+        String snakeCase = removedSuffix.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
 
-        String formattedName = nameWithoutSuffix.replaceAll(regex, replacement).trim();
-        return Component.text(formattedName);
+        String translate = String.format("ability.%s.name", snakeCase);
+        String fallback = removedSuffix.replaceAll("(\\p{Lu})", " $1").trim();
+
+        return Component.translatable(translate).fallback(fallback);
     }
 
     public Component getAbilityDisplay(Player player) {
@@ -64,13 +66,13 @@ public abstract class BaseAbility implements Listener {
         long remainingTime = getRemainingSeconds(player);
 
         Component abilityOnCooldownMessage = Component
-                .translatable("ability.base.cooldown_message")
+                .translatable("ability.base.cooldown_display")
                 .fallback("%s: %s")
                 .arguments(displayName, Component.text(remainingTime))
                 .color(ABILITY_ON_COOLDOWN_COLOR);
 
         Component abilityReadyMessage = Component
-                .translatable("ability.base.ready_message")
+                .translatable("ability.base.ready_display")
                 .fallback("%s")
                 .arguments(displayName)
                 .color(ABILITY_READY_COLOR)

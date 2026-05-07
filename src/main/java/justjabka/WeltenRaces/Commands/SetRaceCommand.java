@@ -10,6 +10,7 @@ import justjabka.WeltenRaces.Commands.Arguments.RaceArgument;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 public class SetRaceCommand {
@@ -26,7 +27,11 @@ public class SetRaceCommand {
 
                                     RaceManager.setRace(target, race);
 
-                                    target.sendMessage("You became: " + race);
+                                    target.sendMessage(
+                                            Component.translatable("commands.setrace.success")
+                                                    .fallback("You became: %s")
+                                                    .arguments(Component.text(race.toString()))
+                                    );
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )
