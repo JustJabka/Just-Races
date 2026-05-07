@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Registries;
 
 import justjabka.WeltenRaces.Runnables.Race.BaseRaceRunnable;
+import justjabka.WeltenRaces.Runnables.Race.EpiphyteRaceRunnable;
 import justjabka.WeltenRaces.Runnables.Race.PhantomRaceRunnable;
 import justjabka.WeltenRaces.Runnables.Race.SkyzernRaceRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -11,6 +12,7 @@ public class RunnablesRegistry {
         new BaseRaceRunnable().runTaskTimer(plugin, 0L, 10L);
         new PhantomRaceRunnable(configs.phantomRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new SkyzernRaceRunnable(configs.skyzernRaceConfig).runTaskTimer(plugin, 0L, 20L);
+        new EpiphyteRaceRunnable().runTaskTimer(plugin, 0L, 20L);
 
         WeltenRaces.LOGGER.info("Successfully registered runnables!");
     }
