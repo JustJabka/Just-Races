@@ -52,7 +52,7 @@ public enum ModifierType {
             .canAlwaysEat(true)
             .build(),
             Consumable.consumable().build(),
-            UseCooldown.useCooldown(1).build()
+            UseCooldown.useCooldown(60).build()
     ));
 
     private final RaceModifier modifier;
