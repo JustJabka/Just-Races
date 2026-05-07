@@ -2,8 +2,10 @@ package justjabka.WeltenRaces.Types;
 
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
+import io.papermc.paper.datacomponent.item.UseCooldown;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseArmorModifier;
+import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodCooldownModifier;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodModifier;
 import justjabka.WeltenRaces.Modifiers.RaceModifier;
 import org.bukkit.attribute.Attribute;
@@ -32,6 +34,25 @@ public enum ModifierType {
             .animation(ItemUseAnimation.EAT)
             .hasConsumeParticles(true)
             .build()
+    )),
+    GLOW_BERRIES(new BaseFoodModifier(
+            "GLOW_BERRIES",
+            FoodProperties.food()
+            .nutrition(4 + 2)
+            .saturation(0.4f)
+            .build(),
+
+            Consumable.consumable().build()
+    )),
+    CONSUMABLE_MOSS(new BaseFoodCooldownModifier(
+            "CONSUMABLE_MOSS",
+            FoodProperties.food()
+            .nutrition(0)
+            .saturation(0)
+            .canAlwaysEat(true)
+            .build(),
+            Consumable.consumable().build(),
+            UseCooldown.useCooldown(1).build()
     ));
 
     private final RaceModifier modifier;

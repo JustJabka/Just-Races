@@ -3,26 +3,19 @@ package justjabka.WeltenRaces.Modifiers.Contents.Generic;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
-import justjabka.WeltenRaces.Modifiers.RaceModifier;
+import io.papermc.paper.datacomponent.item.UseCooldown;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BaseFoodModifier implements RaceModifier {
-    final String id;
-    final FoodProperties foodProperties;
-    final Consumable consumable;
+public class BaseFoodCooldownModifier extends BaseFoodModifier {
+    private final UseCooldown useCooldown;
 
-    public BaseFoodModifier(
-            String id,
-            FoodProperties foodProperties,
-            Consumable consumable
-    ) {
-        this.id = id;
-        this.foodProperties = foodProperties;
-        this.consumable = consumable;
+    public BaseFoodCooldownModifier(String id, FoodProperties foodProperties, Consumable consumable, UseCooldown useCooldown) {
+        super(id, foodProperties, consumable);
+        this.useCooldown = useCooldown;
     }
 
     @Override
@@ -30,6 +23,7 @@ public class BaseFoodModifier implements RaceModifier {
         // Apply Components
         item.setData(DataComponentTypes.FOOD, foodProperties);
         item.setData(DataComponentTypes.CONSUMABLE, consumable);
+        item.setData(DataComponentTypes.USE_COOLDOWN, useCooldown);
 
         // Add Marker
         item.editPersistentDataContainer(pdc ->
@@ -41,6 +35,7 @@ public class BaseFoodModifier implements RaceModifier {
     public void undo(ItemStack item) {
         item.resetData(DataComponentTypes.FOOD);
         item.resetData(DataComponentTypes.CONSUMABLE);
+        item.resetData(DataComponentTypes.USE_COOLDOWN);
 
         // Remove Marker
         item.editPersistentDataContainer(pdc ->

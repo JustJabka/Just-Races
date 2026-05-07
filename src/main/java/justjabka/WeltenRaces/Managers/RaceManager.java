@@ -62,6 +62,10 @@ public class RaceManager {
                 modifyBaseValue(scaleInstance, 1.05);
                 modifyBaseValue(maxHealthInstance, 20);
             }
+            case EPIPHYTE -> {
+                modifyBaseValue(scaleInstance, 0.95);
+                modifyBaseValue(maxHealthInstance, 18);
+            }
         }
     }
 

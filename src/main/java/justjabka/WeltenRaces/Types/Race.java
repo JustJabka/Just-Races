@@ -27,7 +27,12 @@ public enum Race {
             Map.entry(Material.GOLDEN_LEGGINGS, ModifierType.GOLDEN_ARMOR),
             Map.entry(Material.GOLDEN_BOOTS, ModifierType.GOLDEN_ARMOR)
     )),
-    EPIPHYTE(Map.of()),
+    EPIPHYTE(
+            Map.of(
+                    Material.GLOW_BERRIES, ModifierType.GLOW_BERRIES,
+                    Material.MOSS_BLOCK, ModifierType.CONSUMABLE_MOSS
+            )
+    ),
     HUMAN(Map.of()),
     LIZARD(Map.of()),
     PHANTOM(Map.of(

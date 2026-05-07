@@ -1,9 +1,6 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Listeners.ArmatRaceListener;
-import justjabka.WeltenRaces.Listeners.BaseRaceListener;
-import justjabka.WeltenRaces.Listeners.PhantomRaceListener;
-import justjabka.WeltenRaces.Listeners.SkyzernRaceListener;
+import justjabka.WeltenRaces.Listeners.*;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +20,7 @@ public class ListenersRegistry {
         manager.registerEvents(new ArmatRaceListener(configs.armatRaceConfig), plugin);
         manager.registerEvents(new PhantomRaceListener(configs.phantomRaceConfig), plugin);
         manager.registerEvents(new SkyzernRaceListener(configs.skyzernRaceConfig), plugin);
+        manager.registerEvents(new EpiphyteRaceListener(), plugin);
 
         WeltenRaces.LOGGER.info("Successfully registered race listeners!");
     }
