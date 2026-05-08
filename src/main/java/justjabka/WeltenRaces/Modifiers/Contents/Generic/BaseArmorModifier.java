@@ -2,7 +2,7 @@ package justjabka.WeltenRaces.Modifiers.Contents.Generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
-import justjabka.WeltenRaces.Modifiers.RaceModifier;
+import justjabka.WeltenRaces.Modifiers.ItemModifier;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -14,7 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BaseArmorModifier implements RaceModifier {
+public class BaseArmorModifier implements ItemModifier {
     private final String id;
     private final Attribute attribute;
     private final double amount;

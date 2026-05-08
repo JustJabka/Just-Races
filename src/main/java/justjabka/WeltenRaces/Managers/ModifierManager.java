@@ -1,6 +1,8 @@
 package justjabka.WeltenRaces.Managers;
 
-import justjabka.WeltenRaces.Types.ModifierType;
+import justjabka.WeltenRaces.Modifiers.ItemModifier;
+import justjabka.WeltenRaces.Registries.ModifierRegistry;
+import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -8,38 +10,48 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Map;
+
+import static justjabka.WeltenRaces.Registries.ModifierRegistry.RACE_MODIFIERS;
+
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "item_modified");
+
+    public static ItemModifier getModifiersForRace(Race race, ItemStack item) {
+        return RACE_MODIFIERS.getOrDefault(race, Map.of()).get(item.getType());
+    }
 
     public static void tryApply(Player player, ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
 
-        ModifierType type = RaceManager.getRace(player).getModifierFor(item.getType());
+        Race race = RaceManager.getRace(player);
+        ItemModifier type = getModifiersForRace(race, item);
 
         if (type == null) return;
         if (isAlreadyModified(item, type)) return;
 
-        type.get().apply(item);
+        type.apply(item);
         item.editMeta(meta -> meta
                 .getPersistentDataContainer()
-                .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.name()));
+                .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.toString()));
     }
 
     public static void tryUndo(ItemStack item) {
         if (item == null) return;
         if (!item.hasItemMeta()) return;
 
-        String modifier = getModifier(item);
+        String modifierId = getAppliedModifier(item);
 
-        if (modifier == null) return;
+        if (modifierId == null) return;
+
+        ItemModifier type = ModifierRegistry.getById(modifierId);
 
         try {
-            ModifierType type = ModifierType.valueOf(modifier);
-            type.get().undo(item);
+            type.undo(item);
             item.editMeta(meta -> meta.getPersistentDataContainer().remove(ITEM_MODIFIED_KEY));
         } catch (IllegalArgumentException e) {
-            WeltenRaces.LOGGER.warn("Unknown modifier: {}", modifier);
+            WeltenRaces.LOGGER.warn("Unknown modifier: {}", modifierId);
         }
     }
 
@@ -68,14 +80,13 @@ public class ModifierManager {
         }
     }
 
-    private static boolean isAlreadyModified(ItemStack item, ModifierType type) {
-        String modifier = getModifier(item);
-        return type.name().equals(modifier);
+    private static boolean isAlreadyModified(ItemStack item, ItemModifier type) {
+        String modifier = getAppliedModifier(item);
+        return type.toString().equals(modifier);
     }
 
-    private static String getModifier(ItemStack item) {
+    private static String getAppliedModifier(ItemStack item) {
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-
         return pdc.get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
     }
 }

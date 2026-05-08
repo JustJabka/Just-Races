@@ -16,7 +16,6 @@ public class ListenersRegistry {
     }
 
     private static void registerRaceListeners(Plugin plugin, PluginManager manager, ConfigRegistry configs) {
-        // Register
         manager.registerEvents(new ArmatRaceListener(configs.armatRaceConfig), plugin);
         manager.registerEvents(new PhantomRaceListener(configs.phantomRaceConfig), plugin);
         manager.registerEvents(new SkyzernRaceListener(configs.skyzernRaceConfig), plugin);

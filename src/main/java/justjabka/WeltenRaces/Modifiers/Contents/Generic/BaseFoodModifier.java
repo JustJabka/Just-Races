@@ -3,14 +3,14 @@ package justjabka.WeltenRaces.Modifiers.Contents.Generic;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
-import justjabka.WeltenRaces.Modifiers.RaceModifier;
+import justjabka.WeltenRaces.Modifiers.ItemModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BaseFoodModifier implements RaceModifier {
+public class BaseFoodModifier implements ItemModifier {
     final String id;
     final FoodProperties foodProperties;
     final Consumable consumable;
