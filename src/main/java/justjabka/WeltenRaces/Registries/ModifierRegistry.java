@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Modifiers.Contents.Food.MossFoodModifier;
 import justjabka.WeltenRaces.Modifiers.Contents.Food.PhantomMembraneFoodModifier;
 import justjabka.WeltenRaces.Modifiers.ItemModifier;
 import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
 
 import java.util.HashMap;
@@ -16,20 +17,27 @@ public class ModifierRegistry {
     public static final Map<String, ItemModifier> MODIFIERS_BY_ID = new HashMap<>();
 
     public static void register(ConfigRegistry configs) {
+        RACE_MODIFIERS.clear();
+        MODIFIERS_BY_ID.clear();
+
+        registerModifiers(configs);
+
+        WeltenRaces.LOGGER.info("Successfully registered item modifiers!");
+    }
+
+    private static void registerModifiers(ConfigRegistry configs) {
         // Armor
         ItemModifier leatherArmor = new LeatherArmorModifier("leather_armor");
         ItemModifier copperArmor = new CopperArmorModifier("copper_armor");
         ItemModifier chainmailArmor = new ChainmailArmorModifier("chainmail_armor");
         ItemModifier ironArmor = new IronArmorModifier("iron_armor");
         ItemModifier goldenArmor = new GoldenArmorModifier("golden_armor");
-        
+
         // Food
         ItemModifier phantomMembrane = new PhantomMembraneFoodModifier("phantom_membrane");
 
         ItemModifier glowBerries = new GlowBerriesFoodModifier("glow_berries");
         ItemModifier moss = new MossFoodModifier("moss");
-
-        RACE_MODIFIERS.clear();
 
         registerModifier(Race.ARMAT, Material.LEATHER_HELMET, leatherArmor);
         registerModifier(Race.ARMAT, Material.LEATHER_CHESTPLATE, leatherArmor);
