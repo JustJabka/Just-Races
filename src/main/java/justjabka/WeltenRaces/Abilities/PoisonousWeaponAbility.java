@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PoisonousWeapon extends BaseAbility {
+public class PoisonousWeaponAbility extends BaseAbility {
     private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
     private static final int ACTIVATION_AMOUNT = 64;
 
