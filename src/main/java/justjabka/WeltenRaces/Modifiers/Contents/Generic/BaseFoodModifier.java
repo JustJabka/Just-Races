@@ -47,4 +47,9 @@ public class BaseFoodModifier implements ItemModifier {
                 pdc.remove(ITEM_MODIFIED_KEY)
         );
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }

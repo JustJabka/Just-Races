@@ -80,6 +80,11 @@ public class BaseArmorModifier implements ItemModifier {
         );
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
     private NamespacedKey getDynamicKey(ItemStack item) {
         return new NamespacedKey(WeltenRaces.NAMESPACE, id.toLowerCase() + "." + getItemGroupSlot(item));
     }

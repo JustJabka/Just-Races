@@ -34,7 +34,7 @@ public class ModifierManager {
         type.apply(item);
         item.editMeta(meta -> meta
                 .getPersistentDataContainer()
-                .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.toString()));
+                .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getId()));
     }
 
     public static void tryUndo(ItemStack item) {

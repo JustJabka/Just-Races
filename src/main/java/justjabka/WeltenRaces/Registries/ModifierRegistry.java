@@ -67,7 +67,7 @@ public class ModifierRegistry {
     }
 
     private static void registerModifier(Race race, Material material, ItemModifier modifier) {
-        MODIFIERS_BY_ID.put(modifier.toString(), modifier);
+        MODIFIERS_BY_ID.put(modifier.getId(), modifier);
         RACE_MODIFIERS.computeIfAbsent(race, k -> new HashMap<>()).put(material, modifier);
     }
 

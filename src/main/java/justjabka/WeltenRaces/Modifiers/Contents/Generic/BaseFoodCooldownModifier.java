@@ -42,4 +42,9 @@ public class BaseFoodCooldownModifier extends BaseFoodModifier {
                 pdc.remove(ITEM_MODIFIED_KEY)
         );
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }
