@@ -33,7 +33,7 @@ public class ModifierManager {
         ItemModifier type = getModifiersForRace(race, item);
 
         if (type == null) return;
-        if (isAlreadyModified(item, type)) return;
+        if (isModifiedWith(item, type)) return;
 
         type.apply(item);
         item.editMeta(meta -> meta
@@ -84,12 +84,12 @@ public class ModifierManager {
         }
     }
 
-    private static boolean isAlreadyModified(ItemStack item, ItemModifier type) {
+    private static boolean isModifiedWith(ItemStack item, ItemModifier type) {
         String modifier = getAppliedModifier(item);
-        return type.toString().equals(modifier);
+        return type.getId().equals(modifier);
     }
 
-    private static String getAppliedModifier(ItemStack item) {
+    public static String getAppliedModifier(ItemStack item) {
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
         return pdc.get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
     }

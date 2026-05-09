@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.potion.PotionEffect;
@@ -56,9 +55,7 @@ public class PhantomRaceListener implements Listener {
         ItemType consumedType = consumedMaterial.asItemType();
         Registry<ItemType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM);
 
-        if (consumedMaterial == Material.PHANTOM_MEMBRANE) {
-            player.heal(config.membraneHealAmount, EntityRegainHealthEvent.RegainReason.EATING);
-        } else if (registry.getTagValues(IS_MEAT).contains(consumedType)) {
+        if (registry.getTagValues(IS_MEAT).contains(consumedType)) {
             player.setFoodLevel(player.getFoodLevel() + config.meatBonusFoodAmount);
 
             if (config.meatBonusRegenerationDuration <= 0) return;
