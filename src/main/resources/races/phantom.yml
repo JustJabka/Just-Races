@@ -1,7 +1,3 @@
-# How much consuming
-# phantom membrane will heal player
-membrane-heal-amount: 1.0
-
 meat-bonus:
   # additional food points
   # from consumed meat

@@ -33,14 +33,15 @@ public class ModifierRegistry {
     private static void registerModifiers(Plugin plugin, ConfigRegistry configs) {
         // List off all unique modificator
         List<ItemModifier> allModifiers = List.of(
-                new LeatherArmorModifier("leather_armor"),
-                new CopperArmorModifier("copper_armor"),
-                new ChainmailArmorModifier("chainmail_armor"),
-                new IronArmorModifier("iron_armor"),
-                new GoldenArmorModifier("golden_armor"),
-                new PhantomMembraneFoodModifier("phantom_membrane"),
-                new GlowBerriesFoodModifier("glow_berries"),
-                new MossFoodModifier("moss")
+                new LeatherArmorModifier("leather_armor", configs.leatherArmorModifierConfig),
+                new CopperArmorModifier("copper_armor", configs.copperArmorModifierConfig),
+                new ChainmailArmorModifier("chainmail_armor", configs.chainmailArmorModifierConfig),
+                new IronArmorModifier("iron_armor", configs.ironArmorModifierConfig),
+                new GoldenArmorModifier("golden_armor", configs.goldenArmorModifierConfig),
+
+                new PhantomMembraneFoodModifier("phantom_membrane", configs.phantomMembraneFoodModifierConfig),
+                new GlowBerriesFoodModifier("glow_berries", configs.glowBerriesFoodModifierConfig),
+                new MossFoodModifier("moss", configs.mossFoodModifierConfig)
         );
 
         // Register modifiers globally

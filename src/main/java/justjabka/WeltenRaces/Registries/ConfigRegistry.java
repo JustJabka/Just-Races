@@ -1,13 +1,16 @@
 package justjabka.WeltenRaces.Registries;
 
 import justjabka.WeltenRaces.Configs.Ability.*;
+import justjabka.WeltenRaces.Configs.Modifier.Armor.*;
+import justjabka.WeltenRaces.Configs.Modifier.Food.GlowBerriesFoodModifierConfig;
+import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
+import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import org.bukkit.plugin.Plugin;
 
-import static justjabka.WeltenRaces.Managers.ConfigManager.loadAbilityConfig;
-import static justjabka.WeltenRaces.Managers.ConfigManager.loadRaceConfig;
+import static justjabka.WeltenRaces.Managers.ConfigManager.*;
 
 public class ConfigRegistry {
     // Races
@@ -24,6 +27,17 @@ public class ConfigRegistry {
     public final WeightlessWillowSwayAbilityConfig weightlessWillowSwayAbilityConfig;
     public final CompressedSkyShardAbilityConfig compressedSkyShardAbilityConfig;
 
+    // Modifiers
+    public final LeatherArmorModifierConfig leatherArmorModifierConfig;
+    public final CopperArmorModifierConfig copperArmorModifierConfig;
+    public final ChainmailArmorModifierConfig chainmailArmorModifierConfig;
+    public final IronArmorModifierConfig ironArmorModifierConfig;
+    public final GoldenArmorModifierConfig goldenArmorModifierConfig;
+
+    public final GlowBerriesFoodModifierConfig glowBerriesFoodModifierConfig;
+    public final MossFoodModifierConfig mossFoodModifierConfig;
+    public final PhantomMembraneFoodModifierConfig phantomMembraneFoodModifierConfig;
+
     public ConfigRegistry(Plugin plugin) {
         // Races
         this.armatRaceConfig = new ArmatRaceConfig(loadRaceConfig(plugin, "armat"));
@@ -38,5 +52,16 @@ public class ConfigRegistry {
         this.wildHuntAbilityConfig = new WildHuntAbilityConfig(loadAbilityConfig(plugin, "wild-hunt"));
         this.weightlessWillowSwayAbilityConfig = new WeightlessWillowSwayAbilityConfig(loadAbilityConfig(plugin, "weightless-willow-sway"));
         this.compressedSkyShardAbilityConfig = new CompressedSkyShardAbilityConfig(loadAbilityConfig(plugin, "compressed-sky-shard"));
+
+        // Modifiers
+        this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));
+        this.copperArmorModifierConfig = new CopperArmorModifierConfig(loadModifierConfig(plugin, "armor/copper"));
+        this.chainmailArmorModifierConfig = new ChainmailArmorModifierConfig(loadModifierConfig(plugin, "armor/chainmail"));
+        this.ironArmorModifierConfig = new IronArmorModifierConfig(loadModifierConfig(plugin, "armor/iron"));
+        this.goldenArmorModifierConfig = new GoldenArmorModifierConfig(loadModifierConfig(plugin, "armor/golden"));
+
+        this.glowBerriesFoodModifierConfig = new GlowBerriesFoodModifierConfig(loadModifierConfig(plugin, "food/glow-berries"));
+        this.mossFoodModifierConfig = new MossFoodModifierConfig(loadModifierConfig(plugin, "food/moss"));
+        this.phantomMembraneFoodModifierConfig = new PhantomMembraneFoodModifierConfig(loadModifierConfig(plugin, "food/phantom-membrane"));
     }
 }

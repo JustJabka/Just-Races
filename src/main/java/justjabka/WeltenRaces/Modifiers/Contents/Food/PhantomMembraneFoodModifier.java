@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Modifiers.Contents.Food;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
+import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodModifier;
 import org.bukkit.entity.Player;
@@ -14,21 +15,24 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("UnstableApiUsage")
 public class PhantomMembraneFoodModifier extends BaseFoodModifier implements Listener {
-    public PhantomMembraneFoodModifier(String id) {
+    private final PhantomMembraneFoodModifierConfig config;
+
+    public PhantomMembraneFoodModifier(String id, PhantomMembraneFoodModifierConfig config) {
         super(
                 id,
                 FoodProperties.food()
                         .canAlwaysEat(true)
-                        .nutrition(0)
-                        .saturation(0)
+                        .nutrition(config.nutritionAmount)
+                        .saturation(config.saturationAmount)
                         .build(),
 
                 Consumable.consumable()
-                        .consumeSeconds(0.8f)
+                        .consumeSeconds(config.consumeSeconds)
                         .animation(ItemUseAnimation.EAT)
                         .hasConsumeParticles(true)
                         .build()
         );
+        this.config = config;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -37,8 +41,9 @@ public class PhantomMembraneFoodModifier extends BaseFoodModifier implements Lis
         ItemStack item = event.getItem();
 
         String modifier = ModifierManager.getAppliedModifier(item);
+        if (modifier == null) return;
         if (!modifier.equals(this.getId())) return;
 
-        player.heal(1, EntityRegainHealthEvent.RegainReason.EATING);
+        player.heal(config.healAmount, EntityRegainHealthEvent.RegainReason.EATING);
     }
 }

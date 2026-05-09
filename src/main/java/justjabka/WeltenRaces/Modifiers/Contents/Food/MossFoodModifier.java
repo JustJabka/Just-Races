@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Modifiers.Contents.Food;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
+import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodCooldownModifier;
 import org.bukkit.entity.Player;
@@ -14,18 +15,21 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("UnstableApiUsage")
 public class MossFoodModifier extends BaseFoodCooldownModifier implements Listener {
-    public MossFoodModifier(String id) {
+    private final MossFoodModifierConfig config;
+
+    public MossFoodModifier(String id, MossFoodModifierConfig config) {
         super(
                 id,
                 FoodProperties.food()
-                        .nutrition(0)
-                        .saturation(0)
+                        .nutrition(config.nutritionAmount)
+                        .saturation(config.saturationAmount)
                         .canAlwaysEat(true)
                         .build(),
 
                 Consumable.consumable().build(),
-                UseCooldown.useCooldown(60).build()
+                UseCooldown.useCooldown(config.useCooldown).build()
         );
+        this.config = config;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -34,8 +38,9 @@ public class MossFoodModifier extends BaseFoodCooldownModifier implements Listen
         ItemStack item = event.getItem();
 
         String modifier = ModifierManager.getAppliedModifier(item);
+        if (modifier == null) return;
         if (!modifier.equals(this.getId())) return;
 
-        player.heal(6, EntityRegainHealthEvent.RegainReason.EATING);
+        player.heal(config.healAmount, EntityRegainHealthEvent.RegainReason.EATING);
     }
 }

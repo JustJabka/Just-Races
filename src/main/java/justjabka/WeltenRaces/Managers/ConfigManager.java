@@ -12,4 +12,8 @@ public class ConfigManager {
     public static FileConfiguration loadRaceConfig(Plugin plugin, String name) {
         return new ConfigWrapper(plugin, "races/%s.yml".formatted(name)).getConfig();
     }
+
+    public static FileConfiguration loadModifierConfig(Plugin plugin, String name) {
+        return new ConfigWrapper(plugin, "modifiers/%s.yml".formatted(name)).getConfig();
+    }
 }
