@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BaseRaceRunnable extends BukkitRunnable {
     private static final String separator = "|";
@@ -33,6 +34,7 @@ public class BaseRaceRunnable extends BukkitRunnable {
 
         List<Component> displays = abilities.stream()
                 .map(ability -> ability.getAbilityDisplay(player))
+                .filter(Predicate.not(component -> component.equals(Component.empty())))
                 .toList();
 
         Component message = Component.join(
