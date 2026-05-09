@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 import static justjabka.WeltenRaces.Managers.ModifierManager.tryUndoInventory;
@@ -63,9 +64,18 @@ public class BaseRaceListener implements Listener {
 
     // Interactions
     @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        fullRefresh(player);
+    }
+
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+        fullRefresh(player);
+    }
 
+    private static void fullRefresh(Player player) {
         Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> {
             ArmorManager.updateArmorSet(player);
             refreshModifiers(player);
@@ -74,7 +84,7 @@ public class BaseRaceListener implements Listener {
 
     @SuppressWarnings("UnstableApiUsage")
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onConsume(PlayerItemConsumeEvent event) {
+    public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
         AttributeInstance maxAbsorptionInstance = player.getAttribute(Attribute.MAX_ABSORPTION);
