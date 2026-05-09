@@ -12,10 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new HashMap<>();
@@ -92,7 +89,7 @@ public abstract class BaseAbility implements Listener {
         Race race = RaceManager.getRace(player);
 
         // Check abilities of race
-        List<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
+        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
         if (!allowedAbilities.contains(this)) return;
 
         // Check activate conditions

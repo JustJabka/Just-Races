@@ -8,11 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AbilitiesRegistry {
-    public static final Map<Race, List<BaseAbility>> RACE_ABILITIES = new HashMap<>();
+    public static final Map<Race, Set<BaseAbility>> RACE_ABILITIES = new HashMap<>();
 
     private static void putRaceAbilities(ConfigRegistry configs) {
         final DamageInversionAbility damageInversion = new DamageInversionAbility(configs.damageInversionAbilityConfig);
@@ -24,18 +24,18 @@ public class AbilitiesRegistry {
         final CompressedSkyShardAbility compressedSkyShard = new CompressedSkyShardAbility(configs.compressedSkyShardAbilityConfig);
         final PoisonousWeapon poisonousWeapon = new PoisonousWeapon();
 
-        RACE_ABILITIES.put(Race.ARMAT, List.of(damageInversion, ecdysis));
-        RACE_ABILITIES.put(Race.PHANTOM, List.of(predatorVision, unfoldWings, wildHunt));
-        RACE_ABILITIES.put(Race.HUMAN, List.of()); // Human solo verse💀
-        RACE_ABILITIES.put(Race.SKYZERN, List.of(weightlessWillowSway, compressedSkyShard));
-        RACE_ABILITIES.put(Race.EPIPHYTE, List.of(poisonousWeapon));
+        RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
+        RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));
+        RACE_ABILITIES.put(Race.HUMAN, Set.of()); // Human solo verse💀
+        RACE_ABILITIES.put(Race.SKYZERN, Set.of(weightlessWillowSway, compressedSkyShard));
+        RACE_ABILITIES.put(Race.EPIPHYTE, Set.of(poisonousWeapon));
     }
 
     public static void register(Plugin plugin, ConfigRegistry configs) {
         RACE_ABILITIES.clear();
         putRaceAbilities(configs);
 
-        for (List<BaseAbility> abilities : RACE_ABILITIES.values()) {
+        for (Set<BaseAbility> abilities : RACE_ABILITIES.values()) {
             for (BaseAbility ability : abilities) {
                 Bukkit.getPluginManager().registerEvents(ability, plugin);
             }

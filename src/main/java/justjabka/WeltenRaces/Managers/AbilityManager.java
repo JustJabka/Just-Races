@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static justjabka.WeltenRaces.Registries.AbilitiesRegistry.RACE_ABILITIES;
@@ -27,8 +27,8 @@ public class AbilityManager {
         );
     }
 
-    public static List<BaseAbility> getAbilitiesForRace(Race race) {
-        return RACE_ABILITIES.getOrDefault(race, List.of());
+    public static Set<BaseAbility> getAbilitiesForRace(Race race) {
+        return RACE_ABILITIES.getOrDefault(race, Set.of());
     }
 
     public static boolean isAbilityActive(Player player, NamespacedKey key) {

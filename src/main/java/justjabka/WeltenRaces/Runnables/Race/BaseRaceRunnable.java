@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class BaseRaceRunnable extends BukkitRunnable {
@@ -29,7 +30,7 @@ public class BaseRaceRunnable extends BukkitRunnable {
     private static void updateActionBar(Player player) {
         Race playerRace = RaceManager.getRace(player);
 
-        List<BaseAbility> abilities = AbilityManager.getAbilitiesForRace(playerRace);
+        Set<BaseAbility> abilities = AbilityManager.getAbilitiesForRace(playerRace);
         if (abilities.isEmpty()) return;
 
         List<Component> displays = abilities.stream()
