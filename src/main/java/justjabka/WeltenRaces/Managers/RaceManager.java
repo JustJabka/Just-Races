@@ -83,7 +83,7 @@ public class RaceManager {
             for (AttributeModifier modifier : instance.getModifiers()) {
                 String modifierNamespace = modifier.getKey().getNamespace();
 
-                if (modifierNamespace.equals(NamespacedKey.MINECRAFT)) continue;
+                if (!modifierNamespace.equals(WeltenRaces.NAMESPACE)) continue;
 
                 instance.removeModifier(modifier);
             }

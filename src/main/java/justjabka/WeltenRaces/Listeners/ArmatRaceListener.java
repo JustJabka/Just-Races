@@ -35,7 +35,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
-import java.util.Set;
 
 public class ArmatRaceListener implements Listener {
     private final ArmatRaceConfig config;
@@ -50,17 +49,6 @@ public class ArmatRaceListener implements Listener {
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
     private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "copper_mining_efficiency");
 
-
-    private static final Set<EntityDamageEvent.DamageCause> IMMUNE_TO = Set.of(
-            EntityDamageEvent.DamageCause.FALL
-    );
-    private static final Set<EntityDamageEvent.DamageCause> VULNERABLE_TO = Set.of(
-            EntityDamageEvent.DamageCause.MAGIC,
-            EntityDamageEvent.DamageCause.POISON,
-            EntityDamageEvent.DamageCause.WITHER,
-            EntityDamageEvent.DamageCause.THORNS
-    );
-
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -71,25 +59,28 @@ public class ArmatRaceListener implements Listener {
 
         double damage = event.getDamage();
         DamageType damageType = damageSource.getDamageType();
-        EntityDamageEvent.DamageCause damageCause = event.getCause();
 
-        if (handleDamageCauses(event, player, damageCause)) return;
+        if (handleDamageCauses(event, damageType, player)) return;
         boolean successfullyDodged = handleDodge(event, player, damageType);
 
         handleArmorSetBonusesOnDamage(event, player, damage, causingEntity, damageType, successfullyDodged);
     }
 
-    private boolean handleDamageCauses(EntityDamageEvent event, Player player, EntityDamageEvent.DamageCause damageCause) {
-        if (VULNERABLE_TO.contains(damageCause)) {
-            // TODO: break boots depending on damage taken
+    private boolean handleDamageCauses(EntityDamageEvent event, DamageType damageType, Player player) {
+        EntityDamageEvent.DamageCause damageCause = event.getCause();
+
+        boolean isVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.IS_MAGIC).contains(damageType);
+        boolean isImmuneTo = damageCause == EntityDamageEvent.DamageCause.FALL && ArmorManager.hasAnyArmor(player);
+
+        if (isVulnerableTo) {
             event.setDamage(event.getDamage() * config.vulnerableMultiplier);
             return true;
-        } else if (IMMUNE_TO.contains(damageCause) && ArmorManager.hasAnyArmor(player)) {
-            // TODO: remove ts and use attribute instead
+        } else if (isImmuneTo) {
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
             return true;
         }
+
         return false;
     }
 

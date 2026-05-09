@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 public class DamageTypeTagKeysProvider {
+    public static final TagKey<DamageType> IS_MAGIC = create("is_magic");
     public static final TagKey<DamageType> BYPASSES_DODGE = create("bypasses_dodge");
     public static final TagKey<DamageType> BYPASSES_DAMAGE_INVERSION = create("bypasses_damage_inversion");
 
