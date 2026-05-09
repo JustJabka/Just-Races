@@ -1,15 +1,10 @@
 package justjabka.WeltenRaces.Listeners;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.tag.TagKey;
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
+import justjabka.WeltenRaces.DataProvider.ItemTypeTagKeysProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
-import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
-import org.bukkit.Registry;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,8 +21,6 @@ public class PhantomRaceListener implements Listener {
     public PhantomRaceListener(PhantomRaceConfig config) {
         this.config = config;
     }
-
-    private static final TagKey<ItemType> IS_MEAT = TagKey.create(RegistryKey.ITEM, Key.key(WeltenRaces.NAMESPACE, "is_meat"));
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
@@ -53,9 +46,8 @@ public class PhantomRaceListener implements Listener {
 
         Material consumedMaterial = event.getItem().getType();
         ItemType consumedType = consumedMaterial.asItemType();
-        Registry<ItemType> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM);
 
-        if (registry.getTagValues(IS_MEAT).contains(consumedType)) {
+        if (ItemTypeTagKeysProvider.getTagValues(ItemTypeTagKeysProvider.IS_MEAT).contains(consumedType)) {
             player.setFoodLevel(player.getFoodLevel() + config.meatBonusFoodAmount);
 
             if (config.meatBonusRegenerationDuration <= 0) return;

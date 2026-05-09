@@ -1,25 +1,15 @@
 package justjabka.WeltenRaces.Abilities;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
-import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.key.Key;
+import justjabka.WeltenRaces.DataProvider.EnchantmentProvider;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PoisonousWeapon extends BaseAbility {
-    private static final TypedKey<Enchantment> POISON_ENCHANTMENT_KEY =  EnchantmentKeys.create(Key.key(WeltenRaces.NAMESPACE, "poison"));
-    private static final Registry<Enchantment> ENCHANTMENT_REGISTRY = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
-    private static final Enchantment POISON_ENCHANTMENT = ENCHANTMENT_REGISTRY.getOrThrow(POISON_ENCHANTMENT_KEY);
-
     private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
     private static final int ACTIVATION_AMOUNT = 64;
 
@@ -48,8 +38,8 @@ public class PoisonousWeapon extends BaseAbility {
         if (offhand.getType() != ACTIVATION_ITEM) return false;
         if (offhand.getAmount() < ACTIVATION_AMOUNT) return false;
 
-        if (mainHand.containsEnchantment(POISON_ENCHANTMENT)) return false;
-        return POISON_ENCHANTMENT.canEnchantItem(mainHand);
+        if (mainHand.containsEnchantment(EnchantmentProvider.POISON)) return false;
+        return EnchantmentProvider.POISON.canEnchantItem(mainHand);
     }
 
     @Override
@@ -57,7 +47,7 @@ public class PoisonousWeapon extends BaseAbility {
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         ItemStack offHand = player.getInventory().getItemInOffHand();
 
-        mainHand.addEnchantment(POISON_ENCHANTMENT, 1);
+        mainHand.addEnchantment(EnchantmentProvider.POISON, 1);
         offHand.subtract(ACTIVATION_AMOUNT);
 
         onUseEffects(player);

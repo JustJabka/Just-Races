@@ -2,7 +2,7 @@ package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.DamageInversionAbilityConfig;
-import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
+import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
@@ -24,8 +24,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
-import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DAMAGE_INVERSION_TAG;
 
 public class DamageInversionAbility extends BaseAbility {
     private final DamageInversionAbilityConfig config;
@@ -99,7 +97,7 @@ public class DamageInversionAbility extends BaseAbility {
         DamageSource damageSource = event.getDamageSource();
         DamageType damageType = damageSource.getDamageType();
 
-        boolean canBypassInversion = DamageTypeProvider.getTagValues(BYPASSES_DAMAGE_INVERSION_TAG).contains(damageType);
+        boolean canBypassInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION).contains(damageType);
 
         if (canBypassInversion) return;
 

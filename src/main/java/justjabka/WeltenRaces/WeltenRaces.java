@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 
 public final class WeltenRaces extends JavaPlugin {
     public static WeltenRaces INSTANCE;
-    public static String NAMESPACE;
+    public static final String NAMESPACE = "weltenraces";
     public static Logger LOGGER;
 
     @Override
@@ -23,7 +23,6 @@ public final class WeltenRaces extends JavaPlugin {
     @Override
     public void onLoad() {
         INSTANCE = this;
-        NAMESPACE = this.namespace();
         LOGGER = getSLF4JLogger();
 
         DatapackRegistry.register(this);

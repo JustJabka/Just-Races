@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Listeners;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
+import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
@@ -35,9 +36,6 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 import java.util.Set;
-
-import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.ABSOLUTE_DAMAGE_KEY;
-import static justjabka.WeltenRaces.DataProvider.DamageTypeProvider.BYPASSES_DODGE_TAG;
 
 public class ArmatRaceListener implements Listener {
     private final ArmatRaceConfig config;
@@ -109,7 +107,7 @@ public class ArmatRaceListener implements Listener {
         if (RANDOM.nextDouble() > dodgeChance) return false;
 
         // Dodge
-        if (DamageTypeProvider.getTagValues(BYPASSES_DODGE_TAG).contains(damageType)) return false;
+        if (DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DODGE).contains(damageType)) return false;
 
         event.setCancelled(true);
         return true;
@@ -161,12 +159,10 @@ public class ArmatRaceListener implements Listener {
 
         if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
 
-        DamageType absoluteDamageType = DamageTypeProvider.getKey(ABSOLUTE_DAMAGE_KEY);
-
         // Prevent stack overflow
-        if (event.getDamageSource().getDamageType() == absoluteDamageType) return;
+        if (event.getDamageSource().getDamageType() == DamageTypeProvider.ABSOLUTE_DAMAGE) return;
 
-        DamageSource absoluteDamageSource = DamageSource.builder(absoluteDamageType)
+        DamageSource absoluteDamageSource = DamageSource.builder(DamageTypeProvider.ABSOLUTE_DAMAGE)
                 .withCausingEntity(attacker)
                 .withDirectEntity(attacker)
                 .build();
