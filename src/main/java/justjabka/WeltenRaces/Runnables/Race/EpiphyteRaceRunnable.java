@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Configs.Race.EpiphyteRaceConfig;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -14,6 +15,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class EpiphyteRaceRunnable extends BukkitRunnable {
+    private final EpiphyteRaceConfig config;
+
+    public EpiphyteRaceRunnable(EpiphyteRaceConfig config) {
+        this.config = config;
+    }
+
     private static final NamespacedKey PARASITIC_NATURE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "parasitic_nature");
 
     @Override
@@ -25,7 +32,7 @@ public class EpiphyteRaceRunnable extends BukkitRunnable {
         }
     }
 
-    private static void applyParasiticNatureBonus(Player player) {
+    private void applyParasiticNatureBonus(Player player) {
         AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeedInstance == null) return;
 
@@ -40,7 +47,7 @@ public class EpiphyteRaceRunnable extends BukkitRunnable {
         if (giveBuff) {
             AttributeModifier modifier = new AttributeModifier(
                     PARASITIC_NATURE_KEY,
-                    0.1,
+                    config.mossMovementSpeedBonus,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 

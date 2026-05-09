@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Configs.Modifier.Food.GlowBerriesFoodModifierConfig
 import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
+import justjabka.WeltenRaces.Configs.Race.EpiphyteRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import org.bukkit.plugin.Plugin;
@@ -17,6 +18,7 @@ public class ConfigRegistry {
     public final ArmatRaceConfig armatRaceConfig;
     public final PhantomRaceConfig phantomRaceConfig;
     public final SkyzernRaceConfig skyzernRaceConfig;
+    public final EpiphyteRaceConfig epiphyteRaceConfig;
 
     // Abilities
     public final DamageInversionAbilityConfig damageInversionAbilityConfig;
@@ -43,6 +45,7 @@ public class ConfigRegistry {
         this.armatRaceConfig = new ArmatRaceConfig(loadRaceConfig(plugin, "armat"));
         this.phantomRaceConfig = new PhantomRaceConfig(loadRaceConfig(plugin, "phantom"));
         this.skyzernRaceConfig = new SkyzernRaceConfig(loadRaceConfig(plugin, "skyzern"));
+        this.epiphyteRaceConfig = new EpiphyteRaceConfig(loadRaceConfig(plugin, "epiphyte"));
 
         // Abilities
         this.damageInversionAbilityConfig = new DamageInversionAbilityConfig(loadAbilityConfig(plugin, "damage-inversion"));
