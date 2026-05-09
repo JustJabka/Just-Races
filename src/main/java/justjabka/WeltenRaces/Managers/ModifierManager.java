@@ -1,7 +1,6 @@
 package justjabka.WeltenRaces.Managers;
 
 import justjabka.WeltenRaces.Modifiers.ItemModifier;
-import justjabka.WeltenRaces.Registries.ModifierRegistry;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
@@ -12,6 +11,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
 
+import static justjabka.WeltenRaces.Registries.ModifierRegistry.MODIFIERS_BY_ID;
 import static justjabka.WeltenRaces.Registries.ModifierRegistry.RACE_MODIFIERS;
 
 public class ModifierManager {
@@ -19,6 +19,10 @@ public class ModifierManager {
 
     public static ItemModifier getModifiersForRace(Race race, ItemStack item) {
         return RACE_MODIFIERS.getOrDefault(race, Map.of()).get(item.getType());
+    }
+
+    public static ItemModifier getById(String id) {
+        return MODIFIERS_BY_ID.get(id);
     }
 
     public static void tryApply(Player player, ItemStack item) {
@@ -45,7 +49,7 @@ public class ModifierManager {
 
         if (modifierId == null) return;
 
-        ItemModifier type = ModifierRegistry.getById(modifierId);
+        ItemModifier type = getById(modifierId);
 
         try {
             type.undo(item);

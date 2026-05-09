@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces;
 
 import justjabka.WeltenRaces.Registries.*;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
@@ -16,7 +17,7 @@ public final class WeltenRaces extends JavaPlugin {
         ListenersRegistry.register(this, configs);
         RunnablesRegistry.register(this, configs);
         AbilitiesRegistry.register(this, configs);
-        ModifierRegistry.register(configs);
+        ModifierRegistry.register(this, configs);
     }
 
     @Override
@@ -30,6 +31,6 @@ public final class WeltenRaces extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        HandlerList.unregisterAll(this);
     }
 }
