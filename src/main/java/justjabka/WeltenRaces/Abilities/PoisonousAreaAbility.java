@@ -4,6 +4,9 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Runnables.Ability.PoisonousAreaAbilityRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AreaEffectCloud;
@@ -40,7 +43,22 @@ public class PoisonousAreaAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 40;
+        return 60;
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        boolean isActive = AbilityManager.isAbilityActive(player, POISONOUS_AREA_ABILITY_KEY);
+
+        Component displayName = getDisplayName();
+        TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
+
+        return Component
+                .translatable("ability.poisonous_area.state")
+                .fallback("%s")
+                .arguments(displayName)
+                .color(displayColor)
+                .decorate(TextDecoration.UNDERLINED);
     }
 
     @EventHandler
