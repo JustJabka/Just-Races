@@ -1,18 +1,37 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.PoisonousAreaAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.PoisonousAreaAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
 public class PoisonousAreaAbilityRunnable extends BukkitRunnable {
+    private final BaseAbility ability;
+    private final PoisonousAreaAbilityConfig config;
     private final UUID pid;
+    private final PotionEffect cloudEffect;
 
-    public PoisonousAreaAbilityRunnable(UUID pid) {
+    public PoisonousAreaAbilityRunnable(BaseAbility ability, PoisonousAreaAbilityConfig config, UUID pid) {
+        this.ability = ability;
+        this.config = config;
         this.pid = pid;
+        this.cloudEffect = new PotionEffect(
+                PotionEffectType.POISON,
+                config.effectDuration,
+                0,
+                false,
+                true,
+                true
+        );
     }
 
     @Override
@@ -20,24 +39,36 @@ public class PoisonousAreaAbilityRunnable extends BukkitRunnable {
         Player player = Bukkit.getPlayer(pid);
 
         if (player == null) {
-            PoisonousAreaAbility.stopTask(pid);
+            ability.stopTask(pid);
+            this.cancel();
             return;
         }
 
-        boolean isActive = AbilityManager.isAbilityActive(player, PoisonousAreaAbility.POISONOUS_AREA_ABILITY_KEY);
-        boolean canKeepAlive = PoisonousAreaAbility.keepAliveRequirement(player);
+        boolean isActive = AbilityManager.isAbilityActive(player, ability.getKey());
 
-        if (!isActive) {
-            PoisonousAreaAbility.stopTask(pid);
+        if (!isActive || !ability.isStateValid(player)) {
+            ability.onDeactivation(player);
+            this.cancel();
             return;
         }
 
-        if (!canKeepAlive) {
-            AbilityManager.changeAbilityState(player, PoisonousAreaAbility.POISONOUS_AREA_ABILITY_KEY, false);
-            PoisonousAreaAbility.stopTask(pid);
-            return;
-        }
+        whileActive(player);
+    }
 
-        PoisonousAreaAbility.whileActive(player);
+    private void whileActive(Player player) {
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        mainHand.subtract(config.fuelDrainAmount);
+
+        player.getWorld().spawn(
+                player.getLocation(),
+                AreaEffectCloud.class,
+                CreatureSpawnEvent.SpawnReason.CUSTOM,
+                cloud -> {
+                    cloud.setRadius(config.effectRadius);
+                    cloud.setDuration(config.effectDuration);
+                    cloud.setSource(player);
+                    cloud.addCustomEffect(cloudEffect, true);
+                }
+        );
     }
 }

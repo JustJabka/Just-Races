@@ -32,11 +32,9 @@ public class UnfoldWingsAbility extends BaseAbility {
         this.config = config;
     }
 
-    public static final NamespacedKey UNFOLD_WINGS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "unfold_wings");
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        super.handleInteract(event);
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "unfold_wings");
     }
 
     @Override
@@ -44,16 +42,21 @@ public class UnfoldWingsAbility extends BaseAbility {
         return config.cooldown;
     }
 
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        super.handleInteract(event);
+    }
+
     @Override
     protected boolean onActivation(Player player) {
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return false;
 
-        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS_KEY) != null) return false;
+        if (jumpStrengthInstance.getModifier(getKey()) != null) return false;
 
         jumpStrengthInstance.addModifier(
                 new AttributeModifier(
-                        UNFOLD_WINGS_KEY,
+                        getKey(),
                         config.jumpStrength,
                         AttributeModifier.Operation.ADD_NUMBER
                 )
@@ -66,9 +69,9 @@ public class UnfoldWingsAbility extends BaseAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!AbilityManager.isAbilityActive(player, UNFOLD_WINGS_KEY)) return;
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
 
-        removeWings(player);
+        onDeactivation(player);
     }
 
     @EventHandler
@@ -80,30 +83,39 @@ public class UnfoldWingsAbility extends BaseAbility {
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return;
 
-        if (jumpStrengthInstance.getModifier(UNFOLD_WINGS_KEY) == null) return;
+        if (jumpStrengthInstance.getModifier(getKey()) == null) return;
 
         giveWings(player, jumpStrengthInstance);
         onUseEffects(player);
     }
 
+    @Override
+    public boolean isStateValid(Player player) {
+        return player.isGliding();
+    }
+
+    @Override
+    public void onDeactivation(Player player) {
+        removeWings(player);
+    }
+
     /// Gives player ability to fly with wings
-    public static void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
+    public void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
         // TODO: Add visual wings
+        AbilityManager.changeAbilityState(player, getKey(), true);
 
-        AbilityManager.changeAbilityState(player, UNFOLD_WINGS_KEY, true);
-
-        jumpStrengthInstance.removeModifier(UNFOLD_WINGS_KEY);
+        jumpStrengthInstance.removeModifier(getKey());
 
         ItemStack wingsItem = createWings();
         changeWingsState(player, wingsItem);
 
         player.setGliding(true);
-        new UnfoldWingsAbilityRunnable(player.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 10L, 2L);
+        new UnfoldWingsAbilityRunnable(this, player.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 10L, 2L);
     }
 
     /// Removes player's ability to fly with wings
-    public static void removeWings(Player player) {
-        AbilityManager.changeAbilityState(player, UNFOLD_WINGS_KEY, false);
+    public void removeWings(Player player) {
+        AbilityManager.changeAbilityState(player, getKey(), false);
         changeWingsState(player, ItemStack.empty());
     }
 

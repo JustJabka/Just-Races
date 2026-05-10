@@ -3,9 +3,11 @@ package justjabka.WeltenRaces.Abilities;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.CompressedSkyShardAbilityConfig;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +24,11 @@ public class CompressedSkyShardAbility extends BaseAbility {
 
     public CompressedSkyShardAbility(CompressedSkyShardAbilityConfig config) {
         this.config = config;
+    }
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "compressed_sky_shard");
     }
 
     @Override

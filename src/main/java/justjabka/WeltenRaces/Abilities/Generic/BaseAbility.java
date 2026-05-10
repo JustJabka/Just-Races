@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -19,6 +20,8 @@ public abstract class BaseAbility implements Listener {
 
     protected static final TextColor ABILITY_ON_COOLDOWN_COLOR = TextColor.fromHexString("#a42431");
     protected static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
+
+    public abstract NamespacedKey getKey();
 
     // Ability time
     public abstract long getCooldownTicks();
@@ -117,4 +120,13 @@ public abstract class BaseAbility implements Listener {
     protected boolean activateAction(PlayerInteractEvent event, Player player) {
         return AbilityActivateAction.RIGHT_CLICK.check(event, player);
     }
+
+    // Ability deactivation
+    public boolean isStateValid(Player player) {
+        return true;
+    }
+
+    public void onDeactivation(Player player) {}
+
+    public void stopTask(UUID pid) {}
 }

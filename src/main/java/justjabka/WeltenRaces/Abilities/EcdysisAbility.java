@@ -37,10 +37,13 @@ public class EcdysisAbility extends BaseAbility {
         );
     }
 
-    public static final NamespacedKey ECDYSIS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ecdysis");
-
     private final Set<PotionEffect> USER_EFFECTS;
     private final Set<PotionEffect> VICTIM_EFFECTS;
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "ecdysis");
+    }
 
     @Override
     public long getCooldownTicks() {
@@ -72,7 +75,7 @@ public class EcdysisAbility extends BaseAbility {
 
         // Store if this is suicide use for later
         PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(ECDYSIS_KEY, PersistentDataType.BOOLEAN, isSuicideUse);
+        abilities.set(getKey(), PersistentDataType.BOOLEAN, isSuicideUse);
         AbilityManager.updateAbilities(player, abilities);
 
         // Change durability
@@ -119,10 +122,10 @@ public class EcdysisAbility extends BaseAbility {
         }, config.effectDuration);
     }
 
-    private static void killPlayer(Player suicidePlayer, PersistentDataContainer currentAbilities) {
-        if (!AbilityManager.isAbilityActive(suicidePlayer, ECDYSIS_KEY)) return;
+    private void killPlayer(Player suicidePlayer, PersistentDataContainer currentAbilities) {
+        if (!AbilityManager.isAbilityActive(suicidePlayer, getKey())) return;
 
-        currentAbilities.set(ECDYSIS_KEY, PersistentDataType.BOOLEAN, false);
+        currentAbilities.set(getKey(), PersistentDataType.BOOLEAN, false);
         AbilityManager.updateAbilities(suicidePlayer, currentAbilities);
 
         // DIE!

@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.PoisonousAreaAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Runnables.Ability.PoisonousAreaAbilityRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -9,14 +10,10 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
@@ -24,31 +21,27 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PoisonousAreaAbility extends BaseAbility {
-    public static final NamespacedKey POISONOUS_AREA_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "poisonous_area");
-    private static final Map<UUID, BukkitTask> ACTIVE_TASKS = new HashMap<>();
+    private final PoisonousAreaAbilityConfig config;
+    private final Map<UUID, BukkitTask> activeTasks = new HashMap<>();
+    private static final Material activationItem = Material.SPORE_BLOSSOM;
 
-    private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
-    private static final int DRAIN_AMOUNT = 1;
+    public PoisonousAreaAbility(PoisonousAreaAbilityConfig config) {
+        this.config = config;
+    }
 
-    private static final int EFFECT_DURATION = 3 * 20;
-    private static final int CLOUD_RADIUS = 10;
-    private static final PotionEffect CLOUD_EFFECT = new PotionEffect(
-            PotionEffectType.POISON,
-            EFFECT_DURATION,
-            0,
-            false,
-            true,
-            true
-    );
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "poisonous_area");
+    }
 
     @Override
     public long getCooldownTicks() {
-        return 60;
+        return config.cooldown;
     }
 
     @Override
     public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, POISONOUS_AREA_ABILITY_KEY);
+        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
 
         Component displayName = getDisplayName();
         TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
@@ -68,16 +61,7 @@ public class PoisonousAreaAbility extends BaseAbility {
 
     @Override
     protected boolean canActivate(Player player) {
-        return keepAliveRequirement(player);
-    }
-
-    public static boolean keepAliveRequirement(Player player) {
-        ItemStack mainHand = player.getInventory().getItemInMainHand();
-
-        if (mainHand.isEmpty()) return false;
-        if (mainHand.getType() != ACTIVATION_ITEM) return false;
-
-        return mainHand.getAmount() >= DRAIN_AMOUNT;
+        return isStateValid(player);
     }
 
     @Override
@@ -86,43 +70,41 @@ public class PoisonousAreaAbility extends BaseAbility {
         return true;
     }
 
-    public static void toggleAbility(Player player) {
+    @Override
+    public boolean isStateValid(Player player) {
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+
+        if (mainHand.isEmpty()) return false;
+        if (mainHand.getType() != activationItem) return false;
+
+        return mainHand.getAmount() >= config.fuelDrainAmount;
+    }
+
+    @Override
+    public void onDeactivation(Player player) {
+        AbilityManager.changeAbilityState(player, getKey(), false);
+        stopTask(player.getUniqueId());
+    }
+
+    public void toggleAbility(Player player) {
         UUID pid = player.getUniqueId();
 
-        boolean currentState = AbilityManager.isAbilityActive(player, POISONOUS_AREA_ABILITY_KEY);
+        boolean currentState = AbilityManager.isAbilityActive(player, getKey());
         boolean newState = !currentState;
 
-        AbilityManager.changeAbilityState(player, POISONOUS_AREA_ABILITY_KEY, newState);
+        AbilityManager.changeAbilityState(player, getKey(), newState);
 
         if (newState) {
-            BukkitTask task = new PoisonousAreaAbilityRunnable(pid).runTaskTimer(WeltenRaces.INSTANCE, 0, EFFECT_DURATION);
-            ACTIVE_TASKS.put(pid, task);
+            BukkitTask task = new PoisonousAreaAbilityRunnable(this, config, pid).runTaskTimer(WeltenRaces.INSTANCE, 0, config.effectDuration);
+            activeTasks.put(pid, task);
         } else {
             stopTask(pid);
         }
     }
 
-    public static void stopTask(UUID pid) {
-        BukkitTask task = ACTIVE_TASKS.remove(pid);
-
-        if (task == null) return;
-        task.cancel();
-    }
-
-    public static void whileActive(Player player) {
-        ItemStack mainHand = player.getInventory().getItemInMainHand();
-        mainHand.subtract(DRAIN_AMOUNT);
-
-        player.getWorld().spawn(
-                player.getLocation(),
-                AreaEffectCloud.class,
-                CreatureSpawnEvent.SpawnReason.CUSTOM,
-                cloud -> {
-                    cloud.setRadius(CLOUD_RADIUS);
-                    cloud.setDuration(EFFECT_DURATION);
-                    cloud.setSource(player);
-                    cloud.addCustomEffect(CLOUD_EFFECT, true);
-                }
-        );
+    @Override
+    public void stopTask(UUID pid) {
+        BukkitTask task = activeTasks.remove(pid);
+        if (task != null) task.cancel();
     }
 }

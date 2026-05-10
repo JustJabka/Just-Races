@@ -25,13 +25,8 @@ import java.util.UUID;
 
 public class WildHuntAbility extends BaseAbility {
     private final WildHuntAbilityConfig config;
-
-    public WildHuntAbility(WildHuntAbilityConfig config) {
-        this.config = config;
-    }
-
-    public static final NamespacedKey WILD_HUNT_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "wild_hunt");
-    public static final Set<PotionEffect> VICTIM_EFFECTS = Set.of(
+    private final double radiusSquared;
+    private static final Set<PotionEffect> victimEffects = Set.of(
             new PotionEffect(
                     PotionEffectType.DARKNESS,
                     PotionEffect.INFINITE_DURATION,
@@ -41,6 +36,16 @@ public class WildHuntAbility extends BaseAbility {
                     true
             )
     );
+
+    public WildHuntAbility(WildHuntAbilityConfig config) {
+        this.config = config;
+        this.radiusSquared = config.radius * config.radius;
+    }
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "wild_hunt");
+    }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -56,7 +61,7 @@ public class WildHuntAbility extends BaseAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!AbilityManager.hasAbility(player, WILD_HUNT_KEY)) return;
+        if (!AbilityManager.hasAbility(player, getKey())) return;
         clearAbility(player);
     }
 
@@ -65,7 +70,7 @@ public class WildHuntAbility extends BaseAbility {
         Player victim = event.getPlayer();
         Player attacker = victim.getKiller();
 
-        if (!AbilityManager.hasAbility(victim, WILD_HUNT_KEY)) return;
+        if (!AbilityManager.hasAbility(victim, getKey())) return;
         clearAbility(victim);
 
         if (attacker == null) return;
@@ -90,10 +95,32 @@ public class WildHuntAbility extends BaseAbility {
         if (target == null) return false;
         if (!(target instanceof  Player victim)) return false;
         
-        if (AbilityManager.hasAbility(victim, WILD_HUNT_KEY)) return false;
+        if (AbilityManager.hasAbility(victim, getKey())) return false;
         giveAbility(player, victim);
         
         return true;
+    }
+
+    @Override
+    public void onDeactivation(Player player) {
+        clearAbility(player);
+    }
+
+    @Override
+    public boolean isStateValid(Player victim) {
+        UUID attackerId = getCurrentOwner(victim);
+        if (attackerId == null) return false;
+
+        Player attacker = Bukkit.getPlayer(attackerId);
+        if (attacker == null) return false;
+
+        double distanceSquared = attacker.getLocation().distanceSquared(victim.getLocation());
+        return distanceSquared <= radiusSquared;
+    }
+
+    @Override
+    protected boolean activateAction(PlayerInteractEvent event, Player player) {
+        return AbilityActivateAction.SHIFT_LEFT_CLICK.check(event, player);
     }
 
     public void giveAbility(Player attacker, Player victim) {
@@ -101,22 +128,27 @@ public class WildHuntAbility extends BaseAbility {
         UUID victimId = victim.getUniqueId();
 
         clearPreviousVictim(victimId, playerId);
-        AbilityManager.changeAbilityOwner(victim, WILD_HUNT_KEY, playerId);
+        AbilityManager.changeAbilityOwner(victim, getKey(), playerId);
         
         // Play sounds
         attacker.getWorld().playSound(attacker.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
         victim.getWorld().playSound(victim.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
         
         // Add effects
-        VICTIM_EFFECTS.forEach(victim::addPotionEffect);
-        new WildHuntAbilityRunnable(config, playerId, victimId).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
+        victimEffects.forEach(victim::addPotionEffect);
+        new WildHuntAbilityRunnable(this, playerId, victimId).runTaskTimer(WeltenRaces.INSTANCE, 0, 20L);
     }
 
-    private static void clearPreviousVictim(UUID victimId, UUID playerId) {
+    public void clearAbility(Player victim) {
+        AbilityManager.removeAbility(victim, getKey());
+        victimEffects.forEach(effect -> victim.removePotionEffect(effect.getType()));
+    }
+
+    private void clearPreviousVictim(UUID victimId, UUID playerId) {
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.getUniqueId().equals(victimId)) continue;
 
-            if (!AbilityManager.hasAbility(online, WILD_HUNT_KEY)) continue;
+            if (!AbilityManager.hasAbility(online, getKey())) continue;
 
             UUID currentOwner = getCurrentOwner(online);
             if (!playerId.equals(currentOwner)) continue;
@@ -125,17 +157,7 @@ public class WildHuntAbility extends BaseAbility {
         }
     }
 
-    public static UUID getCurrentOwner(Player player) {
-        return AbilityManager.getAbilities(player).get(WILD_HUNT_KEY, DataType.UUID);
-    }
-
-    public static void clearAbility(Player victim) {
-        AbilityManager.removeAbility(victim, WILD_HUNT_KEY);
-        WildHuntAbility.VICTIM_EFFECTS.forEach(effect -> victim.removePotionEffect(effect.getType()));
-    }
-
-    @Override
-    protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        return AbilityActivateAction.SHIFT_LEFT_CLICK.check(event, player);
+    private UUID getCurrentOwner(Player player) {
+        return AbilityManager.getAbilities(player).get(getKey(), DataType.UUID);
     }
 }

@@ -28,6 +28,7 @@ public class ConfigRegistry {
     public final WildHuntAbilityConfig wildHuntAbilityConfig;
     public final WeightlessWillowSwayAbilityConfig weightlessWillowSwayAbilityConfig;
     public final CompressedSkyShardAbilityConfig compressedSkyShardAbilityConfig;
+    public final PoisonousAreaAbilityConfig poisonousAreaAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -55,6 +56,7 @@ public class ConfigRegistry {
         this.wildHuntAbilityConfig = new WildHuntAbilityConfig(loadAbilityConfig(plugin, "wild-hunt"));
         this.weightlessWillowSwayAbilityConfig = new WeightlessWillowSwayAbilityConfig(loadAbilityConfig(plugin, "weightless-willow-sway"));
         this.compressedSkyShardAbilityConfig = new CompressedSkyShardAbilityConfig(loadAbilityConfig(plugin, "compressed-sky-shard"));
+        this.poisonousAreaAbilityConfig = new PoisonousAreaAbilityConfig(loadAbilityConfig(plugin, "poisonous-area"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));

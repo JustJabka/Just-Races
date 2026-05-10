@@ -23,7 +23,7 @@ public class AbilitiesRegistry {
         final WeightlessWillowSwayAbility weightlessWillowSway = new WeightlessWillowSwayAbility(configs.weightlessWillowSwayAbilityConfig);
         final CompressedSkyShardAbility compressedSkyShard = new CompressedSkyShardAbility(configs.compressedSkyShardAbilityConfig);
         final PoisonousWeaponAbility poisonousWeapon = new PoisonousWeaponAbility();
-        final PoisonousAreaAbility poisonousArea = new PoisonousAreaAbility();
+        final PoisonousAreaAbility poisonousArea = new PoisonousAreaAbility(configs.poisonousAreaAbilityConfig);
 
         RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));

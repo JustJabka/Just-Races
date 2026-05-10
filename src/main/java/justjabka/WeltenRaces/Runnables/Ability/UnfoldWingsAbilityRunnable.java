@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -8,12 +9,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-import static justjabka.WeltenRaces.Abilities.UnfoldWingsAbility.removeWings;
-
 public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
+    private final BaseAbility ability;
     private final UUID pid;
 
-    public UnfoldWingsAbilityRunnable(UUID pid) {
+    public UnfoldWingsAbilityRunnable(BaseAbility ability, UUID pid) {
+        this.ability = ability;
         this.pid = pid;
     }
 
@@ -26,15 +27,13 @@ public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        boolean isGliding = player.isGliding();
-
-        if (isGliding) {
-            whileGliding(player);
+        if (!ability.isStateValid(player)) {
+            ability.onDeactivation(player);
+            this.cancel();
             return;
         }
 
-        removeWings(player);
-        this.cancel();
+        whileGliding(player);
     }
 
     private static void whileGliding(Player player) {

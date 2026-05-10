@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.DataProvider.EnchantmentProvider;
+import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -12,6 +13,11 @@ import org.bukkit.inventory.ItemStack;
 public class PoisonousWeaponAbility extends BaseAbility {
     private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
     private static final int ACTIVATION_AMOUNT = 64;
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "poisonous_weapon");
+    }
 
     @Override
     public long getCooldownTicks() {

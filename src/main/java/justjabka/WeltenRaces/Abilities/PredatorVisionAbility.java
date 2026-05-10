@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Managers.EffectManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -24,6 +25,11 @@ public class PredatorVisionAbility extends BaseAbility {
     }
 
     List<LivingEntity> markedVictims = new ArrayList<>();
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "predator_vision");
+    }
 
     @Override
     public long getCooldownTicks() {

@@ -32,7 +32,10 @@ public class DamageInversionAbility extends BaseAbility {
         this.config = config;
     }
 
-    public static final NamespacedKey DAMAGE_INVERSION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "damage_inversion");
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "damage_inversion");
+    }
 
     @Override
     public long getCooldownTicks() {
@@ -41,7 +44,7 @@ public class DamageInversionAbility extends BaseAbility {
 
     @Override
     public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY);
+        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
 
         Component displayName = getDisplayName();
         TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
@@ -68,8 +71,8 @@ public class DamageInversionAbility extends BaseAbility {
     protected boolean onActivation(Player player) {
         PersistentDataContainer abilities = AbilityManager.getAbilities(player);
 
-        boolean currentState = AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY);
-        abilities.set(DAMAGE_INVERSION_KEY, PersistentDataType.BOOLEAN, !currentState);
+        boolean currentState = AbilityManager.isAbilityActive(player, getKey());
+        abilities.set(getKey(), PersistentDataType.BOOLEAN, !currentState);
 
         AbilityManager.updateAbilities(player, abilities);
 
@@ -90,7 +93,7 @@ public class DamageInversionAbility extends BaseAbility {
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!AbilityManager.isAbilityActive(player, DAMAGE_INVERSION_KEY)) return;
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
         if (!canActivate(player)) return; // Temp fix! TODO: add auto deactivation
 
         double damage = event.getDamage();

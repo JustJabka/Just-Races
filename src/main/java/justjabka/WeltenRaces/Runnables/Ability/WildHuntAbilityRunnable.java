@@ -1,7 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.WildHuntAbility;
-import justjabka.WeltenRaces.Configs.Ability.WildHuntAbilityConfig;
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -10,14 +9,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class WildHuntAbilityRunnable extends BukkitRunnable {
+    private final BaseAbility ability;
     private final UUID attackerId;
     private final UUID victimId;
-    private final double radiusSquared;
 
-    public WildHuntAbilityRunnable(WildHuntAbilityConfig config, UUID playerId, UUID victimId) {
+    public WildHuntAbilityRunnable(BaseAbility ability, UUID playerId, UUID victimId) {
+        this.ability = ability;
         this.attackerId = playerId;
         this.victimId = victimId;
-        this.radiusSquared = config.radius * config.radius;
     }
 
     @Override
@@ -30,26 +29,13 @@ public class WildHuntAbilityRunnable extends BukkitRunnable {
             return;
         }
 
-        UUID currentOwner = WildHuntAbility.getCurrentOwner(victim);
-        if (currentOwner == null || !currentOwner.equals(attackerId)) {
+        if (!ability.isStateValid(victim)) {
+            ability.onDeactivation(victim);
             this.cancel();
             return;
         }
 
-        if (attacker == null) {
-            WildHuntAbility.clearAbility(victim);
-
-            this.cancel();
-            return;
-        }
-
-        boolean isVictimInRadius = attacker.getLocation().distanceSquared(victim.getLocation()) < radiusSquared;
-        if (!isVictimInRadius) {
-            WildHuntAbility.clearAbility(victim);
-
-            this.cancel();
-            return;
-        }
+        if (attacker == null) return;
 
         onUseEffects(attacker, victim);
     }

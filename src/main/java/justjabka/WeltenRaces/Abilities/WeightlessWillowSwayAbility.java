@@ -2,7 +2,9 @@ package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.WeightlessWillowSwayAbilityConfig;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -16,16 +18,20 @@ import java.util.Set;
 
 public class WeightlessWillowSwayAbility extends BaseAbility {
     private final WeightlessWillowSwayAbilityConfig config;
+    private final Set<PotionEffect> userEffects;
 
     public WeightlessWillowSwayAbility(WeightlessWillowSwayAbilityConfig config) {
         this.config = config;
-        this.USER_EFFECTS = Set.of(
+        this.userEffects = Set.of(
                 new PotionEffect(PotionEffectType.JUMP_BOOST, config.effectDuration, 3, false, true, true),
                 new PotionEffect(PotionEffectType.SPEED, config.effectDuration, 0, false, true, true)
         );
     }
 
-    private final Set<PotionEffect> USER_EFFECTS;
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(WeltenRaces.NAMESPACE, "weightless_willow_sway");
+    }
 
     @Override
     public long getCooldownTicks() {
@@ -47,7 +53,7 @@ public class WeightlessWillowSwayAbility extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player player) {
-        USER_EFFECTS.forEach(player::addPotionEffect);
+        userEffects.forEach(player::addPotionEffect);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BREEZE_IDLE_AIR, SoundCategory.PLAYERS, 1, 1);
         return true;
     }
