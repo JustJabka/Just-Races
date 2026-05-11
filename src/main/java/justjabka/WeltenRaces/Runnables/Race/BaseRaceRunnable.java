@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -34,6 +35,7 @@ public class BaseRaceRunnable extends BukkitRunnable {
         if (abilities.isEmpty()) return;
 
         List<Component> displays = abilities.stream()
+                .sorted(Comparator.comparing(ability -> ability.getClass().getSimpleName()))
                 .map(ability -> ability.getAbilityDisplay(player))
                 .filter(Predicate.not(component -> component.equals(Component.empty())))
                 .toList();

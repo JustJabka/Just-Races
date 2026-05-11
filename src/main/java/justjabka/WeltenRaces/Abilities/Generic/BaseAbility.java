@@ -12,6 +12,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.*;
 
@@ -82,13 +83,36 @@ public abstract class BaseAbility implements Listener {
         return abilityReadyMessage;
     }
 
+    // Handlers
+    public void handleInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        if (!interactionAction(event, player)) return;
+        tryActivate(player);
+    }
+
+    public void handleToggleSneak(PlayerToggleSneakEvent event) {
+        Player player = event.getPlayer();
+
+        if (!toggleSneakAction(event, player)) return;
+        tryActivate(player);
+    }
+
+    // Actions
+    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
+        return AbilityActivateAction.RIGHT_CLICK.check(event, player);
+    }
+
+    protected boolean toggleSneakAction(PlayerToggleSneakEvent event, Player player) {
+        return event.isSneaking();
+    }
+
     // Ability activation
     protected boolean canActivate(Player player) {
         return true;
     }
 
-    public void handleInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+    private void tryActivate(Player player) {
         Race race = RaceManager.getRace(player);
 
         // Check abilities of race
@@ -99,7 +123,6 @@ public abstract class BaseAbility implements Listener {
         if (!canActivate(player)) return;
 
         if (!AbilityManager.hasActivationSlotSelected(player)) return;
-        if (!activateAction(event, player)) return;
 
         long gameTime = getGameTime();
         long expireStamp = getExpireStamp(player);
@@ -116,10 +139,6 @@ public abstract class BaseAbility implements Listener {
     }
 
     protected abstract boolean onActivation(Player player);
-
-    protected boolean activateAction(PlayerInteractEvent event, Player player) {
-        return AbilityActivateAction.RIGHT_CLICK.check(event, player);
-    }
 
     // Ability deactivation
     public boolean isStateValid(Player player) {

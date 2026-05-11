@@ -45,10 +45,9 @@ public class CompressedSkyShardAbility extends BaseAbility {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public void handleInteract(PlayerInteractEvent event) {
         super.handleInteract(event);
     }
-
 
     @Override
     @SuppressWarnings("UnstableApiUsage")

@@ -55,7 +55,7 @@ public class PoisonousAreaAbility extends BaseAbility {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public void handleInteract(PlayerInteractEvent event) {
         super.handleInteract(event);
     }
 

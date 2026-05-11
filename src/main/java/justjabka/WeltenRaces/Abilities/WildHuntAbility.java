@@ -48,7 +48,7 @@ public class WildHuntAbility extends BaseAbility {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public void handleInteract(PlayerInteractEvent event) {
         super.handleInteract(event);
     }
 
@@ -119,7 +119,7 @@ public class WildHuntAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean activateAction(PlayerInteractEvent event, Player player) {
+    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
         return AbilityActivateAction.SHIFT_LEFT_CLICK.check(event, player);
     }
 

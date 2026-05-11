@@ -24,12 +24,13 @@ public class AbilitiesRegistry {
         final CompressedSkyShardAbility compressedSkyShard = new CompressedSkyShardAbility(configs.compressedSkyShardAbilityConfig);
         final PoisonousWeaponAbility poisonousWeapon = new PoisonousWeaponAbility();
         final PoisonousAreaAbility poisonousArea = new PoisonousAreaAbility(configs.poisonousAreaAbilityConfig);
+        final AzaleaCamouflageAbility azaleaCamouflage = new AzaleaCamouflageAbility();
 
         RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));
         RACE_ABILITIES.put(Race.HUMAN, Set.of()); // Human solo verse💀
         RACE_ABILITIES.put(Race.SKYZERN, Set.of(weightlessWillowSway, compressedSkyShard));
-        RACE_ABILITIES.put(Race.EPIPHYTE, Set.of(poisonousWeapon, poisonousArea));
+        RACE_ABILITIES.put(Race.EPIPHYTE, Set.of(poisonousWeapon, poisonousArea, azaleaCamouflage));
     }
 
     public static void register(Plugin plugin, ConfigRegistry configs) {
