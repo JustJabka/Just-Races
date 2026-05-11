@@ -2,6 +2,7 @@ package justjabka.WeltenRaces.Abilities;
 
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.AzaleaCamouflageAbilityConfig;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Transformation;
+import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -31,29 +33,36 @@ import java.util.List;
 import java.util.Set;
 
 public class AzaleaCamouflageAbility extends BaseAbility {
-    private static final Set<PotionEffect> userEffects = Set.of(
-            new PotionEffect(
-                PotionEffectType.INVISIBILITY,
-                PotionEffect.INFINITE_DURATION,
-                0,
-                false,
-                false,
-                false
-            ),
-            new PotionEffect(
-                PotionEffectType.REGENERATION,
-                PotionEffect.INFINITE_DURATION,
-                1,
-                false,
-                false,
-                false
-            )
-    );
+    private final AzaleaCamouflageAbilityConfig config;
+
+    private final Set<PotionEffect> userEffects;
     private final AttributeModifier noMovementAttribute = new AttributeModifier(
             getKey(),
             Integer.MIN_VALUE,
             AttributeModifier.Operation.ADD_NUMBER
     );
+
+    public AzaleaCamouflageAbility(AzaleaCamouflageAbilityConfig config) {
+        this.config = config;
+        this.userEffects = Set.of(
+                new PotionEffect(
+                        PotionEffectType.INVISIBILITY,
+                        PotionEffect.INFINITE_DURATION,
+                        0,
+                        false,
+                        false,
+                        false
+                ),
+                new PotionEffect(
+                        PotionEffectType.REGENERATION,
+                        PotionEffect.INFINITE_DURATION,
+                        config.regenerationAmplifier,
+                        false,
+                        false,
+                        false
+                )
+        );
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -62,7 +71,13 @@ public class AzaleaCamouflageAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 60;
+        return config.cooldown;
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        Vector velocity = player.getVelocity();
+        return velocity.getX() == 0 && velocity.getZ() == 0;
     }
 
     @EventHandler
@@ -93,7 +108,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (!hasCamoBlock(player)) return;
-        event.setDamage(event.getDamage() * 2);
+        event.setDamage(event.getDamage() * config.damageMultiplier);
     }
 
     @Override
@@ -104,7 +119,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         }
 
         addCamoBlock(player);
-        return true;
+        return false;
     }
 
     public void addCamoBlock(Player player) {
