@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,6 +32,14 @@ public class SkyzernRaceListener implements Listener {
 
     private static final NamespacedKey CELESTIAL_ORIGIN_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "celestial_origin");
 
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (RaceManager.getRace(player) != Race.SKYZERN) return;
+        clearCelestialOriginBonus(player);
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
@@ -38,24 +47,32 @@ public class SkyzernRaceListener implements Listener {
         if (RaceManager.getRace(player) != Race.SKYZERN) return;
 
         if (event.isSneaking()) {
-            PotionEffect onSneakEffect = new PotionEffect(
-                    PotionEffectType.SLOW_FALLING,
-                    PotionEffect.INFINITE_DURATION,
-                    0,
-                    false,
-                    false,
-                    false
-            );
-
-            player.addPotionEffect(onSneakEffect);
+            giveCelestialOriginBonus(player);
         } else {
-            PotionEffect currentEffect = player.getPotionEffect(PotionEffectType.SLOW_FALLING);
-
-            if (currentEffect == null) return;
-            if (!currentEffect.isInfinite()) return;
-
-            player.removePotionEffect(PotionEffectType.SLOW_FALLING);
+            clearCelestialOriginBonus(player);
         }
+    }
+
+    private static void giveCelestialOriginBonus(Player player) {
+        PotionEffect onSneakEffect = new PotionEffect(
+                PotionEffectType.SLOW_FALLING,
+                PotionEffect.INFINITE_DURATION,
+                0,
+                false,
+                false,
+                false
+        );
+
+        player.addPotionEffect(onSneakEffect);
+    }
+
+    private static void clearCelestialOriginBonus(Player player) {
+        PotionEffect currentEffect = player.getPotionEffect(PotionEffectType.SLOW_FALLING);
+
+        if (currentEffect == null) return;
+        if (!currentEffect.isInfinite()) return;
+
+        player.removePotionEffect(PotionEffectType.SLOW_FALLING);
     }
 
     @EventHandler

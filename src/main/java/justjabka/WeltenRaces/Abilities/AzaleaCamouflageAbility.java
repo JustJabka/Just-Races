@@ -142,6 +142,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
     public void addCamoBlock(Player player) {
         if (hasCamoBlock(player)) return;
 
+        // TODO: fix offset
         double playerHeight = player.getHeight();
         float playerFeet = (float) (playerHeight * -1);
 
