@@ -7,6 +7,7 @@ import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -24,6 +25,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
@@ -82,7 +84,22 @@ public class AzaleaCamouflageAbility extends BaseAbility {
 
     @EventHandler
     public void handleToggleSneak(PlayerToggleSneakEvent event) {
-        super.handleToggleSneak(event);
+        Player player = event.getPlayer();
+
+        if (!toggleSneakAction(event, player)) return;
+
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        long taskDelay = config.activationTime + 1L;
+
+        int sneakTime = player.getStatistic(Statistic.SNEAK_TIME);
+        int requiredSneakTime = sneakTime + config.activationTime;
+
+        scheduler.runTaskLater(WeltenRaces.INSTANCE, () -> {
+            int newSneakTime = player.getStatistic(Statistic.SNEAK_TIME);
+
+            if (newSneakTime < requiredSneakTime) return;
+            tryActivate(player);
+        }, taskDelay);
     }
 
     @EventHandler
@@ -125,26 +142,26 @@ public class AzaleaCamouflageAbility extends BaseAbility {
     public void addCamoBlock(Player player) {
         if (hasCamoBlock(player)) return;
 
-        Entity camoBlock = player.getWorld().spawn(
+        double playerHeight = player.getHeight();
+        float playerFeet = (float) (playerHeight * -1);
+
+        Transformation camoBlockTransformation = new Transformation(
+                new Vector3f(-0.5f, playerFeet, -0.5f),
+                new Quaternionf(),
+                new Vector3f(1f,1f,1f),
+                new Quaternionf()
+        );
+
+        BlockDisplay camoBlock = player.getWorld().spawn(
                 player.getLocation(),
                 BlockDisplay.class,
                 CreatureSpawnEvent.SpawnReason.CUSTOM,
                 blockDisplay -> {
-                    double playerHeight = player.getBoundingBox().getHeight();
-                    float playerFeet = (float) playerHeight * -1;
-
-                    Transformation camoBlockTransformation = new Transformation(
-                            new Vector3f(-0.5f, playerFeet, -0.5f),
-                            new Quaternionf(),
-                            new Vector3f(1f,1f,1f),
-                            new Quaternionf()
-                    );
-
                     blockDisplay.getPersistentDataContainer().set(getKey(), PersistentDataType.BOOLEAN, true);
 
                     blockDisplay.setBlock(Bukkit.createBlockData(Material.FLOWERING_AZALEA));
 
-                    blockDisplay.setRotation(0,0);
+                    blockDisplay.setRotation(0, 0);
                     blockDisplay.setTransformation(camoBlockTransformation);
                 }
         );

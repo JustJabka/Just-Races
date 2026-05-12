@@ -112,7 +112,7 @@ public abstract class BaseAbility implements Listener {
         return true;
     }
 
-    private void tryActivate(Player player) {
+    protected void tryActivate(Player player) {
         Race race = RaceManager.getRace(player);
 
         // Check abilities of race
