@@ -1,9 +1,6 @@
 package justjabka.WeltenRaces.Registries;
 
-import justjabka.WeltenRaces.Runnables.Race.BaseRaceRunnable;
-import justjabka.WeltenRaces.Runnables.Race.EpiphyteRaceRunnable;
-import justjabka.WeltenRaces.Runnables.Race.PhantomRaceRunnable;
-import justjabka.WeltenRaces.Runnables.Race.SkyzernRaceRunnable;
+import justjabka.WeltenRaces.Runnables.Race.*;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.plugin.Plugin;
 
@@ -13,6 +10,7 @@ public class RunnablesRegistry {
         new PhantomRaceRunnable(configs.phantomRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new SkyzernRaceRunnable(configs.skyzernRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new EpiphyteRaceRunnable(configs.epiphyteRaceConfig).runTaskTimer(plugin, 0L, 20L);
+        new LizardRaceRunnable().runTaskTimer(plugin, 0L, 20L);
 
         WeltenRaces.LOGGER.info("Successfully registered runnables!");
     }

@@ -25,8 +25,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Collection;
+
 public class DamageInversionAbility extends BaseAbility {
     private final DamageInversionAbilityConfig config;
+    private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
+
 
     public DamageInversionAbility(DamageInversionAbilityConfig config) {
         this.config = config;
@@ -100,7 +104,7 @@ public class DamageInversionAbility extends BaseAbility {
         DamageSource damageSource = event.getDamageSource();
         DamageType damageType = damageSource.getDamageType();
 
-        boolean canBypassInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION).contains(damageType);
+        boolean canBypassInversion = bypassesDamageInversion.contains(damageType);
 
         if (canBypassInversion) return;
 

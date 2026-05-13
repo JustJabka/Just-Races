@@ -44,6 +44,7 @@ public class RaceManager {
     private static void initRace(Player player, Race race) {
         AttributeInstance scaleInstance = player.getAttribute(Attribute.SCALE);
         AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
+        AttributeInstance fallDamageMultiplier = player.getAttribute(Attribute.FALL_DAMAGE_MULTIPLIER);
 
         switch (race) {
             case ARMAT -> {
@@ -65,6 +66,11 @@ public class RaceManager {
             case EPIPHYTE -> {
                 modifyBaseValue(scaleInstance, 0.95);
                 modifyBaseValue(maxHealthInstance, 18);
+            }
+            case LIZARD -> {
+                modifyBaseValue(scaleInstance, 1);
+                modifyBaseValue(maxHealthInstance, 14);
+                modifyBaseValue(fallDamageMultiplier, 0.8);
             }
         }
     }
