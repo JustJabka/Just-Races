@@ -5,10 +5,7 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -114,7 +111,9 @@ public class SkyzernRaceListener implements Listener {
         boolean hasModifier = attackKnockbackInstance.getModifier(CELESTIAL_ORIGIN_KEY) != null;
         if (!hasModifier) return;
 
-        victim.getWorld().spawnParticle(
+        World world = victim.getWorld();
+
+        world.spawnParticle(
                 Particle.SMALL_GUST,
                 victim.getX(),
                 victim.getBoundingBox().getCenterY(),
@@ -125,6 +124,6 @@ public class SkyzernRaceListener implements Listener {
                 0.25
         );
 
-        victim.getWorld().playSound(victim.getLocation(), Sound.ENTITY_WIND_CHARGE_WIND_BURST, SoundCategory.PLAYERS, 1, 1);
+        world.playSound(victim.getLocation(), Sound.ENTITY_WIND_CHARGE_WIND_BURST, SoundCategory.PLAYERS, 1, 1);
     }
 }

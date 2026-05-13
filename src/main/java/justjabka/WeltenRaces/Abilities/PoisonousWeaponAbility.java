@@ -1,5 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.DataProvider.EnchantmentProvider;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -9,6 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PoisonousWeaponAbility extends BaseAbility {
     private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
@@ -54,11 +59,23 @@ public class PoisonousWeaponAbility extends BaseAbility {
         ItemStack offHand = player.getInventory().getItemInOffHand();
 
         mainHand.addEnchantment(EnchantmentProvider.POISON, 1);
+        addLore(player, mainHand);
+
         offHand.subtract(ACTIVATION_AMOUNT);
 
         onUseEffects(player);
 
         return true;
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private static void addLore(Player player, ItemStack mainHand) {
+        ItemLore lore = mainHand.getDataOrDefault(DataComponentTypes.LORE, ItemLore.lore().build());
+
+        List<Component> newLore = new ArrayList<>(lore.lines());
+        newLore.add(Component.text(player.getName()));
+
+        mainHand.setData(DataComponentTypes.LORE, ItemLore.lore(newLore));
     }
 
     private static void onUseEffects(Player player) {
