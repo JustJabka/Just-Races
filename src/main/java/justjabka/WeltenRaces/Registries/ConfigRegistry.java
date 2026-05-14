@@ -29,6 +29,8 @@ public class ConfigRegistry {
     public final WeightlessWillowSwayAbilityConfig weightlessWillowSwayAbilityConfig;
     public final CompressedSkyShardAbilityConfig compressedSkyShardAbilityConfig;
     public final PoisonousAreaAbilityConfig poisonousAreaAbilityConfig;
+    public final AzaleaCamouflageAbilityConfig azaleaCamouflageAbilityConfig;
+    public final PoisonousSplitAbilityConfig poisonousSplitAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -40,7 +42,6 @@ public class ConfigRegistry {
     public final GlowBerriesFoodModifierConfig glowBerriesFoodModifierConfig;
     public final MossFoodModifierConfig mossFoodModifierConfig;
     public final PhantomMembraneFoodModifierConfig phantomMembraneFoodModifierConfig;
-    public final AzaleaCamouflageAbilityConfig azaleaCamouflageAbilityConfig;
 
     public ConfigRegistry(Plugin plugin) {
         // Races
@@ -59,6 +60,7 @@ public class ConfigRegistry {
         this.compressedSkyShardAbilityConfig = new CompressedSkyShardAbilityConfig(loadAbilityConfig(plugin, "compressed-sky-shard"));
         this.poisonousAreaAbilityConfig = new PoisonousAreaAbilityConfig(loadAbilityConfig(plugin, "poisonous-area"));
         this.azaleaCamouflageAbilityConfig = new AzaleaCamouflageAbilityConfig(loadAbilityConfig(plugin, "azalea-camouflage"));
+        this.poisonousSplitAbilityConfig = new PoisonousSplitAbilityConfig(loadAbilityConfig(plugin, "poisonous-split"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));
