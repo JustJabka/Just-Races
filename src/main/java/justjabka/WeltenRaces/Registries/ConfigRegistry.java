@@ -31,6 +31,7 @@ public class ConfigRegistry {
     public final PoisonousAreaAbilityConfig poisonousAreaAbilityConfig;
     public final AzaleaCamouflageAbilityConfig azaleaCamouflageAbilityConfig;
     public final PoisonousSplitAbilityConfig poisonousSplitAbilityConfig;
+    public final SwiftSneakAbilityConfig swiftSneakAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -61,6 +62,7 @@ public class ConfigRegistry {
         this.poisonousAreaAbilityConfig = new PoisonousAreaAbilityConfig(loadAbilityConfig(plugin, "poisonous-area"));
         this.azaleaCamouflageAbilityConfig = new AzaleaCamouflageAbilityConfig(loadAbilityConfig(plugin, "azalea-camouflage"));
         this.poisonousSplitAbilityConfig = new PoisonousSplitAbilityConfig(loadAbilityConfig(plugin, "poisonous-split"));
+        this.swiftSneakAbilityConfig = new SwiftSneakAbilityConfig(loadAbilityConfig(plugin, "swift-sneak"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));
