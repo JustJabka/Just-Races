@@ -16,6 +16,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class LizardRaceRunnable extends BukkitRunnable {
@@ -24,6 +26,18 @@ public class LizardRaceRunnable extends BukkitRunnable {
     private static final double minBuffTemperature = 0.8;
     private static final double maxBuffTemperature = 1.8;
 
+    private static final Map<Attribute, AttributeModifier> warmBiomesBuffs = Map.of(
+            Attribute.MOVEMENT_SPEED, new AttributeModifier(
+                    REPTILE_NATURE_KEY,
+                    0.13,
+                    AttributeModifier.Operation.ADD_NUMBER
+            ),
+            Attribute.JUMP_STRENGTH, new AttributeModifier(
+                    REPTILE_NATURE_KEY,
+                    0.5,
+                    AttributeModifier.Operation.ADD_NUMBER
+            )
+    );
     private static final Set<PotionEffect> netherDebuffs = Set.of(
             new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
             new PotionEffect(PotionEffectType.MINING_FATIGUE, 40, 0, false, false, false)
@@ -43,31 +57,35 @@ public class LizardRaceRunnable extends BukkitRunnable {
     }
 
     private void giveWarmBiomesBuff(Player player, Location location) {
-        AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
-        AttributeInstance jumpStrengthInstance = player.getAttribute(Attribute.JUMP_STRENGTH);
-
-        if (movementSpeedInstance == null || jumpStrengthInstance == null) return;
-
-        boolean hasModifiers = movementSpeedInstance.getModifier(REPTILE_NATURE_KEY) != null && jumpStrengthInstance.getModifier(REPTILE_NATURE_KEY) != null;
+        boolean hasModifiers = hasWarmBiomesBuff(player);
 
         boolean giveBuff = isInWarmBiome(location) && !hasModifiers;
         boolean clearBuff = !isInWarmBiome(location) && hasModifiers;
 
         if (giveBuff) {
-            movementSpeedInstance.addModifier(new AttributeModifier(
-                    REPTILE_NATURE_KEY,
-                    0.13,
-                    AttributeModifier.Operation.ADD_NUMBER
-            ));
-            jumpStrengthInstance.addModifier(new AttributeModifier(
-                    REPTILE_NATURE_KEY,
-                    0.5,
-                    AttributeModifier.Operation.ADD_NUMBER
-            ));
+            warmBiomesBuffs.forEach((attribute, attributeModifier) -> {
+                AttributeInstance instance = player.getAttribute(attribute);
+
+                if (instance == null) return;
+
+                instance.addModifier(attributeModifier);
+            });
         } else if (clearBuff) {
-            movementSpeedInstance.removeModifier(REPTILE_NATURE_KEY);
-            jumpStrengthInstance.removeModifier(REPTILE_NATURE_KEY);
+            warmBiomesBuffs.forEach((attribute, attributeModifier) -> {
+                AttributeInstance instance = player.getAttribute(attribute);
+
+                if (instance == null) return;
+
+                instance.removeModifier(attributeModifier);
+            });
         }
+    }
+
+    private boolean hasWarmBiomesBuff(Player player) {
+        return warmBiomesBuffs.keySet().stream()
+                .map(player::getAttribute)
+                .filter(Objects::nonNull)
+                .allMatch(instance -> instance.getModifier(REPTILE_NATURE_KEY) != null);
     }
 
     private static boolean isInWarmBiome(Location location) {
