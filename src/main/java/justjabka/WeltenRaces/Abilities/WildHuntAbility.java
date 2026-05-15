@@ -74,7 +74,10 @@ public class WildHuntAbility extends BaseValidationAbility {
         clearAbility(victim);
 
         if (attacker == null) return;
-        if (RaceManager.getRace(attacker) != Race.PHANTOM) return;
+
+        Race attackerRace = RaceManager.getRace(attacker);
+        if (!AbilityManager.getAbilitiesForRace(attackerRace).contains(this)) return;
+
         setCooldownTicks(attacker, 0L);
     }
 
