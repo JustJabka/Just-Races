@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -33,7 +31,7 @@ public class EcdysisAbility extends BaseAbility {
         this.config = config;
         this.userEffects = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
-                new PotionEffect(PotionEffectType.SPEED, (2 * 20) + 20, 1, false, true)
+                new PotionEffect(PotionEffectType.SPEED, 3 * 20, 1, false, true)
         );
         this.victimEffects = Set.of(
                 new PotionEffect(PotionEffectType.BLINDNESS, config.effectDuration, 0, false, false)
@@ -63,9 +61,7 @@ public class EcdysisAbility extends BaseAbility {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-
-        killPlayer(player, abilities);
+        killPlayer(player);
     }
 
     @Override
@@ -74,9 +70,7 @@ public class EcdysisAbility extends BaseAbility {
         boolean isSuicideUse = avrgDurability <= config.suicideDurabilityPercent;
 
         // Store if this is suicide use for later
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(getKey(), PersistentDataType.BOOLEAN, isSuicideUse);
-        AbilityManager.updateAbilities(player, abilities);
+        AbilityManager.changeAbilityState(player, getKey(), isSuicideUse);
 
         // Change durability
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
@@ -116,17 +110,15 @@ public class EcdysisAbility extends BaseAbility {
 
             if (suicidePlayer == null) return;
 
-            // Prevent double death
-            PersistentDataContainer currentAbilities = AbilityManager.getAbilities(suicidePlayer);
-            killPlayer(suicidePlayer, currentAbilities);
+            killPlayer(suicidePlayer);
         }, config.effectDuration);
     }
 
-    private void killPlayer(Player suicidePlayer, PersistentDataContainer currentAbilities) {
+    private void killPlayer(Player suicidePlayer) {
         if (!AbilityManager.isAbilityActive(suicidePlayer, getKey())) return;
 
-        currentAbilities.set(getKey(), PersistentDataType.BOOLEAN, false);
-        AbilityManager.updateAbilities(suicidePlayer, currentAbilities);
+        // Prevent double death
+        AbilityManager.changeAbilityState(suicidePlayer, getKey(), false);
 
         // DIE!
         suicidePlayer.setHealth(0);
