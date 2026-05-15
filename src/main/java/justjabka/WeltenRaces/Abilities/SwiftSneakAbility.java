@@ -3,12 +3,12 @@ package justjabka.WeltenRaces.Abilities;
 import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.SwiftSneakAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
+import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Runnables.Ability.SwiftSneakAbilityRunnable;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,13 +83,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
 
         // Add bonuses
         fastSneakEffects.forEach(player::addPotionEffect);
-        fastSneakAttributes.forEach((attribute, attributeModifier) -> {
-            AttributeInstance instance = player.getAttribute(attribute);
-
-            if (instance == null) return;
-
-            instance.addModifier(attributeModifier);
-        });
+        AttributeManager.addModifiers(player, fastSneakAttributes);
     }
 
     public void clearFastSneak(Player player) {
@@ -97,13 +91,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
 
         // Remove bonuses
         fastSneakEffects.forEach(effect -> player.removePotionEffect(effect.getType()));
-        fastSneakAttributes.forEach((attribute, attributeModifier) -> {
-            AttributeInstance instance = player.getAttribute(attribute);
-
-            if (instance == null) return;
-
-            instance.removeModifier(attributeModifier);
-        });
+        AttributeManager.removeModifiers(player, fastSneakAttributes);
     }
 
     @Override

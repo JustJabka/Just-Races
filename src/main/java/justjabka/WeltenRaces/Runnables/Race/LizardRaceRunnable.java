@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -9,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -17,7 +17,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 public class LizardRaceRunnable extends BukkitRunnable {
@@ -57,35 +56,16 @@ public class LizardRaceRunnable extends BukkitRunnable {
     }
 
     private void giveWarmBiomesBuff(Player player, Location location) {
-        boolean hasModifiers = hasWarmBiomesBuff(player);
+        boolean hasModifiers = AttributeManager.hasModifiers(player, warmBiomesBuffs);
 
         boolean giveBuff = isInWarmBiome(location) && !hasModifiers;
         boolean clearBuff = !isInWarmBiome(location) && hasModifiers;
 
         if (giveBuff) {
-            warmBiomesBuffs.forEach((attribute, attributeModifier) -> {
-                AttributeInstance instance = player.getAttribute(attribute);
-
-                if (instance == null) return;
-
-                instance.addModifier(attributeModifier);
-            });
+            AttributeManager.addModifiers(player, warmBiomesBuffs);
         } else if (clearBuff) {
-            warmBiomesBuffs.forEach((attribute, attributeModifier) -> {
-                AttributeInstance instance = player.getAttribute(attribute);
-
-                if (instance == null) return;
-
-                instance.removeModifier(attributeModifier);
-            });
+            AttributeManager.removeModifiers(player, warmBiomesBuffs);
         }
-    }
-
-    private boolean hasWarmBiomesBuff(Player player) {
-        return warmBiomesBuffs.keySet().stream()
-                .map(player::getAttribute)
-                .filter(Objects::nonNull)
-                .allMatch(instance -> instance.getModifier(REPTILE_NATURE_KEY) != null);
     }
 
     private static boolean isInWarmBiome(Location location) {

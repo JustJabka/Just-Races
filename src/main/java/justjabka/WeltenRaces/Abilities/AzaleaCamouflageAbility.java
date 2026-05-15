@@ -3,13 +3,13 @@ package justjabka.WeltenRaces.Abilities;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.AzaleaCamouflageAbilityConfig;
+import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
@@ -32,16 +32,21 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class AzaleaCamouflageAbility extends BaseAbility {
     private final AzaleaCamouflageAbilityConfig config;
 
     private final Set<PotionEffect> userEffects;
-    private final AttributeModifier noMovementAttribute = new AttributeModifier(
+    private final AttributeModifier minValueAttribute = new AttributeModifier(
             getKey(),
             Integer.MIN_VALUE,
             AttributeModifier.Operation.ADD_NUMBER
+    );
+    private final Map<Attribute, AttributeModifier> camoAttributes = Map.of(
+            Attribute.MOVEMENT_SPEED, minValueAttribute,
+            Attribute.JUMP_STRENGTH, minValueAttribute
     );
 
     public AzaleaCamouflageAbility(AzaleaCamouflageAbilityConfig config) {
@@ -174,26 +179,12 @@ public class AzaleaCamouflageAbility extends BaseAbility {
 
     private void giveCamoEffects(Player player) {
         userEffects.forEach(player::addPotionEffect);
-
-        AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
-        AttributeInstance jumpStrengthInstance = player.getAttribute(Attribute.JUMP_STRENGTH);
-
-        if (movementSpeedInstance == null || jumpStrengthInstance == null) return;
-
-        movementSpeedInstance.addModifier(noMovementAttribute);
-        jumpStrengthInstance.addModifier(noMovementAttribute);
+        AttributeManager.addModifiers(player, camoAttributes);
     }
 
     private void clearCamoEffects(Player player) {
         userEffects.forEach(effect -> player.removePotionEffect(effect.getType()));
-
-        AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
-        AttributeInstance jumpStrengthInstance = player.getAttribute(Attribute.JUMP_STRENGTH);
-
-        if (movementSpeedInstance == null || jumpStrengthInstance == null) return;
-
-        movementSpeedInstance.removeModifier(noMovementAttribute);
-        jumpStrengthInstance.removeModifier(noMovementAttribute);
+        AttributeManager.removeModifiers(player, camoAttributes);
     }
 
     public void removeCamoBlock(Player player) {

@@ -8,8 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -46,35 +44,24 @@ public class RaceManager {
     }
 
     private static void initRace(Player player, Race race) {
-        AttributeInstance scaleInstance = player.getAttribute(Attribute.SCALE);
-        AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
-        AttributeInstance fallDamageMultiplier = player.getAttribute(Attribute.FALL_DAMAGE_MULTIPLIER);
-
         switch (race) {
             case ARMAT -> {
-                modifyBaseValue(scaleInstance, 1);
-                modifyBaseValue(maxHealthInstance, 10);
+                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 10);
             }
             case HUMAN -> {
-                modifyBaseValue(scaleInstance, 1);
-                modifyBaseValue(maxHealthInstance, 26);
-            }
-            case PHANTOM -> {
-                modifyBaseValue(scaleInstance, 1);
-                modifyBaseValue(maxHealthInstance, 20);
+                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 26);
             }
             case SKYZERN -> {
-                modifyBaseValue(scaleInstance, 1.05);
-                modifyBaseValue(maxHealthInstance, 20);
+                AttributeManager.setBaseValue(player, Attribute.SCALE, 1.05);
             }
             case EPIPHYTE -> {
-                modifyBaseValue(scaleInstance, 0.95);
-                modifyBaseValue(maxHealthInstance, 18);
+                AttributeManager.setBaseValue(player, Attribute.SCALE, 0.95);
+                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 18);
             }
             case LIZARD -> {
-                modifyBaseValue(scaleInstance, 1);
-                modifyBaseValue(maxHealthInstance, 14);
-                modifyBaseValue(fallDamageMultiplier, 0.8);
+                AttributeManager.setBaseValue(player, Attribute.SCALE, 1);
+                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 14);
+                AttributeManager.setBaseValue(player, Attribute.FALL_DAMAGE_MULTIPLIER, 0.8);
             }
         }
     }
@@ -84,19 +71,10 @@ public class RaceManager {
         player.clearActivePotionEffects();
 
         // Reset all attributes
+        AttributeManager.removeAllModifiers(player);
+
         for (Attribute attribute : Registry.ATTRIBUTE) {
-            AttributeInstance instance = player.getAttribute(attribute);
-
-            if (instance == null) continue;
-
-            // Remove all modifiers
-            for (AttributeModifier modifier : instance.getModifiers()) {
-                String modifierNamespace = modifier.getKey().getNamespace();
-
-                if (!modifierNamespace.equals(WeltenRaces.NAMESPACE)) continue;
-
-                instance.removeModifier(modifier);
-            }
+            AttributeManager.resetBaseValue(player, attribute);
         }
 
         // Disable abilities
@@ -108,23 +86,5 @@ public class RaceManager {
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> refreshModifiers(player));
-    }
-
-    private static void modifyBaseValue(AttributeInstance instance, double newValue) {
-        if (instance == null) return;
-
-        NamespacedKey key = new NamespacedKey(WeltenRaces.NAMESPACE, instance.getAttribute().getKey().getKey());
-        double baseValue = instance.getBaseValue();
-
-        double diff = newValue - baseValue;
-
-        if (diff == 0) return;
-
-        AttributeModifier modifier = new AttributeModifier(
-                key,
-                diff,
-                AttributeModifier.Operation.ADD_NUMBER
-        );
-        instance.addModifier(modifier);
     }
 }
