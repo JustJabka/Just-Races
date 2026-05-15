@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.WeltenRaces.Abilities.Generic.BaseTogglableAbility;
 import justjabka.WeltenRaces.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
@@ -8,9 +9,6 @@ import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang3.Range;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -22,15 +20,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Collection;
 
-public class DamageInversionAbility extends BaseAbility {
+public class DamageInversionAbility extends BaseTogglableAbility {
     private final DamageInversionAbilityConfig config;
     private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
-
 
     public DamageInversionAbility(DamageInversionAbilityConfig config) {
         this.config = config;
@@ -47,23 +42,23 @@ public class DamageInversionAbility extends BaseAbility {
     }
 
     @Override
-    public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
-
-        Component displayName = getDisplayName();
-        TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
-
-        return Component
-                .translatable("ability.damage_inversion.state")
-                .fallback("%s")
-                .arguments(displayName)
-                .color(displayColor)
-                .decorate(TextDecoration.UNDERLINED);
+    protected boolean canActivate(Player player) {
+        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
     }
 
     @Override
-    protected boolean canActivate(Player player) {
+    public boolean isStateValid(Player player) {
         return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+    }
+
+    @EventHandler
+    public void onArmorChange(EntityEquipmentChangedEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+        if (isStateValid(player)) return;
+
+        disable(player);
     }
 
     @EventHandler
@@ -73,13 +68,17 @@ public class DamageInversionAbility extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player player) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        toggle(player);
+        return true;
+    }
 
-        boolean currentState = AbilityManager.isAbilityActive(player, getKey());
-        abilities.set(getKey(), PersistentDataType.BOOLEAN, !currentState);
+    @Override
+    public void onDeactivation(Player player) {
+        disable(player);
+    }
 
-        AbilityManager.updateAbilities(player, abilities);
-
+    @Override
+    public void onToggle(Player player, boolean state) {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CANDLE_EXTINGUISH, SoundCategory.PLAYERS, 1, 2);
         player.getWorld().spawnParticle(
                 Particle.CRIT,
@@ -90,15 +89,12 @@ public class DamageInversionAbility extends BaseAbility {
                 0.25,
                 0.05
         );
-
-        return true;
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!AbilityManager.isAbilityActive(player, getKey())) return;
-        if (!canActivate(player)) return; // Temp fix! TODO: add auto deactivation
 
         double damage = event.getDamage();
         DamageSource damageSource = event.getDamageSource();

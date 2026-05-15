@@ -3,7 +3,7 @@ package justjabka.WeltenRaces.Abilities;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Equippable;
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.UnfoldWingsAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
@@ -25,7 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
-public class UnfoldWingsAbility extends BaseAbility {
+public class UnfoldWingsAbility extends BaseValidationAbility {
     UnfoldWingsAbilityConfig config;
 
     public UnfoldWingsAbility(UnfoldWingsAbilityConfig config) {

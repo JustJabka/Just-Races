@@ -26,19 +26,19 @@ import java.util.UUID;
 public class EcdysisAbility extends BaseAbility {
     private final EcdysisAbilityConfig config;
 
+    private final Set<PotionEffect> userEffects;
+    private final Set<PotionEffect> victimEffects;
+
     public EcdysisAbility(EcdysisAbilityConfig config) {
         this.config = config;
-        this.USER_EFFECTS = Set.of(
+        this.userEffects = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
                 new PotionEffect(PotionEffectType.SPEED, (2 * 20) + 20, 1, false, true)
         );
-        this.VICTIM_EFFECTS = Set.of(
+        this.victimEffects = Set.of(
                 new PotionEffect(PotionEffectType.BLINDNESS, config.effectDuration, 0, false, false)
         );
     }
-
-    private final Set<PotionEffect> USER_EFFECTS;
-    private final Set<PotionEffect> VICTIM_EFFECTS;
 
     @Override
     public NamespacedKey getKey() {
@@ -92,11 +92,11 @@ public class EcdysisAbility extends BaseAbility {
         }
 
         // Potion effects
-        USER_EFFECTS.forEach(player::addPotionEffect);
+        userEffects.forEach(player::addPotionEffect);
 
         for (LivingEntity victim : player.getLocation().getNearbyLivingEntities(10)) {
             if (victim == player) continue;
-            VICTIM_EFFECTS.forEach(victim::addPotionEffect);
+            victimEffects.forEach(victim::addPotionEffect);
         }
 
         onUseEffects(player);
@@ -133,18 +133,21 @@ public class EcdysisAbility extends BaseAbility {
     }
 
     private static void onUseEffects(Player player) {
-        player.getWorld().spawnParticle(
+        World world = player.getWorld();
+        Location location = player.getLocation();
+
+        world.spawnParticle(
                 Particle.BLOCK,
-                player.getLocation().add(0, 1, 0),
+                location.add(0, 1, 0),
                 100,
                 2.5,
                 1,
                 2.5,
                 Bukkit.createBlockData(Material.NETHERITE_BLOCK)
         );
-        player.getWorld().spawnParticle(
+        world.spawnParticle(
                 Particle.EXPLOSION_EMITTER,
-                player.getLocation().add(0, 1, 0),
+                location.add(0, 1, 0),
                 1,
                 0,
                 0,
@@ -152,8 +155,8 @@ public class EcdysisAbility extends BaseAbility {
                 1
         );
 
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.PLAYERS, 1, 2);
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 2, 1);
+        world.playSound(location, Sound.ENTITY_WITHER_BREAK_BLOCK, SoundCategory.PLAYERS, 1, 2);
+        world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 2, 1);
     }
 
     @Override

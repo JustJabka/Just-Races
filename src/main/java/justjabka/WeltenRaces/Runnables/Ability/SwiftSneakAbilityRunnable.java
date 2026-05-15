@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -8,10 +8,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class SwiftSneakAbilityRunnable extends BukkitRunnable {
-    private final BaseAbility ability;
+    private final BaseValidationAbility ability;
     private final UUID pid;
 
-    public SwiftSneakAbilityRunnable(BaseAbility ability, UUID pid) {
+    public SwiftSneakAbilityRunnable(BaseValidationAbility ability, UUID pid) {
         this.ability = ability;
         this.pid = pid;
     }

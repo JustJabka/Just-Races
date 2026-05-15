@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.WildHuntAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
@@ -23,7 +23,7 @@ import org.bukkit.util.RayTraceResult;
 import java.util.Set;
 import java.util.UUID;
 
-public class WildHuntAbility extends BaseAbility {
+public class WildHuntAbility extends BaseValidationAbility {
     private final WildHuntAbilityConfig config;
     private final double radiusSquared;
     private static final Set<PotionEffect> victimEffects = Set.of(

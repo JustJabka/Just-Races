@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -10,10 +10,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class UnfoldWingsAbilityRunnable extends BukkitRunnable {
-    private final BaseAbility ability;
+    private final BaseValidationAbility ability;
     private final UUID pid;
 
-    public UnfoldWingsAbilityRunnable(BaseAbility ability, UUID pid) {
+    public UnfoldWingsAbilityRunnable(BaseValidationAbility ability, UUID pid) {
         this.ability = ability;
         this.pid = pid;
     }

@@ -1,5 +1,7 @@
 package justjabka.WeltenRaces.Managers;
 
+import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
@@ -11,6 +13,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Set;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 
@@ -94,6 +98,13 @@ public class RaceManager {
                 instance.removeModifier(modifier);
             }
         }
+
+        // Disable abilities
+        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(RaceManager.getRace(player));
+        allowedAbilities.forEach(ability -> {
+            if (!(ability instanceof BaseValidationAbility validationAbility)) return;
+            validationAbility.onDeactivation(player);
+        });
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(WeltenRaces.INSTANCE, () -> refreshModifiers(player));

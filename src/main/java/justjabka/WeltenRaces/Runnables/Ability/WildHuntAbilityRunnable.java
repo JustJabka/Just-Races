@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -9,11 +9,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class WildHuntAbilityRunnable extends BukkitRunnable {
-    private final BaseAbility ability;
+    private final BaseValidationAbility ability;
     private final UUID attackerId;
     private final UUID victimId;
 
-    public WildHuntAbilityRunnable(BaseAbility ability, UUID playerId, UUID victimId) {
+    public WildHuntAbilityRunnable(BaseValidationAbility ability, UUID playerId, UUID victimId) {
         this.ability = ability;
         this.attackerId = playerId;
         this.victimId = victimId;

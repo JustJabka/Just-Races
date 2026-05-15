@@ -82,6 +82,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         return velocity.getX() == 0 && velocity.getZ() == 0;
     }
 
+    @Override
     @EventHandler
     public void handleToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();

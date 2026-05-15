@@ -1,13 +1,10 @@
 package justjabka.WeltenRaces.Abilities;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseTogglableAbility;
 import justjabka.WeltenRaces.Configs.Ability.PoisonousAreaAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Runnables.Ability.PoisonousAreaAbilityRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -20,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PoisonousAreaAbility extends BaseAbility {
+public class PoisonousAreaAbility extends BaseTogglableAbility {
     private final PoisonousAreaAbilityConfig config;
     private final Map<UUID, BukkitTask> activeTasks = new HashMap<>();
     private static final Material activationItem = Material.SPORE_BLOSSOM;
@@ -39,21 +36,6 @@ public class PoisonousAreaAbility extends BaseAbility {
         return config.cooldown;
     }
 
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
-
-        Component displayName = getDisplayName();
-        TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
-
-        return Component
-                .translatable("ability.poisonous_area.state")
-                .fallback("%s")
-                .arguments(displayName)
-                .color(displayColor)
-                .decorate(TextDecoration.UNDERLINED);
-    }
-
     @EventHandler
     public void handleInteract(PlayerInteractEvent event) {
         super.handleInteract(event);
@@ -66,8 +48,13 @@ public class PoisonousAreaAbility extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player player) {
-        toggleAbility(player);
+        toggle(player);
         return true;
+    }
+
+    @Override
+    public void onDeactivation(Player player) {
+        disable(player);
     }
 
     @Override
@@ -81,25 +68,13 @@ public class PoisonousAreaAbility extends BaseAbility {
     }
 
     @Override
-    public void onDeactivation(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), false);
-        stopTask(player.getUniqueId());
-    }
+    public void enable(Player player) {
+        AbilityManager.changeAbilityState(player, getKey(), true);
 
-    public void toggleAbility(Player player) {
         UUID pid = player.getUniqueId();
 
-        boolean currentState = AbilityManager.isAbilityActive(player, getKey());
-        boolean newState = !currentState;
-
-        AbilityManager.changeAbilityState(player, getKey(), newState);
-
-        if (newState) {
-            BukkitTask task = new PoisonousAreaAbilityRunnable(this, config, pid).runTaskTimer(WeltenRaces.INSTANCE, 0, config.effectDuration);
-            activeTasks.put(pid, task);
-        } else {
-            stopTask(pid);
-        }
+        BukkitTask task = new PoisonousAreaAbilityRunnable(this, config, pid).runTaskTimer(WeltenRaces.INSTANCE, 0, config.effectDuration);
+        activeTasks.put(pid, task);
     }
 
     @Override

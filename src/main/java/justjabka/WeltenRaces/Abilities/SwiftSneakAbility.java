@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Abilities;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.SwiftSneakAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Runnables.Ability.SwiftSneakAbilityRunnable;
@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 import java.util.Set;
 
-public class SwiftSneakAbility extends BaseAbility {
+public class SwiftSneakAbility extends BaseValidationAbility {
     private final SwiftSneakAbilityConfig config;
     private final Map<Attribute, AttributeModifier> fastSneakAttributes;
 
@@ -71,6 +71,11 @@ public class SwiftSneakAbility extends BaseAbility {
         return true;
     }
 
+    @Override
+    public void onDeactivation(Player player) {
+        clearFastSneak(player);
+    }
+
     public void giveFastSneak(Player player) {
         AbilityManager.changeAbilityState(player, getKey(), true);
 
@@ -104,11 +109,6 @@ public class SwiftSneakAbility extends BaseAbility {
     @Override
     public boolean isStateValid(Player player) {
         return player.isSneaking();
-    }
-
-    @Override
-    public void onDeactivation(Player player) {
-        clearFastSneak(player);
     }
 
     @Override

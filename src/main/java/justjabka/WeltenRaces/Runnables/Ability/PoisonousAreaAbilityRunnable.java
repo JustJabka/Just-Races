@@ -1,6 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Ability;
 
-import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Abilities.Generic.BaseTogglableAbility;
 import justjabka.WeltenRaces.Configs.Ability.PoisonousAreaAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import org.bukkit.Bukkit;
@@ -15,12 +15,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class PoisonousAreaAbilityRunnable extends BukkitRunnable {
-    private final BaseAbility ability;
+    private final BaseTogglableAbility ability;
     private final PoisonousAreaAbilityConfig config;
     private final UUID pid;
     private final PotionEffect cloudEffect;
 
-    public PoisonousAreaAbilityRunnable(BaseAbility ability, PoisonousAreaAbilityConfig config, UUID pid) {
+    public PoisonousAreaAbilityRunnable(BaseTogglableAbility ability, PoisonousAreaAbilityConfig config, UUID pid) {
         this.ability = ability;
         this.config = config;
         this.pid = pid;

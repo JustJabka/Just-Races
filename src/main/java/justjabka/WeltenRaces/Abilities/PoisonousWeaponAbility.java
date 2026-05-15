@@ -80,6 +80,7 @@ public class PoisonousWeaponAbility extends BaseAbility {
 
     private static void onUseEffects(Player player) {
         World world = player.getWorld();
+
         Location location = new Location(
                 world,
                 player.getX(),

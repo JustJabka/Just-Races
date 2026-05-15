@@ -139,13 +139,4 @@ public abstract class BaseAbility implements Listener {
     }
 
     protected abstract boolean onActivation(Player player);
-
-    // Ability deactivation
-    public boolean isStateValid(Player player) {
-        return true;
-    }
-
-    public void onDeactivation(Player player) {}
-
-    public void stopTask(UUID pid) {}
 }
