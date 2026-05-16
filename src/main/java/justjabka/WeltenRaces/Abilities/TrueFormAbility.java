@@ -15,7 +15,9 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -28,7 +30,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     private final TrueFormAbilityConfig config;
 
     private final Map<Attribute, AttributeModifier> trueFormModifiers;
-    private final Set<PotionEffect> trueFormEffects;
+    private final Set<PotionEffect> trueFormBuffs;
     private final Set<PotionEffect> trueFormDebuffs;
 
     public TrueFormAbility(TrueFormAbilityConfig config) {
@@ -38,7 +40,7 @@ public class TrueFormAbility extends BaseValidationAbility {
                 Attribute.SCALE, new AttributeModifier(getKey(), config.scaleBonus, AttributeModifier.Operation.ADD_NUMBER),
                 Attribute.MAX_HEALTH, new AttributeModifier(getKey(), config.maxHealthBonus, AttributeModifier.Operation.ADD_NUMBER)
         );
-        this.trueFormEffects = Set.of(
+        this.trueFormBuffs = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.duration, 0, false, true, true),
                 new PotionEffect(PotionEffectType.SPEED, config.duration, 1, false, true, true)
         );
@@ -57,6 +59,22 @@ public class TrueFormAbility extends BaseValidationAbility {
     @Override
     public long getCooldownTicks() {
         return config.cooldown;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+        clearTrueForm(player);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+        clearTrueForm(player);
     }
 
     @EventHandler
@@ -91,7 +109,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     public void giveTrueForm(Player player) {
         AbilityManager.changeAbilityState(player, getKey(), true);
 
-        trueFormEffects.forEach(player::addPotionEffect);
+        trueFormBuffs.forEach(player::addPotionEffect);
         AttributeManager.addModifiers(player, trueFormModifiers);
 
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, 1, 2);
@@ -102,6 +120,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     public void clearTrueForm(Player player) {
         AbilityManager.changeAbilityState(player, getKey(), false);
 
+        trueFormBuffs.forEach(effect -> player.removePotionEffect(effect.getType()));
         trueFormDebuffs.forEach(player::addPotionEffect);
         AttributeManager.removeModifiers(player, trueFormModifiers);
     }
