@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.VocalFryAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
@@ -18,14 +19,16 @@ import java.util.Set;
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class VocalFryAbility extends BaseAbility {
-    private static final int duration = 3 * 20;
-    private static final int foodRequired = 8;
-    private static final int foodDrained = 4;
+    private final VocalFryAbilityConfig config;
+    private final Set<PotionEffect> targetDebuffs;
 
-    private final Set<PotionEffect> targetDebuffs = Set.of(
-            new PotionEffect(PotionEffectType.SLOWNESS, duration, 1, false, true, true),
-            new PotionEffect(PotionEffectType.WEAKNESS, duration, 1, false, true, true)
-    );
+    public VocalFryAbility(VocalFryAbilityConfig config) {
+        this.config = config;
+        this.targetDebuffs = Set.of(
+                new PotionEffect(PotionEffectType.SLOWNESS, config.duration, 1, false, true, true),
+                new PotionEffect(PotionEffectType.WEAKNESS, config.duration, 1, false, true, true)
+        );
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -34,7 +37,7 @@ public class VocalFryAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 20;
+        return config.cooldown;
     }
 
     @EventHandler
@@ -51,11 +54,11 @@ public class VocalFryAbility extends BaseAbility {
 
         int foodLevel = player.getFoodLevel();
 
-        if (foodLevel <= foodRequired) return false;
+        if (foodLevel <= config.foodRequired) return false;
         if (target instanceof Player targetPlayer && RaceManager.getRace(targetPlayer) == Race.LIZARD) return false;
 
         targetDebuffs.forEach(target::addPotionEffect);
-        player.setFoodLevel(Math.max(0, foodLevel - foodDrained));
+        player.setFoodLevel(Math.max(0, foodLevel - config.foodDrained));
 
         return true;
     }

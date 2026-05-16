@@ -22,14 +22,14 @@ public class AbilitiesRegistry {
         final WildHuntAbility wildHunt = new WildHuntAbility(configs.wildHuntAbilityConfig);
         final WeightlessWillowSwayAbility weightlessWillowSway = new WeightlessWillowSwayAbility(configs.weightlessWillowSwayAbilityConfig);
         final CompressedSkyShardAbility compressedSkyShard = new CompressedSkyShardAbility(configs.compressedSkyShardAbilityConfig);
-        final PoisonousWeaponAbility poisonousWeapon = new PoisonousWeaponAbility();
+        final PoisonousWeaponAbility poisonousWeapon = new PoisonousWeaponAbility(configs.poisonousWeaponAbilityConfig);
         final PoisonousAreaAbility poisonousArea = new PoisonousAreaAbility(configs.poisonousAreaAbilityConfig);
         final AzaleaCamouflageAbility azaleaCamouflage = new AzaleaCamouflageAbility(configs.azaleaCamouflageAbilityConfig);
         final PoisonousSplitAbility poisonousSplit = new PoisonousSplitAbility(configs.poisonousSplitAbilityConfig);
         final SwiftSneakAbility swiftSneak = new SwiftSneakAbility(configs.swiftSneakAbilityConfig);
         final TrueFormAbility trueForm = new TrueFormAbility(configs.trueFormAbilityConfig);
-        final PoisonousBiteAbility poisonousBite = new PoisonousBiteAbility();
-        final VocalFryAbility vocalFryAbility = new VocalFryAbility();
+        final PoisonousBiteAbility poisonousBite = new PoisonousBiteAbility(configs.poisonousBiteAbilityConfig);
+        final VocalFryAbility vocalFryAbility = new VocalFryAbility(configs.vocalFryAbilityConfig);
 
         RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));

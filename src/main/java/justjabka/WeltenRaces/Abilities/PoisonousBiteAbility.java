@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.PoisonousBiteAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
@@ -15,8 +16,13 @@ import org.bukkit.potion.PotionEffectType;
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class PoisonousBiteAbility extends BaseAbility {
-    private static final PotionEffect victimDebuff = new PotionEffect(PotionEffectType.POISON, 8 * 20, 0, false, true, true);
-    private static final int foodBonus = 1;
+    private final PoisonousBiteAbilityConfig config;
+    private final PotionEffect victimDebuff;
+
+    public PoisonousBiteAbility(PoisonousBiteAbilityConfig config) {
+        this.config = config;
+        this.victimDebuff = new PotionEffect(PotionEffectType.POISON, config.duration, 0, false, true, true);
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -30,7 +36,7 @@ public class PoisonousBiteAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 40;
+        return config.cooldown;
     }
 
     @EventHandler
@@ -46,7 +52,7 @@ public class PoisonousBiteAbility extends BaseAbility {
         if (!(ctx[0] instanceof LivingEntity victim)) return false;
 
         victim.addPotionEffect(victimDebuff);
-        attacker.setFoodLevel(attacker.getFoodLevel() + foodBonus);
+        attacker.setFoodLevel(attacker.getFoodLevel() + config.foodBonus);
 
         return true;
     }

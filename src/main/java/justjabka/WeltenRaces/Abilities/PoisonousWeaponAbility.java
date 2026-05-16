@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Abilities;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.PoisonousWeaponAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.EnchantmentProvider;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
@@ -16,8 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoisonousWeaponAbility extends BaseAbility {
-    private static final Material ACTIVATION_ITEM = Material.SPORE_BLOSSOM;
-    private static final int ACTIVATION_AMOUNT = 64;
+    private final PoisonousWeaponAbilityConfig config;
+    private static final Material activationItem = Material.SPORE_BLOSSOM;
+
+    public PoisonousWeaponAbility(PoisonousWeaponAbilityConfig config) {
+        this.config = config;
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -26,7 +31,7 @@ public class PoisonousWeaponAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 20;
+        return config.cooldown;
     }
 
     @Override
@@ -46,8 +51,8 @@ public class PoisonousWeaponAbility extends BaseAbility {
 
         if (mainHand.isEmpty() || offhand.isEmpty()) return false;
 
-        if (offhand.getType() != ACTIVATION_ITEM) return false;
-        if (offhand.getAmount() < ACTIVATION_AMOUNT) return false;
+        if (offhand.getType() != activationItem) return false;
+        if (offhand.getAmount() < config.activationAmount) return false;
 
         if (mainHand.containsEnchantment(EnchantmentProvider.POISON)) return false;
         return EnchantmentProvider.POISON.canEnchantItem(mainHand);
@@ -61,7 +66,7 @@ public class PoisonousWeaponAbility extends BaseAbility {
         mainHand.addEnchantment(EnchantmentProvider.POISON, 1);
         addLore(player, mainHand);
 
-        offHand.subtract(ACTIVATION_AMOUNT);
+        offHand.subtract(config.activationAmount);
 
         onUseEffects(player);
 

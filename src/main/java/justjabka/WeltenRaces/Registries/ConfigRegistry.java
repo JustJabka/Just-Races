@@ -31,6 +31,9 @@ public class ConfigRegistry {
     public final PoisonousSplitAbilityConfig poisonousSplitAbilityConfig;
     public final SwiftSneakAbilityConfig swiftSneakAbilityConfig;
     public final TrueFormAbilityConfig trueFormAbilityConfig;
+    public final PoisonousWeaponAbilityConfig poisonousWeaponAbilityConfig;
+    public final PoisonousBiteAbilityConfig poisonousBiteAbilityConfig;
+    public final VocalFryAbilityConfig vocalFryAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -64,6 +67,9 @@ public class ConfigRegistry {
         this.poisonousSplitAbilityConfig = new PoisonousSplitAbilityConfig(loadAbilityConfig(plugin, "poisonous-split"));
         this.swiftSneakAbilityConfig = new SwiftSneakAbilityConfig(loadAbilityConfig(plugin, "swift-sneak"));
         this.trueFormAbilityConfig = new TrueFormAbilityConfig(loadAbilityConfig(plugin, "true-form"));
+        this.poisonousWeaponAbilityConfig = new PoisonousWeaponAbilityConfig(loadAbilityConfig(plugin, "poisonous-weapon"));
+        this.poisonousBiteAbilityConfig = new PoisonousBiteAbilityConfig(loadAbilityConfig(plugin, "poisonous-bite"));
+        this.vocalFryAbilityConfig = new VocalFryAbilityConfig(loadAbilityConfig(plugin, "vocal-fry"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));
