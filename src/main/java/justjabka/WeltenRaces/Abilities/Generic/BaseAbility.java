@@ -13,6 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -155,6 +156,13 @@ public abstract class BaseAbility implements Listener {
         if (!(event.getDamager() instanceof Player attacker)) return;
 
         tryActivate(attacker, victim);
+    }
+
+    public void handleEntityInteract(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof LivingEntity clickedEntity)) return;
+        Player player = event.getPlayer();
+
+        tryActivate(player, clickedEntity);
     }
 
     // Actions
