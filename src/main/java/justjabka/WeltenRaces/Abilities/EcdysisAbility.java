@@ -31,7 +31,7 @@ public class EcdysisAbility extends BaseAbility {
         this.config = config;
         this.userEffects = Set.of(
                 new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
-                new PotionEffect(PotionEffectType.SPEED, 3 * 20, 1, false, true)
+                new PotionEffect(PotionEffectType.SPEED, 3 * 20, 3, false, true)
         );
         this.victimEffects = Set.of(
                 new PotionEffect(PotionEffectType.BLINDNESS, config.effectDuration, 0, false, false)
@@ -65,7 +65,7 @@ public class EcdysisAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         double avrgDurability = ArmorManager.getAverageDurability(player);
         boolean isSuicideUse = avrgDurability <= config.suicideDurabilityPercent;
 

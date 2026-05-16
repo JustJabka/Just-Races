@@ -54,7 +54,7 @@ public class PoisonousWeaponAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         ItemStack offHand = player.getInventory().getItemInOffHand();
 

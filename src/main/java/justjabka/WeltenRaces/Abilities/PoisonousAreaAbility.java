@@ -47,7 +47,7 @@ public class PoisonousAreaAbility extends BaseTogglableAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         toggle(player);
         return true;
     }

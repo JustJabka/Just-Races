@@ -81,7 +81,7 @@ public class PoisonousSplitAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         Snowball projectile = player.launchProjectile(Snowball.class, null);
         projectile.getPersistentDataContainer().set(getKey(), PersistentDataType.BOOLEAN, true);
         projectile.setItem(projectileDisplayItem);

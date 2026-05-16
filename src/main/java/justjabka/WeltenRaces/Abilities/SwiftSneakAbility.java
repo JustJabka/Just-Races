@@ -64,7 +64,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         if (AbilityManager.isAbilityActive(player, getKey())) return false;
 
         giveFastSneak(player);

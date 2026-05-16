@@ -51,7 +51,7 @@ public class CompressedSkyShardAbility extends BaseAbility {
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         List<PotionEffect> potionEffects = item.getData(DataComponentTypes.POTION_CONTENTS).allEffects();

@@ -9,8 +9,10 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -23,9 +25,8 @@ public abstract class BaseAbility implements Listener {
     protected static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
 
     public abstract NamespacedKey getKey();
-
-    // Ability time
     public abstract long getCooldownTicks();
+
 
     public void setCooldownTicks(Player player, long newCooldown) {
         cooldowns.put(player.getUniqueId(), newCooldown);
@@ -40,15 +41,58 @@ public abstract class BaseAbility implements Listener {
         return getRemainingTicks(player) / 20;
     }
 
+    /**
+     * Checks if ability is on cooldown
+     * @param player Player for which we are checking the ability
+     * @return {@code true} if ability is on cooldown
+     */
+    public boolean isOnCooldown(Player player) {
+        return getGameTime() < getExpireStamp(player);
+    }
+
+    /**
+     * Puts ability on cooldown
+     * @param player Player for which we set the ability on cooldown
+     * @see #getCooldownTicks()
+     */
+    public void putOnCooldown(Player player) {
+        long expiresAt = getGameTime() + getCooldownTicks();
+        cooldowns.put(player.getUniqueId(), expiresAt);
+    }
+
+    /**
+     * Gets gametime stamp when player ability will be recharged
+     * @param player Player from which we are getting ability cooldown
+     * @return expire stamp
+     */
     private Long getExpireStamp(Player player) {
         return cooldowns.getOrDefault(player.getUniqueId(), 0L);
     }
 
+    /**
+     * Gets gametime from the overworld
+     * @return Gametime
+     */
     private static long getGameTime() {
         return Bukkit.getWorlds().getFirst().getGameTime();
     }
 
-    // Ability display
+    /**
+     * Check if player's race has this ability
+     * @param player Player that will be checked
+     * @return {@code true} if player has this ability
+     */
+    public boolean raceHasAbility(Player player) {
+        Race race = RaceManager.getRace(player);
+        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
+        return allowedAbilities.contains(this);
+    }
+
+    /**
+     * Gets ability display name as the text component
+     * @return Component with translate and fallback
+     * @see #getAbilityDisplay(Player)
+     */
     public Component getDisplayName() {
         String name = this.getClass().getSimpleName();
 
@@ -62,6 +106,14 @@ public abstract class BaseAbility implements Listener {
         return Component.translatable(translate).fallback(fallback);
     }
 
+    /**
+     * Gets ability display as the text component. That can be almost anything.
+     * From basic ability name and cooldown to a very specific stats
+     * @param player Player from which we get the ability display
+     * @return Ability display as component
+     * @apiNote Use {@code Component.empty()} to hide the ability display
+     * @see #getDisplayName()
+     */
     public Component getAbilityDisplay(Player player) {
         Component displayName = getDisplayName();
         long remainingTime = getRemainingSeconds(player);
@@ -98,6 +150,13 @@ public abstract class BaseAbility implements Listener {
         tryActivate(player);
     }
 
+    public void handleEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof LivingEntity victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+
+        tryActivate(attacker, victim);
+    }
+
     // Actions
     protected boolean interactionAction(PlayerInteractEvent event, Player player) {
         return AbilityActivateAction.RIGHT_CLICK.check(event, player);
@@ -112,31 +171,17 @@ public abstract class BaseAbility implements Listener {
         return true;
     }
 
-    protected void tryActivate(Player player) {
-        Race race = RaceManager.getRace(player);
+    protected void tryActivate(Player player, Object... ctx) {
+        if (!raceHasAbility(player)) return;
 
-        // Check abilities of race
-        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
-        if (!allowedAbilities.contains(this)) return;
-
-        // Check activate conditions
         if (!canActivate(player)) return;
-
         if (!AbilityManager.hasActivationSlotSelected(player)) return;
 
-        long gameTime = getGameTime();
-        long expireStamp = getExpireStamp(player);
+        if (isOnCooldown(player)) return;
 
-        // If on cooldown
-        boolean onCooldown = gameTime < expireStamp;
-        if (onCooldown) return;
-
-        // On activation
-        if (onActivation(player)) {
-            long expiresAt = gameTime + getCooldownTicks();
-            cooldowns.put(player.getUniqueId(), expiresAt);
-        }
+        if (!onActivation(player, ctx)) return;
+        putOnCooldown(player);
     }
 
-    protected abstract boolean onActivation(Player player);
+    protected abstract boolean onActivation(Player player, Object... ctx);
 }

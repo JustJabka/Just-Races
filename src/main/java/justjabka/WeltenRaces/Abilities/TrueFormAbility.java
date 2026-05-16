@@ -78,7 +78,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         giveTrueForm(player);
         return true;
     }

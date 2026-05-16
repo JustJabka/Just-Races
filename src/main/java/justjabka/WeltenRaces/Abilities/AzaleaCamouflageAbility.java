@@ -135,7 +135,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         if (hasCamoBlock(player)) {
             removeCamoBlock(player);
             return true;

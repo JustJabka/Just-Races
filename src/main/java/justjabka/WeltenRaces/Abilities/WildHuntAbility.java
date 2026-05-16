@@ -82,7 +82,7 @@ public class WildHuntAbility extends BaseValidationAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         RayTraceResult raycast = player.getWorld().rayTrace(
                 player.getEyeLocation(),
                 player.getEyeLocation().getDirection(),

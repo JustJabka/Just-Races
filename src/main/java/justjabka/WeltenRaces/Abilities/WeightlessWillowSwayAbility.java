@@ -52,7 +52,7 @@ public class WeightlessWillowSwayAbility extends BaseAbility {
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, Object... ctx) {
         userEffects.forEach(player::addPotionEffect);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BREEZE_IDLE_AIR, SoundCategory.PLAYERS, 1, 1);
         return true;
