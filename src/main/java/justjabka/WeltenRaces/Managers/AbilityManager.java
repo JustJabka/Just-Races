@@ -27,6 +27,15 @@ public class AbilityManager {
         );
     }
 
+    public static void updateAbilities(Player player, PersistentDataContainer abilities) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        pdc.set(
+                ABILITIES_CONTAINER_KEY,
+                PersistentDataType.TAG_CONTAINER,
+                abilities
+        );
+    }
+
     public static Set<BaseAbility> getAbilitiesForRace(Race race) {
         return RACE_ABILITIES.getOrDefault(race, Set.of());
     }
@@ -37,15 +46,6 @@ public class AbilityManager {
 
     public static boolean hasAbility(Player player, NamespacedKey key) {
         return AbilityManager.getAbilities(player).has(key);
-    }
-
-    public static void updateAbilities(Player player, PersistentDataContainer abilities) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        pdc.set(
-                ABILITIES_CONTAINER_KEY,
-                PersistentDataType.TAG_CONTAINER,
-                abilities
-        );
     }
 
     public static void removeAbility(Player player, NamespacedKey key) {

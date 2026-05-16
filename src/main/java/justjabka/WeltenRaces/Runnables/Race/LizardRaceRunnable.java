@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
@@ -18,6 +19,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.Set;
+
+import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class LizardRaceRunnable extends BukkitRunnable {
     private static final NamespacedKey REPTILE_NATURE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "reptile_nature");
@@ -78,12 +81,15 @@ public class LizardRaceRunnable extends BukkitRunnable {
         return buffBoundary.contains(temperature);
     }
 
-    private static void giveNetherDebuff(Player player, World world) {
+    private void giveNetherDebuff(Player player, World world) {
         boolean isInTheNether = world.getEnvironment() == World.Environment.NETHER;
         boolean hasFireResistance = player.hasPotionEffect(PotionEffectType.FIRE_RESISTANCE);
+        boolean isInTrueForm = AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
 
-        boolean willReceiveDebuff = isInTheNether && !hasFireResistance;
-        if (!willReceiveDebuff) return;
+        boolean immuneToDebuff = hasFireResistance || isInTrueForm;
+        boolean debuff = isInTheNether && !immuneToDebuff;
+
+        if (!debuff) return;
 
         netherDebuffs.forEach(player::addPotionEffect);
     }
