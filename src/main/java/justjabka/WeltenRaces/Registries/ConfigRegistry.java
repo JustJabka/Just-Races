@@ -5,10 +5,7 @@ import justjabka.WeltenRaces.Configs.Modifier.Armor.*;
 import justjabka.WeltenRaces.Configs.Modifier.Food.GlowBerriesFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
-import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
-import justjabka.WeltenRaces.Configs.Race.EpiphyteRaceConfig;
-import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
-import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
+import justjabka.WeltenRaces.Configs.Race.*;
 import org.bukkit.plugin.Plugin;
 
 import static justjabka.WeltenRaces.Managers.ConfigManager.*;
@@ -19,6 +16,7 @@ public class ConfigRegistry {
     public final PhantomRaceConfig phantomRaceConfig;
     public final SkyzernRaceConfig skyzernRaceConfig;
     public final EpiphyteRaceConfig epiphyteRaceConfig;
+    public final LizardRaceConfig lizardRaceConfig;
 
     // Abilities
     public final DamageInversionAbilityConfig damageInversionAbilityConfig;
@@ -51,6 +49,7 @@ public class ConfigRegistry {
         this.phantomRaceConfig = new PhantomRaceConfig(loadRaceConfig(plugin, "phantom"));
         this.skyzernRaceConfig = new SkyzernRaceConfig(loadRaceConfig(plugin, "skyzern"));
         this.epiphyteRaceConfig = new EpiphyteRaceConfig(loadRaceConfig(plugin, "epiphyte"));
+        this.lizardRaceConfig = new LizardRaceConfig(loadRaceConfig(plugin, "lizard"));
 
         // Abilities
         this.damageInversionAbilityConfig = new DamageInversionAbilityConfig(loadAbilityConfig(plugin, "damage-inversion"));

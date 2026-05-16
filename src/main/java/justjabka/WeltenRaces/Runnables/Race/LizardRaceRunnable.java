@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
+import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
@@ -23,27 +24,24 @@ import java.util.Set;
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class LizardRaceRunnable extends BukkitRunnable {
+    private final LizardRaceConfig config;
+
+    private final Map<Attribute, AttributeModifier> warmBiomesBuffs;
+    private final Set<PotionEffect> netherDebuffs;
+
     private static final NamespacedKey REPTILE_NATURE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "reptile_nature");
 
-    private static final double minBuffTemperature = 0.8;
-    private static final double maxBuffTemperature = 1.8;
-
-    private static final Map<Attribute, AttributeModifier> warmBiomesBuffs = Map.of(
-            Attribute.MOVEMENT_SPEED, new AttributeModifier(
-                    REPTILE_NATURE_KEY,
-                    0.13,
-                    AttributeModifier.Operation.ADD_NUMBER
-            ),
-            Attribute.JUMP_STRENGTH, new AttributeModifier(
-                    REPTILE_NATURE_KEY,
-                    0.5,
-                    AttributeModifier.Operation.ADD_NUMBER
-            )
-    );
-    private static final Set<PotionEffect> netherDebuffs = Set.of(
-            new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
-            new PotionEffect(PotionEffectType.MINING_FATIGUE, 40, 0, false, false, false)
-    );
+    public LizardRaceRunnable(LizardRaceConfig config) {
+        this.config = config;
+        this.warmBiomesBuffs = Map.of(
+                Attribute.MOVEMENT_SPEED, new AttributeModifier(REPTILE_NATURE_KEY, config.temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
+                Attribute.JUMP_STRENGTH, new AttributeModifier(REPTILE_NATURE_KEY, config.temperatureBuffJumpStrengthBonus, AttributeModifier.Operation.ADD_NUMBER)
+        );
+        this.netherDebuffs = Set.of(
+                new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
+                new PotionEffect(PotionEffectType.MINING_FATIGUE, 40, 0, false, false, false)
+        );
+    }
 
     @Override
     public void run() {
@@ -71,12 +69,12 @@ public class LizardRaceRunnable extends BukkitRunnable {
         }
     }
 
-    private static boolean isInWarmBiome(Location location) {
+    private boolean isInWarmBiome(Location location) {
         boolean hasStorm = location.getWorld().hasStorm();
         if (hasStorm) return true;
 
         double temperature = location.getBlock().getTemperature();
-        Range<Double> buffBoundary = Range.between(minBuffTemperature, maxBuffTemperature);
+        Range<Double> buffBoundary = Range.between(config.temperatureBuffLowerBound, config.temperatureBuffUpperBound);
 
         return buffBoundary.contains(temperature);
     }
@@ -87,9 +85,9 @@ public class LizardRaceRunnable extends BukkitRunnable {
         boolean isInTrueForm = AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
 
         boolean immuneToDebuff = hasFireResistance || isInTrueForm;
-        boolean debuff = isInTheNether && !immuneToDebuff;
+        boolean willReceiveDebuff = isInTheNether && !immuneToDebuff;
 
-        if (!debuff) return;
+        if (!willReceiveDebuff) return;
 
         netherDebuffs.forEach(player::addPotionEffect);
     }

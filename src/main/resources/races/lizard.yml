@@ -1,0 +1,10 @@
+damage-multiplier:
+  vulnerable: 1.05
+  resistant: 0.8
+
+temperature-buff:
+  lower-bound: 0.8
+  upper-bound: 1.5
+
+  movement-speed-bonus: 0.13
+  jump-strength-bonus: 0.5

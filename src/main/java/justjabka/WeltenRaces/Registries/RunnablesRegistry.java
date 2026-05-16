@@ -10,7 +10,7 @@ public class RunnablesRegistry {
         new PhantomRaceRunnable(configs.phantomRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new SkyzernRaceRunnable(configs.skyzernRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new EpiphyteRaceRunnable(configs.epiphyteRaceConfig).runTaskTimer(plugin, 0L, 20L);
-        new LizardRaceRunnable().runTaskTimer(plugin, 0L, 20L);
+        new LizardRaceRunnable(configs.lizardRaceConfig).runTaskTimer(plugin, 0L, 20L);
 
         WeltenRaces.LOGGER.info("Successfully registered runnables!");
     }
