@@ -97,7 +97,7 @@ public abstract class BaseAbility implements Listener {
      * Gets gametime from the overworld
      * @return Gametime
      */
-    private static long getGameTime() {
+    protected static long getGameTime() {
         return Bukkit.getWorlds().getFirst().getGameTime();
     }
 

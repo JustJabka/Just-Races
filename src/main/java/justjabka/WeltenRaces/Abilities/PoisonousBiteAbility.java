@@ -46,8 +46,6 @@ public class PoisonousBiteAbility extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player attacker, Object... ctx) {
-        if (!AbilityManager.isAbilityActive(attacker, TRUE_FORM_KEY)) return false;
-
         if (ctx.length == 0) return false;
         if (!(ctx[0] instanceof LivingEntity victim)) return false;
 
@@ -55,5 +53,10 @@ public class PoisonousBiteAbility extends BaseAbility {
         attacker.setFoodLevel(attacker.getFoodLevel() + config.foodBonus);
 
         return true;
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
     }
 }

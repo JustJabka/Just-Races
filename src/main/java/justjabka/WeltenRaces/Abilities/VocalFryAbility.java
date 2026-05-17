@@ -54,8 +54,6 @@ public class VocalFryAbility extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player player, Object... ctx) {
-        if (!AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return false;
-
         if (ctx.length == 0) return false;
         if (!(ctx[0] instanceof LivingEntity target)) return false;
 
@@ -68,5 +66,11 @@ public class VocalFryAbility extends BaseAbility {
         player.setFoodLevel(Math.max(0, foodLevel - config.foodDrained));
 
         return true;
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        if (!AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return false;
+        return !player.isSneaking();
     }
 }

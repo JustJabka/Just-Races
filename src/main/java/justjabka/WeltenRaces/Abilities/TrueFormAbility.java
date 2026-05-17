@@ -22,8 +22,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class TrueFormAbility extends BaseValidationAbility {
     public static final NamespacedKey TRUE_FORM_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "true_form");
@@ -31,8 +33,14 @@ public class TrueFormAbility extends BaseValidationAbility {
     private final TrueFormAbilityConfig config;
 
     private final Map<Attribute, AttributeModifier> trueFormModifiers;
-    private final Set<PotionEffect> trueFormBuffs;
+    private final Set<PotionEffect> trueFormBuffs = Set.of(
+            new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 0, false, true, true),
+            new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 1, false, true, true)
+    );
     private final Set<PotionEffect> trueFormDebuffs;
+
+    private static final Map<UUID, Long> formExpireStamp = new HashMap<>();
+    private static final long maxDurationTicks = 90 * 20;
 
     @Override
     public Component getAbilityDisplay(Player player) {
@@ -46,10 +54,6 @@ public class TrueFormAbility extends BaseValidationAbility {
         this.trueFormModifiers = Map.of(
                 Attribute.SCALE, new AttributeModifier(getKey(), config.scaleBonus, AttributeModifier.Operation.ADD_NUMBER),
                 Attribute.MAX_HEALTH, new AttributeModifier(getKey(), config.maxHealthBonus, AttributeModifier.Operation.ADD_NUMBER)
-        );
-        this.trueFormBuffs = Set.of(
-                new PotionEffect(PotionEffectType.RESISTANCE, config.duration, 0, false, true, true),
-                new PotionEffect(PotionEffectType.SPEED, config.duration, 1, false, true, true)
         );
         this.trueFormDebuffs = Set.of(
                 new PotionEffect(PotionEffectType.SLOWNESS, config.debuffDuration, 2, false, true, true),
@@ -121,7 +125,10 @@ public class TrueFormAbility extends BaseValidationAbility {
 
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.PLAYERS, 1, 2);
 
-        Bukkit.getScheduler().runTaskLater(WeltenRaces.INSTANCE, () -> clearTrueForm(player), config.duration);
+        long expireStamp = getGameTime() + config.duration;
+        formExpireStamp.put(player.getUniqueId(), expireStamp);
+
+        scheduleFormCheck(player);
     }
 
     public void clearTrueForm(Player player) {
@@ -130,6 +137,42 @@ public class TrueFormAbility extends BaseValidationAbility {
         trueFormBuffs.forEach(effect -> player.removePotionEffect(effect.getType()));
         trueFormDebuffs.forEach(player::addPotionEffect);
         AttributeManager.removeModifiers(player, trueFormModifiers);
+    }
+
+    public static void extendTrueForm(Player player, int seconds) {
+        UUID pid = player.getUniqueId();
+        if (!formExpireStamp.containsKey(pid)) return;
+
+        long currentExpiry = formExpireStamp.get(pid);
+        long currentTicks = getGameTime();
+
+        long newExpireStamp = currentExpiry + (seconds * 20L);
+        long maxAllowedExpireStamp = currentTicks + maxDurationTicks;
+
+        if (newExpireStamp > maxAllowedExpireStamp) {
+            newExpireStamp = maxAllowedExpireStamp;
+        }
+
+        formExpireStamp.put(pid, newExpireStamp);
+    }
+
+    private void scheduleFormCheck(Player player) {
+        Bukkit.getScheduler().runTaskLater(WeltenRaces.INSTANCE, () -> {
+            if (!player.isOnline()) return;
+            if (!AbilityManager.isAbilityActive(player, getKey())) return;
+
+            UUID pid = player.getUniqueId();
+
+            long currentTime = getGameTime();
+            long expireStamp = formExpireStamp.getOrDefault(pid, 0L);
+
+            if (currentTime < expireStamp) {
+                scheduleFormCheck(player);
+            } else {
+                clearTrueForm(player);
+                formExpireStamp.remove(pid);
+            }
+        }, 20L);
     }
 
     @Override

@@ -30,13 +30,14 @@ public class AbilitiesRegistry {
         final TrueFormAbility trueForm = new TrueFormAbility(configs.trueFormAbilityConfig);
         final PoisonousBiteAbility poisonousBite = new PoisonousBiteAbility(configs.poisonousBiteAbilityConfig);
         final VocalFryAbility vocalFryAbility = new VocalFryAbility(configs.vocalFryAbilityConfig);
+        final GluttonyExecuteAbility gluttonyExecuteAbility = new GluttonyExecuteAbility();
 
         RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));
         RACE_ABILITIES.put(Race.HUMAN, Set.of()); // Human solo verse💀
         RACE_ABILITIES.put(Race.SKYZERN, Set.of(weightlessWillowSway, compressedSkyShard));
         RACE_ABILITIES.put(Race.EPIPHYTE, Set.of(poisonousWeapon, poisonousArea, azaleaCamouflage));
-        RACE_ABILITIES.put(Race.LIZARD, Set.of(poisonousSplit, swiftSneak, trueForm, poisonousBite, vocalFryAbility));
+        RACE_ABILITIES.put(Race.LIZARD, Set.of(poisonousSplit, swiftSneak, trueForm, poisonousBite, vocalFryAbility, gluttonyExecuteAbility));
     }
 
     public static void register(Plugin plugin, ConfigRegistry configs) {
