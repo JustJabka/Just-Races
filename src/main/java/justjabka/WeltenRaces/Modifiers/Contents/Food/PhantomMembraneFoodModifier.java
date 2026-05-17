@@ -43,6 +43,7 @@ public class PhantomMembraneFoodModifier extends BaseFoodModifier implements Lis
 
         String modifier = ModifierManager.getAppliedModifier(item);
         if (modifier == null) return;
+        if (!modifier.equals(this.getKey().toString())) return;
 
         player.heal(config.healAmount, EntityRegainHealthEvent.RegainReason.EATING);
     }
