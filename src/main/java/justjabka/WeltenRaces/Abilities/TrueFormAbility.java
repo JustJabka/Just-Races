@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -32,6 +33,12 @@ public class TrueFormAbility extends BaseValidationAbility {
     private final Map<Attribute, AttributeModifier> trueFormModifiers;
     private final Set<PotionEffect> trueFormBuffs;
     private final Set<PotionEffect> trueFormDebuffs;
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        if (AbilityManager.isAbilityActive(player, getKey())) return Component.empty();
+        return super.getAbilityDisplay(player);
+    }
 
     public TrueFormAbility(TrueFormAbilityConfig config) {
         this.config = config;

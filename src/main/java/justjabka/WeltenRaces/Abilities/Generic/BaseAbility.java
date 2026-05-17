@@ -22,24 +22,34 @@ import java.util.*;
 public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new HashMap<>();
 
-    protected static final TextColor ABILITY_ON_COOLDOWN_COLOR = TextColor.fromHexString("#a42431");
-    protected static final TextColor ABILITY_READY_COLOR = TextColor.fromHexString("#79a049");
+    protected static final TextColor abilitySecondaryColor = TextColor.fromHexString("#a42431");
+    protected static final TextColor abilityPrimaryColor = TextColor.fromHexString("#79a049");
 
     public abstract NamespacedKey getKey();
     public abstract long getCooldownTicks();
 
-
-    public void setCooldownTicks(Player player, long newCooldown) {
-        cooldowns.put(player.getUniqueId(), newCooldown);
-    }
-
+    /**
+     * Gets remaining ticks that ability need to recharge
+     * @param player Player for which we are getting the remaining ticks
+     * @return Remaining ticks
+     * @see #getRemainingSeconds(Player)
+     */
     public long getRemainingTicks(Player player) {
         long remaining = getExpireStamp(player) - getGameTime();
         return Math.max(0, remaining);
     }
 
+    /**
+     * Gets remaining seconds that ability need to recharge
+     * @param player Player for which we are getting the remaining seconds
+     * @return Remaining seconds
+     * @see #getRemainingTicks(Player)
+     */
     public long getRemainingSeconds(Player player) {
-        return getRemainingTicks(player) / 20;
+        float tickRate = Bukkit.getServerTickManager().getTickRate();
+        float remainingSeconds = getRemainingTicks(player) / tickRate;
+
+        return (long) remainingSeconds;
     }
 
     /**
@@ -54,11 +64,24 @@ public abstract class BaseAbility implements Listener {
     /**
      * Puts ability on cooldown
      * @param player Player for which we set the ability on cooldown
+     * @see #setCooldownTicks(Player, long)
      * @see #getCooldownTicks()
      */
     public void putOnCooldown(Player player) {
         long expiresAt = getGameTime() + getCooldownTicks();
-        cooldowns.put(player.getUniqueId(), expiresAt);
+        setCooldownTicks(player, expiresAt);
+    }
+
+    /**
+     * Sets new cooldown for the ability
+     * @param player Player for which we are setting the ability cooldown
+     * @param newCooldown Cooldown that be set
+     * @apiNote This method don't override ability original cooldown
+     * @see #putOnCooldown(Player)
+     * @see #getCooldownTicks()
+     */
+    public void setCooldownTicks(Player player, long newCooldown) {
+        cooldowns.put(player.getUniqueId(), newCooldown);
     }
 
     /**
@@ -117,22 +140,23 @@ public abstract class BaseAbility implements Listener {
      */
     public Component getAbilityDisplay(Player player) {
         Component displayName = getDisplayName();
-        long remainingTime = getRemainingSeconds(player);
+        long remainingTicks = getRemainingTicks(player);
+        long remainingSeconds = getRemainingSeconds(player);
 
         Component abilityOnCooldownMessage = Component
                 .translatable("ability.base.cooldown_display")
                 .fallback("%s: %s")
-                .arguments(displayName, Component.text(remainingTime))
-                .color(ABILITY_ON_COOLDOWN_COLOR);
+                .arguments(displayName, Component.text(remainingSeconds))
+                .color(abilitySecondaryColor);
 
         Component abilityReadyMessage = Component
                 .translatable("ability.base.ready_display")
                 .fallback("%s")
                 .arguments(displayName)
-                .color(ABILITY_READY_COLOR)
+                .color(abilityPrimaryColor)
                 .decorate(TextDecoration.UNDERLINED);
 
-        if (remainingTime > 0) return abilityOnCooldownMessage;
+        if (remainingTicks > 0) return abilityOnCooldownMessage;
         return abilityReadyMessage;
     }
 
@@ -174,11 +198,21 @@ public abstract class BaseAbility implements Listener {
         return event.isSneaking();
     }
 
-    // Ability activation
+    /**
+     * The additional conditions that needed for the ability activation
+     * @param player Player for which the ability activation is checked
+     * @return {@code true} if ability can be activated
+     */
     protected boolean canActivate(Player player) {
         return true;
     }
 
+    /**
+     * Tries to activate the ability
+     * @param player Player for which the ability is tried to be to activated
+     * @param ctx Context of the activation. Literally any {@link Object }
+     * @see #onActivation(Player, Object...)
+     */
     protected void tryActivate(Player player, Object... ctx) {
         if (!raceHasAbility(player)) return;
 
@@ -191,5 +225,12 @@ public abstract class BaseAbility implements Listener {
         putOnCooldown(player);
     }
 
+    /**
+     * Will be executed on ability activation
+     * @param player Player for which the ability will be activated
+     * @param ctx Context of the activation. Literally any {@link Object }
+     * @return {@code true} if ability activated successfully. {@code false} to cancel ability activation
+     * @see #tryActivate(Player, Object...)
+     */
     protected abstract boolean onActivation(Player player, Object... ctx);
 }

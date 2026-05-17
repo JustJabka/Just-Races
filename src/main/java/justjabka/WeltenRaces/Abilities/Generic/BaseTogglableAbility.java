@@ -11,7 +11,7 @@ public abstract class BaseTogglableAbility extends BaseValidationAbility {
     public Component getAbilityDisplay(Player player) {
         boolean isActive = AbilityManager.isAbilityActive(player, getKey());
 
-        TextColor displayColor = isActive ? ABILITY_READY_COLOR : ABILITY_ON_COOLDOWN_COLOR;
+        TextColor displayColor = isActive ? abilityPrimaryColor : abilitySecondaryColor;
 
         return getDisplayName().color(displayColor).decorate(TextDecoration.UNDERLINED);
     }

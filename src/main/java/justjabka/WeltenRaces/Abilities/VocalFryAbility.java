@@ -6,6 +6,7 @@ import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -28,6 +29,12 @@ public class VocalFryAbility extends BaseAbility {
                 new PotionEffect(PotionEffectType.SLOWNESS, config.duration, 1, false, true, true),
                 new PotionEffect(PotionEffectType.WEAKNESS, config.duration, 1, false, true, true)
         );
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        if (!AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
+        return super.getAbilityDisplay(player);
     }
 
     @Override
