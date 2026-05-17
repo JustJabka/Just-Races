@@ -1,9 +1,9 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Instances.RaceInstance;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -29,7 +29,7 @@ public class BaseRaceRunnable extends BukkitRunnable {
     }
 
     private static void updateActionBar(Player player) {
-        Race playerRace = RaceManager.getRace(player);
+        RaceInstance playerRace = RaceManager.getRace(player);
 
         Set<BaseAbility> abilities = AbilityManager.getAbilitiesForRace(playerRace);
         if (abilities.isEmpty()) return;

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "translate": "race.skyzern.name",
+    "fallback": "Skyzern"
+  },
+  "abilities": [
+    "weltenraces:compressed_sky_shard",
+    "weltenraces:weightless_willow_sway"
+  ],
+  "attributes": {
+    "minecraft:scale": 1.05
+  },
+  "item_modifiers": {}
+}

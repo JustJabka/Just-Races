@@ -1,8 +1,8 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -24,7 +24,7 @@ public class SkyzernRaceRunnable extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (RaceManager.getRace(player) != Race.SKYZERN) return;
+            if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
 
             applyCelestialOriginBonus(player);
         }

@@ -6,9 +6,7 @@ import io.papermc.paper.datacomponent.item.Equippable;
 import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.UnfoldWingsAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.UnfoldWingsAbilityRunnable;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -78,7 +76,7 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
     public void onJump(PlayerJumpEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.PHANTOM) return;
+        if (!raceHasAbility(player)) return;
 
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return;

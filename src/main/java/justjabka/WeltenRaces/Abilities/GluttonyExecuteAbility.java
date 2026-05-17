@@ -104,7 +104,6 @@ public class GluttonyExecuteAbility extends BaseAbility {
 
         player.addPotionEffect(consumeEffect);
         TrueFormAbility.extendTrueForm(player, secondsToExtend);
-        player.sendMessage(String.valueOf(secondsToExtend));
         player.getWorld().playSound(player.getLocation(), consumeSound, SoundCategory.PLAYERS, 1, 1);
     }
 

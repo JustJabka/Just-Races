@@ -4,10 +4,10 @@ import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.ArmorManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -52,7 +52,7 @@ public class ArmatRaceListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (RaceManager.getRace(player) != Race.ARMAT) return;
+        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
 
         DamageSource damageSource = event.getDamageSource();
         Entity causingEntity = damageSource.getCausingEntity();
@@ -145,7 +145,7 @@ public class ArmatRaceListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (RaceManager.getRace(attacker) != Race.ARMAT) return;
+        if (!RaceManager.isRace(attacker, RaceProvider.ARMAT)) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
         if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
@@ -167,7 +167,7 @@ public class ArmatRaceListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.ARMAT) return;
+        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
 
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
@@ -192,7 +192,7 @@ public class ArmatRaceListener implements Listener {
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (RaceManager.getRace(player) != Race.ARMAT) return;
+        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
 
         applyBoundShellBonus(player);
         applyCopperArmorBonus(player);
@@ -202,7 +202,7 @@ public class ArmatRaceListener implements Listener {
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.ARMAT) return;
+        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
@@ -231,7 +231,7 @@ public class ArmatRaceListener implements Listener {
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (RaceManager.getRace(player) != Race.ARMAT) return;
+        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         EntityPotionEffectEvent.Action action = event.getAction();

@@ -15,18 +15,18 @@ import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BaseArmorModifier implements ItemModifier {
-    private final String id;
+    private final NamespacedKey key;
     private final Attribute attribute;
     private final double amount;
     private final AttributeModifier.Operation operation;
 
     public BaseArmorModifier(
-            String id,
+            NamespacedKey key,
             Attribute attribute,
             double amount,
             AttributeModifier.Operation operation
     ) {
-        this.id = id;
+        this.key = key;
         this.attribute = attribute;
         this.amount = amount;
         this.operation = operation;
@@ -56,7 +56,7 @@ public class BaseArmorModifier implements ItemModifier {
 
         // Add Marker
         item.editPersistentDataContainer(pdc ->
-                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, id)
+                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, key.toString())
         );
     }
 
@@ -81,12 +81,12 @@ public class BaseArmorModifier implements ItemModifier {
     }
 
     @Override
-    public String getId() {
-        return id;
+    public NamespacedKey getKey() {
+        return key;
     }
 
     private NamespacedKey getDynamicKey(ItemStack item) {
-        return new NamespacedKey(WeltenRaces.NAMESPACE, id.toLowerCase() + "." + getItemGroupSlot(item));
+        return new NamespacedKey(WeltenRaces.NAMESPACE, key.getKey() + "." + getItemGroupSlot(item));
     }
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {

@@ -1,9 +1,9 @@
 package justjabka.WeltenRaces.Listeners;
 
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -33,7 +33,7 @@ public class SkyzernRaceListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.SKYZERN) return;
+        if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
         clearCelestialOriginBonus(player);
     }
 
@@ -41,7 +41,7 @@ public class SkyzernRaceListener implements Listener {
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.SKYZERN) return;
+        if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
 
         if (event.isSneaking()) {
             giveCelestialOriginBonus(player);
@@ -76,7 +76,7 @@ public class SkyzernRaceListener implements Listener {
     public void onHotbarChange(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.SKYZERN) return;
+        if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
 
         AttributeInstance attackKnockbackInstance = player.getAttribute(Attribute.ATTACK_KNOCKBACK);
         if (attackKnockbackInstance == null) return;
@@ -103,7 +103,7 @@ public class SkyzernRaceListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (RaceManager.getRace(attacker) != Race.SKYZERN) return;
+        if (!RaceManager.isRace(attacker, RaceProvider.SKYZERN)) return;
 
         AttributeInstance attackKnockbackInstance = attacker.getAttribute(Attribute.ATTACK_KNOCKBACK);
         if (attackKnockbackInstance == null) return;

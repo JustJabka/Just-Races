@@ -1,8 +1,8 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class PhantomRaceRunnable extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (RaceManager.getRace(player) != Race.PHANTOM) continue;
+            if (!RaceManager.isRace(player, RaceProvider.PHANTOM)) return;
 
             World world = player.getWorld();
             Location location = player.getLocation();

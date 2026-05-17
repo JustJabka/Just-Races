@@ -7,8 +7,8 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.WeltenRaces.Commands.Arguments.RaceArgument;
+import justjabka.WeltenRaces.Instances.RaceInstance;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -26,11 +26,11 @@ public class SetRaceCommand {
                                     final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
                                     final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
-                                    Race race = ctx.getArgument("race", Race.class);
-                                    Component raceName = Component.text(race.toString());
+                                    RaceInstance race = ctx.getArgument("race", RaceInstance.class);
 
-                                    RaceManager.setRace(target, race);
+                                    RaceManager.setRace(target, race.getKey());
 
+                                    Component raceName = race.getName();
                                     target.sendMessage(message.arguments(raceName));
 
                                     return Command.SINGLE_SUCCESS;

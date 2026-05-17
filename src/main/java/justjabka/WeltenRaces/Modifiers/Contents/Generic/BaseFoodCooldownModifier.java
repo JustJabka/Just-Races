@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -13,8 +14,8 @@ import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 public class BaseFoodCooldownModifier extends BaseFoodModifier {
     private final UseCooldown useCooldown;
 
-    public BaseFoodCooldownModifier(String id, FoodProperties foodProperties, Consumable consumable, UseCooldown useCooldown) {
-        super(id, foodProperties, consumable);
+    public BaseFoodCooldownModifier(NamespacedKey key, FoodProperties foodProperties, Consumable consumable, UseCooldown useCooldown) {
+        super(key, foodProperties, consumable);
         this.useCooldown = useCooldown;
     }
 
@@ -27,7 +28,7 @@ public class BaseFoodCooldownModifier extends BaseFoodModifier {
 
         // Add Marker
         item.editPersistentDataContainer(pdc ->
-                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, id)
+                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, key.toString())
         );
     }
 
@@ -41,10 +42,5 @@ public class BaseFoodCooldownModifier extends BaseFoodModifier {
         item.editPersistentDataContainer(pdc ->
                 pdc.remove(ITEM_MODIFIED_KEY)
         );
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 }

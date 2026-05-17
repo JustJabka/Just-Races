@@ -1,10 +1,10 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.apache.commons.lang3.Range;
 import org.bukkit.Bukkit;
@@ -46,7 +46,7 @@ public class LizardRaceRunnable extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (RaceManager.getRace(player) != Race.LIZARD) continue;
+            if (!RaceManager.isRace(player, RaceProvider.LIZARD)) return;
 
             Location location = player.getLocation();
             World world = location.getWorld();

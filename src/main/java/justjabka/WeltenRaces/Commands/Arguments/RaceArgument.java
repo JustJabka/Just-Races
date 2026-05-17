@@ -1,23 +1,25 @@
 package justjabka.WeltenRaces.Commands.Arguments;
 
 import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.MessageComponentSerializer;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
-import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.Instances.RaceInstance;
+import justjabka.WeltenRaces.Registries.RacesRegistry;
+import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class RaceArgument implements CustomArgumentType.Converted<Race, String> {
+public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, NamespacedKey> {
     private static final DynamicCommandExceptionType ERROR_INVALID_RACE = new DynamicCommandExceptionType(race ->
             MessageComponentSerializer.message().serialize(
                     Component.translatable("commands.setrace.invalid_race")
@@ -26,22 +28,31 @@ public class RaceArgument implements CustomArgumentType.Converted<Race, String> 
             ));
 
     @Override
-    public Race convert(String nativeType) throws CommandSyntaxException {
-        try {
-            return Race.valueOf(nativeType.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException ignored) {
+    public RaceInstance convert(NamespacedKey nativeType) throws CommandSyntaxException {
+        NamespacedKey key = NamespacedKey.fromString(nativeType.asString(), WeltenRaces.INSTANCE);
+
+        if (key == null) {
             throw ERROR_INVALID_RACE.create(nativeType);
         }
+
+        RaceInstance race = RacesRegistry.getRaces().get(key);
+
+        if (race == null) {
+            throw ERROR_INVALID_RACE.create(nativeType);
+        }
+
+        return race;
     }
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        for (Race race : Race.values()) {
-            String name = race.toString();
+        String input = builder.getRemainingLowerCase();
 
-            // Only suggest if the race name matches the user input
-            if (name.startsWith(builder.getRemainingLowerCase())) {
-                builder.suggest(race.toString());
+        for (NamespacedKey key : RacesRegistry.getRaces().keySet()) {
+            String keyString = key.toString();
+
+            if (keyString.startsWith(input)) {
+                builder.suggest(keyString);
             }
         }
 
@@ -50,7 +61,7 @@ public class RaceArgument implements CustomArgumentType.Converted<Race, String> 
 
 
     @Override
-    public ArgumentType<String> getNativeType() {
-        return StringArgumentType.word();
+    public ArgumentType<NamespacedKey> getNativeType() {
+        return ArgumentTypes.namespacedKey();
     }
 }
