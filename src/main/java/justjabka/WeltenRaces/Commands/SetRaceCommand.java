@@ -11,9 +11,12 @@ import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.entity.Player;
 
 public class SetRaceCommand {
+    private static final TranslatableComponent message = Component.translatable("commands.setrace.success").fallback("You became: %s");
+
     public static LiteralCommandNode<CommandSourceStack> setRace() {
         return Commands.literal("setrace")
                 .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(WeltenRaces.NAMESPACE)))
@@ -24,14 +27,12 @@ public class SetRaceCommand {
                                     final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
                                     Race race = ctx.getArgument("race", Race.class);
+                                    Component raceName = Component.text(race.toString());
 
                                     RaceManager.setRace(target, race);
 
-                                    target.sendMessage(
-                                            Component.translatable("commands.setrace.success")
-                                                    .fallback("You became: %s")
-                                                    .arguments(Component.text(race.toString()))
-                                    );
+                                    target.sendMessage(message.arguments(raceName));
+
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )
