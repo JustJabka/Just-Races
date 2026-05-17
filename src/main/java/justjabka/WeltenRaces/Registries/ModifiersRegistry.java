@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ModifierRegistry {
+public class ModifiersRegistry {
     public static final Map<NamespacedKey, Map<Material, ItemModifier>> RACE_MODIFIERS = new HashMap<>();
     public static final Map<NamespacedKey, ItemModifier> MODIFIERS_BY_KEY = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class ModifierRegistry {
     }
 
     private static void bindModifiers() {
-        for (RaceInstance race : RaceRegistry.getRaces().values()) {
+        for (RaceInstance race : RacesRegistry.getRaces().values()) {
 
             for (NamespacedKey modifierKey : MODIFIERS_BY_KEY.keySet()) {
                 Set<Material> materials = race.getMaterialsForModifier(modifierKey.toString());

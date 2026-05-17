@@ -1,7 +1,7 @@
 package justjabka.WeltenRaces.DataProvider;
 
 import justjabka.WeltenRaces.Instances.RaceInstance;
-import justjabka.WeltenRaces.Registries.RaceRegistry;
+import justjabka.WeltenRaces.Registries.RacesRegistry;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.NamespacedKey;
@@ -21,6 +21,6 @@ public class RaceProvider {
     }
 
     public static RaceInstance get(NamespacedKey key) {
-        return RaceRegistry.getRaces().get(key);
+        return RacesRegistry.getRaces().get(key);
     }
 }

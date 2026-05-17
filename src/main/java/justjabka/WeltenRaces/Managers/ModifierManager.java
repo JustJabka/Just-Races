@@ -11,8 +11,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
 
-import static justjabka.WeltenRaces.Registries.ModifierRegistry.MODIFIERS_BY_KEY;
-import static justjabka.WeltenRaces.Registries.ModifierRegistry.RACE_MODIFIERS;
+import static justjabka.WeltenRaces.Registries.ModifiersRegistry.MODIFIERS_BY_KEY;
+import static justjabka.WeltenRaces.Registries.ModifiersRegistry.RACE_MODIFIERS;
 
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "item_modified");

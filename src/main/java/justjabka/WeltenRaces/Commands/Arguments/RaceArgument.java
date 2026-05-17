@@ -10,7 +10,7 @@ import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import justjabka.WeltenRaces.Instances.RaceInstance;
-import justjabka.WeltenRaces.Registries.RaceRegistry;
+import justjabka.WeltenRaces.Registries.RacesRegistry;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -35,7 +35,7 @@ public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, 
             throw ERROR_INVALID_RACE.create(nativeType);
         }
 
-        RaceInstance race = RaceRegistry.getRaces().get(key);
+        RaceInstance race = RacesRegistry.getRaces().get(key);
 
         if (race == null) {
             throw ERROR_INVALID_RACE.create(nativeType);
@@ -48,7 +48,7 @@ public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, 
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         String input = builder.getRemainingLowerCase();
 
-        for (NamespacedKey key : RaceRegistry.getRaces().keySet()) {
+        for (NamespacedKey key : RacesRegistry.getRaces().keySet()) {
             String keyString = key.toString();
 
             if (keyString.startsWith(input)) {
