@@ -31,16 +31,13 @@ public class TrueFormAbility extends BaseValidationAbility {
     public static final NamespacedKey TRUE_FORM_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "true_form");
 
     private final TrueFormAbilityConfig config;
+    private static final int maxDuration = 90 * 20;
 
     private final Map<Attribute, AttributeModifier> trueFormModifiers;
-    private final Set<PotionEffect> trueFormBuffs = Set.of(
-            new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 0, false, true, true),
-            new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 1, false, true, true)
-    );
+    private final Set<PotionEffect> trueFormBuffs;
     private final Set<PotionEffect> trueFormDebuffs;
 
     private static final Map<UUID, Long> formExpireStamp = new HashMap<>();
-    private static final long maxDurationTicks = 90 * 20;
 
     @Override
     public Component getAbilityDisplay(Player player) {
@@ -54,6 +51,10 @@ public class TrueFormAbility extends BaseValidationAbility {
         this.trueFormModifiers = Map.of(
                 Attribute.SCALE, new AttributeModifier(getKey(), config.scaleBonus, AttributeModifier.Operation.ADD_NUMBER),
                 Attribute.MAX_HEALTH, new AttributeModifier(getKey(), config.maxHealthBonus, AttributeModifier.Operation.ADD_NUMBER)
+        );
+        this.trueFormBuffs = Set.of(
+                new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 0, false, true, true),
+                new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 1, false, true, true)
         );
         this.trueFormDebuffs = Set.of(
                 new PotionEffect(PotionEffectType.SLOWNESS, config.debuffDuration, 2, false, true, true),
@@ -147,7 +148,7 @@ public class TrueFormAbility extends BaseValidationAbility {
         long currentTicks = getGameTime();
 
         long newExpireStamp = currentExpiry + (seconds * 20L);
-        long maxAllowedExpireStamp = currentTicks + maxDurationTicks;
+        long maxAllowedExpireStamp = currentTicks + maxDuration;
 
         if (newExpireStamp > maxAllowedExpireStamp) {
             newExpireStamp = maxAllowedExpireStamp;

@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
+import justjabka.WeltenRaces.Configs.Ability.GluttonyExecuteAbilityConfig;
 import justjabka.WeltenRaces.DataProvider.EntityTypeTagKeysProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -24,17 +25,16 @@ import java.util.Collection;
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class GluttonyExecuteAbility extends BaseAbility {
+    private final GluttonyExecuteAbilityConfig config;
+
     private static final Sound consumeSound = Sound.ENTITY_EVOKER_FANGS_ATTACK;
     private static final PotionEffect consumeEffect = new PotionEffect(PotionEffectType.SATURATION, 10, 0, false, false, false);
 
     private static final Collection<EntityType> gluttonyExecuteIgnored = EntityTypeTagKeysProvider.getTagValues(EntityTypeTagKeysProvider.GLUTTONY_EXECUTE_IGNORED);
 
-    private static final double smallKillMaxHealth = 6;
-    private static final int smallKillSecondsToExtend = 10;
-
-    private static final double bigKillMaxHealth = 26;
-    private static final double bigKillRequiredHealth = 6;
-    private static final int bigKillSecondsToExtend = 20;
+    public GluttonyExecuteAbility(GluttonyExecuteAbilityConfig config) {
+        this.config = config;
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -85,15 +85,15 @@ public class GluttonyExecuteAbility extends BaseAbility {
         return target;
     }
 
-    private static int calcSecondsToExtend(double maxHealth, double currentHealth) {
+    private int calcSecondsToExtend(double maxHealth, double currentHealth) {
         int secondsToExtend = 0;
 
-        if (maxHealth <= smallKillMaxHealth) {
-            secondsToExtend = smallKillSecondsToExtend;
+        if (maxHealth <= config.smallKillMaxHealth) {
+            secondsToExtend = config.smallKillSecondsToExtend;
         }
 
-        if (maxHealth <= bigKillMaxHealth && currentHealth < bigKillRequiredHealth) {
-            secondsToExtend = bigKillSecondsToExtend;
+        if (maxHealth <= config.bigKillMaxHealth && currentHealth < config.bigKillRequiredHealth) {
+            secondsToExtend = config.bigKillSecondsToExtend;
         }
 
         return secondsToExtend;

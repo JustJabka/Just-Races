@@ -30,7 +30,7 @@ public class AbilitiesRegistry {
         final TrueFormAbility trueForm = new TrueFormAbility(configs.trueFormAbilityConfig);
         final PoisonousBiteAbility poisonousBite = new PoisonousBiteAbility(configs.poisonousBiteAbilityConfig);
         final VocalFryAbility vocalFryAbility = new VocalFryAbility(configs.vocalFryAbilityConfig);
-        final GluttonyExecuteAbility gluttonyExecuteAbility = new GluttonyExecuteAbility();
+        final GluttonyExecuteAbility gluttonyExecuteAbility = new GluttonyExecuteAbility(configs.gluttonyExecuteAbilityConfig);
 
         RACE_ABILITIES.put(Race.ARMAT, Set.of(damageInversion, ecdysis));
         RACE_ABILITIES.put(Race.PHANTOM, Set.of(predatorVision, unfoldWings, wildHunt));

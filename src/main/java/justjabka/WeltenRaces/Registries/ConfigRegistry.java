@@ -34,6 +34,7 @@ public class ConfigRegistry {
     public final PoisonousWeaponAbilityConfig poisonousWeaponAbilityConfig;
     public final PoisonousBiteAbilityConfig poisonousBiteAbilityConfig;
     public final VocalFryAbilityConfig vocalFryAbilityConfig;
+    public final GluttonyExecuteAbilityConfig gluttonyExecuteAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -70,6 +71,7 @@ public class ConfigRegistry {
         this.poisonousWeaponAbilityConfig = new PoisonousWeaponAbilityConfig(loadAbilityConfig(plugin, "poisonous-weapon"));
         this.poisonousBiteAbilityConfig = new PoisonousBiteAbilityConfig(loadAbilityConfig(plugin, "poisonous-bite"));
         this.vocalFryAbilityConfig = new VocalFryAbilityConfig(loadAbilityConfig(plugin, "vocal-fry"));
+        this.gluttonyExecuteAbilityConfig = new GluttonyExecuteAbilityConfig(loadAbilityConfig(plugin, "gluttony-execute"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));
