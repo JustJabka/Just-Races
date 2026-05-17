@@ -1,8 +1,8 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Configs.Race.EpiphyteRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class EpiphyteRaceRunnable extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (RaceManager.getRace(player) != Race.EPIPHYTE) return;
+            if (!RaceManager.isRace(player, RaceProvider.EPIPHYTE)) return;
 
             applyParasiticNatureBonus(player);
         }

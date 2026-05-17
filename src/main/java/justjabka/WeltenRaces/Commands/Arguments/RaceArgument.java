@@ -9,15 +9,17 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
-import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.Instances.RaceInstance;
+import justjabka.WeltenRaces.Registries.RaceRegistry;
+import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
-public class RaceArgument implements CustomArgumentType.Converted<Race, String> {
+public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, String> {
     private static final DynamicCommandExceptionType ERROR_INVALID_RACE = new DynamicCommandExceptionType(race ->
             MessageComponentSerializer.message().serialize(
                     Component.translatable("commands.setrace.invalid_race")
@@ -26,22 +28,38 @@ public class RaceArgument implements CustomArgumentType.Converted<Race, String> 
             ));
 
     @Override
-    public Race convert(String nativeType) throws CommandSyntaxException {
-        try {
-            return Race.valueOf(nativeType.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException ignored) {
+    public RaceInstance convert(String nativeType) throws CommandSyntaxException {
+        NamespacedKey key = NamespacedKey.fromString(nativeType.toLowerCase(), WeltenRaces.INSTANCE);
+
+        if (key == null) {
             throw ERROR_INVALID_RACE.create(nativeType);
         }
+
+        RaceInstance race = RaceRegistry.getRegisteredRaces().get(key);
+
+        if (race == null) {
+            throw ERROR_INVALID_RACE.create(nativeType);
+        }
+
+        return race;
     }
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        for (Race race : Race.values()) {
-            String name = race.toString();
+        String input = builder.getRemainingLowerCase();
 
-            // Only suggest if the race name matches the user input
-            if (name.startsWith(builder.getRemainingLowerCase())) {
-                builder.suggest(race.toString());
+        for (NamespacedKey key : RaceRegistry.getRegisteredRaces().keySet()) {
+            String fullKey = key.toString();
+            String shortKey = key.getKey();
+
+            if (input.contains(String.valueOf(NamespacedKey.DEFAULT_SEPARATOR))) {
+                if (fullKey.startsWith(input)) {
+                    builder.suggest(fullKey);
+                }
+            } else {
+                if (shortKey.startsWith(input)) {
+                    builder.suggest(shortKey);
+                }
             }
         }
 

@@ -1,9 +1,9 @@
 package justjabka.WeltenRaces.Abilities.Generic;
 
+import justjabka.WeltenRaces.Instances.RaceInstance;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
-import justjabka.WeltenRaces.Types.Race;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -107,7 +107,7 @@ public abstract class BaseAbility implements Listener {
      * @return {@code true} if player has this ability
      */
     public boolean raceHasAbility(Player player) {
-        Race race = RaceManager.getRace(player);
+        RaceInstance race = RaceManager.getRace(player);
         Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
         return allowedAbilities.contains(this);
     }

@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodModifier;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 public class PhantomMembraneFoodModifier extends BaseFoodModifier implements Listener {
     private final PhantomMembraneFoodModifierConfig config;
 
-    public PhantomMembraneFoodModifier(String id, PhantomMembraneFoodModifierConfig config) {
+    public PhantomMembraneFoodModifier(NamespacedKey key, PhantomMembraneFoodModifierConfig config) {
         super(
-                id,
+                key,
                 FoodProperties.food()
                         .canAlwaysEat(true)
                         .nutrition(config.nutritionAmount)
@@ -42,7 +43,6 @@ public class PhantomMembraneFoodModifier extends BaseFoodModifier implements Lis
 
         String modifier = ModifierManager.getAppliedModifier(item);
         if (modifier == null) return;
-        if (!modifier.equals(this.getId())) return;
 
         player.heal(config.healAmount, EntityRegainHealthEvent.RegainReason.EATING);
     }

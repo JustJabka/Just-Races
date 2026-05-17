@@ -2,8 +2,8 @@ package justjabka.WeltenRaces.Listeners;
 
 import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +29,7 @@ public class LizardRaceListener implements Listener {
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player victim)) return;
 
-        if (RaceManager.getRace(victim) != Race.LIZARD) return;
+        if (!RaceManager.isRace(victim, RaceProvider.LIZARD)) return;
 
         double damage = event.getDamage();
         DamageType damageType = event.getDamageSource().getDamageType();

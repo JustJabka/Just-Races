@@ -4,10 +4,8 @@ import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.WeltenRaces.Configs.Ability.WildHuntAbilityConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Runnables.Ability.WildHuntAbilityRunnable;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -75,8 +73,7 @@ public class WildHuntAbility extends BaseValidationAbility {
 
         if (attacker == null) return;
 
-        Race attackerRace = RaceManager.getRace(attacker);
-        if (!AbilityManager.getAbilitiesForRace(attackerRace).contains(this)) return;
+        if (!raceHasAbility(attacker)) return;
 
         setCooldownTicks(attacker, 0L);
     }

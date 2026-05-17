@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import justjabka.WeltenRaces.Modifiers.ItemModifier;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -11,16 +12,16 @@ import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BaseFoodModifier implements ItemModifier {
-    final String id;
+    final NamespacedKey key;
     final FoodProperties foodProperties;
     final Consumable consumable;
 
     public BaseFoodModifier(
-            String id,
+            NamespacedKey key,
             FoodProperties foodProperties,
             Consumable consumable
     ) {
-        this.id = id;
+        this.key = key;
         this.foodProperties = foodProperties;
         this.consumable = consumable;
     }
@@ -33,7 +34,7 @@ public class BaseFoodModifier implements ItemModifier {
 
         // Add Marker
         item.editPersistentDataContainer(pdc ->
-                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, id)
+                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, key.toString())
         );
     }
 
@@ -49,7 +50,7 @@ public class BaseFoodModifier implements ItemModifier {
     }
 
     @Override
-    public String getId() {
-        return id;
+    public NamespacedKey getKey() {
+        return key;
     }
 }

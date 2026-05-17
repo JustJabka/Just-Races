@@ -2,7 +2,9 @@ package justjabka.WeltenRaces.Managers;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.WeltenRaces.Types.Race;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
+import justjabka.WeltenRaces.Instances.RaceInstance;
+import justjabka.WeltenRaces.Registries.RaceRegistry;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Map;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
@@ -19,51 +22,43 @@ import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "race");
 
-    public static Race getRace(Player player) {
+    public static RaceInstance getRace(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
-        String race = data.get(RACE_KEY, PersistentDataType.STRING);
+        String raceString = data.get(RACE_KEY, PersistentDataType.STRING);
 
-        if (race == null) return Race.HUMAN;
-
-        try {
-            return Race.valueOf(race.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            WeltenRaces.LOGGER.warn("Unknown race in PDC for {}: {}", player.getName(), race);
-            return Race.HUMAN;
+        if (raceString == null) {
+            return RaceProvider.get(RaceProvider.HUMAN);
         }
+
+        NamespacedKey raceKey = NamespacedKey.fromString(raceString);
+        RaceInstance race = RaceRegistry.getRegisteredRaces().get(raceKey);
+
+        if (race == null) {
+            WeltenRaces.LOGGER.warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
+            return RaceProvider.get(RaceProvider.HUMAN);
+        }
+
+        return race;
     }
 
-    public static void setRace(Player player, Race race) {
+    public static void setRace(Player player, NamespacedKey key) {
         resetRace(player);
 
-        // Update race data
         PersistentDataContainer data = player.getPersistentDataContainer();
-        data.set(RACE_KEY, PersistentDataType.STRING, race.toString());
+        data.set(RACE_KEY, PersistentDataType.STRING, key.toString());
 
+        RaceInstance race = RaceRegistry.getRegisteredRaces().get(key);
         initRace(player, race);
     }
 
-    private static void initRace(Player player, Race race) {
-        switch (race) {
-            case ARMAT -> {
-                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 10);
-            }
-            case HUMAN -> {
-                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 26);
-            }
-            case SKYZERN -> {
-                AttributeManager.setBaseValue(player, Attribute.SCALE, 1.05);
-            }
-            case EPIPHYTE -> {
-                AttributeManager.setBaseValue(player, Attribute.SCALE, 0.95);
-                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 18);
-            }
-            case LIZARD -> {
-                AttributeManager.setBaseValue(player, Attribute.SCALE, 1);
-                AttributeManager.setBaseValue(player, Attribute.MAX_HEALTH, 14);
-                AttributeManager.setBaseValue(player, Attribute.FALL_DAMAGE_MULTIPLIER, 0.8);
-            }
-        }
+    public static boolean isRace(Player player, NamespacedKey key) {
+        RaceInstance race = getRace(player);
+        return race != null && race.getKey().equals(key);
+    }
+
+    private static void initRace(Player player, RaceInstance race) {
+        Map<Attribute, Double> attributes = race.getAttributes();
+        attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
     }
 
     public static void resetRace(Player player) {
@@ -78,7 +73,7 @@ public class RaceManager {
         }
 
         // Disable abilities
-        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(RaceManager.getRace(player));
+        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(getRace(player));
         allowedAbilities.forEach(ability -> {
             if (!(ability instanceof BaseValidationAbility validationAbility)) return;
             validationAbility.onDeactivation(player);

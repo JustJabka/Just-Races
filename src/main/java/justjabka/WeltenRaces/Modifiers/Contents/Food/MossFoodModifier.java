@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.UseCooldown;
 import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Managers.ModifierManager;
 import justjabka.WeltenRaces.Modifiers.Contents.Generic.BaseFoodCooldownModifier;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 public class MossFoodModifier extends BaseFoodCooldownModifier implements Listener {
     private final MossFoodModifierConfig config;
 
-    public MossFoodModifier(String id, MossFoodModifierConfig config) {
+    public MossFoodModifier(NamespacedKey key, MossFoodModifierConfig config) {
         super(
-                id,
+                key,
                 FoodProperties.food()
                         .nutrition(config.nutritionAmount)
                         .saturation(config.saturationAmount)
@@ -39,7 +40,6 @@ public class MossFoodModifier extends BaseFoodCooldownModifier implements Listen
 
         String modifier = ModifierManager.getAppliedModifier(item);
         if (modifier == null) return;
-        if (!modifier.equals(this.getId())) return;
 
         player.heal(config.healAmount, EntityRegainHealthEvent.RegainReason.EATING);
     }

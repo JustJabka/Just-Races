@@ -2,9 +2,9 @@ package justjabka.WeltenRaces.Abilities;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.VocalFryAbilityConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -60,7 +60,7 @@ public class VocalFryAbility extends BaseAbility {
         int foodLevel = player.getFoodLevel();
 
         if (foodLevel <= config.foodRequired) return false;
-        if (target instanceof Player targetPlayer && RaceManager.getRace(targetPlayer) == Race.LIZARD) return false;
+        if (target instanceof Player targetPlayer && RaceManager.isRace(targetPlayer, RaceProvider.LIZARD)) return false;
 
         targetDebuffs.forEach(target::addPotionEffect);
         player.setFoodLevel(Math.max(0, foodLevel - config.foodDrained));

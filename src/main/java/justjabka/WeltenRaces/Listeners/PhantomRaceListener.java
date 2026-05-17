@@ -2,8 +2,8 @@ package justjabka.WeltenRaces.Listeners;
 
 import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.DataProvider.ItemTypeTagKeysProvider;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.Types.Race;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class PhantomRaceListener implements Listener {
         if (!(event.getEntity() instanceof Player victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (RaceManager.getRace(attacker) != Race.PHANTOM) return;
+        if (!RaceManager.isRace(attacker, RaceProvider.PHANTOM)) return;
 
         int ticksSinceRest = victim.getStatistic(Statistic.TIME_SINCE_REST);
         int daysSinceRest = ticksSinceRest / 24000;
@@ -42,7 +42,7 @@ public class PhantomRaceListener implements Listener {
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (RaceManager.getRace(player) != Race.PHANTOM) return;
+        if (!RaceManager.isRace(player, RaceProvider.PHANTOM)) return;
 
         Material consumedMaterial = event.getItem().getType();
         ItemType consumedType = consumedMaterial.asItemType();
