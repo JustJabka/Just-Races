@@ -92,12 +92,10 @@ public class RaceInstance {
             NamespacedKey tagKey = NamespacedKey.fromString(tagKeyString);
 
             if (tagKey == null) return;
-            WeltenRaces.LOGGER.info(tagKey.asString());
 
             Tag<Material> itemTag = Bukkit.getTag(Tag.REGISTRY_ITEMS, tagKey, Material.class);
 
             if (itemTag != null) {
-                WeltenRaces.LOGGER.info(String.valueOf(itemTag.getValues().size()));
                 materials.addAll(itemTag.getValues());
                 return;
             }

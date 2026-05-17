@@ -21,6 +21,6 @@ public class RaceProvider {
     }
 
     public static RaceInstance get(NamespacedKey key) {
-        return RaceRegistry.getRegisteredRaces().get(key);
+        return RaceRegistry.getRaces().get(key);
     }
 }

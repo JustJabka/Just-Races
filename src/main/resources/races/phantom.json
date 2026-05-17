@@ -1,0 +1,15 @@
+{
+  "name": {
+    "translate": "race.phantom.name",
+    "fallback": "Phantom"
+  },
+  "abilities": [
+    "weltenraces:predator_vision",
+    "weltenraces:unfold_wings",
+    "weltenraces:wild_hunt"
+  ],
+  "attributes": {},
+  "item_modifiers": {
+    "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
+  }
+}

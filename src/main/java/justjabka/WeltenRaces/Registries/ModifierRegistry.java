@@ -29,7 +29,7 @@ public class ModifierRegistry {
         registerModifiers(plugin, configs);
         bindModifiers();
 
-        WeltenRaces.LOGGER.info("Successfully registered item modifiers!");
+        WeltenRaces.LOGGER.info("Successfully registered {} item modifiers!", MODIFIERS_BY_KEY.size());
     }
 
     private static void registerModifiers(Plugin plugin, ConfigRegistry configs) {
@@ -56,7 +56,7 @@ public class ModifierRegistry {
     }
 
     private static void bindModifiers() {
-        for (RaceInstance race : RaceRegistry.getRegisteredRaces().values()) {
+        for (RaceInstance race : RaceRegistry.getRaces().values()) {
 
             for (NamespacedKey modifierKey : MODIFIERS_BY_KEY.keySet()) {
                 Set<Material> materials = race.getMaterialsForModifier(modifierKey.toString());

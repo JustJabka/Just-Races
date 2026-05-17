@@ -31,7 +31,7 @@ public class RaceManager {
         }
 
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
-        RaceInstance race = RaceRegistry.getRegisteredRaces().get(raceKey);
+        RaceInstance race = RaceRegistry.getRaces().get(raceKey);
 
         if (race == null) {
             WeltenRaces.LOGGER.warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
@@ -47,7 +47,7 @@ public class RaceManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         data.set(RACE_KEY, PersistentDataType.STRING, key.toString());
 
-        RaceInstance race = RaceRegistry.getRegisteredRaces().get(key);
+        RaceInstance race = RaceRegistry.getRaces().get(key);
         initRace(player, race);
     }
 

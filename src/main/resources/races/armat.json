@@ -1,0 +1,21 @@
+{
+  "name": {
+    "translate": "race.armat.name",
+    "fallback": "Armat"
+  },
+  "abilities": [
+    "weltenraces:damage_inversion",
+    "weltenraces:ecdysis"
+  ],
+  "attributes": {
+    "minecraft:fall_damage_multiplier": 0,
+    "minecraft:max_health": 10
+  },
+  "item_modifiers": {
+    "weltenraces:leather_armor": "#weltenraces:leather_armor",
+    "weltenraces:copper_armor": "#weltenraces:copper_armor",
+    "weltenraces:chainmail_armor": "#weltenraces:chainmail_armor",
+    "weltenraces:iron_armor": "#weltenraces:iron_armor",
+    "weltenraces:golden_armor": "#weltenraces:golden_armor"
+  }
+}

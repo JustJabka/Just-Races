@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RaceRegistry {
-    private static final Map<NamespacedKey, RaceInstance> registeredRaces = new HashMap<>();
+    private static final Map<NamespacedKey, RaceInstance> RACES = new HashMap<>();
     private static final Gson gson = new Gson();
 
     public static void register(Plugin plugin) {
@@ -20,10 +20,15 @@ public class RaceRegistry {
 
         if (!racesFolder.exists()) racesFolder.mkdirs();
 
+        RACES.clear();
+        registerRaces(racesFolder);
+
+        WeltenRaces.LOGGER.info("Successfully registered {} races!", RACES.size());
+    }
+
+    private static void registerRaces(File racesFolder) {
         File[] files = racesFolder.listFiles((dir, name) -> name.endsWith(".json"));
         if (files == null) return;
-
-        registeredRaces.clear();
 
         for (File file : files) {
             try (FileReader reader = new FileReader(file)) {
@@ -32,16 +37,14 @@ public class RaceRegistry {
                 String fileNameWithNoExtension = file.getName().replaceFirst("[.][^.]+$", "");
                 race.setKey(fileNameWithNoExtension.toLowerCase());
 
-                registeredRaces.put(race.getKey(), race);
-
-                WeltenRaces.LOGGER.info("Race successfully registered: {}", race.getKey());
+                RACES.put(race.getKey(), race);
             } catch (Exception e) {
                 WeltenRaces.LOGGER.error("Error while registering race: {}", file.getName(), e);
             }
         }
     }
 
-    public static Map<NamespacedKey, RaceInstance> getRegisteredRaces() {
-        return registeredRaces;
+    public static Map<NamespacedKey, RaceInstance> getRaces() {
+        return RACES;
     }
 }

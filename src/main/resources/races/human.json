@@ -1,0 +1,11 @@
+{
+  "name": {
+    "translate": "race.human.name",
+    "fallback": "Human"
+  },
+  "abilities": [],
+  "attributes": {
+    "minecraft:max_health": 26
+  },
+  "item_modifiers": {}
+}

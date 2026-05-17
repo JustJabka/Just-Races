@@ -1,0 +1,20 @@
+{
+  "name": {
+    "translate": "race.lizard.name",
+    "fallback": "Lizard"
+  },
+  "abilities": [
+    "weltenraces:poisonous_split",
+    "weltenraces:swift_sneak",
+    "weltenraces:true_form",
+    "weltenraces:gluttony_execute",
+    "weltenraces:poisonous_bite",
+    "weltenraces:vocal_fry"
+  ],
+  "attributes": {
+    "minecraft:max_health": 14
+  },
+  "item_modifiers": {
+    "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
+  }
+}
