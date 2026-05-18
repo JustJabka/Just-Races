@@ -1,7 +1,7 @@
 {
   "name": {
     "translate": "race.lizard.name",
-    "fallback": "Lizard"
+    "fallback": "Saurian"
   },
   "abilities": [
     "weltenraces:poisonous_split",

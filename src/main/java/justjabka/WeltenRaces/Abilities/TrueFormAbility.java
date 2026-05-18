@@ -133,6 +133,8 @@ public class TrueFormAbility extends BaseValidationAbility {
     }
 
     public void clearTrueForm(Player player) {
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+
         AbilityManager.changeAbilityState(player, getKey(), false);
 
         trueFormBuffs.forEach(effect -> player.removePotionEffect(effect.getType()));

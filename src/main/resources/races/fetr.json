@@ -1,0 +1,12 @@
+{
+  "name": {
+    "translate": "race.fetr.name",
+    "fallback": "Fetr"
+  },
+  "abilities": [],
+  "attributes": {
+    "minecraft:max_health": 16,
+    "minecraft:scale": 0.95
+  },
+  "item_modifiers": {}
+}
