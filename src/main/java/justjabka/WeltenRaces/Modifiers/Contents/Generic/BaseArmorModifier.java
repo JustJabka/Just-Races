@@ -65,7 +65,7 @@ public class BaseArmorModifier extends BaseModifier {
     }
 
     private NamespacedKey getDynamicKey(ItemStack item) {
-        return new NamespacedKey(getKey().getKey(), getKey().getKey() + "." + getItemGroupSlot(item));
+        return new NamespacedKey(getKey().getNamespace(), getKey().getKey() + "." + getItemGroupSlot(item));
     }
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {
