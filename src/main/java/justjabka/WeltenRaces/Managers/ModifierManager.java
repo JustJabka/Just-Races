@@ -36,9 +36,7 @@ public class ModifierManager {
         if (isModifiedWith(item, type)) return;
 
         type.apply(item);
-        item.editMeta(meta -> meta
-                .getPersistentDataContainer()
-                .set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getKey().toString()));
+        addMarker(item, type);
     }
 
     public static void tryUndo(ItemStack item) {
@@ -54,7 +52,7 @@ public class ModifierManager {
         ItemModifier type = getByKey(key);
 
         if (type == null) {
-            item.editMeta(meta -> meta.getPersistentDataContainer().remove(ITEM_MODIFIED_KEY));
+            removeMarker(item);
 
             WeltenRaces.LOGGER.warn("Tried to undo unknown or unregistered modifier: {}", modifierId);
             return;
@@ -62,7 +60,7 @@ public class ModifierManager {
 
         try {
             type.undo(item);
-            item.editMeta(meta -> meta.getPersistentDataContainer().remove(ITEM_MODIFIED_KEY));
+            removeMarker(item);
         } catch (IllegalArgumentException e) {
             WeltenRaces.LOGGER.error("Error while undoing modifier {} on item {}", modifierId, item.getType(), e);
         }
@@ -91,6 +89,18 @@ public class ModifierManager {
             ModifierManager.tryUndo(cursor);
             ModifierManager.tryApply(player, cursor);
         }
+    }
+
+    private static void addMarker(ItemStack item, ItemModifier type) {
+        item.editPersistentDataContainer(pdc ->
+                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getKey().toString())
+        );
+    }
+
+    private static void removeMarker(ItemStack item) {
+        item.editPersistentDataContainer(pdc ->
+                pdc.remove(ITEM_MODIFIED_KEY)
+        );
     }
 
     private static boolean isModifiedWith(ItemStack item, ItemModifier type) {

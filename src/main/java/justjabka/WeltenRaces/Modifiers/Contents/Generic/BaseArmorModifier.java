@@ -2,20 +2,14 @@ package justjabka.WeltenRaces.Modifiers.Contents.Generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
-import justjabka.WeltenRaces.Modifiers.ItemModifier;
-import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
-
-import static justjabka.WeltenRaces.Managers.ModifierManager.ITEM_MODIFIED_KEY;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BaseArmorModifier implements ItemModifier {
-    private final NamespacedKey key;
+public class BaseArmorModifier extends BaseModifier {
     private final Attribute attribute;
     private final double amount;
     private final AttributeModifier.Operation operation;
@@ -26,7 +20,7 @@ public class BaseArmorModifier implements ItemModifier {
             double amount,
             AttributeModifier.Operation operation
     ) {
-        this.key = key;
+        super(key);
         this.attribute = attribute;
         this.amount = amount;
         this.operation = operation;
@@ -53,11 +47,6 @@ public class BaseArmorModifier implements ItemModifier {
 
         // Build Attributes
         item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes.build());
-
-        // Add Marker
-        item.editPersistentDataContainer(pdc ->
-                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, key.toString())
-        );
     }
 
     @Override
@@ -73,20 +62,10 @@ public class BaseArmorModifier implements ItemModifier {
 
             item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes.build());
         }
-
-        // Remove Marker
-        item.editPersistentDataContainer(pdc ->
-                pdc.remove(ITEM_MODIFIED_KEY)
-        );
-    }
-
-    @Override
-    public NamespacedKey getKey() {
-        return key;
     }
 
     private NamespacedKey getDynamicKey(ItemStack item) {
-        return new NamespacedKey(WeltenRaces.NAMESPACE, key.getKey() + "." + getItemGroupSlot(item));
+        return new NamespacedKey(getKey().getKey(), getKey().getKey() + "." + getItemGroupSlot(item));
     }
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {
