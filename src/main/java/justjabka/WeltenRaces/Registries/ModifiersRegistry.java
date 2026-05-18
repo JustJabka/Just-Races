@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.Modifiers.Contents.Armor.*;
 import justjabka.WeltenRaces.Modifiers.Contents.Food.GlowBerriesFoodModifier;
 import justjabka.WeltenRaces.Modifiers.Contents.Food.MossFoodModifier;
 import justjabka.WeltenRaces.Modifiers.Contents.Food.PhantomMembraneFoodModifier;
+import justjabka.WeltenRaces.Modifiers.Contents.Food.SweetBerriesFoodModifier;
 import justjabka.WeltenRaces.Modifiers.ItemModifier;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Bukkit;
@@ -43,7 +44,8 @@ public class ModifiersRegistry {
 
                 new PhantomMembraneFoodModifier(create("phantom_membrane"), configs.phantomMembraneFoodModifierConfig),
                 new GlowBerriesFoodModifier(create("glow_berries"), configs.glowBerriesFoodModifierConfig),
-                new MossFoodModifier(create("moss"), configs.mossFoodModifierConfig)
+                new MossFoodModifier(create("moss"), configs.mossFoodModifierConfig),
+                new SweetBerriesFoodModifier(create("sweet_berries"), configs.sweetBerriesFoodModifierConfig)
         );
 
         // Register modifiers globally

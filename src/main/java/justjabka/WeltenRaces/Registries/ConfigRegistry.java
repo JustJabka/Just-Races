@@ -5,6 +5,7 @@ import justjabka.WeltenRaces.Configs.Modifier.Armor.*;
 import justjabka.WeltenRaces.Configs.Modifier.Food.GlowBerriesFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
+import justjabka.WeltenRaces.Configs.Modifier.Food.SweetBerriesFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Race.*;
 import org.bukkit.plugin.Plugin;
 
@@ -46,6 +47,7 @@ public class ConfigRegistry {
     public final GlowBerriesFoodModifierConfig glowBerriesFoodModifierConfig;
     public final MossFoodModifierConfig mossFoodModifierConfig;
     public final PhantomMembraneFoodModifierConfig phantomMembraneFoodModifierConfig;
+    public final SweetBerriesFoodModifierConfig sweetBerriesFoodModifierConfig;
 
     public ConfigRegistry(Plugin plugin) {
         // Races
@@ -83,5 +85,6 @@ public class ConfigRegistry {
         this.glowBerriesFoodModifierConfig = new GlowBerriesFoodModifierConfig(loadModifierConfig(plugin, "food/glow-berries"));
         this.mossFoodModifierConfig = new MossFoodModifierConfig(loadModifierConfig(plugin, "food/moss"));
         this.phantomMembraneFoodModifierConfig = new PhantomMembraneFoodModifierConfig(loadModifierConfig(plugin, "food/phantom-membrane"));
+        this.sweetBerriesFoodModifierConfig = new SweetBerriesFoodModifierConfig(loadModifierConfig(plugin, "food/sweet-berries"));
     }
 }

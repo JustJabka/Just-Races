@@ -8,5 +8,7 @@
     "minecraft:max_health": 16,
     "minecraft:scale": 0.95
   },
-  "item_modifiers": {}
+  "item_modifiers": {
+    "weltenraces:sweet_berries": "minecraft:sweet_berries"
+  }
 }
