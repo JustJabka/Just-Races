@@ -100,7 +100,7 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
     /// Gives player ability to fly with wings
     public void giveWings(Player player, AttributeInstance jumpStrengthInstance) {
         // TODO: Add visual wings
-        AbilityManager.changeAbilityState(player, getKey(), true);
+        AbilityManager.setAbilityState(player, getKey(), true);
 
         jumpStrengthInstance.removeModifier(getKey());
 
@@ -113,7 +113,7 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
 
     /// Removes player's ability to fly with wings
     public void removeWings(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), false);
+        AbilityManager.setAbilityState(player, getKey(), false);
         changeWingsState(player, ItemStack.empty());
     }
 

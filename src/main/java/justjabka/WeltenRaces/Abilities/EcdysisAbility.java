@@ -70,7 +70,7 @@ public class EcdysisAbility extends BaseAbility {
         boolean isSuicideUse = avrgDurability <= config.suicideDurabilityPercent;
 
         // Store if this is suicide use for later
-        AbilityManager.changeAbilityState(player, getKey(), isSuicideUse);
+        AbilityManager.setAbilityState(player, getKey(), isSuicideUse);
 
         // Change durability
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
@@ -118,7 +118,7 @@ public class EcdysisAbility extends BaseAbility {
         if (!AbilityManager.isAbilityActive(suicidePlayer, getKey())) return;
 
         // Prevent double death
-        AbilityManager.changeAbilityState(suicidePlayer, getKey(), false);
+        AbilityManager.setAbilityState(suicidePlayer, getKey(), false);
 
         // DIE!
         suicidePlayer.setHealth(0);

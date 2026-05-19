@@ -69,7 +69,7 @@ public class PoisonousAreaAbility extends BaseTogglableAbility {
 
     @Override
     public void enable(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), true);
+        AbilityManager.setAbilityState(player, getKey(), true);
 
         UUID pid = player.getUniqueId();
 

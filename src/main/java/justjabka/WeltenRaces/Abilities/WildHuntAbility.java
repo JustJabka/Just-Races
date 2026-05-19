@@ -59,7 +59,7 @@ public class WildHuntAbility extends BaseValidationAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!AbilityManager.hasAbility(player, getKey())) return;
+        if (!AbilityManager.hasAbilityData(player, getKey())) return;
         clearAbility(player);
     }
 
@@ -68,7 +68,7 @@ public class WildHuntAbility extends BaseValidationAbility {
         Player victim = event.getPlayer();
         Player attacker = victim.getKiller();
 
-        if (!AbilityManager.hasAbility(victim, getKey())) return;
+        if (!AbilityManager.hasAbilityData(victim, getKey())) return;
         clearAbility(victim);
 
         if (attacker == null) return;
@@ -95,7 +95,7 @@ public class WildHuntAbility extends BaseValidationAbility {
         if (target == null) return false;
         if (!(target instanceof  Player victim)) return false;
         
-        if (AbilityManager.hasAbility(victim, getKey())) return false;
+        if (AbilityManager.hasAbilityData(victim, getKey())) return false;
         giveAbility(player, victim);
         
         return true;
@@ -128,7 +128,7 @@ public class WildHuntAbility extends BaseValidationAbility {
         UUID victimId = victim.getUniqueId();
 
         clearPreviousVictim(victimId, playerId);
-        AbilityManager.changeAbilityOwner(victim, getKey(), playerId);
+        AbilityManager.setAbilityOwner(victim, getKey(), playerId);
         
         // Play sounds
         attacker.getWorld().playSound(attacker.getLocation(), Sound.ENTITY_PHANTOM_AMBIENT, SoundCategory.PLAYERS, 1, 1);
@@ -140,7 +140,7 @@ public class WildHuntAbility extends BaseValidationAbility {
     }
 
     public void clearAbility(Player victim) {
-        AbilityManager.removeAbility(victim, getKey());
+        AbilityManager.removeAbilityData(victim, getKey());
         victimEffects.forEach(effect -> victim.removePotionEffect(effect.getType()));
     }
 
@@ -148,7 +148,7 @@ public class WildHuntAbility extends BaseValidationAbility {
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.getUniqueId().equals(victimId)) continue;
 
-            if (!AbilityManager.hasAbility(online, getKey())) continue;
+            if (!AbilityManager.hasAbilityData(online, getKey())) continue;
 
             UUID currentOwner = getCurrentOwner(online);
             if (!playerId.equals(currentOwner)) continue;
@@ -158,6 +158,6 @@ public class WildHuntAbility extends BaseValidationAbility {
     }
 
     private UUID getCurrentOwner(Player player) {
-        return AbilityManager.getAbilities(player).get(getKey(), DataType.UUID);
+        return AbilityManager.getAbilitiesContainer(player).get(getKey(), DataType.UUID);
     }
 }

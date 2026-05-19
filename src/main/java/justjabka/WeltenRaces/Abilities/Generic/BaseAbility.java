@@ -220,7 +220,7 @@ public abstract class BaseAbility implements Listener {
         if (!raceHasAbility(player)) return;
 
         if (!canActivate(player)) return;
-        if (!AbilityManager.hasActivationSlotSelected(player)) return;
+        if (!AbilityManager.isActivationSlotSelected(player)) return;
 
         if (isOnCooldown(player)) return;
 

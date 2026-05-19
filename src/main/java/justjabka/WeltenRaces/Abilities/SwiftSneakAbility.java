@@ -77,7 +77,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
     }
 
     public void giveFastSneak(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), true);
+        AbilityManager.setAbilityState(player, getKey(), true);
 
         new SwiftSneakAbilityRunnable(this, player.getUniqueId()).runTaskTimer(WeltenRaces.INSTANCE, 0, 2);
 
@@ -87,7 +87,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
     }
 
     public void clearFastSneak(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), false);
+        AbilityManager.setAbilityState(player, getKey(), false);
 
         // Remove bonuses
         fastSneakEffects.forEach(effect -> player.removePotionEffect(effect.getType()));

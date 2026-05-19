@@ -39,7 +39,7 @@ public class FetrRaceListener implements Listener {
         Player player = event.getPlayer();
 
         if (!RaceManager.isRace(player, FETR)) return;
-        if (!AbilityManager.hasActivationSlotSelected(player)) return;
+        if (!AbilityManager.isActivationSlotSelected(player)) return;
 
         ItemStack item = event.getItem();
 

@@ -16,7 +16,32 @@ import java.util.UUID;
 
 public class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
+    private static final int activationSlot = 8;
 
+    //region Container Manipulations
+    public static PersistentDataContainer getAbilitiesContainer(Player player) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+
+        return pdc.getOrDefault(
+                ABILITIES_CONTAINER_KEY,
+                PersistentDataType.TAG_CONTAINER,
+                pdc.getAdapterContext().newPersistentDataContainer()
+        );
+    }
+
+    public static void saveAbilitiesContainer(Player player, PersistentDataContainer abilities) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        pdc.set(
+                ABILITIES_CONTAINER_KEY,
+                PersistentDataType.TAG_CONTAINER,
+                abilities
+        );
+    }
+    //endregion
+
+
+
+    //region Registry Related
     @SuppressWarnings("unchecked")
     public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
         for (BaseAbility ability : AbilitiesRegistry.getAbilities().values()) {
@@ -27,25 +52,6 @@ public class AbilityManager {
         return null;
     }
 
-    // TODO: Refactor ts class
-    public static PersistentDataContainer getAbilities(Player player) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-
-        return pdc.getOrDefault(
-                ABILITIES_CONTAINER_KEY,
-                PersistentDataType.TAG_CONTAINER,
-                pdc.getAdapterContext().newPersistentDataContainer()
-        );
-    }
-
-    public static void updateAbilities(Player player, PersistentDataContainer abilities) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        pdc.set(
-                ABILITIES_CONTAINER_KEY,
-                PersistentDataType.TAG_CONTAINER,
-                abilities
-        );
-    }
 
     public static Set<BaseAbility> getAbilitiesForRace(RaceInstance race) {
         Set<BaseAbility> raceAbilities = new HashSet<>();
@@ -69,48 +75,65 @@ public class AbilityManager {
         return raceAbilities;
     }
 
+    //endregion
+
+
+
+    //region Getters
     public static boolean isAbilityActive(Player player, NamespacedKey key) {
-        return AbilityManager.getAbilities(player).getOrDefault(key, PersistentDataType.BOOLEAN, false);
+        return getAbilitiesContainer(player).getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
     public static int getAbilityValue(Player player, NamespacedKey key) {
-        return AbilityManager.getAbilities(player).getOrDefault(key, PersistentDataType.INTEGER, 0);
+        return getAbilitiesContainer(player).getOrDefault(key, PersistentDataType.INTEGER, 0);
+    }
+    //endregion
+
+
+
+    // region Data Manipulation
+    /**
+     * Checks if player has ability data in his ability container.
+     * @param player Player that abilities would be checked
+     * @param key Ability key
+     * @return {@code true} if player has data in PDC
+     * @apiNote Don't confuse with {@link #getAbilitiesForRace(RaceInstance)}
+     */
+    public static boolean hasAbilityData(Player player, NamespacedKey key) {
+        return getAbilitiesContainer(player).has(key);
     }
 
-    public static boolean hasAbility(Player player, NamespacedKey key) {
-        return AbilityManager.getAbilities(player).has(key);
+    private static <T, Z> void setAbilityData(Player player, NamespacedKey key, PersistentDataType<T, Z> dataType, Z value) {
+        PersistentDataContainer container = getAbilitiesContainer(player);
+        container.set(key, dataType, value);
+        saveAbilitiesContainer(player, container);
     }
 
-    public static void removeAbility(Player player, NamespacedKey key) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+    public static void removeAbilityData(Player player, NamespacedKey key) {
+        PersistentDataContainer abilities = getAbilitiesContainer(player);
         abilities.remove(key);
-        AbilityManager.updateAbilities(player, abilities);
+        saveAbilitiesContainer(player, abilities);
+    }
+    // endregion
+
+
+
+    // region Utils
+    public static void setAbilityState(Player player, NamespacedKey key, boolean state) {
+        setAbilityData(player, key, PersistentDataType.BOOLEAN, state);
     }
 
-    public static void changeAbilityState(Player player, NamespacedKey key, boolean state) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(key, PersistentDataType.BOOLEAN, state);
-        AbilityManager.updateAbilities(player, abilities);
+    public static void setAbilityOwner(Player player, NamespacedKey key, UUID uuid) {
+        setAbilityData(player, key, DataType.UUID, uuid);
     }
 
-    public static void changeAbilityOwner(Player player, NamespacedKey key, UUID uuid) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(key, DataType.UUID, uuid);
-        AbilityManager.updateAbilities(player, abilities);
+    public static void setAbilityValue(Player player, NamespacedKey key, int value) {
+        setAbilityData(player, key, PersistentDataType.INTEGER, value);
     }
 
-    public static void changeAbilityValue(Player player, NamespacedKey key, int value) {
-        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
-        abilities.set(key, PersistentDataType.INTEGER, value);
-        AbilityManager.updateAbilities(player, abilities);
-    }
-
-    public static int getActivationSlot() {
-        return 8;
-    }
-
-    public static boolean hasActivationSlotSelected(Player player) {
+    public static boolean isActivationSlotSelected(Player player) {
         int hotbarSlot = player.getInventory().getHeldItemSlot();
-        return hotbarSlot == getActivationSlot();
+        return hotbarSlot == activationSlot;
     }
+    //endregion
 }

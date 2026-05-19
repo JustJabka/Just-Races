@@ -119,7 +119,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     }
 
     public void giveTrueForm(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), true);
+        AbilityManager.setAbilityState(player, getKey(), true);
 
         trueFormBuffs.forEach(player::addPotionEffect);
         AttributeManager.addModifiers(player, trueFormModifiers);
@@ -135,7 +135,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     public void clearTrueForm(Player player) {
         if (!AbilityManager.isAbilityActive(player, getKey())) return;
 
-        AbilityManager.changeAbilityState(player, getKey(), false);
+        AbilityManager.setAbilityState(player, getKey(), false);
 
         trueFormBuffs.forEach(effect -> player.removePotionEffect(effect.getType()));
         trueFormDebuffs.forEach(player::addPotionEffect);

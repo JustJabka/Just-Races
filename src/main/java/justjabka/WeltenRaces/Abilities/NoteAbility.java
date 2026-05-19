@@ -69,6 +69,6 @@ public class NoteAbility extends BaseAbility {
     private void updateNotes(Player player, int value) {
         value = Math.clamp(value, 0, maxNoteAmount);
 
-        AbilityManager.changeAbilityValue(player, getKey(), value);
+        AbilityManager.setAbilityValue(player, getKey(), value);
     }
 }

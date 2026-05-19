@@ -30,11 +30,11 @@ public abstract class BaseTogglableAbility extends BaseValidationAbility {
     }
 
     public void enable(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), true);
+        AbilityManager.setAbilityState(player, getKey(), true);
     }
 
     public void disable(Player player) {
-        AbilityManager.changeAbilityState(player, getKey(), false);
+        AbilityManager.setAbilityState(player, getKey(), false);
         stopTask(player.getUniqueId());
     }
 
