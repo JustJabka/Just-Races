@@ -27,7 +27,7 @@ public class NoteAbility extends BaseAbility {
                 .translatable("ability.note.amount")
                 .fallback("%s/%s")
                 .arguments(
-                        Component.text(getNoteAmount(player)),
+                        Component.text(getNotes(player)),
                         Component.text(maxNoteAmount)
                 )
                 .color(NamedTextColor.LIGHT_PURPLE);
@@ -48,23 +48,27 @@ public class NoteAbility extends BaseAbility {
         if (ctx.length == 0) return false;
         if (!(ctx[0] instanceof LivingEntity)) return false;
 
-        int noteAmount = addNotes(attacker, 1);
-        AbilityManager.changeAbilityValue(attacker, getKey(), noteAmount);
-
+        addNotes(attacker, 1);
         return true;
     }
 
-    public int addNotes(Player player, int value) {
-        int noteAmount = getNoteAmount(player) + value;
-        return Math.clamp(noteAmount, 0, maxNoteAmount);
+    public void addNotes(Player player, int value) {
+        int noteAmount = getNotes(player) + value;
+        updateNotes(player, noteAmount);
     }
 
-    public int removeNotes(Player player, int value) {
-        int noteAmount = getNoteAmount(player) - value;
-        return Math.clamp(noteAmount, 0, maxNoteAmount);
+    public void removeNotes(Player player, int value) {
+        int noteAmount = getNotes(player) - value;
+        updateNotes(player, noteAmount);
     }
 
-    private int getNoteAmount(Player player) {
+    public int getNotes(Player player) {
         return AbilityManager.getAbilityValue(player, getKey());
+    }
+
+    private void updateNotes(Player player, int value) {
+        value = Math.clamp(value, 0, maxNoteAmount);
+
+        AbilityManager.changeAbilityValue(player, getKey(), value);
     }
 }

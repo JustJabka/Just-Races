@@ -31,6 +31,7 @@ public class AbilitiesRegistry {
         registerAbility(new VocalFryAbility(configs.vocalFryAbilityConfig));
         registerAbility(new GluttonyExecuteAbility(configs.gluttonyExecuteAbilityConfig));
         registerAbility(new NoteAbility());
+        registerAbility(new NoteBuffAbility());
     }
 
     private static void registerAbility(BaseAbility ability) {

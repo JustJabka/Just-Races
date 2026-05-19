@@ -4,7 +4,8 @@
     "fallback": "Fetr"
   },
   "abilities": [
-    "weltenraces:note"
+    "weltenraces:note",
+    "weltenraces:note_buff"
   ],
   "attributes": {
     "minecraft:max_health": 16,

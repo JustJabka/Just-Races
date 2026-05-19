@@ -17,6 +17,17 @@ import java.util.UUID;
 public class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
 
+    @SuppressWarnings("unchecked")
+    public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
+        for (BaseAbility ability : AbilitiesRegistry.getAbilities().values()) {
+            if (!abilityClass.isInstance(ability)) continue;
+            return (T) ability;
+        }
+
+        return null;
+    }
+
+    // TODO: Refactor ts class
     public static PersistentDataContainer getAbilities(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
 
