@@ -131,6 +131,10 @@ public class AbilityManager {
         setAbilityData(player, key, PersistentDataType.INTEGER, value);
     }
 
+    public static int getActivationSlot() {
+        return activationSlot;
+    }
+
     public static boolean isActivationSlotSelected(Player player) {
         int hotbarSlot = player.getInventory().getHeldItemSlot();
         return hotbarSlot == activationSlot;

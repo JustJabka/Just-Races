@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Runnables.Race;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.WeltenRaces;
@@ -39,7 +40,6 @@ public class FetrRaceRunnable extends BukkitRunnable {
             new PotionEffect(PotionEffectType.HASTE, buffDuration, 0, false, false, true)
     );
 
-    private static final Material itemBuffItem = Material.GOAT_HORN;
     private static final PotionEffect itemBuffEffect = new PotionEffect(
             PotionEffectType.HEALTH_BOOST,
             buffDuration,
@@ -85,12 +85,12 @@ public class FetrRaceRunnable extends BukkitRunnable {
     }
 
     private void giveHornBuff(Player player) {
-        ItemStack item = player.getInventory().getItem(8);
+        ItemStack item = player.getInventory().getItem(AbilityManager.getActivationSlot());
 
         if (item == null) return;
         if (item.isEmpty()) return;
 
-        if (item.getType() != itemBuffItem) return;
+        if (item.getType() != Material.GOAT_HORN) return;
         player.addPotionEffect(itemBuffEffect);
     }
 

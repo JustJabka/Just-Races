@@ -24,7 +24,9 @@ public class NoteBuffAbility extends BaseValidationAbility {
     private static final int requiredNotes = 12;
     private static final int duration = 10 * 20;
 
-    private static final NoteAbility noteAbility = AbilityManager.getAbility(NoteAbility.class);
+    private NoteAbility getNoteAbility() {
+        return AbilityManager.getAbility(NoteAbility.class);
+    }
 
     private final Set<PotionEffect> targetEffects = Set.of(
             new PotionEffect(PotionEffectType.SPEED, duration, 0, false, true, true),
@@ -62,6 +64,7 @@ public class NoteBuffAbility extends BaseValidationAbility {
 
     @Override
     protected boolean onActivation(Player player, Object... ctx) {
+        NoteAbility noteAbility = getNoteAbility();
         if (noteAbility == null) return false;
 
         if (ctx.length == 0) return false;
@@ -94,8 +97,10 @@ public class NoteBuffAbility extends BaseValidationAbility {
 
     @Override
     protected boolean canActivate(Player player) {
+        NoteAbility noteAbility = getNoteAbility();
         if (noteAbility == null) return false;
-        if (isIdol(player)) return false;
+
+        if (!isIdol(player)) return false;
         return noteAbility.getNotes(player) >= requiredNotes;
     }
 }

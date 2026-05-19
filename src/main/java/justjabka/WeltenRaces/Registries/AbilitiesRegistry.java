@@ -32,6 +32,7 @@ public class AbilitiesRegistry {
         registerAbility(new GluttonyExecuteAbility(configs.gluttonyExecuteAbilityConfig));
         registerAbility(new NoteAbility());
         registerAbility(new NoteBuffAbility());
+        registerAbility(new StageAbility());
     }
 
     private static void registerAbility(BaseAbility ability) {

@@ -5,7 +5,8 @@
   },
   "abilities": [
     "weltenraces:note",
-    "weltenraces:note_buff"
+    "weltenraces:note_buff",
+    "weltenraces:stage"
   ],
   "attributes": {
     "minecraft:max_health": 16,
