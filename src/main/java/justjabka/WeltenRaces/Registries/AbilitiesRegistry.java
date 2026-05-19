@@ -33,6 +33,7 @@ public class AbilitiesRegistry {
         registerAbility(new NoteAbility());
         registerAbility(new NoteBuffAbility());
         registerAbility(new StageAbility());
+        registerAbility(new PersonalMelodyAbility());
     }
 
     private static void registerAbility(BaseAbility ability) {
