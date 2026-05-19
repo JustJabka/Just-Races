@@ -18,6 +18,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 import java.util.Set;
 
+import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+
 public class NoteBuffAbility extends BaseValidationAbility {
     private static final int requiredNotes = 12;
     private static final int duration = 10 * 20;
@@ -93,6 +95,7 @@ public class NoteBuffAbility extends BaseValidationAbility {
     @Override
     protected boolean canActivate(Player player) {
         if (noteAbility == null) return false;
+        if (isIdol(player)) return false;
         return noteAbility.getNotes(player) >= requiredNotes;
     }
 }

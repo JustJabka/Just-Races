@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+
 public class NoteAbility extends BaseAbility {
     public static final NamespacedKey NOTE_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "note");
 
@@ -50,6 +52,11 @@ public class NoteAbility extends BaseAbility {
 
         addNotes(attacker, 1);
         return true;
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return isIdol(player);
     }
 
     public void addNotes(Player player, int value) {

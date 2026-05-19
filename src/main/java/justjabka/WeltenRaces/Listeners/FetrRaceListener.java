@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -18,6 +20,7 @@ import java.util.Random;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
+import static justjabka.WeltenRaces.Runnables.Race.FetrRaceRunnable.FETR_STATUS_KEY;
 
 public class FetrRaceListener implements Listener {
     private static final Random RANDOM = new Random();
@@ -34,12 +37,18 @@ public class FetrRaceListener implements Listener {
             new PotionEffect(PotionEffectType.RESISTANCE, hornBuffsDuration, 1, false, true, true)
     );
 
+    public static boolean isIdol(Player player) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        return pdc.getOrDefault(FETR_STATUS_KEY, PersistentDataType.BOOLEAN, false);
+    }
+
     @EventHandler
     public void onItemUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
         if (!RaceManager.isRace(player, FETR)) return;
         if (!AbilityManager.isActivationSlotSelected(player)) return;
+        if (!isIdol(player)) return;
 
         ItemStack item = event.getItem();
 

@@ -18,17 +18,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
+import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FetrRaceRunnable extends BukkitRunnable {
+    public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "fetr_status");
     private static final NamespacedKey USELESS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "useless");
-    private static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "fetr_status");
 
     private static final int buffDuration = 11 * 20;
 
@@ -107,8 +107,7 @@ public class FetrRaceRunnable extends BukkitRunnable {
         Collection<Player> playersNearby = location.getNearbyPlayers(statusRadius);
         boolean hasListeners = playersNearby.stream().anyMatch(nearby -> !nearby.equals(player));
 
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        boolean wasIdol = pdc.getOrDefault(FETR_STATUS_KEY, PersistentDataType.BOOLEAN, false);
+        boolean wasIdol = isIdol(player);
 
         if (hasListeners) {
             giveIdolStatus(player, wasIdol);
