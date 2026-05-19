@@ -62,6 +62,10 @@ public class AbilityManager {
         return AbilityManager.getAbilities(player).getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
+    public static int getAbilityValue(Player player, NamespacedKey key) {
+        return AbilityManager.getAbilities(player).getOrDefault(key, PersistentDataType.INTEGER, 0);
+    }
+
     public static boolean hasAbility(Player player, NamespacedKey key) {
         return AbilityManager.getAbilities(player).has(key);
     }
@@ -81,6 +85,12 @@ public class AbilityManager {
     public static void changeAbilityOwner(Player player, NamespacedKey key, UUID uuid) {
         PersistentDataContainer abilities = AbilityManager.getAbilities(player);
         abilities.set(key, DataType.UUID, uuid);
+        AbilityManager.updateAbilities(player, abilities);
+    }
+
+    public static void changeAbilityValue(Player player, NamespacedKey key, int value) {
+        PersistentDataContainer abilities = AbilityManager.getAbilities(player);
+        abilities.set(key, PersistentDataType.INTEGER, value);
         AbilityManager.updateAbilities(player, abilities);
     }
 

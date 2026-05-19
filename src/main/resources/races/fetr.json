@@ -3,7 +3,9 @@
     "translate": "race.fetr.name",
     "fallback": "Fetr"
   },
-  "abilities": [],
+  "abilities": [
+    "weltenraces:note"
+  ],
   "attributes": {
     "minecraft:max_health": 16,
     "minecraft:scale": 0.95

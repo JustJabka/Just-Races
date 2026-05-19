@@ -30,6 +30,7 @@ public class AbilitiesRegistry {
         registerAbility(new PoisonousBiteAbility(configs.poisonousBiteAbilityConfig));
         registerAbility(new VocalFryAbility(configs.vocalFryAbilityConfig));
         registerAbility(new GluttonyExecuteAbility(configs.gluttonyExecuteAbilityConfig));
+        registerAbility(new NoteAbility());
     }
 
     private static void registerAbility(BaseAbility ability) {
