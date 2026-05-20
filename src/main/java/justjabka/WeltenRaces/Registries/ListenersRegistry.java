@@ -21,7 +21,7 @@ public class ListenersRegistry {
         manager.registerEvents(new SkyzernRaceListener(configs.skyzernRaceConfig), plugin);
         manager.registerEvents(new EpiphyteRaceListener(), plugin);
         manager.registerEvents(new LizardRaceListener(configs.lizardRaceConfig), plugin);
-        manager.registerEvents(new FetrRaceListener(), plugin);
+        manager.registerEvents(new FetrRaceListener(configs.fetrRaceConfig), plugin);
 
         WeltenRaces.LOGGER.info("Successfully registered race listeners!");
     }

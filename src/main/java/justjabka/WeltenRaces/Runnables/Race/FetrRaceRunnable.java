@@ -3,6 +3,7 @@ package justjabka.WeltenRaces.Runnables.Race;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
+import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
@@ -28,6 +29,8 @@ import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FetrRaceRunnable extends BukkitRunnable {
+    private final FetrRaceConfig config;
+
     public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "fetr_status");
     private static final NamespacedKey USELESS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "useless");
 
@@ -49,7 +52,6 @@ public class FetrRaceRunnable extends BukkitRunnable {
             false
     );
 
-    private static final double statusRadius = 50;
     private static final Set<PotionEffect> headlinerStatusEffects = Set.of(
             new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 1, false, false, false),
             new PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 1, false, false, false),
@@ -72,6 +74,10 @@ public class FetrRaceRunnable extends BukkitRunnable {
                     AttributeModifier.Operation.ADD_NUMBER
             )
     );
+
+    public FetrRaceRunnable(FetrRaceConfig config) {
+        this.config = config;
+    }
 
     @Override
     public void run() {
@@ -104,7 +110,7 @@ public class FetrRaceRunnable extends BukkitRunnable {
     private void updateStatus(Player player) {
         Location location = player.getLocation();
 
-        Collection<Player> playersNearby = location.getNearbyPlayers(statusRadius);
+        Collection<Player> playersNearby = location.getNearbyPlayers(config.statusUpdateRadius);
         boolean hasListeners = playersNearby.stream().anyMatch(nearby -> !nearby.equals(player));
 
         boolean wasIdol = isIdol(player);

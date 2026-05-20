@@ -18,6 +18,7 @@ public class ConfigRegistry {
     public final SkyzernRaceConfig skyzernRaceConfig;
     public final EpiphyteRaceConfig epiphyteRaceConfig;
     public final LizardRaceConfig lizardRaceConfig;
+    public final FetrRaceConfig fetrRaceConfig;
 
     // Abilities
     public final DamageInversionAbilityConfig damageInversionAbilityConfig;
@@ -56,6 +57,7 @@ public class ConfigRegistry {
         this.skyzernRaceConfig = new SkyzernRaceConfig(loadRaceConfig(plugin, "skyzern"));
         this.epiphyteRaceConfig = new EpiphyteRaceConfig(loadRaceConfig(plugin, "epiphyte"));
         this.lizardRaceConfig = new LizardRaceConfig(loadRaceConfig(plugin, "lizard"));
+        this.fetrRaceConfig = new FetrRaceConfig(loadRaceConfig(plugin, "fetr"));
 
         // Abilities
         this.damageInversionAbilityConfig = new DamageInversionAbilityConfig(loadAbilityConfig(plugin, "damage-inversion"));

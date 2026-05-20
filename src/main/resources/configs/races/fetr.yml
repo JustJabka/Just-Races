@@ -1,0 +1,6 @@
+status-update-radius: 50
+
+horn-buff:
+  duration: 7
+  radius: 15
+  notes-per-player: 2

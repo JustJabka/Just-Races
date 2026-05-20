@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Listeners;
 
 import justjabka.WeltenRaces.Abilities.NoteAbility;
+import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import org.bukkit.Material;
@@ -23,19 +24,20 @@ import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
 import static justjabka.WeltenRaces.Runnables.Race.FetrRaceRunnable.FETR_STATUS_KEY;
 
 public class FetrRaceListener implements Listener {
-    private static final Random RANDOM = new Random();
+    private final FetrRaceConfig config;
+    private final Set<PotionEffect> hornBuffs;
 
+    private static final Random RANDOM = new Random();
     private static final NoteAbility noteAbility = AbilityManager.getAbility(NoteAbility.class);
 
-    private static final int notesPerPlayer = 2;
-
-    private static final int hornBuffsDuration = 7 * 20;
-    private static final double hornBuffsRadius = 15;
-    private static final Set<PotionEffect> hornBuffs = Set.of(
-            new PotionEffect(PotionEffectType.SPEED, hornBuffsDuration, 1, false, true, true),
-            new PotionEffect(PotionEffectType.ABSORPTION, hornBuffsDuration, 5, false, true, true),
-            new PotionEffect(PotionEffectType.RESISTANCE, hornBuffsDuration, 1, false, true, true)
-    );
+    public FetrRaceListener(FetrRaceConfig config) {
+        this.config = config;
+        this.hornBuffs = Set.of(
+                new PotionEffect(PotionEffectType.SPEED, config.hornBuffDuration, 1, false, true, true),
+                new PotionEffect(PotionEffectType.ABSORPTION, config.hornBuffDuration, 5, false, true, true),
+                new PotionEffect(PotionEffectType.RESISTANCE, config.hornBuffDuration, 1, false, true, true)
+        );
+    }
 
     public static boolean isIdol(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
@@ -58,7 +60,7 @@ public class FetrRaceListener implements Listener {
         if (item.getType() != Material.GOAT_HORN) return;
         if (!event.getAction().isRightClick()) return;
 
-        Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(hornBuffsRadius);
+        Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(config.hornBuffRadius);
         int playerCount = playersNearby.size();
 
         List<PotionEffect> buffs = hornBuffs.stream().toList();
@@ -67,6 +69,6 @@ public class FetrRaceListener implements Listener {
         playersNearby.forEach(p -> p.addPotionEffect(buff));
 
         if (noteAbility == null) return;
-        noteAbility.addNotes(player, playerCount * notesPerPlayer);
+        noteAbility.addNotes(player, playerCount * config.hornBuffNotesPerPlayer);
     }
 }
