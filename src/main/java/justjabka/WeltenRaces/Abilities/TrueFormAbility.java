@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import static justjabka.WeltenRaces.Abilities.PersonalMelodyAbility.PERSONAL_MELODY_ABILITY_KEY;
+
 public class TrueFormAbility extends BaseValidationAbility {
     public static final NamespacedKey TRUE_FORM_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "true_form");
 
@@ -145,6 +147,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     public static void extendTrueForm(Player player, int seconds) {
         UUID pid = player.getUniqueId();
         if (!formExpireStamp.containsKey(pid)) return;
+        if (AbilityManager.isAbilityActive(player, PERSONAL_MELODY_ABILITY_KEY)) return;
 
         long currentExpiry = formExpireStamp.get(pid);
         long currentTicks = getGameTime();

@@ -3,11 +3,14 @@ package justjabka.WeltenRaces.Abilities;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
+import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.apache.commons.lang3.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,11 +20,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Map;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
 
 public class PersonalMelodyAbility extends BaseAbility {
+    public static final NamespacedKey PERSONAL_MELODY_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "personal_melody");
+
     private static final int duration = 30 * 20;
     private static final int requiredNotes = 24;
 
@@ -60,13 +66,22 @@ public class PersonalMelodyAbility extends BaseAbility {
             new PotionEffect(PotionEffectType.SPEED, duration, 2, false, false, true)
     );
 
+    // Lizard
+    private final Map<Attribute, AttributeModifier> lizardBuffModifier = Map.of(
+            Attribute.ATTACK_DAMAGE, new AttributeModifier(
+                    getKey(),
+                    2,
+                    AttributeModifier.Operation.ADD_NUMBER
+            )
+    );
+
     private NoteAbility getNoteAbility() {
         return AbilityManager.getAbility(NoteAbility.class);
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(WeltenRaces.NAMESPACE, "personal_melody");
+        return PERSONAL_MELODY_ABILITY_KEY;
     }
 
     @Override
@@ -127,6 +142,7 @@ public class PersonalMelodyAbility extends BaseAbility {
         else if (race.equals(RaceProvider.SKYZERN)) giveSkyzernBuff(target);
         else if (race.equals(RaceProvider.EPIPHYTE)) giveEpiphyteBuff(target);
         else if (race.equals(RaceProvider.PHANTOM)) givePhantomBuff(target);
+        else if (race.equals(RaceProvider.LIZARD)) giveLizardBuff(target);
     }
 
     private void giveHumanBuff(Player player) {
@@ -159,6 +175,17 @@ public class PersonalMelodyAbility extends BaseAbility {
         markBuffed(player);
     }
 
+    private void giveLizardBuff(Player player) {
+        AttributeManager.addModifiers(player, lizardBuffModifier);
+        markBuffed(player);
+
+        TrueFormAbility trueFormAbility = AbilityManager.getAbility(TrueFormAbility.class);
+        if (trueFormAbility == null) return;
+
+        if (AbilityManager.isAbilityActive(player, trueFormAbility.getKey())) return;
+        trueFormAbility.giveTrueForm(player);
+    }
+
     public void markBuffed(Player player) {
         AbilityManager.setAbilityState(player, getKey(), true);
         Bukkit.getScheduler().runTaskLater(WeltenRaces.INSTANCE, () -> unmarkBuffed(player), duration);
@@ -166,6 +193,9 @@ public class PersonalMelodyAbility extends BaseAbility {
 
     public void unmarkBuffed(Player player) {
         AbilityManager.setAbilityState(player, getKey(), false);
+
+        if (!AttributeManager.hasModifiers(player, lizardBuffModifier)) return;
+        AttributeManager.removeModifiers(player, lizardBuffModifier);
     }
 
     @Override
