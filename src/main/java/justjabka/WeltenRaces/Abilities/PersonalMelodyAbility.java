@@ -204,6 +204,7 @@ public class PersonalMelodyAbility extends BaseAbility {
         if (noteAbility == null) return false;
 
         if (!isIdol(player)) return false;
+        if (!player.isSneaking()) return false;
         return noteAbility.getNotes(player) >= requiredNotes;
     }
 }

@@ -101,6 +101,7 @@ public class NoteBuffAbility extends BaseValidationAbility {
         if (noteAbility == null) return false;
 
         if (!isIdol(player)) return false;
+        if (player.isSneaking()) return false;
         return noteAbility.getNotes(player) >= requiredNotes;
     }
 }
