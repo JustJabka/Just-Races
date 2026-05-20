@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -28,7 +29,10 @@ public class FetrRaceListener implements Listener {
     private final Set<PotionEffect> hornBuffs;
 
     private static final Random RANDOM = new Random();
-    private static final NoteAbility noteAbility = AbilityManager.getAbility(NoteAbility.class);
+
+    private NoteAbility getNoteAbility() {
+        return AbilityManager.getAbility(NoteAbility.class);
+    }
 
     public FetrRaceListener(FetrRaceConfig config) {
         this.config = config;
@@ -58,7 +62,11 @@ public class FetrRaceListener implements Listener {
         if (item.isEmpty()) return;
 
         if (item.getType() != Material.GOAT_HORN) return;
+
         if (!event.getAction().isRightClick()) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+
+        if (player.getCooldown(item) > 0) return;
 
         Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(config.hornBuffRadius);
         int playerCount = playersNearby.size();
@@ -68,7 +76,9 @@ public class FetrRaceListener implements Listener {
 
         playersNearby.forEach(p -> p.addPotionEffect(buff));
 
+        NoteAbility noteAbility = getNoteAbility();
         if (noteAbility == null) return;
+
         noteAbility.addNotes(player, playerCount * config.hornBuffNotesPerPlayer);
     }
 }
