@@ -13,11 +13,30 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Set;
+
 import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
 
 public class PersonalMelodyAbility extends BaseAbility {
     private static final int duration = 30 * 20;
     private static final int requiredNotes = 24;
+
+    private static final Set<PotionEffect> humanBuffEffects = Set.of(
+            new PotionEffect(PotionEffectType.SATURATION, duration, 0, false, false, true)
+    );
+
+    private static final Set<PotionEffect> armatBuffEffects = Set.of(
+            new PotionEffect(PotionEffectType.HEALTH_BOOST, duration, 4, false, false, true),
+            new PotionEffect(PotionEffectType.REGENERATION, duration, 1, false, false, true)
+
+    );
+
+    private static final PotionEffect skyzernBuffEffect =
+            new PotionEffect(PotionEffectType.STRENGTH, duration, 0, false, false, true);
+    private static final Range<Integer> skyzernBuffWeak = Range.between(50, 99);
+    private static final Range<Integer> skyzernBuffNormal = Range.between(100, 219);
+    private static final int skyzernBuffStrong = 220;
+
 
     private NoteAbility getNoteAbility() {
         return AbilityManager.getAbility(NoteAbility.class);
@@ -46,13 +65,13 @@ public class PersonalMelodyAbility extends BaseAbility {
         if (ctx.length == 0) return false;
         if (!(ctx[0] instanceof Player target)) return false;
 
-        noteAbility.removeNotes(player, 24);
-        givePersonalMelodyBuff(player, target);
+        noteAbility.removeNotes(player, requiredNotes);
+        givePersonalMelodyBuff(target);
 
         return true;
     }
 
-    private void givePersonalMelodyBuff(Player player, Player target) {
+    private void givePersonalMelodyBuff(Player target) {
         NamespacedKey race = RaceManager.getRace(target).getKey();
 
         if (race.equals(RaceProvider.HUMAN)) giveHumanBuff(target);
@@ -61,24 +80,23 @@ public class PersonalMelodyAbility extends BaseAbility {
     }
 
     private void giveHumanBuff(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, duration, 0, false, false, true));
+        humanBuffEffects.forEach(player::addPotionEffect);
     }
 
     private void giveArmatBuff(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, duration, 4, false, false, true));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, duration, 1, false, false, true));
+        armatBuffEffects.forEach(player::addPotionEffect);
     }
 
     private void giveSkyzernBuff(Player player) {
         int y = player.getLocation().getBlock().getY();
+        int amplifier;
 
-        Range<Integer> weakBuff = Range.between(50, 99);
-        Range<Integer> normalBuff = Range.between(100, 219);
-        int strongBuff = 220;
+        if (y >= skyzernBuffStrong) amplifier = 4;
+        else if (skyzernBuffNormal.contains(y)) amplifier = 2;
+        else if (skyzernBuffWeak.contains(y)) amplifier = 0;
+        else return;
 
-        if (y >= strongBuff) player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, duration, 4, false, false, true));
-        if (normalBuff.contains(y)) player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, duration, 2, false, false, true));
-        if (weakBuff.contains(y)) player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, duration, 0, false, false, true));
+        player.addPotionEffect(skyzernBuffEffect.withAmplifier(amplifier));
     }
 
     @Override
