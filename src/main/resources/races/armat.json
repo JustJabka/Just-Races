@@ -8,7 +8,6 @@
     "weltenraces:ecdysis"
   ],
   "attributes": {
-    "minecraft:fall_damage_multiplier": 0,
     "minecraft:max_health": 10
   },
   "item_modifiers": {
