@@ -28,7 +28,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -159,33 +158,6 @@ public class ArmatRaceListener implements Listener {
                 .build();
 
         victim.damage(config.absoluteDamageAmount, absoluteDamageSource);
-    }
-
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        if (!event.hasChangedBlock()) return;
-
-        Player player = event.getPlayer();
-
-        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
-
-        AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
-        if (gravityInstance == null) return;
-
-        boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmor(player);
-        boolean hasModifier = gravityInstance.getModifier(BOUND_SHELL_KEY) != null;
-
-        if (shouldSink && !hasModifier) {
-            AttributeModifier modifier = new AttributeModifier(
-                    BOUND_SHELL_KEY,
-                    config.sinkGravity,
-                    AttributeModifier.Operation.ADD_NUMBER
-            );
-
-            gravityInstance.addModifier(modifier);
-        } else if (!shouldSink && hasModifier) {
-            gravityInstance.removeModifier(BOUND_SHELL_KEY);
-        }
     }
 
     @EventHandler
