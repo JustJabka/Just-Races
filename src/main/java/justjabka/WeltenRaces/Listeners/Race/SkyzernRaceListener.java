@@ -2,9 +2,9 @@ package justjabka.WeltenRaces.Listeners.Race;
 
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
+import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -12,7 +12,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -20,20 +19,23 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class SkyzernRaceListener implements Listener {
+public class SkyzernRaceListener extends BaseRaceListener {
     private final SkyzernRaceConfig config;
 
     public SkyzernRaceListener(SkyzernRaceConfig config) {
         this.config = config;
     }
 
-    private static final NamespacedKey CELESTIAL_ORIGIN_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "celestial_origin");
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.SKYZERN;
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
+        if (!isRequiredRace(player)) return;
         clearCelestialOriginBonus(player);
     }
 
@@ -41,7 +43,7 @@ public class SkyzernRaceListener implements Listener {
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
-        if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
+        if (!isRequiredRace(player)) return;
 
         if (event.isSneaking()) {
             giveCelestialOriginBonus(player);
@@ -82,19 +84,19 @@ public class SkyzernRaceListener implements Listener {
         if (attackKnockbackInstance == null) return;
 
         boolean hasAbilitySlotSelected = event.getNewSlot() == AbilityManager.getActivationSlot();
-        boolean hasModifier = attackKnockbackInstance.getModifier(CELESTIAL_ORIGIN_KEY) != null;
+        boolean hasModifier = attackKnockbackInstance.getModifier(getRaceKey()) != null;
         boolean willReceiveBuff = hasAbilitySlotSelected && !hasModifier;
 
         if (willReceiveBuff) {
             AttributeModifier modifier = new AttributeModifier(
-                    CELESTIAL_ORIGIN_KEY,
+                    getRaceKey(),
                     config.additionalKnockbackValue,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
             attackKnockbackInstance.addModifier(modifier);
         } else  {
-            attackKnockbackInstance.removeModifier(CELESTIAL_ORIGIN_KEY);
+            attackKnockbackInstance.removeModifier(getRaceKey());
         }
     }
 
@@ -108,7 +110,7 @@ public class SkyzernRaceListener implements Listener {
         AttributeInstance attackKnockbackInstance = attacker.getAttribute(Attribute.ATTACK_KNOCKBACK);
         if (attackKnockbackInstance == null) return;
 
-        boolean hasModifier = attackKnockbackInstance.getModifier(CELESTIAL_ORIGIN_KEY) != null;
+        boolean hasModifier = attackKnockbackInstance.getModifier(getRaceKey()) != null;
         if (!hasModifier) return;
 
         World world = victim.getWorld();

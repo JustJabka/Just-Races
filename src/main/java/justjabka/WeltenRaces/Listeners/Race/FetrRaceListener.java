@@ -2,12 +2,13 @@ package justjabka.WeltenRaces.Listeners.Race;
 
 import justjabka.WeltenRaces.Abilities.NoteAbility;
 import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
+import justjabka.WeltenRaces.DataProvider.RaceProvider;
+import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.WeltenRaces.Managers.AbilityManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -21,10 +22,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
 import static justjabka.WeltenRaces.Runnables.Race.FetrRaceRunnable.FETR_STATUS_KEY;
 
-public class FetrRaceListener implements Listener {
+public class FetrRaceListener extends BaseRaceListener {
     private final FetrRaceConfig config;
     private final Set<PotionEffect> hornBuffs;
 
@@ -48,11 +48,16 @@ public class FetrRaceListener implements Listener {
         return pdc.getOrDefault(FETR_STATUS_KEY, PersistentDataType.BOOLEAN, false);
     }
 
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.FETR;
+    }
+
     @EventHandler
     public void onItemUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (!RaceManager.isRace(player, FETR)) return;
+        if (!isRequiredRace(player)) return;
         if (!AbilityManager.isActivationSlotSelected(player)) return;
         if (!isIdol(player)) return;
 

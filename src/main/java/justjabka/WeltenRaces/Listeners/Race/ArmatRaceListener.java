@@ -5,8 +5,8 @@ import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
+import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.WeltenRaces.Managers.ArmorManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
 import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
@@ -23,7 +23,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -35,7 +34,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 
-public class ArmatRaceListener implements Listener {
+public class ArmatRaceListener extends BaseRaceListener {
     private final ArmatRaceConfig config;
 
     public ArmatRaceListener(ArmatRaceConfig config) {
@@ -44,14 +43,17 @@ public class ArmatRaceListener implements Listener {
 
     private static final Random RANDOM = new Random();
 
-    private static final NamespacedKey BOUND_SHELL_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "bound_shell");
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
-    private static final NamespacedKey COPPER_MINING_EFFICIENCY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "copper_mining_efficiency");
+
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.ARMAT;
+    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
+        if (!isRequiredRace(player)) return;
 
         DamageSource damageSource = event.getDamageSource();
         Entity causingEntity = damageSource.getCausingEntity();
@@ -144,7 +146,7 @@ public class ArmatRaceListener implements Listener {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (!RaceManager.isRace(attacker, RaceProvider.ARMAT)) return;
+        if (!isRequiredRace(attacker)) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
         if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
@@ -164,7 +166,7 @@ public class ArmatRaceListener implements Listener {
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
+        if (!isRequiredRace(player)) return;
 
         applyBoundShellBonus(player);
         applyCopperArmorBonus(player);
@@ -174,7 +176,7 @@ public class ArmatRaceListener implements Listener {
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
+        if (!isRequiredRace(player)) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
@@ -203,7 +205,7 @@ public class ArmatRaceListener implements Listener {
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!RaceManager.isRace(player, RaceProvider.ARMAT)) return;
+        if (!isRequiredRace(player)) return;
         if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
 
         EntityPotionEffectEvent.Action action = event.getAction();
@@ -230,7 +232,7 @@ public class ArmatRaceListener implements Listener {
         effect.withDuration(newDuration).apply(player);
     }
 
-    private static void applyBoundShellBonus(Player player) {
+    private void applyBoundShellBonus(Player player) {
         // Get Attributes
         AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
         AttributeInstance armorInstance = player.getAttribute(Attribute.ARMOR);
@@ -240,13 +242,13 @@ public class ArmatRaceListener implements Listener {
         double armorValue = armorInstance.getValue();
 
         // Delete old attribute
-        maxHealthInstance.removeModifier(BOUND_SHELL_KEY);
+        maxHealthInstance.removeModifier(getRaceKey());
 
         // Calc new attribute
         if (armorValue <= 0) return;
 
         AttributeModifier modifier = new AttributeModifier(
-                BOUND_SHELL_KEY,
+                getRaceKey(),
                 armorValue,
                 AttributeModifier.Operation.ADD_NUMBER
         );
@@ -259,7 +261,7 @@ public class ArmatRaceListener implements Listener {
         if (miningEfficiencyInstance == null) return;
 
         // Delete old attribute
-        miningEfficiencyInstance.removeModifier(COPPER_MINING_EFFICIENCY_KEY);
+        miningEfficiencyInstance.removeModifier(getRaceKey());
 
         if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
 
@@ -273,7 +275,7 @@ public class ArmatRaceListener implements Listener {
         if (miningBonus <= 0) return;
 
         AttributeModifier modifier = new AttributeModifier(
-                COPPER_MINING_EFFICIENCY_KEY,
+                getRaceKey(),
                 miningBonus,
                 AttributeModifier.Operation.ADD_NUMBER
         );

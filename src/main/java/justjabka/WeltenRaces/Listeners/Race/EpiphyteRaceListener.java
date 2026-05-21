@@ -1,20 +1,25 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
-import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class EpiphyteRaceListener implements Listener {
+public class EpiphyteRaceListener extends BaseRaceListener {
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.EPIPHYTE;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!RaceManager.isRace(player, RaceProvider.EPIPHYTE)) return;
+        if (!isRequiredRace(player)) return;
 
         PotionEffect effect = event.getNewEffect();
 

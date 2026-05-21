@@ -3,17 +3,17 @@ package justjabka.WeltenRaces.Listeners.Race;
 import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
-import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
+import org.bukkit.NamespacedKey;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Collection;
 import java.util.Set;
 
-public class LizardRaceListener implements Listener {
+public class LizardRaceListener extends BaseRaceListener {
     private final LizardRaceConfig config;
 
     private static final Collection<DamageType> lizardVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.LIZARD_VULNERABLE_TO);
@@ -25,11 +25,16 @@ public class LizardRaceListener implements Listener {
         this.config = config;
     }
 
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.LIZARD;
+    }
+
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player victim)) return;
 
-        if (!RaceManager.isRace(victim, RaceProvider.LIZARD)) return;
+        if (!isRequiredRace(victim)) return;
 
         double damage = event.getDamage();
         DamageType damageType = event.getDamageSource().getDamageType();
