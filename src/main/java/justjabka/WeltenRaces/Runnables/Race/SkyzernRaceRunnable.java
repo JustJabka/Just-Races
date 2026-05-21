@@ -2,32 +2,28 @@ package justjabka.WeltenRaces.Runnables.Race;
 
 import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
-import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.Bukkit;
+import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class SkyzernRaceRunnable extends BukkitRunnable {
+public class SkyzernRaceRunnable extends BaseRaceRunnable {
     private final SkyzernRaceConfig config;
 
     public SkyzernRaceRunnable(SkyzernRaceConfig config) {
         this.config = config;
     }
 
-    private static final NamespacedKey CELESTIAL_ORIGIN_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "celestial_origin");
+    @Override
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.SKYZERN;
+    }
 
     @Override
-    public void run() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!RaceManager.isRace(player, RaceProvider.SKYZERN)) return;
-
-            applyCelestialOriginBonus(player);
-        }
+    public void onTick(Player player) {
+        applyCelestialOriginBonus(player);
     }
 
     private void applyCelestialOriginBonus(Player player) {
@@ -37,11 +33,11 @@ public class SkyzernRaceRunnable extends BukkitRunnable {
         double bonus = calcCelestialOriginBonus(player);
 
         // Delete old attribute
-        attackDamageInstance.removeModifier(CELESTIAL_ORIGIN_KEY);
+        attackDamageInstance.removeModifier(getRaceKey());
 
         // Apply new attribute
         AttributeModifier modifier = new AttributeModifier(
-                CELESTIAL_ORIGIN_KEY,
+                getRaceKey(),
                 bonus,
                 AttributeModifier.Operation.ADD_NUMBER
         );

@@ -4,10 +4,8 @@ import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
-import justjabka.WeltenRaces.WeltenRaces;
+import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import org.apache.commons.lang3.Range;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -16,26 +14,23 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
-public class LizardRaceRunnable extends BukkitRunnable {
+public class LizardRaceRunnable extends BaseRaceRunnable {
     private final LizardRaceConfig config;
 
     private final Map<Attribute, AttributeModifier> warmBiomesBuffs;
     private final Set<PotionEffect> netherDebuffs;
 
-    private static final NamespacedKey REPTILE_NATURE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "reptile_nature");
-
     public LizardRaceRunnable(LizardRaceConfig config) {
         this.config = config;
         this.warmBiomesBuffs = Map.of(
-                Attribute.MOVEMENT_SPEED, new AttributeModifier(REPTILE_NATURE_KEY, config.temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
-                Attribute.JUMP_STRENGTH, new AttributeModifier(REPTILE_NATURE_KEY, config.temperatureBuffJumpStrengthBonus, AttributeModifier.Operation.ADD_NUMBER)
+                Attribute.MOVEMENT_SPEED, new AttributeModifier(getRaceKey(), config.temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
+                Attribute.JUMP_STRENGTH, new AttributeModifier(getRaceKey(), config.temperatureBuffJumpStrengthBonus, AttributeModifier.Operation.ADD_NUMBER)
         );
         this.netherDebuffs = Set.of(
                 new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
@@ -44,16 +39,17 @@ public class LizardRaceRunnable extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!RaceManager.isRace(player, RaceProvider.LIZARD)) return;
+    public NamespacedKey getRaceKey() {
+        return RaceProvider.LIZARD;
+    }
 
-            Location location = player.getLocation();
-            World world = location.getWorld();
+    @Override
+    public void onTick(Player player) {
+        Location location = player.getLocation();
+        World world = location.getWorld();
 
-            giveWarmBiomesBuff(player, location);
-            giveNetherDebuff(player, world);
-        }
+        giveWarmBiomesBuff(player, location);
+        giveNetherDebuff(player, world);
     }
 
     private void giveWarmBiomesBuff(Player player, Location location) {

@@ -6,9 +6,12 @@ import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
 import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
-import justjabka.WeltenRaces.Managers.RaceManager;
+import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
@@ -18,7 +21,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
 import java.util.Map;
@@ -28,11 +30,10 @@ import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
 import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
-public class FetrRaceRunnable extends BukkitRunnable {
+public class FetrRaceRunnable extends BaseRaceRunnable {
     private final FetrRaceConfig config;
 
     public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "fetr_status");
-    private static final NamespacedKey USELESS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "useless");
 
     private static final int buffDuration = 11 * 20;
 
@@ -58,19 +59,19 @@ public class FetrRaceRunnable extends BukkitRunnable {
             new PotionEffect(PotionEffectType.GLOWING, PotionEffect.INFINITE_DURATION, 0, false, false, false) // Good luck. Enjoy being killed first. The worst race of all
     );
 
-    private static final Map<Attribute, AttributeModifier> idolStatusModifiers = Map.of(
+    private final Map<Attribute, AttributeModifier> idolStatusModifiers = Map.of(
             Attribute.ATTACK_DAMAGE, new AttributeModifier(
-                    USELESS_KEY,
+                    getRaceKey(),
                     -0.8,
                     AttributeModifier.Operation.ADD_NUMBER
             ),
             Attribute.ENTITY_INTERACTION_RANGE, new AttributeModifier(
-                    USELESS_KEY,
+                    getRaceKey(),
                     1,
                     AttributeModifier.Operation.ADD_NUMBER
             ),
             Attribute.ATTACK_SPEED, new AttributeModifier(
-                    USELESS_KEY, -3.5,
+                    getRaceKey(), -3.5,
                     AttributeModifier.Operation.ADD_NUMBER
             )
     );
@@ -80,14 +81,15 @@ public class FetrRaceRunnable extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!RaceManager.isRace(player, FETR)) continue;
+    public NamespacedKey getRaceKey() {
+        return FETR;
+    }
 
-            giveHornBuff(player);
-            giveBiomeBuff(player);
-            updateStatus(player);
-        }
+    @Override
+    public void onTick(Player player) {
+        giveHornBuff(player);
+        giveBiomeBuff(player);
+        updateStatus(player);
     }
 
     private void giveHornBuff(Player player) {
