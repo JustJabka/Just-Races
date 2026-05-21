@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class StageAbility extends BaseValidationAbility {
     public static final NamespacedKey STAGE_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "stage");

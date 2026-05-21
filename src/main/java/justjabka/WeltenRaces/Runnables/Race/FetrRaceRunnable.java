@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static justjabka.WeltenRaces.DataProvider.RaceProvider.FETR;
-import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FetrRaceRunnable extends BukkitRunnable {

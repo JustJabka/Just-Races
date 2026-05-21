@@ -23,7 +23,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 import java.util.Set;
 
-import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class PersonalMelodyAbility extends BaseAbility {
     public static final NamespacedKey PERSONAL_MELODY_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "personal_melody");

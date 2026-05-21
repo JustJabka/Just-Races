@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Map;
 import java.util.Set;
 
-import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class NoteBuffAbility extends BaseValidationAbility {
     private static final int requiredNotes = 12;

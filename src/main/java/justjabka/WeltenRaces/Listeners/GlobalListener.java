@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 import static justjabka.WeltenRaces.Managers.ModifierManager.tryUndoInventory;
 
-public class BaseRaceListener implements Listener {
+public class GlobalListener implements Listener {
     // Inventory
     @EventHandler
     public void onArmorChange(EntityEquipmentChangedEvent event) {

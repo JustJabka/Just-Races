@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Listeners;
+package justjabka.WeltenRaces.Listeners.Race;
 
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.RaceManager;

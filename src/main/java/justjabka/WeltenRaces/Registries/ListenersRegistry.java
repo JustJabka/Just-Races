@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Registries;
 
 import justjabka.WeltenRaces.Listeners.*;
+import justjabka.WeltenRaces.Listeners.Race.*;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -9,7 +10,7 @@ public class ListenersRegistry {
     public static void register(Plugin plugin, ConfigRegistry configs) {
         PluginManager manager = plugin.getServer().getPluginManager();
 
-        manager.registerEvents(new BaseRaceListener(), plugin);
+        manager.registerEvents(new GlobalListener(), plugin);
         registerRaceListeners(plugin, manager, configs);
 
         WeltenRaces.LOGGER.info("Successfully registered listeners!");

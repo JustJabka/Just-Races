@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import static justjabka.WeltenRaces.Abilities.StageAbility.STAGE_ABILITY_KEY;
-import static justjabka.WeltenRaces.Listeners.FetrRaceListener.isIdol;
+import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class NoteAbility extends BaseAbility {
     public static final NamespacedKey NOTE_ABILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "note");

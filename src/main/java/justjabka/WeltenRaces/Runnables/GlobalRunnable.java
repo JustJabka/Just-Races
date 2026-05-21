@@ -1,4 +1,4 @@
-package justjabka.WeltenRaces.Runnables.Race;
+package justjabka.WeltenRaces.Runnables;
 
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Instances.RaceInstance;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class BaseRaceRunnable extends BukkitRunnable {
+public class GlobalRunnable extends BukkitRunnable {
     private static final String separator = "|";
     private static final TextColor separatorColor = NamedTextColor.GRAY;
 
