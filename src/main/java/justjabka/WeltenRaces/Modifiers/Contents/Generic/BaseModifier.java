@@ -17,8 +17,8 @@ public abstract class BaseModifier implements ItemModifier {
     }
 
     @Override
-    public void apply(ItemStack item) {}
+    public abstract void apply(ItemStack item);
 
     @Override
-    public void undo(ItemStack item) {}
+    public abstract void undo(ItemStack item);
 }

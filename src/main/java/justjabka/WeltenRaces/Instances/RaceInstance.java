@@ -1,6 +1,7 @@
 package justjabka.WeltenRaces.Instances;
 
 import com.google.gson.JsonElement;
+import justjabka.WeltenRaces.Instances.Generic.BaseInstance;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -11,21 +12,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class RaceInstance {
-    private transient String key;
-
+public class RaceInstance extends BaseInstance {
     private Map<String, Object> name;
     private Map<String, Double> attributes;
     private Set<String> abilities;
     private Map<String, JsonElement> item_modifiers;
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public NamespacedKey getKey() {
-        return NamespacedKey.fromString(key, WeltenRaces.INSTANCE);
-    }
 
     public Component getName() {
         if (name == null) return Component.empty();
