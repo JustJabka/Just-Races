@@ -15,7 +15,7 @@ public class RunnablesRegistry {
     }
 
     private static void registerRaceRunnables(Plugin plugin, ConfigRegistry configs) {
-        new ArmatRaceRunnable(configs.armatRaceConfig).runTaskTimer(plugin, 0L, 10L);
+        new ArmatRaceRunnable(configs.armatRaceConfig).runTaskTimer(plugin, 0L, 5L);
         new PhantomRaceRunnable(configs.phantomRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new SkyzernRaceRunnable(configs.skyzernRaceConfig).runTaskTimer(plugin, 0L, 20L);
         new EpiphyteRaceRunnable(configs.epiphyteRaceConfig).runTaskTimer(plugin, 0L, 20L);
