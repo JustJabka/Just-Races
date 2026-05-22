@@ -6,20 +6,20 @@ import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.plugin.Plugin;
 
 public class RunnablesRegistry {
-    public static void register(Plugin plugin, ConfigRegistry configs) {
+    public static void register(Plugin plugin) {
         new GlobalRunnable().runTaskTimer(plugin, 0L, 10L);
 
-        registerRaceRunnables(plugin, configs);
+        registerRaceRunnables(plugin);
 
         WeltenRaces.LOGGER.info("Successfully registered runnables!");
     }
 
-    private static void registerRaceRunnables(Plugin plugin, ConfigRegistry configs) {
-        new ArmatRaceRunnable(configs.armatRaceConfig).runTaskTimer(plugin, 0L, 5L);
-        new PhantomRaceRunnable(configs.phantomRaceConfig).runTaskTimer(plugin, 0L, 20L);
-        new SkyzernRaceRunnable(configs.skyzernRaceConfig).runTaskTimer(plugin, 0L, 20L);
-        new EpiphyteRaceRunnable(configs.epiphyteRaceConfig).runTaskTimer(plugin, 0L, 20L);
-        new LizardRaceRunnable(configs.lizardRaceConfig).runTaskTimer(plugin, 0L, 20L);
-        new FetrRaceRunnable(configs.fetrRaceConfig).runTaskTimer(plugin, 0L, 20L);
+    private static void registerRaceRunnables(Plugin plugin) {
+        new ArmatRaceRunnable().runTaskTimer(plugin, 0L, 5L);
+        new PhantomRaceRunnable().runTaskTimer(plugin, 0L, 20L);
+        new SkyzernRaceRunnable().runTaskTimer(plugin, 0L, 20L);
+        new EpiphyteRaceRunnable().runTaskTimer(plugin, 0L, 20L);
+        new LizardRaceRunnable().runTaskTimer(plugin, 0L, 20L);
+        new FetrRaceRunnable().runTaskTimer(plugin, 0L, 20L);
     }
 }

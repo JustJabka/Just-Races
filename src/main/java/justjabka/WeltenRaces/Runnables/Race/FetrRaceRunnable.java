@@ -3,7 +3,6 @@ package justjabka.WeltenRaces.Runnables.Race;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
-import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
@@ -31,8 +30,6 @@ import static justjabka.WeltenRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FetrRaceRunnable extends BaseRaceRunnable {
-    private final FetrRaceConfig config;
-
     public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "fetr_status");
 
     private static final int buffDuration = 11 * 20;
@@ -71,14 +68,11 @@ public class FetrRaceRunnable extends BaseRaceRunnable {
                     AttributeModifier.Operation.ADD_NUMBER
             ),
             Attribute.ATTACK_SPEED, new AttributeModifier(
-                    getRaceKey(), -3.5,
+                    getRaceKey(),
+                    -3.5,
                     AttributeModifier.Operation.ADD_NUMBER
             )
     );
-
-    public FetrRaceRunnable(FetrRaceConfig config) {
-        this.config = config;
-    }
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -110,9 +104,11 @@ public class FetrRaceRunnable extends BaseRaceRunnable {
     }
 
     private void updateStatus(Player player) {
+        double statusUpdateRadius = getConfig().node("status-update-radius").getDouble();
+
         Location location = player.getLocation();
 
-        Collection<Player> playersNearby = location.getNearbyPlayers(config.statusUpdateRadius);
+        Collection<Player> playersNearby = location.getNearbyPlayers(statusUpdateRadius);
         boolean hasListeners = playersNearby.stream().anyMatch(nearby -> !nearby.equals(player));
 
         boolean wasIdol = isIdol(player);

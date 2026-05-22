@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
-import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import org.bukkit.Location;
@@ -16,15 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Set;
 
 public class PhantomRaceRunnable extends BaseRaceRunnable {
-    private final PhantomRaceConfig config;
-
-    public PhantomRaceRunnable(PhantomRaceConfig config) {
-        this.config = config;
-    }
-
-    private static final int NIGHT_TIME_EFFECTS_DURATION = PotionEffect.INFINITE_DURATION;
     private static final Set<PotionEffect> NIGHT_TIME_EFFECTS = Set.of(
-            new PotionEffect(PotionEffectType.NIGHT_VISION, NIGHT_TIME_EFFECTS_DURATION, 0, false, false, false)
+            new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 0, false, false, false)
     );
 
     @Override
@@ -57,15 +49,21 @@ public class PhantomRaceRunnable extends BaseRaceRunnable {
 
     private void checkTime(Player player, boolean willBurn, boolean hasHelmet, boolean willReceiveBuff) {
         if (willBurn) {
-            if (hasHelmet) {
-                player.getEquipment().getHelmet().damage(config.helmetDurabilityDrain, player);
-                return;
-            }
+            if (handleHelmetLogic(player, hasHelmet)) return;
 
             player.setFireTicks(40);
         }
 
         applyBuffs(player, willReceiveBuff);
+    }
+
+    private boolean handleHelmetLogic(Player player, boolean hasHelmet) {
+        if (!hasHelmet) return false;
+
+        int helmetDurabilityDrain = getConfig().node("helmet-durability-drain").getInt();
+
+        player.getEquipment().getHelmet().damage(helmetDurabilityDrain, player);
+        return true;
     }
 
     private void applyBuffs(Player player, boolean willReceiveBuff) {
@@ -78,9 +76,12 @@ public class PhantomRaceRunnable extends BaseRaceRunnable {
             NIGHT_TIME_EFFECTS.forEach(player::addPotionEffect);
 
             if (hasModifier) return;
+
+            double nightMovementSpeedBonus = getConfig().node("night-movement-speed-bonus").getDouble();
+
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),
-                    config.nightMovementSpeedBonus,
+                    nightMovementSpeedBonus,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 

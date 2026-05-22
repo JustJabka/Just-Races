@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
-import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import org.bukkit.NamespacedKey;
@@ -10,12 +9,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
 public class SkyzernRaceRunnable extends BaseRaceRunnable {
-    private final SkyzernRaceConfig config;
-
-    public SkyzernRaceRunnable(SkyzernRaceConfig config) {
-        this.config = config;
-    }
-
     @Override
     public NamespacedKey getRaceKey() {
         return RaceProvider.SKYZERN;
@@ -46,9 +39,12 @@ public class SkyzernRaceRunnable extends BaseRaceRunnable {
     }
 
     private double calcCelestialOriginBonus(Player player) {
+        double damageBonusPerStep = getConfig().node("damage-bonus", "value-per-step").getDouble();
+        double damageBonusStep = getConfig().node("damage-bonus", "step").getDouble();
+
         double currentHeight = player.getY();
         double baseHeight = player.getWorld().getSeaLevel();
-        double step = config.damageBonusPerStep / config.damageBonusStep;
+        double step = damageBonusPerStep / damageBonusStep;
 
         return (currentHeight - baseHeight) * step;
     }

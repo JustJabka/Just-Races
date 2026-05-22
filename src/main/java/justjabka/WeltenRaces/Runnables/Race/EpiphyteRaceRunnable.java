@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
-import justjabka.WeltenRaces.Configs.Race.EpiphyteRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Runnables.Generic.BaseRaceRunnable;
 import org.bukkit.Material;
@@ -12,12 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class EpiphyteRaceRunnable extends BaseRaceRunnable {
-    private final EpiphyteRaceConfig config;
-
-    public EpiphyteRaceRunnable(EpiphyteRaceConfig config) {
-        this.config = config;
-    }
-
     @Override
     public NamespacedKey getRaceKey() {
         return RaceProvider.EPIPHYTE;
@@ -41,9 +34,11 @@ public class EpiphyteRaceRunnable extends BaseRaceRunnable {
         boolean removeBuff = !steppingOnBuffBlock && hasModifier;
 
         if (giveBuff) {
+            double mossMovementSpeedBonus = getConfig().node("moss-movement-speed-bonus").getDouble();
+
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),
-                    config.mossMovementSpeedBonus,
+                    mossMovementSpeedBonus,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 

@@ -6,20 +6,12 @@ import justjabka.WeltenRaces.Configs.Modifier.Food.GlowBerriesFoodModifierConfig
 import justjabka.WeltenRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.WeltenRaces.Configs.Modifier.Food.SweetBerriesFoodModifierConfig;
-import justjabka.WeltenRaces.Configs.Race.*;
 import org.bukkit.plugin.Plugin;
 
-import static justjabka.WeltenRaces.Managers.ConfigManager.*;
+import static justjabka.WeltenRaces.Managers.ConfigManager.loadAbilityConfig;
+import static justjabka.WeltenRaces.Managers.ConfigManager.loadModifierConfig;
 
 public class ConfigRegistry {
-    // Races
-    public final ArmatRaceConfig armatRaceConfig;
-    public final PhantomRaceConfig phantomRaceConfig;
-    public final SkyzernRaceConfig skyzernRaceConfig;
-    public final EpiphyteRaceConfig epiphyteRaceConfig;
-    public final LizardRaceConfig lizardRaceConfig;
-    public final FetrRaceConfig fetrRaceConfig;
-
     // Abilities
     public final DamageInversionAbilityConfig damageInversionAbilityConfig;
     public final EcdysisAbilityConfig ecdysisAbilityConfig;
@@ -51,14 +43,6 @@ public class ConfigRegistry {
     public final SweetBerriesFoodModifierConfig sweetBerriesFoodModifierConfig;
 
     public ConfigRegistry(Plugin plugin) {
-        // Races
-        this.armatRaceConfig = new ArmatRaceConfig(loadRaceConfig(plugin, "armat"));
-        this.phantomRaceConfig = new PhantomRaceConfig(loadRaceConfig(plugin, "phantom"));
-        this.skyzernRaceConfig = new SkyzernRaceConfig(loadRaceConfig(plugin, "skyzern"));
-        this.epiphyteRaceConfig = new EpiphyteRaceConfig(loadRaceConfig(plugin, "epiphyte"));
-        this.lizardRaceConfig = new LizardRaceConfig(loadRaceConfig(plugin, "lizard"));
-        this.fetrRaceConfig = new FetrRaceConfig(loadRaceConfig(plugin, "fetr"));
-
         // Abilities
         this.damageInversionAbilityConfig = new DamageInversionAbilityConfig(loadAbilityConfig(plugin, "damage-inversion"));
         this.ecdysisAbilityConfig = new EcdysisAbilityConfig(loadAbilityConfig(plugin, "ecdysis"));

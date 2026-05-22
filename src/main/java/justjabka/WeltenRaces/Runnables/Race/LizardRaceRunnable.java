@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Runnables.Race;
 
-import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Managers.AttributeManager;
@@ -21,22 +20,10 @@ import java.util.Set;
 import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class LizardRaceRunnable extends BaseRaceRunnable {
-    private final LizardRaceConfig config;
-
-    private final Map<Attribute, AttributeModifier> warmBiomesBuffs;
-    private final Set<PotionEffect> netherDebuffs;
-
-    public LizardRaceRunnable(LizardRaceConfig config) {
-        this.config = config;
-        this.warmBiomesBuffs = Map.of(
-                Attribute.MOVEMENT_SPEED, new AttributeModifier(getRaceKey(), config.temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
-                Attribute.JUMP_STRENGTH, new AttributeModifier(getRaceKey(), config.temperatureBuffJumpStrengthBonus, AttributeModifier.Operation.ADD_NUMBER)
-        );
-        this.netherDebuffs = Set.of(
-                new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
-                new PotionEffect(PotionEffectType.MINING_FATIGUE, 40, 0, false, false, false)
-        );
-    }
+    private static final Set<PotionEffect> netherDebuffs = Set.of(
+            new PotionEffect(PotionEffectType.SLOWNESS, 40, 0, false, false, false),
+            new PotionEffect(PotionEffectType.MINING_FATIGUE, 40, 0, false, false, false)
+    );
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -53,6 +40,8 @@ public class LizardRaceRunnable extends BaseRaceRunnable {
     }
 
     private void giveWarmBiomesBuff(Player player, Location location) {
+        Map<Attribute, AttributeModifier> warmBiomesBuffs = getWarmBiomesModifiers();
+
         boolean hasModifiers = AttributeManager.hasModifiers(player, warmBiomesBuffs);
 
         boolean giveBuff = isInWarmBiome(location) && !hasModifiers;
@@ -65,12 +54,25 @@ public class LizardRaceRunnable extends BaseRaceRunnable {
         }
     }
 
+    private Map<Attribute, AttributeModifier> getWarmBiomesModifiers() {
+        double temperatureBuffMovementSpeedBonus = getConfig().node("temperature-buff", "movement-speed-bonus").getDouble();
+        double temperatureBuffJumpStrengthBonus = getConfig().node("temperature-buff", "jump-strength-bonus").getDouble();
+
+        return Map.of(
+                Attribute.MOVEMENT_SPEED, new AttributeModifier(getRaceKey(), temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
+                Attribute.JUMP_STRENGTH, new AttributeModifier(getRaceKey(), temperatureBuffJumpStrengthBonus, AttributeModifier.Operation.ADD_NUMBER)
+        );
+    }
+
     private boolean isInWarmBiome(Location location) {
         boolean hasStorm = location.getWorld().hasStorm();
         if (hasStorm) return true;
 
+        double temperatureBuffLowerBound = getConfig().node("temperature-buff", "lower-bound").getDouble();
+        double temperatureBuffUpperBound = getConfig().node("temperature-buff", "upper-bound").getDouble();
+
         double temperature = location.getBlock().getTemperature();
-        Range<Double> buffBoundary = Range.between(config.temperatureBuffLowerBound, config.temperatureBuffUpperBound);
+        Range<Double> buffBoundary = Range.between(temperatureBuffLowerBound, temperatureBuffUpperBound);
 
         return buffBoundary.contains(temperature);
     }
