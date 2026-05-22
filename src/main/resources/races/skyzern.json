@@ -10,5 +10,12 @@
   "attributes": {
     "minecraft:scale": 1.05
   },
-  "item_modifiers": {}
+  "item_modifiers": {},
+  "config": {
+    "damage-bonus": {
+      "value-per-step": 0.1,
+      "step": 5
+    },
+    "additional-knockback-value": 1
+  }
 }

@@ -15,7 +15,7 @@ public final class WeltenRaces extends JavaPlugin {
         ConfigRegistry configs = new ConfigRegistry(this);
 
         RacesRegistry.register(this);
-        ListenersRegistry.register(this, configs);
+        ListenersRegistry.register(this);
         RunnablesRegistry.register(this, configs);
         AbilitiesRegistry.register(this, configs);
         ModifiersRegistry.register(this, configs);

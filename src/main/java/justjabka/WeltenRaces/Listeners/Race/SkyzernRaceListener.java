@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
-import justjabka.WeltenRaces.Configs.Race.SkyzernRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.WeltenRaces.Managers.AbilityManager;
@@ -20,12 +19,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class SkyzernRaceListener extends BaseRaceListener {
-    private final SkyzernRaceConfig config;
-
-    public SkyzernRaceListener(SkyzernRaceConfig config) {
-        this.config = config;
-    }
-
     @Override
     public NamespacedKey getRaceKey() {
         return RaceProvider.SKYZERN;
@@ -88,14 +81,16 @@ public class SkyzernRaceListener extends BaseRaceListener {
         boolean willReceiveBuff = hasAbilitySlotSelected && !hasModifier;
 
         if (willReceiveBuff) {
+            double additionalKnockbackValue = getConfig().node("additional-knockback-value").getDouble();
+
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),
-                    config.additionalKnockbackValue,
+                    additionalKnockbackValue,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
             attackKnockbackInstance.addModifier(modifier);
-        } else  {
+        } else {
             attackKnockbackInstance.removeModifier(getRaceKey());
         }
     }

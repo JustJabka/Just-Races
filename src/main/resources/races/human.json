@@ -7,5 +7,6 @@
   "attributes": {
     "minecraft:max_health": 26
   },
-  "item_modifiers": {}
+  "item_modifiers": {},
+  "config": {}
 }

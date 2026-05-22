@@ -1,7 +1,6 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
 import justjabka.WeltenRaces.Abilities.NoteAbility;
-import justjabka.WeltenRaces.Configs.Race.FetrRaceConfig;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.WeltenRaces.Managers.AbilityManager;
@@ -25,22 +24,16 @@ import java.util.Set;
 import static justjabka.WeltenRaces.Runnables.Race.FetrRaceRunnable.FETR_STATUS_KEY;
 
 public class FetrRaceListener extends BaseRaceListener {
-    private final FetrRaceConfig config;
-    private final Set<PotionEffect> hornBuffs;
+    private final Set<PotionEffect> hornBuffs = Set.of(
+            new PotionEffect(PotionEffectType.SPEED, 0, 1, false, true, true),
+            new PotionEffect(PotionEffectType.ABSORPTION, 0, 5, false, true, true),
+            new PotionEffect(PotionEffectType.RESISTANCE, 0, 1, false, true, true)
+    );
 
     private static final Random RANDOM = new Random();
 
     private NoteAbility getNoteAbility() {
         return AbilityManager.getAbility(NoteAbility.class);
-    }
-
-    public FetrRaceListener(FetrRaceConfig config) {
-        this.config = config;
-        this.hornBuffs = Set.of(
-                new PotionEffect(PotionEffectType.SPEED, config.hornBuffDuration, 1, false, true, true),
-                new PotionEffect(PotionEffectType.ABSORPTION, config.hornBuffDuration, 5, false, true, true),
-                new PotionEffect(PotionEffectType.RESISTANCE, config.hornBuffDuration, 1, false, true, true)
-        );
     }
 
     public static boolean isIdol(Player player) {
@@ -73,17 +66,21 @@ public class FetrRaceListener extends BaseRaceListener {
 
         if (player.getCooldown(item) > 0) return;
 
-        Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(config.hornBuffRadius);
+        int hornBuffDuration = getConfig().node("horn-buff", "duration").getInt() * 20;
+        double hornBuffRadius = getConfig().node("horn-buff", "radius").getDouble();
+        int hornBuffNotesPerPlayer = getConfig().node("horn-buff", "notes-per-player").getInt();
+
+        Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(hornBuffRadius);
         int playerCount = playersNearby.size();
 
         List<PotionEffect> buffs = hornBuffs.stream().toList();
         PotionEffect buff = buffs.get(RANDOM.nextInt(buffs.size()));
 
-        playersNearby.forEach(p -> p.addPotionEffect(buff));
+        playersNearby.forEach(p -> p.addPotionEffect(buff.withDuration(hornBuffDuration)));
 
         NoteAbility noteAbility = getNoteAbility();
         if (noteAbility == null) return;
 
-        noteAbility.addNotes(player, playerCount * config.hornBuffNotesPerPlayer);
+        noteAbility.addNotes(player, playerCount * hornBuffNotesPerPlayer);
     }
 }

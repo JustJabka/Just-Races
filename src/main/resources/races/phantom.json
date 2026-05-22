@@ -11,5 +11,14 @@
   "attributes": {},
   "item_modifiers": {
     "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
+  },
+  "config": {
+    "meat-bonus": {
+      "food-amount": 5,
+      "regeneration-duration": 2
+    },
+    "insomnia-damage-bonus": 3.0,
+    "helmet-durability-drain": 1,
+    "night-movement-speed-bonus": 0.02
   }
 }

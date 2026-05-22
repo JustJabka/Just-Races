@@ -15,5 +15,8 @@
   "item_modifiers": {
     "weltenraces:glow_berries": "minecraft:glow_berries",
     "weltenraces:moss": "minecraft:moss_block"
+  },
+  "config": {
+    "moss-movement-speed-bonus": 0.1
   }
 }

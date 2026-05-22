@@ -1,6 +1,5 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
-import justjabka.WeltenRaces.Configs.Race.LizardRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
@@ -14,16 +13,10 @@ import java.util.Collection;
 import java.util.Set;
 
 public class LizardRaceListener extends BaseRaceListener {
-    private final LizardRaceConfig config;
-
     private static final Collection<DamageType> lizardVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.LIZARD_VULNERABLE_TO);
     private static final Set<EntityDamageEvent.DamageCause> lizardResistantTo = Set.of(
             EntityDamageEvent.DamageCause.POISON
     );
-
-    public LizardRaceListener(LizardRaceConfig config) {
-        this.config = config;
-    }
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -44,10 +37,13 @@ public class LizardRaceListener extends BaseRaceListener {
     }
 
     private void handleDamageCauses(EntityDamageEvent event, DamageType damageType, double damage, EntityDamageEvent.DamageCause damageCause) {
+        double vulnerableDamageMultiplier = getConfig().node("damage-multiplier", "vulnerable").getDouble();
+        double resistantDamageMultiplier = getConfig().node("damage-multiplier", "resistant").getDouble();
+
         if (lizardVulnerableTo.contains(damageType)) {
-            event.setDamage(damage * config.vulnerableDamageMultiplier);
+            event.setDamage(damage * vulnerableDamageMultiplier);
         } else if (lizardResistantTo.contains(damageCause)) {
-            event.setDamage(damage * config.resistantDamageMultiplier);
+            event.setDamage(damage * resistantDamageMultiplier);
         }
     }
 }

@@ -1,9 +1,9 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
-import justjabka.WeltenRaces.Configs.Race.PhantomRaceConfig;
 import justjabka.WeltenRaces.DataProvider.ItemTypeTagKeysProvider;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
+import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
@@ -15,12 +15,18 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class PhantomRaceListener extends BaseRaceListener {
-    private final PhantomRaceConfig config;
+import java.util.Collection;
 
-    public PhantomRaceListener(PhantomRaceConfig config) {
-        this.config = config;
-    }
+public class PhantomRaceListener extends BaseRaceListener {
+    private static final Collection<ItemType> isMeat = ItemTypeTagKeysProvider.getTagValues(ItemTypeTagKeysProvider.IS_MEAT);
+    private static final PotionEffect meatBonusEffect = new PotionEffect(
+            PotionEffectType.REGENERATION,
+            0,
+            0,
+            false,
+            false,
+            false
+    );
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -34,13 +40,17 @@ public class PhantomRaceListener extends BaseRaceListener {
 
         if (!isRequiredRace(attacker)) return;
 
+        if (!hasInsomnia(victim)) return;
+
+        double insomniaDamageBonus = getConfig().node("insomnia-damage-bonus").getDouble();
+        event.setDamage(event.getDamage() + insomniaDamageBonus);
+    }
+
+    private static boolean hasInsomnia(Player victim) {
         int ticksSinceRest = victim.getStatistic(Statistic.TIME_SINCE_REST);
         int daysSinceRest = ticksSinceRest / 24000;
 
-        boolean hasInsomnia = daysSinceRest >= 3;
-        if (!hasInsomnia) return;
-
-        event.setDamage(event.getDamage() + config.insomniaDamageBonus);
+        return daysSinceRest >= 3;
     }
 
     @EventHandler
@@ -51,19 +61,17 @@ public class PhantomRaceListener extends BaseRaceListener {
 
         Material consumedMaterial = event.getItem().getType();
         ItemType consumedType = consumedMaterial.asItemType();
+        
+        if (!isMeat.contains(consumedType)) return;
+        giveMeatBonus(player);
+    }
 
-        if (ItemTypeTagKeysProvider.getTagValues(ItemTypeTagKeysProvider.IS_MEAT).contains(consumedType)) {
-            player.setFoodLevel(player.getFoodLevel() + config.meatBonusFoodAmount);
+    private void giveMeatBonus(Player player) {
+        int meatBonusAmount = getConfig().node("meat-bonus", "food-amount").getInt();
+        int meatBonusRegenerationDuration = getConfig().node("meat-bonus", "regeneration-duration").getInt();
+        WeltenRaces.LOGGER.info(String.valueOf(meatBonusAmount));
 
-            if (config.meatBonusRegenerationDuration <= 0) return;
-            player.addPotionEffect(new PotionEffect(
-                    PotionEffectType.REGENERATION,
-                    config.meatBonusRegenerationDuration,
-                    0,
-                    false,
-                    false,
-                    false
-            ));
-        }
+        player.setFoodLevel(player.getFoodLevel() + meatBonusAmount);
+        player.addPotionEffect(meatBonusEffect.withDuration(meatBonusRegenerationDuration));
     }
 }

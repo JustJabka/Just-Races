@@ -1,7 +1,6 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.WeltenRaces.Configs.Race.ArmatRaceConfig;
 import justjabka.WeltenRaces.DataProvider.DamageTypeProvider;
 import justjabka.WeltenRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
@@ -35,12 +34,6 @@ import org.bukkit.potion.PotionEffect;
 import java.util.Random;
 
 public class ArmatRaceListener extends BaseRaceListener {
-    private final ArmatRaceConfig config;
-
-    public ArmatRaceListener(ArmatRaceConfig config) {
-        this.config = config;
-    }
-
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ignore_potion");
@@ -68,13 +61,15 @@ public class ArmatRaceListener extends BaseRaceListener {
     }
 
     private boolean handleDamageCauses(EntityDamageEvent event, DamageType damageType, Player player) {
+        double vulnerableMultiplier = getConfig().node("vulnerable-damage-multiplier").getDouble();
+
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         boolean isVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.IS_MAGIC).contains(damageType);
         boolean isImmuneTo = damageCause == EntityDamageEvent.DamageCause.FALL && ArmorManager.hasAnyArmor(player);
 
         if (isVulnerableTo) {
-            event.setDamage(event.getDamage() * config.vulnerableMultiplier);
+            event.setDamage(event.getDamage() * vulnerableMultiplier);
             return true;
         } else if (isImmuneTo) {
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
@@ -87,13 +82,14 @@ public class ArmatRaceListener extends BaseRaceListener {
 
     private boolean handleDodge(EntityDamageEvent event, Player player, DamageType damageType) {
         double dodgeChance;
+        double maxDodgeChance = getConfig().node("damage-dodge", "max-chance").getDouble();
 
         // Calc Dodge Chance
         AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
         if (luckInstance == null) return false;
 
         dodgeChance = luckInstance.getValue() * 0.1;
-        dodgeChance = Math.clamp(dodgeChance, 0, config.maxDodgeChance);
+        dodgeChance = Math.clamp(dodgeChance, 0, maxDodgeChance);
 
         // Try Dodge
         if (RANDOM.nextDouble() > dodgeChance) return false;
@@ -115,9 +111,12 @@ public class ArmatRaceListener extends BaseRaceListener {
     }
 
     private void handleIronArmorSetBonus(EntityDamageEvent event, double damage) {
-        if (damage < config.reductionStart) return;
+        double startingPoint = getConfig().node("damage-reduction", "starting-point").getDouble();
+        double damageMultiplier = getConfig().node("damage-reduction", "damage-multiplier").getDouble();
 
-        double finalDamage = damage * config.reductionMultiplier;
+        if (damage < startingPoint) return;
+
+        double finalDamage = damage * damageMultiplier;
         event.setDamage(finalDamage);
     }
 
@@ -126,7 +125,10 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (!successfullyDodged) return;
         if (!(causingEntity instanceof LivingEntity attacker)) return;
 
-        double parryDamage = damage * config.parryDamagePercent;
+        double parryDamagePercent = getConfig().node("damage-dodge", "parry", "damage-percent").getDouble();
+        int parryArmorPenalty = getConfig().node("damage-dodge", "parry", "armor-penalty").getInt();
+
+        double parryDamage = damage * parryDamagePercent;
         DamageSource parrySource = DamageSource.builder(damageType)
                 .withCausingEntity(player)
                 .withDirectEntity(player)
@@ -137,7 +139,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         // Parry Armor Damage Penalty
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
             if (armor == null) continue;
-            armor.damage(config.parryArmorPenalty, player);
+            armor.damage(parryArmorPenalty, player);
         }
     }
 
@@ -149,7 +151,10 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (!isRequiredRace(attacker)) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
-        if (attacker.getAttackCooldown() < config.absoluteDamageCooldown) return;
+        double absoluteDamageAmount = getConfig().node("absolute-damage", "amount").getDouble();
+        float absoluteDamageCooldown = getConfig().node("absolute-damage", "min-attack-cooldown").getFloat();
+
+        if (attacker.getAttackCooldown() < absoluteDamageCooldown) return;
 
         // Prevent stack overflow
         if (event.getDamageSource().getDamageType() == DamageTypeProvider.ABSOLUTE_DAMAGE) return;
@@ -159,7 +164,7 @@ public class ArmatRaceListener extends BaseRaceListener {
                 .withDirectEntity(attacker)
                 .build();
 
-        victim.damage(config.absoluteDamageAmount, absoluteDamageSource);
+        victim.damage(absoluteDamageAmount, absoluteDamageSource);
     }
 
     @EventHandler
@@ -211,6 +216,9 @@ public class ArmatRaceListener extends BaseRaceListener {
         EntityPotionEffectEvent.Action action = event.getAction();
         if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
 
+        double effectDurationMultiplier = getConfig().node("alchemy", "effect-duration-multiplier").getDouble();
+        WeltenRaces.LOGGER.info(String.valueOf(effectDurationMultiplier));
+
         PersistentDataContainer pdc = player.getPersistentDataContainer();
 
         // Prevent stack overflow
@@ -227,7 +235,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         pdc.set(IGNORE_POTION_KEY, PersistentDataType.BOOLEAN, true);
 
-        int newDuration = (int) (effect.getDuration() * config.effectDurationMultiplier);
+        int newDuration = (int) (effect.getDuration() * effectDurationMultiplier);
 
         effect.withDuration(newDuration).apply(player);
     }
@@ -265,11 +273,14 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
 
+        double miningBonusMax = getConfig().node("mining-bonus", "upper-bound").getDouble();
+        double miningBonusStep = getConfig().node("mining-bonus", "step").getDouble();
+
         // Calc new attribute
         double durability = ArmorManager.getAverageDurability(player);
         double maxDurability = 1.0;
 
-        double miningBonus = Math.min(config.miningBonusMax, Math.floor((maxDurability - durability) / config.miningBonusStep));
+        double miningBonus = Math.min(miningBonusMax, Math.floor((maxDurability - durability) / miningBonusStep));
 
         // Apply new attribute
         if (miningBonus <= 0) return;

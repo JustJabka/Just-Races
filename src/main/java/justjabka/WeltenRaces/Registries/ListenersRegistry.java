@@ -7,22 +7,22 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public class ListenersRegistry {
-    public static void register(Plugin plugin, ConfigRegistry configs) {
+    public static void register(Plugin plugin) {
         PluginManager manager = plugin.getServer().getPluginManager();
 
         manager.registerEvents(new GlobalListener(), plugin);
-        registerRaceListeners(plugin, manager, configs);
+        registerRaceListeners(plugin, manager);
 
         WeltenRaces.LOGGER.info("Successfully registered listeners!");
     }
 
-    private static void registerRaceListeners(Plugin plugin, PluginManager manager, ConfigRegistry configs) {
-        manager.registerEvents(new ArmatRaceListener(configs.armatRaceConfig), plugin);
-        manager.registerEvents(new PhantomRaceListener(configs.phantomRaceConfig), plugin);
-        manager.registerEvents(new SkyzernRaceListener(configs.skyzernRaceConfig), plugin);
+    private static void registerRaceListeners(Plugin plugin, PluginManager manager) {
+        manager.registerEvents(new ArmatRaceListener(), plugin);
+        manager.registerEvents(new PhantomRaceListener(), plugin);
+        manager.registerEvents(new SkyzernRaceListener(), plugin);
         manager.registerEvents(new EpiphyteRaceListener(), plugin);
-        manager.registerEvents(new LizardRaceListener(configs.lizardRaceConfig), plugin);
-        manager.registerEvents(new FetrRaceListener(configs.fetrRaceConfig), plugin);
+        manager.registerEvents(new LizardRaceListener(), plugin);
+        manager.registerEvents(new FetrRaceListener(), plugin);
 
         WeltenRaces.LOGGER.info("Successfully registered race listeners!");
     }
