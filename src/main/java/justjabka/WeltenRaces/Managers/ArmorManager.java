@@ -39,8 +39,15 @@ public class ArmorManager {
         setStoredArmor(player, firstType);
     }
 
+    /**
+     * Checks if player has any armor equipped
+     * @param player Player whoose equipment will be checked
+     * @return {@code true} if player has any armor
+     */
     public static boolean hasAnyArmor(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
+
+        WeltenRaces.LOGGER.info(String.valueOf(equipment.length));
 
         for (ItemStack item : equipment) {
             if (item == null) continue;
@@ -52,8 +59,8 @@ public class ArmorManager {
     }
 
     public static ArmorSet getArmorSet(Player player) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        String stored = data.get(ARMOR_SET_KEY, PersistentDataType.STRING);
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        String stored = pdc.get(ARMOR_SET_KEY, PersistentDataType.STRING);
 
         if (stored == null) return ArmorSet.NONE;
 
@@ -71,26 +78,35 @@ public class ArmorManager {
                 set.toString()
         );
     }
-    public static double getAverageDurability(Player player) {
-        double totalPercent = 0;
-        ItemStack[] equipment = player.getEquipment().getArmorContents();
 
+    /**
+     * Gets armor average durability percent.
+     * <p>
+     * For every piece: {@code (maxDamage - currentDamage) / maxDamage} and divided by total armor count (4 for full armor set)
+     * @param player Player whose armor durability will calced
+     * @return Average armor durability percent (from 0.0 to 1.0). 0.0 if no armor equipped
+     */
+    public static double getAverageDurability(Player player) {
         int count = 0;
+        double totalPercent = 0;
+
+        ItemStack[] equipment = player.getEquipment().getArmorContents();
 
         for (ItemStack item : equipment) {
             if (item == null) continue;
             if (item.isEmpty()) continue;
 
-            if (item.getItemMeta() instanceof Damageable itemMeta) {
-                int maxDamage = itemMeta.hasMaxDamage()
-                        ? itemMeta.getMaxDamage()
-                        : item.getType().getMaxDurability();
+            if (!(item.getItemMeta() instanceof Damageable itemMeta)) continue;
 
-                double percent = (double) (maxDamage - itemMeta.getDamage()) / maxDamage;
+            int maxDamage = itemMeta.hasMaxDamage()
+                    ? itemMeta.getMaxDamage()
+                    : item.getType().getMaxDurability();
+            int currentDamage = itemMeta.getDamage();
 
-                totalPercent += percent;
-                count++;
-            }
+            double percent = (double) (maxDamage - currentDamage) / maxDamage;
+
+            totalPercent += percent;
+            count++;
         }
 
         return count == 0 ? 0 : (totalPercent / count);

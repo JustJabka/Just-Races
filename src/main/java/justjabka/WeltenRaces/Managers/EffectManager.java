@@ -30,16 +30,22 @@ public class EffectManager {
         return 0;
     }
 
-    public static void setClientSideGlow(Player receiver, LivingEntity target, boolean glow) {
+    /**
+     * Glows target for player on client side
+     * @param player Player which client will receive packets
+     * @param entity Entity that will be glowing
+     * @param glow {@code true} to enable glow. {@code false} to disable it
+     */
+    public static void setClientSideGlow(Player player, LivingEntity entity, boolean glow) {
         // Magic packets✨ (idk how ts magic shit works💀)
         ProtocolManager manager = ProtocolLibrary.getProtocolManager();
         PacketContainer packet = manager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
 
-        packet.getIntegers().write(0, target.getEntityId());
+        packet.getIntegers().write(0, entity.getEntityId());
 
         byte currentMask = 0;
 
-        WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(target);
+        WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity);
         if (watcher.hasIndex(0)) {
             currentMask = (byte) watcher.getObject(0);
         }
@@ -60,6 +66,6 @@ public class EffectManager {
 
         packet.getDataValueCollectionModifier().write(0, dataValues);
 
-        manager.sendServerPacket(receiver, packet);
+        manager.sendServerPacket(player, packet);
     }
 }

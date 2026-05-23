@@ -22,9 +22,15 @@ import static justjabka.WeltenRaces.Managers.ModifierManager.refreshModifiers;
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "race");
 
+    /**
+     * Gets player's race
+     * @param player Player which race will be got
+     * @return Race that player has
+     * @see #isRace(Player, NamespacedKey)
+     */
     public static RaceInstance getRace(Player player) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        String raceString = data.get(RACE_KEY, PersistentDataType.STRING);
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        String raceString = pdc.get(RACE_KEY, PersistentDataType.STRING);
 
         if (raceString == null) {
             return RaceProvider.get(RaceProvider.HUMAN);
@@ -41,6 +47,12 @@ public class RaceManager {
         return race;
     }
 
+    /**
+     * Sets player's race
+     * @param player Player which would be set
+     * @param key Race key
+     * @see RaceProvider#get(NamespacedKey)
+     */
     public static void setRace(Player player, NamespacedKey key) {
         resetRace(player);
 
@@ -51,6 +63,12 @@ public class RaceManager {
         initRace(player, race);
     }
 
+    /**
+     * Check if player's race matches to provided
+     * @param player Player which race will be checked
+     * @param key Race key
+     * @return {@code true} if races matches
+     */
     public static boolean isRace(Player player, NamespacedKey key) {
         RaceInstance race = getRace(player);
         return race != null && race.getKey().equals(key);
@@ -61,6 +79,11 @@ public class RaceManager {
         attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
     }
 
+    /**
+     * Resets player's race
+     * @param player Player which race would be reseted
+     * @apiNote use this carefully because race will become {@code null}!
+     */
     public static void resetRace(Player player) {
         // Clear potion effects
         player.clearActivePotionEffects();

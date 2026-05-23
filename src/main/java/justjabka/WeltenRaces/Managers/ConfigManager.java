@@ -9,10 +9,6 @@ public class ConfigManager {
         return new ConfigWrapper(plugin, "configs/abilities/%s.yml".formatted(name)).getConfig();
     }
 
-    public static FileConfiguration loadRaceConfig(Plugin plugin, String name) {
-        return new ConfigWrapper(plugin, "configs/races/%s.yml".formatted(name)).getConfig();
-    }
-
     public static FileConfiguration loadModifierConfig(Plugin plugin, String name) {
         return new ConfigWrapper(plugin, "configs/modifiers/%s.yml".formatted(name)).getConfig();
     }
