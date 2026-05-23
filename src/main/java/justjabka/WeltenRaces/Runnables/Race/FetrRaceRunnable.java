@@ -104,7 +104,7 @@ public class FetrRaceRunnable extends BaseRaceRunnable {
     }
 
     private void updateStatus(Player player) {
-        double statusUpdateRadius = getConfig().node("status-update-radius").getDouble();
+        double statusUpdateRadius = getConfig().node("status_update_radius").getDouble();
 
         Location location = player.getLocation();
 

@@ -42,7 +42,7 @@ public class PhantomRaceListener extends BaseRaceListener {
 
         if (!hasInsomnia(victim)) return;
 
-        double insomniaDamageBonus = getConfig().node("insomnia-damage-bonus").getDouble();
+        double insomniaDamageBonus = getConfig().node("insomnia_damage_bonus").getDouble();
         event.setDamage(event.getDamage() + insomniaDamageBonus);
     }
 
@@ -67,8 +67,8 @@ public class PhantomRaceListener extends BaseRaceListener {
     }
 
     private void giveMeatBonus(Player player) {
-        int meatBonusAmount = getConfig().node("meat-bonus", "food-amount").getInt();
-        int meatBonusRegenerationDuration = getConfig().node("meat-bonus", "regeneration-duration").getInt();
+        int meatBonusAmount = getConfig().node("meat_bonus", "food_amount").getInt();
+        int meatBonusRegenerationDuration = getConfig().node("meat_bonus", "regeneration_duration").getInt() * 20;
         WeltenRaces.LOGGER.info(String.valueOf(meatBonusAmount));
 
         player.setFoodLevel(player.getFoodLevel() + meatBonusAmount);

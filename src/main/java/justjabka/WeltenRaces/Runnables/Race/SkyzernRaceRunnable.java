@@ -39,8 +39,8 @@ public class SkyzernRaceRunnable extends BaseRaceRunnable {
     }
 
     private double calcCelestialOriginBonus(Player player) {
-        double damageBonusPerStep = getConfig().node("damage-bonus", "value-per-step").getDouble();
-        double damageBonusStep = getConfig().node("damage-bonus", "step").getDouble();
+        double damageBonusPerStep = getConfig().node("damage_bonus", "value_per_step").getDouble();
+        double damageBonusStep = getConfig().node("damage_bonus", "step").getDouble();
 
         double currentHeight = player.getY();
         double baseHeight = player.getWorld().getSeaLevel();

@@ -18,29 +18,29 @@
     "weltenraces:golden_armor": "#weltenraces:golden_armor"
   },
   "config": {
-    "vulnerable-damage-multiplier": 1.5,
-    "sink-gravity-value": 0.42,
-    "mining-bonus": {
-      "upper-bound": 3.0,
+    "vulnerable_damage_multiplier": 1.5,
+    "sink_gravity_value": 0.42,
+    "mining_bonus": {
+      "upper_bound": 3.0,
       "step": 0.25
     },
-    "damage-dodge": {
-      "max-chance": 0.5,
+    "damage_dodge": {
+      "max_chance": 0.5,
       "parry": {
-        "damage-percent": 0.6,
-        "armor-penalty": 1
+        "damage_percent": 0.6,
+        "armor_penalty": 1
       }
     },
-    "damage-reduction": {
-      "starting-point": 8.0,
-      "damage-multiplier": 0.8
+    "damage_reduction": {
+      "starting_point": 8.0,
+      "damage_multiplier": 0.8
     },
     "alchemy": {
-      "effect-duration-multiplier": 1.25
+      "effect_duration_multiplier": 1.25
     },
-    "absolute-damage": {
+    "absolute_damage": {
       "amount": 1.0,
-      "min-attack-cooldown": 1.0
+      "min_attack_cooldown": 1.0
     }
   }
 }

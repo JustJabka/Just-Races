@@ -31,7 +31,7 @@ public class ArmatRaceRunnable extends BaseRaceRunnable {
         boolean clearModifier = !shouldSink && hasModifier;
 
         if (giveModifier) {
-            double sinkGravity = getConfig().node("sink-gravity-value").getDouble();
+            double sinkGravity = getConfig().node("sink_gravity_value").getDouble();
 
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),

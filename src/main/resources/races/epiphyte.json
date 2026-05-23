@@ -17,6 +17,6 @@
     "weltenraces:moss": "minecraft:moss_block"
   },
   "config": {
-    "moss-movement-speed-bonus": 0.1
+    "moss_movement_speed_bonus": 0.1
   }
 }

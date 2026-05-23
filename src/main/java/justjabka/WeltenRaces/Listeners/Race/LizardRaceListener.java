@@ -37,8 +37,8 @@ public class LizardRaceListener extends BaseRaceListener {
     }
 
     private void handleDamageCauses(EntityDamageEvent event, DamageType damageType, double damage, EntityDamageEvent.DamageCause damageCause) {
-        double vulnerableDamageMultiplier = getConfig().node("damage-multiplier", "vulnerable").getDouble();
-        double resistantDamageMultiplier = getConfig().node("damage-multiplier", "resistant").getDouble();
+        double vulnerableDamageMultiplier = getConfig().node("damage_multiplier", "vulnerable").getDouble();
+        double resistantDamageMultiplier = getConfig().node("damage_multiplier", "resistant").getDouble();
 
         if (lizardVulnerableTo.contains(damageType)) {
             event.setDamage(damage * vulnerableDamageMultiplier);

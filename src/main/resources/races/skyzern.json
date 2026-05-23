@@ -12,10 +12,10 @@
   },
   "item_modifiers": {},
   "config": {
-    "damage-bonus": {
-      "value-per-step": 0.1,
+    "damage_bonus": {
+      "value_per_step": 0.1,
       "step": 5
     },
-    "additional-knockback-value": 1
+    "additional_knockback_value": 1
   }
 }

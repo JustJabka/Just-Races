@@ -18,15 +18,15 @@
     "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
   },
   "config": {
-    "damage-multiplier": {
+    "damage_multiplier": {
       "vulnerable": 1.05,
       "resistant": 0.8
     },
-    "temperature-buff": {
-      "lower-bound": 0.8,
-      "upper-bound": 1.5,
-      "movement-speed-bonus": 0.13,
-      "jump-strength-bonus": 0.3
+    "temperature_buff": {
+      "lower_bound": 0.8,
+      "upper_bound": 1.5,
+      "movement_speed_bonus": 0.13,
+      "jump_strength_bonus": 0.3
     }
   }
 }

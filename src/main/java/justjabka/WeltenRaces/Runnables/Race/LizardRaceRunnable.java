@@ -55,8 +55,8 @@ public class LizardRaceRunnable extends BaseRaceRunnable {
     }
 
     private Map<Attribute, AttributeModifier> getWarmBiomesModifiers() {
-        double temperatureBuffMovementSpeedBonus = getConfig().node("temperature-buff", "movement-speed-bonus").getDouble();
-        double temperatureBuffJumpStrengthBonus = getConfig().node("temperature-buff", "jump-strength-bonus").getDouble();
+        double temperatureBuffMovementSpeedBonus = getConfig().node("temperature_buff", "movement_speed_bonus").getDouble();
+        double temperatureBuffJumpStrengthBonus = getConfig().node("temperature_buff", "jump_strength_bonus").getDouble();
 
         return Map.of(
                 Attribute.MOVEMENT_SPEED, new AttributeModifier(getRaceKey(), temperatureBuffMovementSpeedBonus, AttributeModifier.Operation.ADD_NUMBER),
@@ -68,8 +68,8 @@ public class LizardRaceRunnable extends BaseRaceRunnable {
         boolean hasStorm = location.getWorld().hasStorm();
         if (hasStorm) return true;
 
-        double temperatureBuffLowerBound = getConfig().node("temperature-buff", "lower-bound").getDouble();
-        double temperatureBuffUpperBound = getConfig().node("temperature-buff", "upper-bound").getDouble();
+        double temperatureBuffLowerBound = getConfig().node("temperature_buff", "lower_bound").getDouble();
+        double temperatureBuffUpperBound = getConfig().node("temperature_buff", "upper_bound").getDouble();
 
         double temperature = location.getBlock().getTemperature();
         Range<Double> buffBoundary = Range.between(temperatureBuffLowerBound, temperatureBuffUpperBound);
