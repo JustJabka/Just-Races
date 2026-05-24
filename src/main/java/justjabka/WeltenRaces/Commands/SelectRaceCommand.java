@@ -22,6 +22,7 @@ import net.kyori.adventure.text.event.ClickCallback;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -77,10 +78,15 @@ public class SelectRaceCommand {
     }
 
     private static Dialog buildDialog(Player player, RaceInstance selectedRace, int currentPage) {
-        List<DialogBody> body = List.of(
-                DialogBody.plainMessage(selectedRace.getName()),
-                DialogBody.plainMessage(Component.text("Race description")) // TODO: add description to RaceInstance
-        );
+        List<DialogBody> body = new ArrayList<>();
+
+        Component selectedRaceName = selectedRace.getName();
+        List<Component> selectedRaceDescription = selectedRace.getDescription();
+
+        body.add(DialogBody.plainMessage(selectedRaceName));
+        for (Component line : selectedRaceDescription) {
+            body.add(DialogBody.plainMessage(line));
+        }
 
         DialogBase base = DialogBase.builder(Component.text("Select Race"))
                 .body(body)

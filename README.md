@@ -21,10 +21,11 @@ Instead, this plugin offers a powerful developer API combined with a lightweight
 Races in this framework are defined by five core components:
 
 1. **Name** — The display name of the race supporting [components](https://minecraft.wiki/w/Text_component_format).
-2. **Abilities** — Active abilities bound to the race.
-3. **Item Modifiers** — Special properties applied to items (utilizing modern [item components](https://minecraft.wiki/w/Item_components) and [event listeners](https://docs.papermc.io/paper/dev/event-listeners/)) that trigger only when wielded by a specific race.
-4. **Attributes** — Vanilla base [attributes](https://minecraft.wiki/w/Attribute) automatically applied to the player (e.g., `minecraft:max_health` or `minecraft:movement_speed`).
-5. **Config** — Custom constants and parameters powered by [Sponge Configurate](https://github.com/SpongePowered/Configurate), accessible directly within the race logic for seamless balancing.
+2. **Description** - The description of the race. Very similar to the [lore item component](https://minecraft.wiki/w/Data_component_format#lore)  
+3. **Abilities** — Active abilities bound to the race.
+4. **Item Modifiers** — Special properties applied to items (utilizing modern [item components](https://minecraft.wiki/w/Item_components) and [event listeners](https://docs.papermc.io/paper/dev/event-listeners/)) that trigger only when wielded by a specific race.
+5. **Attributes** — Vanilla base [attributes](https://minecraft.wiki/w/Attribute) automatically applied to the player (e.g., `minecraft:max_health` or `minecraft:movement_speed`).
+6. **Config** — Custom constants and parameters powered by [Sponge Configurate](https://github.com/SpongePowered/Configurate), accessible directly within the race logic for seamless balancing.
 
 ### 📝 Configuration Example (`epiphyte.json`)
 
@@ -34,6 +35,7 @@ Races in this framework are defined by five core components:
     "translate": "race.epiphyte.name",
     "fallback": "Epiphyte"
   },
+  "description": [],
   "abilities": [
     "weltenraces:azalea_camouflage",
     "weltenraces:poisonous_area",

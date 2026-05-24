@@ -1,30 +1,54 @@
 package justjabka.WeltenRaces.Instances;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import justjabka.WeltenRaces.Instances.Generic.BaseInstance;
 import justjabka.WeltenRaces.WeltenRaces;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RaceInstance extends BaseInstance {
-    private Map<String, Object> name;
+    private JsonElement name;
+    private List<JsonObject> description;
     private Map<String, Double> attributes;
     private Set<String> abilities;
     private Map<String, JsonElement> item_modifiers;
 
     public Component getName() {
-        if (name == null) return Component.empty();
+        if (name == null || name.isJsonNull()) {
+            return Component.empty();
+        }
 
-        String translate = (String) name.getOrDefault("translate", "");
-        String fallback = (String) name.getOrDefault("fallback", "");
+        try {
+            return GsonComponentSerializer.gson().deserializeFromTree(name);
+        } catch (Exception e) {
+            WeltenRaces.LOGGER.error("Failed to parse name for race: {}. Returning key instead of name", getKey(), e);
+            return Component.text(getKey().getKey());
+        }
+    }
 
-        return Component.translatable(translate).fallback(fallback);
+    public List<Component> getDescription() {
+        List<Component> contents = new ArrayList<>();
+
+        if (description == null || description.isEmpty()) {
+            contents.add(Component.empty());
+            return contents;
+        }
+
+        for (JsonObject object : description) {
+            try {
+                Component line = GsonComponentSerializer.gson().deserializeFromTree(object);
+                contents.add(line);
+            } catch (Exception e) {
+                WeltenRaces.LOGGER.error("Failed to parse description for race: {}", getKey(), e);
+            }
+        }
+
+        return contents;
     }
 
     public Map<Attribute, Double> getAttributes() {
