@@ -22,7 +22,8 @@ import net.kyori.adventure.text.event.ClickCallback;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -53,20 +54,29 @@ public class SelectRaceCommand {
     }
 
     private static void openRaceDialog(Player player, int page) {
-        List<RaceInstance> races = new ArrayList<>(RacesRegistry.getRaces().values());
+        Collection<RaceInstance> races = RacesRegistry.getRaces().values();
 
-        if (races.isEmpty()) {
+        List<RaceInstance> raceList = races.stream()
+                .sorted(Comparator.comparing(instance -> instance.getKey().toString()))
+                .toList();
+
+        if (raceList.isEmpty()) {
             WeltenRaces.LOGGER.warn("No races registered. Canceling race selection");
             return;
         }
 
         // Infinite scroll
-        if (page < 0) page = races.size() - 1;
-        if (page >= races.size()) page = 0;
+        if (page < 0) page = raceList.size() - 1;
+        if (page >= raceList.size()) page = 0;
 
         final int currentPage = page;
-        RaceInstance selectedRace = races.get(currentPage);
+        RaceInstance selectedRace = raceList.get(currentPage);
 
+        Dialog dialog = buildDialog(player, selectedRace, currentPage);
+        player.showDialog(dialog);
+    }
+
+    private static Dialog buildDialog(Player player, RaceInstance selectedRace, int currentPage) {
         List<DialogBody> body = List.of(
                 DialogBody.plainMessage(selectedRace.getName()),
                 DialogBody.plainMessage(Component.text("Race description")) // TODO: add description to RaceInstance
@@ -97,13 +107,11 @@ public class SelectRaceCommand {
                 ))
                 .build();
 
-        Dialog dialog = Dialog.create(builder -> builder
+        return Dialog.create(builder -> builder
                 .empty()
                 .base(base)
                 .type(DialogType.multiAction(navigationActions, selectAction, dialogColumns))
         );
-
-        player.showDialog(dialog);
     }
 
     private static DialogAction.@NonNull CustomClickAction changePage(Player player, int page) {
