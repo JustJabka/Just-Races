@@ -34,6 +34,8 @@ public class GlobalRunnable extends BukkitRunnable {
         Set<BaseAbility> abilities = AbilityManager.getAbilitiesForRace(playerRace);
         if (abilities.isEmpty()) return;
 
+        if (!AbilityManager.isAbilitiesVisible(player)) return;
+
         List<Component> displays = abilities.stream()
                 .sorted(Comparator.comparing(ability -> ability.getClass().getSimpleName()))
                 .map(ability -> ability.getAbilityDisplay(player))

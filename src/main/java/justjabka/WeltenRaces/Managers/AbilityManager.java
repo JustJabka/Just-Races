@@ -15,7 +15,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class AbilityManager {
-    public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
+    private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "abilities");
+    private static final NamespacedKey ABILITY_VISIBILITY_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "ability_visibility");
+
     private static final int activationSlot = 8;
 
     //region Container Manipulations
@@ -36,6 +38,16 @@ public class AbilityManager {
                 PersistentDataType.TAG_CONTAINER,
                 abilities
         );
+    }
+
+    public static void changeAbilitiesVisibility(Player player, boolean status) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        pdc.set(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, status);
+    }
+
+    public static boolean isAbilitiesVisible(Player player) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        return pdc.getOrDefault(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, true);
     }
     //endregion
 
