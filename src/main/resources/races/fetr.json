@@ -4,17 +4,17 @@
     "fallback": "Fetr"
   },
   "abilities": [
-    "weltenraces:note",
-    "weltenraces:note_buff",
-    "weltenraces:stage",
-    "weltenraces:personal_melody"
+    "justraces:note",
+    "justraces:note_buff",
+    "justraces:stage",
+    "justraces:personal_melody"
   ],
   "attributes": {
     "minecraft:max_health": 16,
     "minecraft:scale": 0.95
   },
   "item_modifiers": {
-    "weltenraces:sweet_berries": "minecraft:sweet_berries"
+    "justraces:sweet_berries": "minecraft:sweet_berries"
   },
   "config": {
     "status_update_radius": 50,

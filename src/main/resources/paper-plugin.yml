@@ -1,9 +1,9 @@
-name: WeltenRaces
+name: JustRaces
 version: '${version}'
 authors: [ JustJabka ]
 
-main: justjabka.WeltenRaces.WeltenRaces
-bootstrapper: justjabka.WeltenRaces.WeltenRacesBootstrap
+main: justjabka.JustRaces.JustRaces
+bootstrapper: justjabka.JustRaces.JustRacesBootstrap
 api-version: '1.21.11'
 load: POSTWORLD
 

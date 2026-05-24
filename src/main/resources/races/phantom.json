@@ -4,13 +4,13 @@
     "fallback": "Phantom"
   },
   "abilities": [
-    "weltenraces:predator_vision",
-    "weltenraces:unfold_wings",
-    "weltenraces:wild_hunt"
+    "justraces:predator_vision",
+    "justraces:unfold_wings",
+    "justraces:wild_hunt"
   ],
   "attributes": {},
   "item_modifiers": {
-    "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
+    "justraces:phantom_membrane": "minecraft:phantom_membrane"
   },
   "config": {
     "meat_bonus": {

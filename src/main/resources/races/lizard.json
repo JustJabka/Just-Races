@@ -4,18 +4,18 @@
     "fallback": "Saurian"
   },
   "abilities": [
-    "weltenraces:poisonous_split",
-    "weltenraces:swift_sneak",
-    "weltenraces:true_form",
-    "weltenraces:gluttony_execute",
-    "weltenraces:poisonous_bite",
-    "weltenraces:vocal_fry"
+    "justraces:poisonous_split",
+    "justraces:swift_sneak",
+    "justraces:true_form",
+    "justraces:gluttony_execute",
+    "justraces:poisonous_bite",
+    "justraces:vocal_fry"
   ],
   "attributes": {
     "minecraft:max_health": 14
   },
   "item_modifiers": {
-    "weltenraces:phantom_membrane": "minecraft:phantom_membrane"
+    "justraces:phantom_membrane": "minecraft:phantom_membrane"
   },
   "config": {
     "damage_multiplier": {

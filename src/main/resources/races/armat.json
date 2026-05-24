@@ -4,18 +4,18 @@
     "fallback": "Armat"
   },
   "abilities": [
-    "weltenraces:damage_inversion",
-    "weltenraces:ecdysis"
+    "justraces:damage_inversion",
+    "justraces:ecdysis"
   ],
   "attributes": {
     "minecraft:max_health": 10
   },
   "item_modifiers": {
-    "weltenraces:leather_armor": "#weltenraces:leather_armor",
-    "weltenraces:copper_armor": "#weltenraces:copper_armor",
-    "weltenraces:chainmail_armor": "#weltenraces:chainmail_armor",
-    "weltenraces:iron_armor": "#weltenraces:iron_armor",
-    "weltenraces:golden_armor": "#weltenraces:golden_armor"
+    "justraces:leather_armor": "#justraces:leather_armor",
+    "justraces:copper_armor": "#justraces:copper_armor",
+    "justraces:chainmail_armor": "#justraces:chainmail_armor",
+    "justraces:iron_armor": "#justraces:iron_armor",
+    "justraces:golden_armor": "#justraces:golden_armor"
   },
   "config": {
     "vulnerable_damage_multiplier": 1.5,

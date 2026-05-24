@@ -4,8 +4,8 @@
     "fallback": "Skyzern"
   },
   "abilities": [
-    "weltenraces:compressed_sky_shard",
-    "weltenraces:weightless_willow_sway"
+    "justraces:compressed_sky_shard",
+    "justraces:weightless_willow_sway"
   ],
   "attributes": {
     "minecraft:scale": 1.05

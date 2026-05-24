@@ -4,17 +4,17 @@
     "fallback": "Epiphyte"
   },
   "abilities": [
-    "weltenraces:azalea_camouflage",
-    "weltenraces:poisonous_area",
-    "weltenraces:poisonous_weapon"
+    "justraces:azalea_camouflage",
+    "justraces:poisonous_area",
+    "justraces:poisonous_weapon"
   ],
   "attributes": {
     "minecraft:max_health": 18,
     "minecraft:scale": 0.95
   },
   "item_modifiers": {
-    "weltenraces:glow_berries": "minecraft:glow_berries",
-    "weltenraces:moss": "minecraft:moss_block"
+    "justraces:glow_berries": "minecraft:glow_berries",
+    "justraces:moss": "minecraft:moss_block"
   },
   "config": {
     "moss_movement_speed_bonus": 0.1

@@ -1,15 +1,15 @@
-# WeltenRaces
+# JustRaces
 
-**WeltenRaces** is an origin-like framework originally created for the Welten server. 
+**JustRaces** is an origin-like framework originally created for the Just server. 
 The main architectural goal of this plugin was to build a flexible, code-driven framework instead of a bloated, monolithic system.
 
 ---
 
-## 💡 Why WeltenRaces?
+## 💡 Why JustRaces?
 
-What makes **WeltenRaces** different from **Origins** or **Origins-Reborn**?
+What makes **JustRaces** different from **Origins** or **Origins-Reborn**?
 
-**WeltenRaces** does not restrict its toolkit entirely to Data-Driven configurations. 
+**JustRaces** does not restrict its toolkit entirely to Data-Driven configurations. 
 Data-Driven mechanics should remain a useful utility for configuration, not a complex scripting language where every minor detail requires its own custom JSON handler. 
 
 Instead, this plugin offers a powerful developer API combined with a lightweight Data-Driven layer — giving you the best of both worlds.
