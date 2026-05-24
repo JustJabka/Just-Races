@@ -13,20 +13,23 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ModifiersRegistry {
-    public static final Map<NamespacedKey, Map<Material, ItemModifier>> RACE_MODIFIERS = new HashMap<>();
-    public static final Map<NamespacedKey, ItemModifier> MODIFIERS_BY_KEY = new HashMap<>();
+    private static final Map<NamespacedKey, Map<Material, ItemModifier>> RACE_MODIFIERS = new HashMap<>();
+    private static final Map<NamespacedKey, ItemModifier> MODIFIERS_BY_KEY = new HashMap<>();
+
+    public static void registerModifier(@NotNull Plugin plugin, @NotNull ItemModifier modifier) {
+        MODIFIERS_BY_KEY.put(modifier.getKey(), modifier);
+
+        if (modifier instanceof Listener listener) {
+            Bukkit.getPluginManager().registerEvents(listener, plugin);
+        }
+    }
 
     public static void register(Plugin plugin, ConfigRegistry configs) {
-        RACE_MODIFIERS.clear();
-        MODIFIERS_BY_KEY.clear();
-
         registerModifiers(plugin, configs);
         bindModifiers();
 
@@ -35,7 +38,7 @@ public class ModifiersRegistry {
 
     private static void registerModifiers(Plugin plugin, ConfigRegistry configs) {
         // List off all unique modificator
-        List<ItemModifier> allModifiers = List.of(
+        List<ItemModifier> modifiers = List.of(
                 new LeatherArmorModifier(create("leather_armor"), configs.leatherArmorModifierConfig),
                 new CopperArmorModifier(create("copper_armor"), configs.copperArmorModifierConfig),
                 new ChainmailArmorModifier(create("chainmail_armor"), configs.chainmailArmorModifierConfig),
@@ -49,17 +52,15 @@ public class ModifiersRegistry {
         );
 
         // Register modifiers globally
-        for (ItemModifier modifier : allModifiers) {
-            MODIFIERS_BY_KEY.put(modifier.getKey(), modifier);
-
-            if (!(modifier instanceof Listener listener)) continue;
-            Bukkit.getPluginManager().registerEvents(listener, plugin);
+        for (ItemModifier modifier : modifiers) {
+            registerModifier(plugin, modifier);
         }
     }
 
-    private static void bindModifiers() {
-        for (RaceInstance race : RacesRegistry.getRaces().values()) {
+    public static void bindModifiers() {
+        RACE_MODIFIERS.clear();
 
+        for (RaceInstance race : RacesRegistry.getRaces().values()) {
             for (NamespacedKey modifierKey : MODIFIERS_BY_KEY.keySet()) {
                 Set<Material> materials = race.getMaterialsForModifier(modifierKey.toString());
 
@@ -78,6 +79,14 @@ public class ModifiersRegistry {
                 }
             }
         }
+    }
+
+    public static @NotNull Map<NamespacedKey, Map<Material, ItemModifier>> getRaceModifiers() {
+        return Collections.unmodifiableMap(RACE_MODIFIERS);
+    }
+
+    public static @NotNull Map<NamespacedKey, ItemModifier> getModifiersByKey() {
+        return Collections.unmodifiableMap(MODIFIERS_BY_KEY);
     }
 
     private static NamespacedKey create(String key) {

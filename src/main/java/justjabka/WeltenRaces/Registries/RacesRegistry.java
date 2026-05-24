@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -22,7 +23,7 @@ public class RacesRegistry {
     private static final Gson gson = new Gson();
 
     public static Map<NamespacedKey, RaceInstance> getRaces() {
-        return RACES;
+        return Collections.unmodifiableMap(RACES);
     }
 
     public static void register(Plugin plugin) {
