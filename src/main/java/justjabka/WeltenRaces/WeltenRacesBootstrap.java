@@ -7,6 +7,7 @@ import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import justjabka.WeltenRaces.Commands.GetRaceCommand;
+import justjabka.WeltenRaces.Commands.SelectRaceCommand;
 import justjabka.WeltenRaces.Commands.SetRaceCommand;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class WeltenRacesBootstrap implements PluginBootstrap {
 
             SetRaceCommand.register(registrar);
             GetRaceCommand.register(registrar);
+            SelectRaceCommand.register(registrar);
         });
 
         manager.registerEventHandler(LifecycleEvents.DATAPACK_DISCOVERY.newHandler(
