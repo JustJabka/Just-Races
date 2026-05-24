@@ -8,10 +8,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.ApiStatus;
 
 public class ArmorManager {
     private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(WeltenRaces.NAMESPACE, "armor_set");
 
+    /**
+     * Updates player's armor set
+     * @param player Player whose armor set will be updated
+     */
+    @ApiStatus.Internal
     public static void updateArmorSet(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
 
@@ -58,6 +64,11 @@ public class ArmorManager {
         return false;
     }
 
+    /**
+     * Gets armor set that player is currently wearing
+     * @param player Player whose armor set will be got
+     * @return Player's armor set. {@code ArmorSet.NONE} if the armor type doesn't match or missing
+     */
     public static ArmorSet getArmorSet(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         String stored = pdc.get(ARMOR_SET_KEY, PersistentDataType.STRING);

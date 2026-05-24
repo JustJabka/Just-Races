@@ -45,6 +45,12 @@ public class AbilityManager {
         pdc.set(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, status);
     }
 
+    /**
+     * Checks if player abilities is visible
+     * @param player Player whose abilities visibility will be checked
+     * @return {@code true} if abilities is visible
+     * @apiNote This doesn't return {@code true} if player hasn't any abilities. This method checks if player disabled abilities visibility through command {@code /showabilities}
+     */
     public static boolean isAbilitiesVisible(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         return pdc.getOrDefault(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, true);
@@ -64,7 +70,11 @@ public class AbilityManager {
         return null;
     }
 
-
+    /**
+     * Returns abilities that this race has
+     * @param race Race that abilities will be got
+     * @return Abilities of the race
+     */
     public static Set<BaseAbility> getAbilitiesForRace(RaceInstance race) {
         Set<BaseAbility> raceAbilities = new HashSet<>();
 
@@ -115,12 +125,17 @@ public class AbilityManager {
         return getAbilitiesContainer(player).has(key);
     }
 
-    private static <T, Z> void setAbilityData(Player player, NamespacedKey key, PersistentDataType<T, Z> dataType, Z value) {
+    public static <T, Z> void setAbilityData(Player player, NamespacedKey key, PersistentDataType<T, Z> dataType, Z value) {
         PersistentDataContainer container = getAbilitiesContainer(player);
         container.set(key, dataType, value);
         saveAbilitiesContainer(player, container);
     }
 
+    /**
+     * Removes ability data from player's PDC
+     * @param player Player whose ability data would be removed
+     * @param key Ability key
+     */
     public static void removeAbilityData(Player player, NamespacedKey key) {
         PersistentDataContainer abilities = getAbilitiesContainer(player);
         abilities.remove(key);

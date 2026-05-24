@@ -22,6 +22,7 @@ public class EffectManager {
     public static double calcAbsorptionAmountFromConsumable(Consumable consumable) {
         for (ConsumeEffect effect : consumable.consumeEffects()) {
             if (!(effect instanceof ConsumeEffect.ApplyStatusEffects applyEffect)) continue;
+
             for (PotionEffect potionEffect : applyEffect.effects()) {
                 if (!(potionEffect.getType().equals(PotionEffectType.ABSORPTION))) continue;
                 return (potionEffect.getAmplifier() + 1) * 4.0;
