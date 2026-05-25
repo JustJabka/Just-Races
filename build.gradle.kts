@@ -31,7 +31,7 @@ buildscript {
 }
 
 tasks.register<proguard.gradle.ProGuardTask>("proguard") {
-    description = ""
+    description = "Obfuscates the JustRaces core while keeping the API and relocated libraries intact."
     verbose()
     notCompatibleWithConfigurationCache("ProGuard task is not compatible with Configuration Cache")
 
@@ -52,10 +52,13 @@ tasks.register<proguard.gradle.ProGuardTask>("proguard") {
         )
     }
 
-    // Save mappinggs
+    // Save mappings
     printmapping("build/proguard-mapping.txt")
 
-    // Don't touch generics
+    dontwarn()
+    ignorewarnings()
+
+    // Don't touch generics and signatures
     keepattributes("Signature,RuntimeVisibleAnnotations,AnnotationDefault,EnclosingMethod,InnerClasses,SourceFile,LineNumberTable")
 
     // Don't touch main class
@@ -83,10 +86,11 @@ tasks.register<proguard.gradle.ProGuardTask>("proguard") {
         }
     """)
 
-    // Don't obfuscate libs
-    keep("class com.jeff_media.morepersistentdatatypes.** { *; }")
-    keep("class org.spongepowered.configurate.** { *; }")
+    // Don't obfuscate ANY libraries inside our shadow package (Guaranteed safety for reflection)
+    keep("class justjabka.libs.** { *; }")
 
+    // Suppress warnings from internal dependencies and compileOnly APIs
+    dontwarn("justjabka.libs.**")
     dontwarn("org.spongepowered.configurate.**")
     dontwarn("com.jeff_media.morepersistentdatatypes.**")
     dontwarn("net.dmulloy2.protocol.**")
@@ -101,6 +105,10 @@ tasks {
         archiveVersion.set(version.toString())
 
         relocate("com.jeff_media.morepersistentdatatypes", "justjabka.libs.morepersistentdatatypes")
+        relocate("org.spongepowered.configurate", "justjabka.libs.configurate")
+
+        relocate("io.leangen.geantyref", "justjabka.libs.geantyref")
+        relocate("net.kyori.option", "justjabka.libs.option")
     }
 
     runServer {
