@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api/JustRaces.justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api/JustRaces.justraces-api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-core/JustRaces.justraces-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-core/JustRaces.justraces-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JustRaces.main.iml" filepath="$PROJECT_DIR$/.idea/modules/JustRaces.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" />
     </modules>
   </component>
 </project>
