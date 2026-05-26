@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Modifiers.Contents.Generic;
+package justjabka.JustRaces.Modifiers.Generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;

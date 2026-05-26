@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Modifiers.Armor;
 
 import justjabka.JustRaces.Configs.Modifier.Armor.IronArmorModifierConfig;
-import justjabka.JustRaces.Modifiers.Contents.Generic.BaseArmorModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseArmorModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;

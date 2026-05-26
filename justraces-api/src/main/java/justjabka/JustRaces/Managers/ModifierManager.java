@@ -2,7 +2,7 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
-=import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRaces.Modifiers.ItemModifier;
 import justjabka.JustRaces.Registries.ModifiersRegistry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

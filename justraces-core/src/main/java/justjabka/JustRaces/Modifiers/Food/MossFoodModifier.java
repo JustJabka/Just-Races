@@ -5,7 +5,7 @@ import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
 import justjabka.JustRaces.Configs.Modifier.Food.MossFoodModifierConfig;
 import justjabka.JustRaces.Managers.ModifierManager;
-import justjabka.JustRaces.Modifiers.Contents.Generic.BaseFoodCooldownModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseFoodCooldownModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Modifiers.Contents.Generic;
+package justjabka.JustRaces.Modifiers.Generic;
 
 import justjabka.JustRaces.Modifiers.ItemModifier;
 import org.bukkit.NamespacedKey;

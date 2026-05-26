@@ -5,7 +5,7 @@ import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import justjabka.JustRaces.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
 import justjabka.JustRaces.Managers.ModifierManager;
-import justjabka.JustRaces.Modifiers.Contents.Generic.BaseFoodModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseFoodModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

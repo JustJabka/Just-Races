@@ -3,7 +3,7 @@ package justjabka.JustRaces.Modifiers.Food;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import justjabka.JustRaces.Configs.Modifier.Food.SweetBerriesFoodModifierConfig;
-import justjabka.JustRaces.Modifiers.Contents.Generic.BaseFoodModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseFoodModifier;
 import org.bukkit.NamespacedKey;
 
 @SuppressWarnings("UnstableApiUsage")
