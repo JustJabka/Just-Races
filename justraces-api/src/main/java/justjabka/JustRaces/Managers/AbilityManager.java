@@ -4,7 +4,7 @@ import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
-import justjabka.JustRaces.Registries.AbilitiesRegistry;
+import justjabka.JustRaces.JustRacesRegistries;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -62,7 +62,7 @@ public class AbilityManager {
     //region Registry Related
     @SuppressWarnings("unchecked")
     public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
-        for (BaseAbility ability : AbilitiesRegistry.getAbilities().values()) {
+        for (BaseAbility ability : JustRacesRegistries.ABILITIES.values()) {
             if (!abilityClass.isInstance(ability)) continue;
             return (T) ability;
         }
@@ -85,7 +85,7 @@ public class AbilityManager {
             NamespacedKey key = NamespacedKey.fromString(abilityString);
             if (key == null) continue;
 
-            BaseAbility ability = AbilitiesRegistry.getAbilities().get(key);
+            BaseAbility ability = JustRacesRegistries.ABILITIES.get(key);
 
             if (ability == null) {
                 JustRacesAPI.getLogger().warn("Race '{}' requires unknown ability: {}", race.getKey(), abilityString);

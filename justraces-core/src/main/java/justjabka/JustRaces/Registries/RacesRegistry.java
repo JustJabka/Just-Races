@@ -3,7 +3,7 @@ package justjabka.JustRaces.Registries;
 import com.google.gson.Gson;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
-import org.bukkit.NamespacedKey;
+import justjabka.JustRaces.JustRacesRegistries;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -12,19 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class RacesRegistry {
-    private static final Map<NamespacedKey, RaceInstance> RACES = new HashMap<>();
     private static final Gson gson = new Gson();
-
-    public static Map<NamespacedKey, RaceInstance> getRaces() {
-        return Collections.unmodifiableMap(RACES);
-    }
 
     public static void register(Plugin plugin) {
         File racesFolder = new File(plugin.getDataFolder(), "races");
@@ -34,11 +26,9 @@ public class RacesRegistry {
         }
 
         saveDefaultRaces(plugin, racesFolder);
-
-        RACES.clear();
         registerRaces(racesFolder);
 
-        JustRacesAPI.getLogger().info("Successfully registered {} races!", RACES.size());
+        JustRacesAPI.getLogger().info("Successfully registered {} races!", JustRacesRegistries.RACES.keys().size());
     }
 
     private static void registerRaces(File racesFolder) {
@@ -52,7 +42,7 @@ public class RacesRegistry {
                 String fileNameWithNoExtension = file.getName().replaceFirst("[.][^.]+$", "");
                 race.setKey(fileNameWithNoExtension.toLowerCase());
 
-                RACES.put(race.getKey(), race);
+                JustRacesRegistries.RACES.register(race.getKey(), race);
             } catch (Exception e) {
                 JustRacesAPI.getLogger().error("Error while registering race: {}", file.getName(), e);
             }
@@ -85,7 +75,7 @@ public class RacesRegistry {
                 }
             }
         } catch (IOException e) {
-            plugin.getSLF4JLogger().error("Error while extracting default races", e);
+            JustRacesAPI.getLogger().error("Error while extracting default races", e);
         }
     }
 

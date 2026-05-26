@@ -2,25 +2,44 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.ItemModifier;
-import justjabka.JustRaces.Registries.ModifiersRegistry;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
+    private static final Map<NamespacedKey, Map<Material, ItemModifier>> ACTIVE_RACE_MODIFIERS = new ConcurrentHashMap<>();
 
-    public static ItemModifier getModifiersForRace(RaceInstance race, ItemStack item) {
-        return ModifiersRegistry.getRaceModifiers().getOrDefault(race.getKey(), Map.of()).get(item.getType());
+    @Nullable
+    public static ItemModifier getModifiersForRace(@NotNull RaceInstance race, @NotNull ItemStack item) {
+        return ACTIVE_RACE_MODIFIERS.getOrDefault(race.getKey(), Map.of()).get(item.getType());
+    }
+
+    @NotNull
+    public static Map<NamespacedKey, Map<Material, ItemModifier>> getActiveRaceModifiers() {
+        return Collections.unmodifiableMap(ACTIVE_RACE_MODIFIERS);
+    }
+
+    public static void updateRaceModifiers(@NotNull Map<NamespacedKey, Map<Material, ItemModifier>> newBindings) {
+        ACTIVE_RACE_MODIFIERS.clear();
+        newBindings.forEach((raceKey, matMap) ->
+                ACTIVE_RACE_MODIFIERS.computeIfAbsent(raceKey, k -> new ConcurrentHashMap<>()).putAll(matMap)
+        );
     }
 
     public static ItemModifier getByKey(NamespacedKey key) {
-        return ModifiersRegistry.getModifiersByKey().get(key);
+        return JustRacesRegistries.MODIFIERS.get(key);
     }
 
     public static void tryApply(Player player, ItemStack item) {

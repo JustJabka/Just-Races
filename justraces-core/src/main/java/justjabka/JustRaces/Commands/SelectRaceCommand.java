@@ -14,8 +14,8 @@ import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.RaceManager;
-import justjabka.JustRaces.Registries.RacesRegistry;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -55,7 +55,7 @@ public class SelectRaceCommand {
     }
 
     private static void openRaceDialog(Player player, int page) {
-        Collection<RaceInstance> races = RacesRegistry.getRaces().values();
+        Collection<RaceInstance> races = JustRacesRegistries.RACES.values();
 
         List<RaceInstance> raceList = races.stream()
                 .sorted(Comparator.comparing(instance -> instance.getKey().toString()))

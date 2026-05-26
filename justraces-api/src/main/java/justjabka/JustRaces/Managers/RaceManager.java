@@ -5,7 +5,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
-import justjabka.JustRaces.Registries.RacesRegistry;
+import justjabka.JustRaces.JustRacesRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -37,7 +37,7 @@ public class RaceManager {
         }
 
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
-        RaceInstance race = RacesRegistry.getRaces().get(raceKey);
+        RaceInstance race = JustRacesRegistries.RACES.get(raceKey);
 
         if (race == null) {
             JustRacesAPI.getLogger().warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
@@ -59,7 +59,7 @@ public class RaceManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         data.set(RACE_KEY, PersistentDataType.STRING, key.toString());
 
-        RaceInstance race = RacesRegistry.getRaces().get(key);
+        RaceInstance race = JustRacesRegistries.RACES.get(key);
         initRace(player, race);
     }
 

@@ -2,41 +2,30 @@ package justjabka.JustRaces.Registries;
 
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.JustRacesRegistries;
+import justjabka.JustRaces.Managers.ModifierManager;
 import justjabka.JustRaces.Modifiers.Armor.*;
 import justjabka.JustRaces.Modifiers.Food.GlowBerriesFoodModifier;
 import justjabka.JustRaces.Modifiers.Food.MossFoodModifier;
 import justjabka.JustRaces.Modifiers.Food.PhantomMembraneFoodModifier;
 import justjabka.JustRaces.Modifiers.Food.SweetBerriesFoodModifier;
 import justjabka.JustRaces.Modifiers.ItemModifier;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class ModifiersRegistry {
     private static final Map<NamespacedKey, Map<Material, ItemModifier>> RACE_MODIFIERS = new HashMap<>();
-    private static final Map<NamespacedKey, ItemModifier> MODIFIERS_BY_KEY = new HashMap<>();
 
-    public static void registerModifier(@NotNull Plugin plugin, @NotNull ItemModifier modifier) {
-        MODIFIERS_BY_KEY.put(modifier.getKey(), modifier);
-
-        if (modifier instanceof Listener listener) {
-            Bukkit.getPluginManager().registerEvents(listener, plugin);
-        }
-    }
-
-    public static void register(Plugin plugin, ConfigRegistry configs) {
-        registerModifiers(plugin, configs);
+    public static void register(ConfigRegistry configs) {
+        registerModifiers(configs);
         bindModifiers();
 
-        JustRacesAPI.getLogger().info("Successfully registered {} item modifiers!", MODIFIERS_BY_KEY.size());
+        JustRacesAPI.getLogger().info("Successfully registered {} item modifiers!", JustRacesRegistries.MODIFIERS.keys().size());
     }
 
-    private static void registerModifiers(Plugin plugin, ConfigRegistry configs) {
+    private static void registerModifiers(ConfigRegistry configs) {
         // List off all unique modificator
         List<ItemModifier> modifiers = List.of(
                 new LeatherArmorModifier(create("leather_armor"), configs.leatherArmorModifierConfig),
@@ -53,15 +42,17 @@ public class ModifiersRegistry {
 
         // Register modifiers globally
         for (ItemModifier modifier : modifiers) {
-            registerModifier(plugin, modifier);
+            JustRacesRegistries.MODIFIERS.register(modifier.getKey(), modifier);
         }
     }
 
     public static void bindModifiers() {
         RACE_MODIFIERS.clear();
 
-        for (RaceInstance race : RacesRegistry.getRaces().values()) {
-            for (NamespacedKey modifierKey : MODIFIERS_BY_KEY.keySet()) {
+        Collection<RaceInstance> races = JustRacesRegistries.RACES.values();
+
+        for (RaceInstance race : races) {
+            for (NamespacedKey modifierKey : JustRacesRegistries.MODIFIERS.keys()) {
                 Set<Material> materials = race.getMaterialsForModifier(modifierKey.toString());
 
                 if (materials.isEmpty()) {
@@ -70,7 +61,7 @@ public class ModifiersRegistry {
 
                 if (materials.isEmpty()) continue;
 
-                ItemModifier modifier = MODIFIERS_BY_KEY.get(modifierKey);
+                ItemModifier modifier = JustRacesRegistries.MODIFIERS.get(modifierKey);
 
                 for (Material material : materials) {
                     RACE_MODIFIERS
@@ -79,14 +70,8 @@ public class ModifiersRegistry {
                 }
             }
         }
-    }
 
-    public static @NotNull Map<NamespacedKey, Map<Material, ItemModifier>> getRaceModifiers() {
-        return Collections.unmodifiableMap(RACE_MODIFIERS);
-    }
-
-    public static @NotNull Map<NamespacedKey, ItemModifier> getModifiersByKey() {
-        return Collections.unmodifiableMap(MODIFIERS_BY_KEY);
+        ModifierManager.updateRaceModifiers(RACE_MODIFIERS);
     }
 
     private static NamespacedKey create(String key) {
