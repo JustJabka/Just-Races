@@ -17,7 +17,8 @@ dependencies {
 
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
     implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
-    implementation("org.spongepowered:configurate-hocon:4.2.0")
+    implementation("org.spongepowered:configurate-gson:4.2.0")
+    implementation("org.spongepowered:configurate-extra-guice:4.2.0")
 }
 
 java {
