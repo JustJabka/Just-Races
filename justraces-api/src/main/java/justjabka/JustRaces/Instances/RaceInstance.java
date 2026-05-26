@@ -3,7 +3,7 @@ package justjabka.JustRaces.Instances;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import justjabka.JustRaces.Instances.Generic.BaseInstance;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
@@ -26,7 +26,7 @@ public class RaceInstance extends BaseInstance {
         try {
             return GsonComponentSerializer.gson().deserializeFromTree(name);
         } catch (Exception e) {
-            JustRaces.LOGGER.error("Failed to parse name for race: {}. Returning key instead of name", getKey(), e);
+            JustRacesAPI.getLogger().error("Failed to parse name for race: {}. Returning key instead of name", getKey(), e);
             return Component.text(getKey().getKey());
         }
     }
@@ -44,7 +44,7 @@ public class RaceInstance extends BaseInstance {
                 Component line = GsonComponentSerializer.gson().deserializeFromTree(object);
                 contents.add(line);
             } catch (Exception e) {
-                JustRaces.LOGGER.error("Failed to parse description for race: {}", getKey(), e);
+                JustRacesAPI.getLogger().error("Failed to parse description for race: {}", getKey(), e);
             }
         }
 
@@ -116,7 +116,7 @@ public class RaceInstance extends BaseInstance {
             }
 
 
-            JustRaces.LOGGER.warn("Unknown item tag in JSON: {}", value);
+            JustRacesAPI.getLogger().warn("Unknown item tag in JSON: {}", value);
         } else {
             NamespacedKey materialKey = NamespacedKey.fromString(value);
             if (materialKey == null) return;

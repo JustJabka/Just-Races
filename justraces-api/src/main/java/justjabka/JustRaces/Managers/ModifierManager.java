@@ -1,8 +1,8 @@
 package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Instances.RaceInstance;
-import justjabka.JustRaces.JustRaces;
-import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRaces.JustRacesAPI;
+=import justjabka.JustRaces.Modifiers.ItemModifier;
 import justjabka.JustRaces.Registries.ModifiersRegistry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Map;
 
 public class ModifierManager {
-    public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRaces.NAMESPACE, "item_modified");
+    public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
     public static ItemModifier getModifiersForRace(RaceInstance race, ItemStack item) {
         return ModifiersRegistry.getRaceModifiers().getOrDefault(race.getKey(), Map.of()).get(item.getType());
@@ -44,7 +44,7 @@ public class ModifierManager {
         String modifierId = getAppliedModifier(item);
         if (modifierId == null) return;
 
-        NamespacedKey key = NamespacedKey.fromString(modifierId, JustRaces.INSTANCE);
+        NamespacedKey key = NamespacedKey.fromString(modifierId, JustRacesAPI.getInstance());
         if (key == null) return;
 
         ItemModifier type = getByKey(key);
@@ -52,7 +52,7 @@ public class ModifierManager {
         if (type == null) {
             removeMarker(item);
 
-            JustRaces.LOGGER.warn("Tried to undo unknown or unregistered modifier: {}", modifierId);
+            JustRacesAPI.getLogger().warn("Tried to undo unknown or unregistered modifier: {}", modifierId);
             return;
         }
 
@@ -60,7 +60,7 @@ public class ModifierManager {
             type.undo(item);
             removeMarker(item);
         } catch (IllegalArgumentException e) {
-            JustRaces.LOGGER.error("Error while undoing modifier {} on item {}", modifierId, item.getType(), e);
+            JustRacesAPI.getLogger().error("Error while undoing modifier {} on item {}", modifierId, item.getType(), e);
         }
     }
 

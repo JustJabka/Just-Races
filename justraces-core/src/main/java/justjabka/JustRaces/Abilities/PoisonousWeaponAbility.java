@@ -5,7 +5,7 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.PoisonousWeaponAbilityConfig;
 import justjabka.JustRaces.DataProvider.EnchantmentProvider;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class PoisonousWeaponAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "poisonous_weapon");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "poisonous_weapon");
     }
 
     @Override

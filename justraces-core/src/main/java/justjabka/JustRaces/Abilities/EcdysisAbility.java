@@ -2,11 +2,11 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.EcdysisAbilityConfig;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
 import justjabka.JustRaces.Types.ArmorSet;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,7 +40,7 @@ public class EcdysisAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "ecdysis");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "ecdysis");
     }
 
     @Override
@@ -105,7 +105,7 @@ public class EcdysisAbility extends BaseAbility {
 
         final UUID pid = player.getUniqueId();
 
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> { // PREPARE THYSELF!
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> { // PREPARE THYSELF!
             Player suicidePlayer = Bukkit.getPlayer(pid);
 
             if (suicidePlayer == null) return;

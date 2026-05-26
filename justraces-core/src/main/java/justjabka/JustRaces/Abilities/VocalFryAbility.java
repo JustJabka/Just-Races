@@ -3,7 +3,7 @@ package justjabka.JustRaces.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.VocalFryAbilityConfig;
 import justjabka.JustRaces.DataProvider.RaceProvider;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.RaceManager;
 import net.kyori.adventure.text.Component;
@@ -39,7 +39,7 @@ public class VocalFryAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "vocal_fry");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "vocal_fry");
     }
 
     @Override

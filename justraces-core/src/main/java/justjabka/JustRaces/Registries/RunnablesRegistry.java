@@ -1,8 +1,8 @@
 package justjabka.JustRaces.Registries;
 
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Runnables.GlobalRunnable;
 import justjabka.JustRaces.Runnables.Race.*;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.plugin.Plugin;
 
 public class RunnablesRegistry {
@@ -11,7 +11,7 @@ public class RunnablesRegistry {
 
         registerRaceRunnables(plugin);
 
-        JustRaces.LOGGER.info("Successfully registered runnables!");
+        JustRacesAPI.getLogger().info("Successfully registered runnables!");
     }
 
     private static void registerRaceRunnables(Plugin plugin) {

@@ -1,6 +1,6 @@
 package justjabka.JustRaces.Instances.Generic;
 
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
@@ -13,7 +13,7 @@ public abstract class BaseInstance {
 
     // Key
     public NamespacedKey getKey() {
-        return NamespacedKey.fromString(key, JustRaces.INSTANCE);
+        return NamespacedKey.fromString(key, JustRacesAPI.getInstance());
     }
 
     public void setKey(String key) {
@@ -30,7 +30,7 @@ public abstract class BaseInstance {
                     configNode.set(config);
                 }
             } catch (Exception e) {
-                JustRaces.LOGGER.error("Failed to map configuration for instance: {}", key, e);
+                JustRacesAPI.getLogger().error("Failed to map configuration for instance: {}", key, e);
             }
         }
 

@@ -8,8 +8,8 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.JustRaces.Commands.Arguments.RaceArgument;
 import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.RaceManager;
-import justjabka.JustRaces.JustRaces;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class SetRaceCommand {
 
     public static LiteralCommandNode<CommandSourceStack> setRace() {
         return Commands.literal("setrace")
-                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRaces.NAMESPACE)))
+                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .then(Commands.argument("race", new RaceArgument())
                                 .executes(ctx -> {

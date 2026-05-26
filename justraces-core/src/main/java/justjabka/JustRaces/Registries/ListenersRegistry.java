@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Registries;
 
-import justjabka.JustRaces.JustRaces;
-import justjabka.JustRaces.Listeners.*;
+import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.Listeners.GlobalListener;
 import justjabka.JustRaces.Listeners.Race.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -13,7 +13,7 @@ public class ListenersRegistry {
         manager.registerEvents(new GlobalListener(), plugin);
         registerRaceListeners(plugin, manager);
 
-        JustRaces.LOGGER.info("Successfully registered listeners!");
+        JustRacesAPI.getLogger().info("Successfully registered listeners!");
     }
 
     private static void registerRaceListeners(Plugin plugin, PluginManager manager) {
@@ -24,6 +24,6 @@ public class ListenersRegistry {
         manager.registerEvents(new LizardRaceListener(), plugin);
         manager.registerEvents(new FetrRaceListener(), plugin);
 
-        JustRaces.LOGGER.info("Successfully registered race listeners!");
+        JustRacesAPI.getLogger().info("Successfully registered race listeners!");
     }
 }

@@ -3,7 +3,7 @@ package justjabka.JustRaces.Abilities;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.AzaleaCamouflageAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AttributeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -73,7 +73,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "azalea_camouflage");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "azalea_camouflage");
     }
 
     @Override
@@ -100,7 +100,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         int sneakTime = player.getStatistic(Statistic.SNEAK_TIME);
         int requiredSneakTime = sneakTime + config.activationTime;
 
-        scheduler.runTaskLater(JustRaces.INSTANCE, () -> {
+        scheduler.runTaskLater(JustRacesAPI.getInstance(), () -> {
             int newSneakTime = player.getStatistic(Statistic.SNEAK_TIME);
 
             if (newSneakTime < requiredSneakTime) return;

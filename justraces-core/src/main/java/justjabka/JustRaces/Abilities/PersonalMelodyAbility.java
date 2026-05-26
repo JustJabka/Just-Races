@@ -2,7 +2,7 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.DataProvider.RaceProvider;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Managers.RaceManager;
@@ -26,7 +26,7 @@ import java.util.Set;
 import static justjabka.JustRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class PersonalMelodyAbility extends BaseAbility {
-    public static final NamespacedKey PERSONAL_MELODY_ABILITY_KEY = new NamespacedKey(JustRaces.NAMESPACE, "personal_melody");
+    public static final NamespacedKey PERSONAL_MELODY_ABILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "personal_melody");
 
     private static final int duration = 30 * 20;
     private static final int requiredNotes = 24;
@@ -188,7 +188,7 @@ public class PersonalMelodyAbility extends BaseAbility {
 
     public void markBuffed(Player player) {
         AbilityManager.setAbilityState(player, getKey(), true);
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> unmarkBuffed(player), duration);
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> unmarkBuffed(player), duration);
     }
 
     public void unmarkBuffed(Player player) {

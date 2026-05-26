@@ -5,7 +5,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Equippable;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Configs.Ability.UnfoldWingsAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Runnables.Ability.UnfoldWingsAbilityRunnable;
 import org.bukkit.*;
@@ -32,7 +32,7 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "unfold_wings");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "unfold_wings");
     }
 
     @Override
@@ -108,7 +108,7 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
         changeWingsState(player, wingsItem);
 
         player.setGliding(true);
-        new UnfoldWingsAbilityRunnable(this, player.getUniqueId()).runTaskTimer(JustRaces.INSTANCE, 10L, 2L);
+        new UnfoldWingsAbilityRunnable(this, player.getUniqueId()).runTaskTimer(JustRacesAPI.getInstance(), 10L, 2L);
     }
 
     /// Removes player's ability to fly with wings

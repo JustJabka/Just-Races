@@ -3,7 +3,7 @@ package justjabka.JustRaces.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.GluttonyExecuteAbilityConfig;
 import justjabka.JustRaces.DataProvider.EntityTypeTagKeysProvider;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
@@ -38,7 +38,7 @@ public class GluttonyExecuteAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "gluttony_execute");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "gluttony_execute");
     }
 
     @Override

@@ -4,7 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Instances.RaceInstance;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Registries.RacesRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -20,7 +20,7 @@ import java.util.Set;
 import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
-    public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRaces.NAMESPACE, "race");
+    public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
 
     /**
      * Gets player's race
@@ -40,7 +40,7 @@ public class RaceManager {
         RaceInstance race = RacesRegistry.getRaces().get(raceKey);
 
         if (race == null) {
-            JustRaces.LOGGER.warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
+            JustRacesAPI.getLogger().warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
             return RaceProvider.get(RaceProvider.HUMAN);
         }
 
@@ -103,6 +103,6 @@ public class RaceManager {
         });
 
         // Reset Item Modifiers
-        Bukkit.getScheduler().runTask(JustRaces.INSTANCE, () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
     }
 }

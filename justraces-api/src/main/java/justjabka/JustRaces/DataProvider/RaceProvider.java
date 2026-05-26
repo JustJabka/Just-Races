@@ -1,7 +1,7 @@
 package justjabka.JustRaces.DataProvider;
 
 import justjabka.JustRaces.Instances.RaceInstance;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Registries.RacesRegistry;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.NamespacedKey;
@@ -18,7 +18,7 @@ public class RaceProvider {
 
     @NotNull
     private static NamespacedKey create(@NotNull @KeyPattern.Value String key) {
-        return new NamespacedKey(JustRaces.NAMESPACE, key);
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, key);
     }
 
     public static RaceInstance get(NamespacedKey key) {

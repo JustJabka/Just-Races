@@ -1,6 +1,6 @@
 package justjabka.JustRaces.Managers;
 
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Types.ArmorSet;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 
 public class ArmorManager {
-    private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(JustRaces.NAMESPACE, "armor_set");
+    private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "armor_set");
 
     /**
      * Updates player's armor set
@@ -53,7 +53,7 @@ public class ArmorManager {
     public static boolean hasAnyArmor(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
 
-        JustRaces.LOGGER.info(String.valueOf(equipment.length));
+        JustRacesAPI.getLogger().info(String.valueOf(equipment.length));
 
         for (ItemStack item : equipment) {
             if (item == null) continue;

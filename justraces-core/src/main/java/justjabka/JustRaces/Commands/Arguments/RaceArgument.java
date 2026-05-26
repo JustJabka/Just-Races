@@ -10,8 +10,8 @@ import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Registries.RacesRegistry;
-import justjabka.JustRaces.JustRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NullMarked;
@@ -29,7 +29,7 @@ public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, 
 
     @Override
     public RaceInstance convert(NamespacedKey nativeType) throws CommandSyntaxException {
-        NamespacedKey key = NamespacedKey.fromString(nativeType.asString(), JustRaces.INSTANCE);
+        NamespacedKey key = NamespacedKey.fromString(nativeType.asString(), JustRacesAPI.getInstance());
 
         if (key == null) {
             throw ERROR_INVALID_RACE.create(nativeType);

@@ -2,7 +2,7 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Configs.Ability.SwiftSneakAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Runnables.Ability.SwiftSneakAbilityRunnable;
@@ -42,7 +42,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "swift_sneak");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "swift_sneak");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class SwiftSneakAbility extends BaseValidationAbility {
     public void giveFastSneak(Player player) {
         AbilityManager.setAbilityState(player, getKey(), true);
 
-        new SwiftSneakAbilityRunnable(this, player.getUniqueId()).runTaskTimer(JustRaces.INSTANCE, 0, 2);
+        new SwiftSneakAbilityRunnable(this, player.getUniqueId()).runTaskTimer(JustRacesAPI.getInstance(), 0, 2);
 
         // Add bonuses
         fastSneakEffects.forEach(player::addPotionEffect);

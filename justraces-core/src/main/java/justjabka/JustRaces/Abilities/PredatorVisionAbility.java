@@ -2,7 +2,7 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.PredatorVisionAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.EffectManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class PredatorVisionAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "predator_vision");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "predator_vision");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PredatorVisionAbility extends BaseAbility {
         }
 
         // Remove glow
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> {
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> {
             if (!player.isOnline()) return;
 
             for (LivingEntity victim : markedVictims) {

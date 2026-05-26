@@ -3,10 +3,10 @@ package justjabka.JustRaces.Runnables.Race;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.BiomeTagKeys;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,7 +30,7 @@ import static justjabka.JustRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FetrRaceRunnable extends BaseRaceRunnable {
-    public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(JustRaces.NAMESPACE, "fetr_status");
+    public static final NamespacedKey FETR_STATUS_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "fetr_status");
 
     private static final int buffDuration = 11 * 20;
 

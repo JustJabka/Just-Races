@@ -13,9 +13,9 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.RaceManager;
 import justjabka.JustRaces.Registries.RacesRegistry;
-import justjabka.JustRaces.JustRaces;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -34,7 +34,7 @@ public class SelectRaceCommand {
 
     public static LiteralCommandNode<CommandSourceStack> selectRace() {
         return Commands.literal("selectrace")
-                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRaces.NAMESPACE)))
+                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .executes(ctx -> {
                             final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
@@ -62,7 +62,7 @@ public class SelectRaceCommand {
                 .toList();
 
         if (raceList.isEmpty()) {
-            JustRaces.LOGGER.warn("No races registered. Canceling race selection");
+            JustRacesAPI.getLogger().warn("No races registered. Canceling race selection");
             return;
         }
 

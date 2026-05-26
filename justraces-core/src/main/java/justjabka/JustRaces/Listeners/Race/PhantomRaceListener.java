@@ -3,7 +3,6 @@ package justjabka.JustRaces.Listeners.Race;
 import justjabka.JustRaces.DataProvider.ItemTypeTagKeysProvider;
 import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
@@ -69,7 +68,6 @@ public class PhantomRaceListener extends BaseRaceListener {
     private void giveMeatBonus(Player player) {
         int meatBonusAmount = getConfig().node("meat_bonus", "food_amount").getInt();
         int meatBonusRegenerationDuration = getConfig().node("meat_bonus", "regeneration_duration").getInt() * 20;
-        JustRaces.LOGGER.info(String.valueOf(meatBonusAmount));
 
         player.setFoodLevel(player.getFoodLevel() + meatBonusAmount);
         player.addPotionEffect(meatBonusEffect.withDuration(meatBonusRegenerationDuration));

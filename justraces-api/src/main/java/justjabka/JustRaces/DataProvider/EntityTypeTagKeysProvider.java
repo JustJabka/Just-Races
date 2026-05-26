@@ -4,7 +4,7 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.EntityTypeTagKeys;
 import io.papermc.paper.registry.tag.TagKey;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.entity.EntityType;
@@ -16,7 +16,7 @@ public class EntityTypeTagKeysProvider {
     public static final TagKey<EntityType> GLUTTONY_EXECUTE_IGNORED = create("gluttony_execute_ignored");
 
     private static TagKey<EntityType> create(@NotNull @KeyPattern.Value String key) {
-        return EntityTypeTagKeys.create(Key.key(JustRaces.NAMESPACE, key));
+        return EntityTypeTagKeys.create(Key.key(JustRacesAPI.NAMESPACE, key));
     }
 
     @SuppressWarnings("UnstableApiUsage")

@@ -3,7 +3,7 @@ package justjabka.JustRaces.Listeners;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.EffectManager;
 import org.bukkit.Bukkit;
@@ -42,14 +42,14 @@ public class GlobalListener implements Listener {
 
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Bukkit.getScheduler().runTask(JustRaces.INSTANCE, () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
     }
 
     @EventHandler
     public void onPickupItem(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        Bukkit.getScheduler().runTask(JustRaces.INSTANCE, () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
     }
 
     @EventHandler
@@ -76,7 +76,7 @@ public class GlobalListener implements Listener {
     }
 
     private static void fullRefresh(Player player) {
-        Bukkit.getScheduler().runTask(JustRaces.INSTANCE, () -> {
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> {
             ArmorManager.updateArmorSet(player);
             refreshModifiers(player);
         });

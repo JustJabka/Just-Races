@@ -4,7 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.PoisonousSplitAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Types.AbilityActivateAction;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -42,7 +42,7 @@ public class PoisonousSplitAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "poisonous_split");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "poisonous_split");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class PoisonousSplitAbility extends BaseAbility {
     @SuppressWarnings("UnstableApiUsage")
     private static ItemStack getPoisonousSplitDisplayItem() {
         ItemStack item = new ItemStack(Material.POISONOUS_POTATO);
-        item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(JustRaces.NAMESPACE, "poisonous_split"));
+        item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(JustRacesAPI.NAMESPACE, "poisonous_split"));
 
         return item;
     }

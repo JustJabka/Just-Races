@@ -3,10 +3,10 @@ package justjabka.JustRaces.Abilities;
 import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Configs.Ability.WildHuntAbilityConfig;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Runnables.Ability.WildHuntAbilityRunnable;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -42,7 +42,7 @@ public class WildHuntAbility extends BaseValidationAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "wild_hunt");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "wild_hunt");
     }
 
     @EventHandler
@@ -136,7 +136,7 @@ public class WildHuntAbility extends BaseValidationAbility {
         
         // Add effects
         victimEffects.forEach(victim::addPotionEffect);
-        new WildHuntAbilityRunnable(this, playerId, victimId).runTaskTimer(JustRaces.INSTANCE, 0, 20L);
+        new WildHuntAbilityRunnable(this, playerId, victimId).runTaskTimer(JustRacesAPI.getInstance(), 0, 20L);
     }
 
     public void clearAbility(Player victim) {

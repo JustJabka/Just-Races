@@ -4,7 +4,7 @@ import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.Abilities.Generic.BaseTogglableAbility;
 import justjabka.JustRaces.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.JustRaces.DataProvider.DamageTypeTagKeysProvider;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
@@ -33,7 +33,7 @@ public class DamageInversionAbility extends BaseTogglableAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "damage_inversion");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "damage_inversion");
     }
 
     @Override

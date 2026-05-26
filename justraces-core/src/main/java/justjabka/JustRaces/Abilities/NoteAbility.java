@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,7 +19,7 @@ import static justjabka.JustRaces.Abilities.StageAbility.STAGE_ABILITY_KEY;
 import static justjabka.JustRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class NoteAbility extends BaseAbility {
-    public static final NamespacedKey NOTE_ABILITY_KEY = new NamespacedKey(JustRaces.NAMESPACE, "note");
+    public static final NamespacedKey NOTE_ABILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "note");
 
     private static final int maxNoteAmount = 32;
     private static final int notePerAttack = 1;

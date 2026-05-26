@@ -1,5 +1,6 @@
 package justjabka.JustRaces.Managers;
 
+import justjabka.JustRaces.Configs.ConfigWrapper;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 

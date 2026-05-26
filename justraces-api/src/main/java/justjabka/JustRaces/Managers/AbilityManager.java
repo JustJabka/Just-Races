@@ -3,8 +3,8 @@ package justjabka.JustRaces.Managers;
 import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Registries.AbilitiesRegistry;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -15,8 +15,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class AbilityManager {
-    private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRaces.NAMESPACE, "abilities");
-    private static final NamespacedKey ABILITY_VISIBILITY_KEY = new NamespacedKey(JustRaces.NAMESPACE, "ability_visibility");
+    private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
+    private static final NamespacedKey ABILITY_VISIBILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "ability_visibility");
 
     private static final int activationSlot = 8;
 
@@ -88,7 +88,7 @@ public class AbilityManager {
             BaseAbility ability = AbilitiesRegistry.getAbilities().get(key);
 
             if (ability == null) {
-                JustRaces.LOGGER.warn("Race '{}' requires unknown ability: {}", race.getKey(), abilityString);
+                JustRacesAPI.getLogger().warn("Race '{}' requires unknown ability: {}", race.getKey(), abilityString);
                 continue;
             }
             raceAbilities.add(ability);

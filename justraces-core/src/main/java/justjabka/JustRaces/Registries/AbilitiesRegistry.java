@@ -2,7 +2,7 @@ package justjabka.JustRaces.Registries;
 
 import justjabka.JustRaces.Abilities.*;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +17,7 @@ public class AbilitiesRegistry {
 
     public static void registerAbility(@NotNull Plugin plugin, @NotNull BaseAbility ability) {
         if (ABILITIES.containsKey(ability.getKey())) {
-            JustRaces.LOGGER.warn("Ability {} is already registered! Overriding...", ability.getKey());
+            JustRacesAPI.getLogger().warn("Ability {} is already registered! Overriding...", ability.getKey());
         }
 
         ABILITIES.put(ability.getKey(), ability);
@@ -50,7 +50,7 @@ public class AbilitiesRegistry {
     public static void register(Plugin plugin, ConfigRegistry configs) {
         registerAbilities(plugin, configs);
 
-        JustRaces.LOGGER.info("Successfully registered {} abilities!", ABILITIES.size());
+        JustRacesAPI.getLogger().info("Successfully registered {} abilities!", ABILITIES.size());
     }
 
     public static Map<NamespacedKey, BaseAbility> getAbilities() {

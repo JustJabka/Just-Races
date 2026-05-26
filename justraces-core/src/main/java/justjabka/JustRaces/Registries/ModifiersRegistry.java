@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Registries;
 
 import justjabka.JustRaces.Instances.RaceInstance;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Modifiers.Armor.*;
 import justjabka.JustRaces.Modifiers.Food.GlowBerriesFoodModifier;
 import justjabka.JustRaces.Modifiers.Food.MossFoodModifier;
@@ -33,7 +33,7 @@ public class ModifiersRegistry {
         registerModifiers(plugin, configs);
         bindModifiers();
 
-        JustRaces.LOGGER.info("Successfully registered {} item modifiers!", MODIFIERS_BY_KEY.size());
+        JustRacesAPI.getLogger().info("Successfully registered {} item modifiers!", MODIFIERS_BY_KEY.size());
     }
 
     private static void registerModifiers(Plugin plugin, ConfigRegistry configs) {
@@ -90,6 +90,6 @@ public class ModifiersRegistry {
     }
 
     private static NamespacedKey create(String key) {
-        return new NamespacedKey(JustRaces.NAMESPACE, key);
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, key);
     }
 }

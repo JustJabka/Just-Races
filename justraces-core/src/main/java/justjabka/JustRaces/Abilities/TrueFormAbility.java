@@ -2,10 +2,10 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Configs.Ability.TrueFormAbilityConfig;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import justjabka.JustRaces.JustRaces;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -30,7 +30,7 @@ import java.util.UUID;
 import static justjabka.JustRaces.Abilities.PersonalMelodyAbility.PERSONAL_MELODY_ABILITY_KEY;
 
 public class TrueFormAbility extends BaseValidationAbility {
-    public static final NamespacedKey TRUE_FORM_KEY = new NamespacedKey(JustRaces.NAMESPACE, "true_form");
+    public static final NamespacedKey TRUE_FORM_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "true_form");
 
     private final TrueFormAbilityConfig config;
     private static final int maxDuration = 90 * 20;
@@ -163,7 +163,7 @@ public class TrueFormAbility extends BaseValidationAbility {
     }
 
     private void scheduleFormCheck(Player player) {
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> {
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> {
             if (!player.isOnline()) return;
             if (!AbilityManager.isAbilityActive(player, getKey())) return;
 

@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import org.bukkit.Bukkit;
@@ -43,7 +43,7 @@ public class NoteBuffAbility extends BaseValidationAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "note_buff");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "note_buff");
     }
 
     @Override
@@ -87,7 +87,7 @@ public class NoteBuffAbility extends BaseValidationAbility {
         targetEffects.forEach(player::addPotionEffect);
         AttributeManager.addModifiers(player, targetModifiers);
 
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> clearNoteBuff(player), duration);
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> clearNoteBuff(player), duration);
     }
 
     public void clearNoteBuff(Player player) {

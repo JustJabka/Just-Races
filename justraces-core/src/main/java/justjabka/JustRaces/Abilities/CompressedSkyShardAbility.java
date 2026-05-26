@@ -3,7 +3,7 @@ package justjabka.JustRaces.Abilities;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.CompressedSkyShardAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,7 +28,7 @@ public class CompressedSkyShardAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "compressed_sky_shard");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "compressed_sky_shard");
     }
 
     @Override

@@ -2,7 +2,7 @@ package justjabka.JustRaces.DataProvider;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.damage.DamageType;
@@ -13,6 +13,6 @@ public class DamageTypeProvider {
 
     @NotNull
     private static DamageType getDamageType(@NotNull @KeyPattern.Value String key) {
-        return RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getOrThrow(Key.key(JustRaces.NAMESPACE, key));
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getOrThrow(Key.key(JustRacesAPI.NAMESPACE, key));
     }
 }

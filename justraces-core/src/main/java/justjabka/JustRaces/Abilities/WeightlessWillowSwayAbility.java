@@ -2,7 +2,7 @@ package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.WeightlessWillowSwayAbilityConfig;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -30,7 +30,7 @@ public class WeightlessWillowSwayAbility extends BaseAbility {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRaces.NAMESPACE, "weightless_willow_sway");
+        return new NamespacedKey(JustRacesAPI.NAMESPACE, "weightless_willow_sway");
     }
 
     @Override

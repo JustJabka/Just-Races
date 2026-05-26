@@ -4,10 +4,10 @@ import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.DataProvider.DamageTypeProvider;
 import justjabka.JustRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRaces.DataProvider.RaceProvider;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.ArmorSet;
-import justjabka.JustRaces.JustRaces;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -36,7 +36,7 @@ import java.util.Random;
 public class ArmatRaceListener extends BaseRaceListener {
     private static final Random RANDOM = new Random();
 
-    private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRaces.NAMESPACE, "ignore_potion");
+    private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "ignore_potion");
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -217,7 +217,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
 
         double effectDurationMultiplier = getConfig().node("alchemy", "effect_duration_multiplier").getDouble();
-        JustRaces.LOGGER.info(String.valueOf(effectDurationMultiplier));
+        JustRacesAPI.getLogger().info(String.valueOf(effectDurationMultiplier));
 
         PersistentDataContainer pdc = player.getPersistentDataContainer();
 

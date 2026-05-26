@@ -1,6 +1,6 @@
 package justjabka.JustRaces.Managers;
 
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attributable;
@@ -94,7 +94,7 @@ public class AttributeManager {
     }
 
     /**
-     * Removes all attribute modifiers with namespace of {@code JustRaces.NAMESPACE}
+     * Removes all attribute modifiers with namespace of {@code JustRacesAPI.NAMESPACE}
      * @param player Player whose attribute modifiers will be removed
      * @apiNote Do not confuse with {@link #removeModifiers(Player, Map)}
      */
@@ -107,7 +107,7 @@ public class AttributeManager {
             for (AttributeModifier modifier : instance.getModifiers()) {
                 String modifierNamespace = modifier.getKey().getNamespace();
 
-                if (!modifierNamespace.equals(JustRaces.NAMESPACE)) continue;
+                if (!modifierNamespace.equals(JustRacesAPI.NAMESPACE)) continue;
 
                 instance.removeModifier(modifier);
             }

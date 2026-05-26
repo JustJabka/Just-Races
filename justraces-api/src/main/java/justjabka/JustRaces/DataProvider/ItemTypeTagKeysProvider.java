@@ -4,7 +4,7 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import io.papermc.paper.registry.tag.TagKey;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.inventory.ItemType;
@@ -16,7 +16,7 @@ public class ItemTypeTagKeysProvider {
     public static final TagKey<ItemType> IS_MEAT = create("is_meat");
 
     private static TagKey<ItemType> create(@NotNull @KeyPattern.Value String key) {
-        return ItemTypeTagKeys.create(Key.key(JustRaces.NAMESPACE, key));
+        return ItemTypeTagKeys.create(Key.key(JustRacesAPI.NAMESPACE, key));
     }
 
     @SuppressWarnings("UnstableApiUsage")

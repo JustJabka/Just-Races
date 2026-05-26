@@ -2,7 +2,7 @@ package justjabka.JustRaces.Registries;
 
 import com.google.gson.Gson;
 import justjabka.JustRaces.Instances.RaceInstance;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 
@@ -38,7 +38,7 @@ public class RacesRegistry {
         RACES.clear();
         registerRaces(racesFolder);
 
-        JustRaces.LOGGER.info("Successfully registered {} races!", RACES.size());
+        JustRacesAPI.getLogger().info("Successfully registered {} races!", RACES.size());
     }
 
     private static void registerRaces(File racesFolder) {
@@ -54,7 +54,7 @@ public class RacesRegistry {
 
                 RACES.put(race.getKey(), race);
             } catch (Exception e) {
-                JustRaces.LOGGER.error("Error while registering race: {}", file.getName(), e);
+                JustRacesAPI.getLogger().error("Error while registering race: {}", file.getName(), e);
             }
         }
     }

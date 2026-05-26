@@ -2,7 +2,7 @@ package justjabka.JustRaces.Registries;
 
 import io.papermc.paper.datapack.Datapack;
 import io.papermc.paper.datapack.DatapackManager;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.plugin.Plugin;
 
 public class DatapackRegistry {
@@ -15,9 +15,9 @@ public class DatapackRegistry {
         if (pack == null) return;
 
         if (pack.isEnabled()) {
-            JustRaces.LOGGER.info("The datapack loaded successfully!");
+            JustRacesAPI.getLogger().info("The datapack loaded successfully!");
         } else {
-            JustRaces.LOGGER.warn("The datapack failed to load :(");
+            JustRacesAPI.getLogger().warn("The datapack failed to load :(");
         }
     }
 }

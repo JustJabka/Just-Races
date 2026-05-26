@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRaces.JustRaces;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import static justjabka.JustRaces.Listeners.Race.FetrRaceListener.isIdol;
 
 public class StageAbility extends BaseValidationAbility {
-    public static final NamespacedKey STAGE_ABILITY_KEY = new NamespacedKey(JustRaces.NAMESPACE, "stage");
+    public static final NamespacedKey STAGE_ABILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "stage");
 
     private static final int requiredNotes = 24;
     private static final int duration = 15 * 20;
@@ -62,7 +62,7 @@ public class StageAbility extends BaseValidationAbility {
     public void giveStage(Player player) {
         AbilityManager.setAbilityState(player, getKey(), true);
 
-        Bukkit.getScheduler().runTaskLater(JustRaces.INSTANCE, () -> clearStage(player), duration);
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> clearStage(player), duration);
     }
 
     public void clearStage(Player player) {
