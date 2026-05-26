@@ -20,8 +20,14 @@ jobs:
       - name: build
         run: ./gradlew build
 
-      - name: capture build artifacts
+      - name: capture api artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: JustRacesApi
+          path: justraces-api/build/libs/*.jar
+
+      - name: capture core artifacts
         uses: actions/upload-artifact@v4
         with:
           name: JustRaces
-          path: build/libs/*.jar
+          path: justraces-core/build/libs/*.jar
