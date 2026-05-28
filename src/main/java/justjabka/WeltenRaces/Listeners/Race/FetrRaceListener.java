@@ -1,5 +1,6 @@
 package justjabka.WeltenRaces.Listeners.Race;
 
+import io.papermc.paper.event.player.PlayerItemCooldownEvent;
 import justjabka.WeltenRaces.Abilities.NoteAbility;
 import justjabka.WeltenRaces.DataProvider.RaceProvider;
 import justjabka.WeltenRaces.Listeners.Generic.BaseRaceListener;
@@ -8,9 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -47,24 +45,14 @@ public class FetrRaceListener extends BaseRaceListener {
     }
 
     @EventHandler
-    public void onItemUse(PlayerInteractEvent event) {
+    public void onItemUse(PlayerItemCooldownEvent event) {
         Player player = event.getPlayer();
 
         if (!isRequiredRace(player)) return;
         if (!AbilityManager.isActivationSlotSelected(player)) return;
         if (!isIdol(player)) return;
 
-        ItemStack item = event.getItem();
-
-        if (item == null) return;
-        if (item.isEmpty()) return;
-
-        if (item.getType() != Material.GOAT_HORN) return;
-
-        if (!event.getAction().isRightClick()) return;
-        if (event.getHand() != EquipmentSlot.HAND) return;
-
-        if (player.getCooldown(item) > 0) return;
+        if (event.getType() != Material.GOAT_HORN) return;
 
         int hornBuffDuration = getConfig().node("horn_buff", "duration").getInt() * 20;
         double hornBuffRadius = getConfig().node("horn_buff", "radius").getDouble();

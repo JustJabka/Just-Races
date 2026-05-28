@@ -7,6 +7,7 @@ import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.Runnables.Ability.SwiftSneakAbilityRunnable;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -19,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
 import java.util.Set;
+
+import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class SwiftSneakAbility extends BaseValidationAbility {
     private final SwiftSneakAbilityConfig config;
@@ -38,6 +41,12 @@ public class SwiftSneakAbility extends BaseValidationAbility {
                         AttributeModifier.Operation.ADD_NUMBER
                 )
         );
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        if (AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
+        return super.getAbilityDisplay(player);
     }
 
     @Override
@@ -97,6 +106,11 @@ public class SwiftSneakAbility extends BaseValidationAbility {
     @Override
     public boolean isStateValid(Player player) {
         return player.isSneaking();
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return !AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
     }
 
     @Override

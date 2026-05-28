@@ -11,6 +11,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -131,7 +132,13 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (!hasCamoBlock(player)) return;
-        event.setDamage(event.getDamage() * config.damageMultiplier);
+
+        if (event.getDamageSource().getDamageType() == DamageType.GENERIC_KILL) return;
+
+        double damage = event.getDamage();
+        double finalDamage = damage * config.damageMultiplier;
+
+        event.setDamage(finalDamage);
     }
 
     @Override

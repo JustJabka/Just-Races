@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/WeltenRaces.main.iml" filepath="$PROJECT_DIR$/.idea/modules/WeltenRaces.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" />
     </modules>
   </component>
 </project>

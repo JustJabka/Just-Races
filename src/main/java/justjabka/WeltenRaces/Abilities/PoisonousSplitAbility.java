@@ -4,8 +4,10 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.PoisonousSplitAbilityConfig;
+import justjabka.WeltenRaces.Managers.AbilityManager;
 import justjabka.WeltenRaces.Types.AbilityActivateAction;
 import justjabka.WeltenRaces.WeltenRaces;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.damage.DamageSource;
@@ -22,6 +24,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
+
+import static justjabka.WeltenRaces.Abilities.TrueFormAbility.TRUE_FORM_KEY;
 
 public class PoisonousSplitAbility extends BaseAbility {
     private final PoisonousSplitAbilityConfig config;
@@ -48,6 +52,12 @@ public class PoisonousSplitAbility extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return config.cooldown;
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        if (AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
+        return super.getAbilityDisplay(player);
     }
 
     @EventHandler
@@ -97,6 +107,10 @@ public class PoisonousSplitAbility extends BaseAbility {
         return item;
     }
 
+    @Override
+    protected boolean canActivate(Player player) {
+        return !AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
+    }
 
     @Override
     protected boolean interactionAction(PlayerInteractEvent event, Player player) {
