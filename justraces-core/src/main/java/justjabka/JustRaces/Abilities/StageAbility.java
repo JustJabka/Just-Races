@@ -3,6 +3,10 @@ package justjabka.JustRaces.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Types.AbilityActivateAction;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -36,6 +40,15 @@ public class StageAbility extends BaseValidationAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         clearStage(player);
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
+
+        TextColor displayColor = isActive ? abilityPrimaryColor : abilitySecondaryColor;
+
+        return getDisplayName().color(displayColor).decorate(TextDecoration.UNDERLINED);
     }
 
     @EventHandler
@@ -76,5 +89,11 @@ public class StageAbility extends BaseValidationAbility {
 
         if (!isIdol(player)) return false;
         return noteAbility.getNotes(player) >= requiredNotes;
+    }
+
+
+    @Override
+    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
+        return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }
 }

@@ -182,6 +182,11 @@ public class TrueFormAbility extends BaseValidationAbility {
     }
 
     @Override
+    protected boolean canActivate(Player player) {
+        return !AbilityManager.isAbilityActive(player, getKey());
+    }
+
+    @Override
     protected boolean interactionAction(PlayerInteractEvent event, Player player) {
         return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }

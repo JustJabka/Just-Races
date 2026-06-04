@@ -1,8 +1,11 @@
 package justjabka.JustRaces.Abilities;
 
 import io.papermc.paper.persistence.PersistentDataContainerView;
+import io.papermc.paper.registry.keys.tags.DamageTypeTagKeys;
+import io.papermc.paper.registry.tag.TagKey;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Configs.Ability.AzaleaCamouflageAbilityConfig;
+import justjabka.JustRaces.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AttributeManager;
 import org.bukkit.Bukkit;
@@ -11,6 +14,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -31,12 +35,15 @@ import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class AzaleaCamouflageAbility extends BaseAbility {
     private final AzaleaCamouflageAbilityConfig config;
+    private static final TagKey<DamageType> BYPASSES_EFFECTS = DamageTypeTagKeys.BYPASSES_EFFECTS;
+    private static final Collection<DamageType> BYPASSES_EFFECTS_VALUES = DamageTypeTagKeysProvider.getTagValues(BYPASSES_EFFECTS);
 
     private final Set<PotionEffect> userEffects;
     private final AttributeModifier minValueAttribute = new AttributeModifier(
@@ -131,7 +138,15 @@ public class AzaleaCamouflageAbility extends BaseAbility {
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (!hasCamoBlock(player)) return;
-        event.setDamage(event.getDamage() * config.damageMultiplier);
+
+        DamageType damageType = event.getDamageSource().getDamageType();
+
+        if (BYPASSES_EFFECTS_VALUES.contains(damageType)) return;
+
+        double damage = event.getDamage();
+        double finalDamage = damage * config.damageMultiplier;
+
+        event.setDamage(finalDamage);
     }
 
     @Override

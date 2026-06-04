@@ -4,6 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
+import org.apache.commons.lang3.Range;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -102,6 +103,10 @@ public class NoteBuffAbility extends BaseValidationAbility {
 
         if (!isIdol(player)) return false;
         if (player.isSneaking()) return false;
-        return noteAbility.getNotes(player) >= requiredNotes;
+
+        int notes = noteAbility.getNotes(player);
+        Range<Integer> noteRange = Range.between(requiredNotes, 23);
+
+        return noteRange.contains(notes);
     }
 }
