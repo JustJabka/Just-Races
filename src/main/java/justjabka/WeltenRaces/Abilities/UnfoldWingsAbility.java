@@ -51,6 +51,8 @@ public class UnfoldWingsAbility extends BaseValidationAbility {
 
     @Override
     protected boolean onActivation(Player player, Object... ctx) {
+        if (haveItemInChestplateSlot(player)) return false;
+
         AttributeInstance jumpStrengthInstance = getJumpStrengthInstance(player);
         if (jumpStrengthInstance == null) return false;
 
