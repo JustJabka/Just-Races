@@ -5,10 +5,7 @@ import justjabka.WeltenRaces.Abilities.Generic.BaseAbility;
 import justjabka.WeltenRaces.Configs.Ability.AzaleaCamouflageAbilityConfig;
 import justjabka.WeltenRaces.Managers.AttributeManager;
 import justjabka.WeltenRaces.WeltenRaces;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.damage.DamageType;
@@ -155,7 +152,6 @@ public class AzaleaCamouflageAbility extends BaseAbility {
     public void addCamoBlock(Player player) {
         if (hasCamoBlock(player)) return;
 
-        // TODO: fix offset
         double playerHeight = player.getHeight();
         float playerFeet = (float) (playerHeight * -1);
 
@@ -182,6 +178,7 @@ public class AzaleaCamouflageAbility extends BaseAbility {
 
         player.addPassenger(camoBlock);
         giveCamoEffects(player);
+        player.teleport(player.getLocation().toCenterLocation());
     }
 
     private void giveCamoEffects(Player player) {
