@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class ArmatRaceRunnable extends BaseRaceRunnable {
     @Override
@@ -24,7 +25,7 @@ public class ArmatRaceRunnable extends BaseRaceRunnable {
         AttributeInstance gravityInstance = player.getAttribute(Attribute.GRAVITY);
         if (gravityInstance == null) return;
 
-        boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmor(player);
+        boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmorPiece(player, EquipmentSlot.FEET);
         boolean hasModifier = gravityInstance.getModifier(getRaceKey()) != null;
 
         boolean giveModifier = shouldSink && !hasModifier;

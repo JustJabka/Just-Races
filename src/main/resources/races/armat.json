@@ -19,6 +19,7 @@
   },
   "config": {
     "vulnerable_damage_multiplier": 1.5,
+    "fall_damage_boots_penalty_multiplier": 0.4,
     "sink_gravity_value": 0.42,
     "mining_bonus": {
       "upper_bound": 3.0,

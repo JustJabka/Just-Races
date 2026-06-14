@@ -26,6 +26,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -66,14 +67,22 @@ public class ArmatRaceListener extends BaseRaceListener {
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         boolean isVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.IS_MAGIC).contains(damageType);
-        boolean isImmuneTo = damageCause == EntityDamageEvent.DamageCause.FALL && ArmorManager.hasAnyArmor(player);
+        boolean isImmuneTo = damageCause == EntityDamageEvent.DamageCause.FALL && ArmorManager.hasAnyArmorPiece(player, EquipmentSlot.FEET);
+
+        double damage = event.getDamage();
 
         if (isVulnerableTo) {
-            event.setDamage(event.getDamage() * vulnerableMultiplier);
+            event.setDamage(damage * vulnerableMultiplier);
             return true;
         } else if (isImmuneTo) {
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);
             event.setCancelled(true);
+            ItemStack boots = player.getEquipment().getBoots();
+
+            double penaltyMultiplier = getConfig().node("fall_damage_boots_penalty_multiplier").getDouble();
+            int penaltyAmount = (int) (damage * penaltyMultiplier);
+
+            boots.damage(penaltyAmount, player);
             return true;
         }
 

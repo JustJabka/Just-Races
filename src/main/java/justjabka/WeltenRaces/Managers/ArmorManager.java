@@ -4,6 +4,7 @@ import justjabka.WeltenRaces.Types.ArmorSet;
 import justjabka.WeltenRaces.WeltenRaces;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -53,8 +54,6 @@ public class ArmorManager {
     public static boolean hasAnyArmor(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
 
-        WeltenRaces.LOGGER.info(String.valueOf(equipment.length));
-
         for (ItemStack item : equipment) {
             if (item == null) continue;
             if (item.isEmpty()) continue;
@@ -62,6 +61,12 @@ public class ArmorManager {
             return true;
         }
         return false;
+    }
+
+    public static boolean hasAnyArmorPiece(Player player, EquipmentSlot slot) {
+        ItemStack item = player.getEquipment().getItem(slot);
+
+        return !item.isEmpty();
     }
 
     /**
