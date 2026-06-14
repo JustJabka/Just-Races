@@ -132,7 +132,9 @@ public class FetrRaceRunnable extends BaseRaceRunnable {
     private void giveHeadlinerStatus(Player player, boolean wasIdol) {
         updateStatusValue(player, false);
 
-        if (wasIdol) {
+        boolean hasEffects = player.getActivePotionEffects().containsAll(headlinerStatusEffects);
+
+        if (wasIdol || !hasEffects) {
             headlinerStatusEffects.forEach(player::addPotionEffect);
             AttributeManager.removeModifiers(player, idolStatusModifiers);
         }
