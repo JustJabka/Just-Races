@@ -28,8 +28,6 @@ public class ResourceManager {
         }
 
         URL jarUrl = plugin.getClass().getProtectionDomain().getCodeSource().getLocation();
-//        Path path = Path.of(resourceDir);
-//        Path normalizedDir = path.normalize();
 
         String normalizedDir = resourceDir.replace('\\', '/');
         if (normalizedDir.startsWith("/")) {
