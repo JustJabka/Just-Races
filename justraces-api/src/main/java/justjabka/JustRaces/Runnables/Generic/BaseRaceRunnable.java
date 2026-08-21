@@ -1,6 +1,5 @@
 package justjabka.JustRaces.Runnables.Generic;
 
-import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Managers.RaceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -12,7 +11,7 @@ public abstract class BaseRaceRunnable extends BukkitRunnable {
     public abstract NamespacedKey getRaceKey();
 
     public CommentedConfigurationNode getConfig() {
-        return RaceProvider.get(getRaceKey()).getConfig();
+        return RaceManager.getRaceByKey(getRaceKey()).getConfig();
     }
 
     public boolean isRequiredRace(Player player) {

@@ -2,7 +2,6 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
@@ -21,6 +20,7 @@ import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
+    public static final NamespacedKey FALLBACK_RACE = new NamespacedKey("justracesshowcase","human");
 
     /**
      * Gets player's race
@@ -33,25 +33,33 @@ public class RaceManager {
         String raceString = pdc.get(RACE_KEY, PersistentDataType.STRING);
 
         if (raceString == null) {
-            return RaceProvider.get(RaceProvider.HUMAN);
+            return getFallbackRace();
         }
 
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
-        RaceInstance race = JustRacesRegistries.RACES.get(raceKey);
+        RaceInstance race = getRaceByKey(raceKey);
 
         if (race == null) {
             JustRacesAPI.getLogger().warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
-            return RaceProvider.get(RaceProvider.HUMAN);
+            return getFallbackRace();
         }
 
         return race;
+    }
+
+    public static RaceInstance getRaceByKey(NamespacedKey key) {
+        return JustRacesRegistries.RACES.get(key);
+    }
+
+    public static RaceInstance getFallbackRace() {
+        return getRaceByKey(FALLBACK_RACE);
     }
 
     /**
      * Sets player's race
      * @param player Player which would be set
      * @param key Race key
-     * @see RaceProvider#get(NamespacedKey)
+     * @see RaceManager#getRaceByKey(NamespacedKey)
      */
     public static void setRace(Player player, NamespacedKey key) {
         resetRace(player);

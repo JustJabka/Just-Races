@@ -24,11 +24,7 @@ public final class JustRaces extends JavaPlugin {
         });
 
         // Register
-        ConfigRegistry configs = new ConfigRegistry(this);
-
         RacesRegistry.register(this);
-        AbilitiesRegistry.register(configs);
-        ModifiersRegistry.register(configs);
 
         ListenersRegistry.register(this);
         RunnablesRegistry.register(this);
@@ -37,8 +33,6 @@ public final class JustRaces extends JavaPlugin {
     @Override
     public void onLoad() {
         JustRacesAPI.init(this, getSLF4JLogger());
-
-        DatapackRegistry.register(this);
     }
 
     @Override

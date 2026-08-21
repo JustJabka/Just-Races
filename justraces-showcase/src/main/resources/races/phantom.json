@@ -1,0 +1,24 @@
+{
+  "name": {
+    "translate": "race.phantom.name",
+    "fallback": "Phantom"
+  },
+  "abilities": [
+    "justracesshowcase:predator_vision",
+    "justracesshowcase:unfold_wings",
+    "justracesshowcase:wild_hunt"
+  ],
+  "attributes": {},
+  "item_modifiers": {
+    "justracesshowcase:phantom_membrane": "minecraft:phantom_membrane"
+  },
+  "config": {
+    "meat_bonus": {
+      "food_amount": 5,
+      "regeneration_duration": 2
+    },
+    "insomnia_damage_bonus": 3.0,
+    "helmet_durability_drain": 1,
+    "night_movement_speed_bonus": 0.02
+  }
+}

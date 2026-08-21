@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "race.epiphyte.name",
+    "fallback": "Epiphyte"
+  },
+  "abilities": [
+    "justracesshowcase:azalea_camouflage",
+    "justracesshowcase:poisonous_area",
+    "justracesshowcase:poisonous_weapon"
+  ],
+  "attributes": {
+    "minecraft:max_health": 18,
+    "minecraft:scale": 0.95
+  },
+  "item_modifiers": {
+    "justracesshowcase:glow_berries": "minecraft:glow_berries",
+    "justracesshowcase:moss": "minecraft:moss_block"
+  },
+  "config": {
+    "moss_movement_speed_bonus": 0.1
+  }
+}

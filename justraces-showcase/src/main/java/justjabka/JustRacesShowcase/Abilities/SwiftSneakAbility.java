@@ -1,0 +1,120 @@
+package justjabka.JustRacesShowcase.Abilities;
+
+import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
+import justjabka.JustRacesShowcase.Configs.Ability.SwiftSneakAbilityConfig;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
+import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Managers.AttributeManager;
+import justjabka.JustRacesShowcase.Runnables.Ability.SwiftSneakAbilityRunnable;
+import justjabka.JustRaces.Types.AbilityActivateAction;
+import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.Map;
+import java.util.Set;
+
+import static justjabka.JustRacesShowcase.Abilities.TrueFormAbility.TRUE_FORM_KEY;
+
+public class SwiftSneakAbility extends BaseValidationAbility {
+    private final SwiftSneakAbilityConfig config;
+    private final Map<Attribute, AttributeModifier> fastSneakAttributes;
+
+    private static final Set<PotionEffect> fastSneakEffects = Set.of(
+            new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 0, false, false, false),
+            new PotionEffect(PotionEffectType.INVISIBILITY, PotionEffect.INFINITE_DURATION, 0, false, false, false)
+    );
+
+    public SwiftSneakAbility(SwiftSneakAbilityConfig config) {
+        this.config = config;
+        this.fastSneakAttributes = Map.of(
+                Attribute.SNEAKING_SPEED, new AttributeModifier(
+                        getKey(),
+                        config.sneakSpeedBonus,
+                        AttributeModifier.Operation.ADD_NUMBER
+                )
+        );
+    }
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "swift_sneak");
+    }
+
+    @Override
+    public long getCooldownTicks() {
+        return config.cooldown;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+        clearFastSneak(player);
+    }
+
+    @Override
+    public Component getAbilityDisplay(Player player) {
+        if (AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
+        return super.getAbilityDisplay(player);
+    }
+
+    @EventHandler
+    public void handleInteract(PlayerInteractEvent event) {
+        super.handleInteract(event);
+    }
+
+    @Override
+    protected boolean onActivation(Player player, Object... ctx) {
+        if (AbilityManager.isAbilityActive(player, getKey())) return false;
+
+        giveFastSneak(player);
+        return true;
+    }
+
+    @Override
+    public void onDeactivation(Player player) {
+        clearFastSneak(player);
+    }
+
+    public void giveFastSneak(Player player) {
+        AbilityManager.setAbilityState(player, getKey(), true);
+
+        new SwiftSneakAbilityRunnable(this, player.getUniqueId()).runTaskTimer(JustRacesShowcase.INSTANCE, 0, 2);
+
+        // Add bonuses
+        fastSneakEffects.forEach(player::addPotionEffect);
+        AttributeManager.addModifiers(player, fastSneakAttributes);
+    }
+
+    public void clearFastSneak(Player player) {
+        AbilityManager.setAbilityState(player, getKey(), false);
+
+        // Remove bonuses
+        fastSneakEffects.forEach(effect -> player.removePotionEffect(effect.getType()));
+        AttributeManager.removeModifiers(player, fastSneakAttributes);
+    }
+
+    @Override
+    public boolean isStateValid(Player player) {
+        return player.isSneaking();
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return !AbilityManager.isAbilityActive(player, TRUE_FORM_KEY);
+    }
+
+    @Override
+    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
+        return AbilityActivateAction.SHIFT_LEFT_CLICK.check(event, player);
+    }
+}

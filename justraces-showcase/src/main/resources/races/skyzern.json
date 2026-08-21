@@ -1,0 +1,21 @@
+{
+  "name": {
+    "translate": "race.skyzern.name",
+    "fallback": "Skyzern"
+  },
+  "abilities": [
+    "justracesshowcase:compressed_sky_shard",
+    "justracesshowcase:weightless_willow_sway"
+  ],
+  "attributes": {
+    "minecraft:scale": 1.05
+  },
+  "item_modifiers": {},
+  "config": {
+    "damage_bonus": {
+      "value_per_step": 0.1,
+      "step": 5
+    },
+    "additional_knockback_value": 1
+  }
+}

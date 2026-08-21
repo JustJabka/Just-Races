@@ -19,24 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
-    private static final Map<NamespacedKey, Map<Material, ItemModifier>> ACTIVE_RACE_MODIFIERS = new ConcurrentHashMap<>();
-
-    @Nullable
-    public static ItemModifier getModifiersForRace(@NotNull RaceInstance race, @NotNull ItemStack item) {
-        return ACTIVE_RACE_MODIFIERS.getOrDefault(race.getKey(), Map.of()).get(item.getType());
-    }
-
-    @NotNull
-    public static Map<NamespacedKey, Map<Material, ItemModifier>> getActiveRaceModifiers() {
-        return Collections.unmodifiableMap(ACTIVE_RACE_MODIFIERS);
-    }
-
-    public static void updateRaceModifiers(@NotNull Map<NamespacedKey, Map<Material, ItemModifier>> newBindings) {
-        ACTIVE_RACE_MODIFIERS.clear();
-        newBindings.forEach((raceKey, matMap) ->
-                ACTIVE_RACE_MODIFIERS.computeIfAbsent(raceKey, k -> new ConcurrentHashMap<>()).putAll(matMap)
-        );
-    }
 
     public static ItemModifier getByKey(NamespacedKey key) {
         return JustRacesRegistries.MODIFIERS.get(key);
@@ -47,7 +29,7 @@ public class ModifierManager {
         if (item.isEmpty()) return;
 
         RaceInstance race = RaceManager.getRace(player);
-        ItemModifier type = getModifiersForRace(race, item);
+        ItemModifier type = race.getModifier(item.getType());
 
         if (type == null) return;
         if (isModifiedWith(item, type)) return;

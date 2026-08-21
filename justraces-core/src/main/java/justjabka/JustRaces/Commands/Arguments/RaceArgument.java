@@ -9,10 +9,10 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
-import justjabka.JustRaces.DataProvider.RaceProvider;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
+import justjabka.JustRaces.Managers.RaceManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NullMarked;
@@ -36,7 +36,7 @@ public class RaceArgument implements CustomArgumentType.Converted<RaceInstance, 
             throw ERROR_INVALID_RACE.create(nativeType);
         }
 
-        RaceInstance race = RaceProvider.get(key);
+        RaceInstance race = RaceManager.getRaceByKey(key);
 
         if (race == null) {
             throw ERROR_INVALID_RACE.create(nativeType);

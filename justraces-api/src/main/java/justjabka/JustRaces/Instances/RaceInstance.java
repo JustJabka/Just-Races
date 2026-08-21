@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import justjabka.JustRaces.Instances.Generic.BaseInstance;
 import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.JustRacesRegistries;
+import justjabka.JustRaces.Modifiers.ItemModifier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
@@ -17,6 +19,7 @@ public class RaceInstance extends BaseInstance {
     private Map<String, Double> attributes;
     private Set<String> abilities;
     private Map<String, JsonElement> item_modifiers;
+    private transient Map<Material, ItemModifier> cachedModifiers = new HashMap<>();
 
     public Component getName() {
         if (name == null || name.isJsonNull()) {
@@ -69,6 +72,33 @@ public class RaceInstance extends BaseInstance {
 
     public Set<String> getAbilities() {
         return abilities;
+    }
+
+    public ItemModifier getModifier(Material material) {
+        return cachedModifiers.get(material);
+    }
+
+    public void buildModifierCache() {
+        this.cachedModifiers.clear();
+
+        if (this.item_modifiers == null) return;
+        if (this.item_modifiers.isEmpty()) return;
+
+        for (NamespacedKey modifierKey : JustRacesRegistries.MODIFIERS.keys()) {
+            Set<Material> materials = getMaterialsForModifier(modifierKey.toString());
+
+            if (materials.isEmpty()) {
+                materials = getMaterialsForModifier(modifierKey.getKey());
+            }
+
+            if (materials.isEmpty()) continue;
+
+            ItemModifier modifier = JustRacesRegistries.MODIFIERS.get(modifierKey);
+
+            for (Material material : materials) {
+                this.cachedModifiers.put(material, modifier);
+            }
+        }
     }
 
     public Set<Material> getMaterialsForModifier(String modifierId) {

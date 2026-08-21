@@ -4,10 +4,12 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api/JustRaces.justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api/JustRaces.justraces-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-core/JustRaces.justraces-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-core/JustRaces.justraces-core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-showcase/JustRaces.justraces-showcase.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-showcase/JustRaces.justraces-showcase.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/JustRaces.main.iml" filepath="$PROJECT_DIR$/.idea/modules/JustRaces.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api/justjabka.JustRaces.justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api/justjabka.JustRaces.justraces-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-core/justjabka.JustRaces.justraces-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-core/justjabka.JustRaces.justraces-core.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-api/justraces-api.JustRaces.justraces-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-api/justraces-api.JustRaces.justraces-api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/justraces-core/justraces-core.JustRaces.justraces-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/justraces-core/justraces-core.JustRaces.justraces-core.main.iml" />
     </modules>
   </component>
 </project>
