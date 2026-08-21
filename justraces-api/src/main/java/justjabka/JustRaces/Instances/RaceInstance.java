@@ -81,7 +81,7 @@ public class RaceInstance extends BaseInstance {
         return this.cachedModifiers.get(material);
     }
 
-    public void buildModifierCache() {
+    private void buildModifierCache() {
         this.cachedModifiers.clear();
         this.isModifiersCacheBuilt = true;
 

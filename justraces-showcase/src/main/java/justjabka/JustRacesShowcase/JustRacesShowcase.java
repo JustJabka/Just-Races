@@ -1,5 +1,6 @@
 package justjabka.JustRacesShowcase;
 
+import justjabka.JustRaces.Managers.ResourceManager;
 import justjabka.JustRacesShowcase.Registries.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,8 @@ public final class JustRacesShowcase extends JavaPlugin {
 
         ListenersRegistry.register(this);
         RunnablesRegistry.register(this);
+
+        ResourceManager.registerRacesFromResources(this, "races/");
     }
 
     @Override
