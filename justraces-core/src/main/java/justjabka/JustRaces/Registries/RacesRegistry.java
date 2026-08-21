@@ -42,8 +42,6 @@ public class RacesRegistry {
                 String fileNameWithNoExtension = file.getName().replaceFirst("[.][^.]+$", "");
                 race.setKey(fileNameWithNoExtension.toLowerCase());
 
-                race.buildModifierCache();
-
                 JustRacesRegistries.RACES.register(race.getKey(), race);
             } catch (Exception e) {
                 JustRacesAPI.getLogger().error("Error while registering race: {}", file.getName(), e);
