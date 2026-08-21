@@ -1,7 +1,8 @@
 package justjabka.JustRaces;
 
-import justjabka.JustRaces.Managers.ConfigManager;
-import justjabka.JustRaces.Registries.*;
+import justjabka.JustRaces.Registries.ListenersRegistry;
+import justjabka.JustRaces.Registries.RacesRegistry;
+import justjabka.JustRaces.Registries.RunnablesRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -14,7 +15,6 @@ public final class JustRaces extends JavaPlugin {
         // Add Hooks
         JustRacesRegistries.ABILITIES.addHook((key, ability) -> {
             Bukkit.getPluginManager().registerEvents(ability, JustRacesAPI.getInstance());
-            ConfigManager.loadAbilityConfigNew(ability, JustRacesAPI.getInstance());
         });
 
         JustRacesRegistries.MODIFIERS.addHook((key, modifier) -> {

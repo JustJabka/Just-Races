@@ -75,7 +75,10 @@ public class RaceInstance extends BaseInstance {
     }
 
     public ItemModifier getModifier(Material material) {
-        return cachedModifiers.get(material);
+        boolean needCaching = cachedModifiers.isEmpty() && !JustRacesRegistries.MODIFIERS.keys().isEmpty();
+        if (needCaching) buildModifierCache();
+
+        return this.cachedModifiers.get(material);
     }
 
     public void buildModifierCache() {
