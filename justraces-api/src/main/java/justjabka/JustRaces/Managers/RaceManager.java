@@ -2,6 +2,7 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
+import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
@@ -12,6 +13,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
@@ -58,16 +60,41 @@ public class RaceManager {
     /**
      * Sets player's race
      * @param player Player which would be set
-     * @param key Race key
+     * @param raceKey Race key
+     * @param cause Cause of race change
+     * @return {@code true} if race set successfully
      * @see RaceManager#getRaceByKey(NamespacedKey)
      */
-    public static void setRace(Player player, NamespacedKey key) {
+    public static boolean setRace(Player player, NamespacedKey raceKey, PlayerRaceChangePreEvent.Cause cause) {
+        RaceInstance oldRace = RaceManager.getRace(player);
+        RaceInstance newRace = getRaceByKey(raceKey);
+
+        if (newRace == null) {
+            JustRacesAPI.getLogger().warn("Tried to set unknown race for {}: {}", player.getName(), raceKey);
+            return false;
+        }
+
+        PlayerRaceChangePreEvent event = new PlayerRaceChangePreEvent(player, oldRace, newRace, cause);
+        event.callEvent();
+        if (event.isCancelled()) return false;
+
+        applyRace(event.getPlayer(), event.getNewRace());
+        return true;
+    }
+
+    /**
+     * @see RaceManager#setRace(Player, NamespacedKey, PlayerRaceChangePreEvent.Cause)
+     */
+    public static boolean setRace(Player player, RaceInstance race, PlayerRaceChangePreEvent.Cause cause) {
+        return setRace(player, race.getKey(), cause);
+    }
+
+    private static void applyRace(Player player, @NotNull RaceInstance race) {
         resetRace(player);
 
         PersistentDataContainer data = player.getPersistentDataContainer();
-        data.set(RACE_KEY, PersistentDataType.STRING, key.toString());
+        data.set(RACE_KEY, PersistentDataType.STRING, race.getKey().asString());
 
-        RaceInstance race = JustRacesRegistries.RACES.get(key);
         initRace(player, race);
     }
 

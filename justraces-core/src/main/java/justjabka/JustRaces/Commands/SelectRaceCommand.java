@@ -12,6 +12,7 @@ import io.papermc.paper.registry.data.dialog.DialogBase;
 import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
+import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
@@ -51,7 +52,7 @@ public class SelectRaceCommand {
     private static void handleRaceSelection(Audience audience, RaceInstance race) {
         if (!(audience instanceof Player player)) return;
 
-        RaceManager.setRace(player, race.getKey());
+        RaceManager.setRace(player, race, PlayerRaceChangePreEvent.Cause.DIALOG);
     }
 
     private static void openRaceDialog(Player player, int page) {
