@@ -5,8 +5,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called when player's race is changing
+ * @see PlayerRaceChangeEvent
+ */
 public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
@@ -16,6 +21,7 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
 
     private boolean cancelled;
 
+    @ApiStatus.Internal
     public PlayerRaceChangePreEvent(
             @NotNull Player player,
             @NotNull RaceInstance oldRace,
@@ -28,20 +34,32 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
         this.cause = cause;
     }
 
+    /**
+     * @return Player's race, that will be changed
+     */
     @NotNull
     public RaceInstance getOldRace() {
         return oldRace;
     }
 
+    /**
+     * @return Player's race, that will be set
+     */
     @NotNull
     public RaceInstance getNewRace() {
         return newRace;
     }
 
+    /**
+     * @param race Player's new race
+     */
     public void setNewRace(@NotNull RaceInstance race) {
         this.newRace = race;
     }
 
+    /**
+     * @return Cause of the race change
+     */
     @NotNull
     public Cause getCause() {
         return cause;

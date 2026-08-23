@@ -68,7 +68,7 @@ public class RaceManager {
      * @see RaceManager#getRaceByKey(NamespacedKey)
      */
     public static boolean setRace(Player player, NamespacedKey raceKey, Cause cause) {
-        RaceInstance currentRace = RaceManager.getRace(player);
+        RaceInstance currentRace = getRace(player);
         RaceInstance newRace = getRaceByKey(raceKey);
 
         // TODO: make races actually not null without crutches like fallback race if API user fucked up raceKey
