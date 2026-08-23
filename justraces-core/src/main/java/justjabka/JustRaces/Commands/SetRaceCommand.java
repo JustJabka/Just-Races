@@ -7,7 +7,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.JustRaces.Commands.Arguments.RaceArgument;
-import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
+import justjabka.JustRaces.Events.Race.Cause;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.RaceManager;
@@ -31,7 +31,7 @@ public class SetRaceCommand {
 
                                     RaceInstance race = ctx.getArgument("race", RaceInstance.class);
 
-                                    boolean success = RaceManager.setRace(target, race, PlayerRaceChangePreEvent.Cause.COMMAND);
+                                    boolean success = RaceManager.setRace(target, race, Cause.COMMAND);
                                     if (!success) {
                                         target.sendMessage(FAIL_MESSAGE);
                                         return 0;

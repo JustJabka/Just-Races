@@ -2,6 +2,8 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
+import justjabka.JustRaces.Events.Race.Cause;
+import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
@@ -65,27 +67,33 @@ public class RaceManager {
      * @return {@code true} if race set successfully
      * @see RaceManager#getRaceByKey(NamespacedKey)
      */
-    public static boolean setRace(Player player, NamespacedKey raceKey, PlayerRaceChangePreEvent.Cause cause) {
-        RaceInstance oldRace = RaceManager.getRace(player);
+    public static boolean setRace(Player player, NamespacedKey raceKey, Cause cause) {
+        RaceInstance currentRace = RaceManager.getRace(player);
         RaceInstance newRace = getRaceByKey(raceKey);
 
+        // TODO: make races actually not null without crutches like fallback race if API user fucked up raceKey
         if (newRace == null) {
             JustRacesAPI.getLogger().warn("Tried to set unknown race for {}: {}", player.getName(), raceKey);
             return false;
         }
 
-        PlayerRaceChangePreEvent event = new PlayerRaceChangePreEvent(player, oldRace, newRace, cause);
-        event.callEvent();
-        if (event.isCancelled()) return false;
+        PlayerRaceChangePreEvent pre = new PlayerRaceChangePreEvent(player, currentRace, newRace, cause);
+        pre.callEvent();
+        if (pre.isCancelled()) return false;
 
-        applyRace(event.getPlayer(), event.getNewRace());
+        RaceInstance finalRace = pre.getNewRace();
+        applyRace(pre.getPlayer(), finalRace);
+
+        PlayerRaceChangeEvent post = new PlayerRaceChangeEvent(player, currentRace, finalRace, cause);
+        post.callEvent();
+
         return true;
     }
 
     /**
-     * @see RaceManager#setRace(Player, NamespacedKey, PlayerRaceChangePreEvent.Cause)
+     * @see RaceManager#setRace(Player, NamespacedKey, Cause)
      */
-    public static boolean setRace(Player player, RaceInstance race, PlayerRaceChangePreEvent.Cause cause) {
+    public static boolean setRace(Player player, RaceInstance race, Cause cause) {
         return setRace(player, race.getKey(), cause);
     }
 
