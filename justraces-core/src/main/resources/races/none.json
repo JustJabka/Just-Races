@@ -1,0 +1,10 @@
+{
+  "name": {
+    "translate": "race.none.name",
+    "fallback": "None"
+  },
+  "abilities": [],
+  "attributes": {},
+  "item_modifiers": {},
+  "config": {}
+}

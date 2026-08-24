@@ -24,7 +24,8 @@ import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
-    public static final NamespacedKey FALLBACK_RACE = new NamespacedKey("justracesshowcase","human");
+    public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
+    public static final RaceInstance NONE = getRaceByKey(NONE_KEY);
 
     /**
      * Gets player's race
@@ -32,31 +33,26 @@ public class RaceManager {
      * @return Race that player has
      * @see #isRace(Player, NamespacedKey)
      */
-    public static RaceInstance getRace(Player player) {
+    @NotNull
+    public static RaceInstance getRace(@NotNull Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         String raceString = pdc.get(RACE_KEY, PersistentDataType.STRING);
 
-        if (raceString == null) {
-            return getFallbackRace();
-        }
-
+        if (raceString == null) return NONE;
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
-        RaceInstance race = getRaceByKey(raceKey);
 
-        if (race == null) {
-            JustRacesAPI.getLogger().warn("Unknown race in PDC for {}: {}", player.getName(), raceString);
-            return getFallbackRace();
+        RaceInstance instance = JustRacesRegistries.RACES.get(raceKey);
+        return instance != null ? instance : NONE;
+    }
+
+    @NotNull
+    public static RaceInstance getRaceByKey(NamespacedKey key) {
+        RaceInstance instance = JustRacesRegistries.RACES.get(key);
+        if (instance == null) {
+            throw new IllegalArgumentException("Unregistered race: %s".formatted(key));
         }
 
-        return race;
-    }
-
-    public static RaceInstance getRaceByKey(NamespacedKey key) {
-        return JustRacesRegistries.RACES.get(key);
-    }
-
-    public static RaceInstance getFallbackRace() {
-        return getRaceByKey(FALLBACK_RACE);
+        return instance;
     }
 
     /**
@@ -67,15 +63,9 @@ public class RaceManager {
      * @return {@code true} if race set successfully
      * @see RaceManager#getRaceByKey(NamespacedKey)
      */
-    public static boolean setRace(Player player, NamespacedKey raceKey, Cause cause) {
+    public static boolean setRace(@NotNull Player player, NamespacedKey raceKey, @NotNull Cause cause) {
         RaceInstance currentRace = getRace(player);
         RaceInstance newRace = getRaceByKey(raceKey);
-
-        // TODO: make races actually not null without crutches like fallback race if API user fucked up raceKey
-        if (newRace == null) {
-            JustRacesAPI.getLogger().warn("Tried to set unknown race for {}: {}", player.getName(), raceKey);
-            return false;
-        }
 
         PlayerRaceChangePreEvent pre = new PlayerRaceChangePreEvent(player, currentRace, newRace, cause);
         pre.callEvent();
@@ -93,11 +83,11 @@ public class RaceManager {
     /**
      * @see RaceManager#setRace(Player, NamespacedKey, Cause)
      */
-    public static boolean setRace(Player player, RaceInstance race, Cause cause) {
+    public static boolean setRace(@NotNull Player player, @NotNull RaceInstance race, @NotNull Cause cause) {
         return setRace(player, race.getKey(), cause);
     }
 
-    private static void applyRace(Player player, @NotNull RaceInstance race) {
+    private static void applyRace(@NotNull Player player, @NotNull RaceInstance race) {
         resetRace(player);
 
         PersistentDataContainer data = player.getPersistentDataContainer();
@@ -112,31 +102,44 @@ public class RaceManager {
      * @param key Race key
      * @return {@code true} if races matches
      */
-    public static boolean isRace(Player player, NamespacedKey key) {
+    public static boolean isRace(@NotNull Player player, NamespacedKey key) {
         RaceInstance race = getRace(player);
-        return race != null && race.getKey().equals(key);
+        return race.getKey().equals(key);
     }
 
-    private static void initRace(Player player, RaceInstance race) {
+    /**
+     * @see RaceManager#isRace(Player, NamespacedKey)
+     */
+    public static boolean isRace(@NotNull Player player, @NotNull RaceInstance race) {
+        return isRace(player, race.getKey());
+    }
+
+    /**
+     * Checks if player has race
+     * @param player Player whose race will be checked
+     * @return {@code true} if player has race
+     */
+    public static boolean hasRace(@NotNull Player player) {
+        return !isRace(player, NONE_KEY);
+    }
+
+    private static void initRace(@NotNull Player player, @NotNull RaceInstance race) {
         Map<Attribute, Double> attributes = race.getAttributes();
         attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
     }
 
     /**
      * Resets player's race
-     * @param player Player which race would be reseted
-     * @apiNote use this carefully because race will become {@code null}!
+     * @param player Player which race would be reset
      */
-    public static void resetRace(Player player) {
+    public static void resetRace(@NotNull Player player) {
         // Clear potion effects
         player.clearActivePotionEffects();
 
         // Reset all attributes
         AttributeManager.removeAllModifiers(player);
 
-        for (Attribute attribute : Registry.ATTRIBUTE) {
-            AttributeManager.resetBaseValue(player, attribute);
-        }
+        Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
         // Disable abilities
         Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(getRace(player));
@@ -147,5 +150,8 @@ public class RaceManager {
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
+
+        // Remove race
+        player.getPersistentDataContainer().remove(RACE_KEY);
     }
 }
