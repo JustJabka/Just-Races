@@ -1,12 +1,11 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Managers.RaceManager;
 import justjabka.JustRacesShowcase.Configs.Ability.VocalFryAbilityConfig;
 import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRaces.Managers.AbilityManager;
-import justjabka.JustRaces.Managers.RaceManager;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,12 +28,6 @@ public class VocalFryAbility extends BaseAbility {
                 new PotionEffect(PotionEffectType.SLOWNESS, config.duration, 1, false, true, true),
                 new PotionEffect(PotionEffectType.WEAKNESS, config.duration, 1, false, true, true)
         );
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        if (!AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
-        return super.getAbilityDisplay(player);
     }
 
     @Override

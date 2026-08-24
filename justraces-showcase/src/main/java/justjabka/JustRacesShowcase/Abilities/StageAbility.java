@@ -1,12 +1,9 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -40,15 +37,6 @@ public class StageAbility extends BaseValidationAbility {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         clearStage(player);
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
-
-        TextColor displayColor = isActive ? abilityPrimaryColor : abilitySecondaryColor;
-
-        return getDisplayName().color(displayColor).decorate(TextDecoration.UNDERLINED);
     }
 
     @EventHandler

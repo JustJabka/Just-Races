@@ -1,13 +1,12 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRacesShowcase.Configs.Ability.SwiftSneakAbilityConfig;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
-import justjabka.JustRacesShowcase.Runnables.Ability.SwiftSneakAbilityRunnable;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import net.kyori.adventure.text.Component;
+import justjabka.JustRacesShowcase.Configs.Ability.SwiftSneakAbilityConfig;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
+import justjabka.JustRacesShowcase.Runnables.Ability.SwiftSneakAbilityRunnable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -59,12 +58,6 @@ public class SwiftSneakAbility extends BaseValidationAbility {
 
         if (!AbilityManager.isAbilityActive(player, getKey())) return;
         clearFastSneak(player);
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        if (AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
-        return super.getAbilityDisplay(player);
     }
 
     @EventHandler

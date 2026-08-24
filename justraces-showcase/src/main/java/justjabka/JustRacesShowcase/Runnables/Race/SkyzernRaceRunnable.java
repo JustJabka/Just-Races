@@ -1,7 +1,7 @@
 package justjabka.JustRacesShowcase.Runnables.Race;
 
-import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
+import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;

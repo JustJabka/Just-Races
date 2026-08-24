@@ -1,9 +1,6 @@
 package justjabka.JustRaces.Abilities.Generic;
 
 import justjabka.JustRaces.Managers.AbilityManager;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -14,15 +11,6 @@ import java.util.UUID;
  * Subclasses should implement {@link #onToggle(Player, boolean)} to handle custom logic when the state changes.
  */
 public abstract class BaseTogglableAbility extends BaseValidationAbility {
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
-
-        TextColor displayColor = isActive ? abilityPrimaryColor : abilitySecondaryColor;
-
-        return getDisplayName().color(displayColor).decorate(TextDecoration.UNDERLINED);
-    }
 
     /**
      * Toggles the ability's state for the given player.

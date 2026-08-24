@@ -34,11 +34,6 @@ public class PoisonousWeaponAbility extends BaseAbility {
         return config.cooldown;
     }
 
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        return Component.empty();
-    }
-
     @EventHandler
     public void handleInteract(PlayerInteractEvent event) {
         super.handleInteract(event);

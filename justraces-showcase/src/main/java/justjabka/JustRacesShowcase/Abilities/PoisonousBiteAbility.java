@@ -1,10 +1,9 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Configs.Ability.PoisonousBiteAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRaces.Managers.AbilityManager;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -27,11 +26,6 @@ public class PoisonousBiteAbility extends BaseAbility {
     @Override
     public NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "poisonous_bite");
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        return Component.empty();
     }
 
     @Override

@@ -3,11 +3,10 @@ package justjabka.JustRacesShowcase.Abilities;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRacesShowcase.Configs.Ability.PoisonousSplitAbilityConfig;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import net.kyori.adventure.text.Component;
+import justjabka.JustRacesShowcase.Configs.Ability.PoisonousSplitAbilityConfig;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.damage.DamageSource;
@@ -52,12 +51,6 @@ public class PoisonousSplitAbility extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return config.cooldown;
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        if (AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
-        return super.getAbilityDisplay(player);
     }
 
     @EventHandler

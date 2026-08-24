@@ -1,12 +1,11 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
-import justjabka.JustRacesShowcase.Configs.Ability.TrueFormAbilityConfig;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
-import net.kyori.adventure.text.Component;
+import justjabka.JustRacesShowcase.Configs.Ability.TrueFormAbilityConfig;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
@@ -40,12 +39,6 @@ public class TrueFormAbility extends BaseValidationAbility {
     private final Set<PotionEffect> trueFormDebuffs;
 
     private static final Map<UUID, Long> formExpireStamp = new HashMap<>();
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        if (AbilityManager.isAbilityActive(player, getKey())) return Component.empty();
-        return super.getAbilityDisplay(player);
-    }
 
     public TrueFormAbility(TrueFormAbilityConfig config) {
         this.config = config;

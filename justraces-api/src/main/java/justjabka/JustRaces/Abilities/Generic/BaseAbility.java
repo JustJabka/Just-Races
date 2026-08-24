@@ -1,12 +1,14 @@
 package justjabka.JustRaces.Abilities.Generic;
 
 import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.RaceManager;
 import justjabka.JustRaces.Types.AbilityActivateAction;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
@@ -17,19 +19,28 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseAbility implements Listener {
-    private final Map<UUID, Long> cooldowns = new HashMap<>();
+    private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
+    private final Map<UUID, BossBar> activeCooldownsBar = new ConcurrentHashMap<>();
 
-    protected static final TextColor abilitySecondaryColor = TextColor.fromHexString("#a42431");
-    protected static final TextColor abilityPrimaryColor = TextColor.fromHexString("#79a049");
+    protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown");
+    protected static final Component COOLDOWN_BAR_ICON_OFFSET = Component.text("\uDB00\uDCC6").font(COOLDOWN_BAR_FONT);
 
     public abstract NamespacedKey getKey();
     public abstract long getCooldownTicks();
+
+    public BossBar.Color getCooldownBarColor() {
+        return BossBar.Color.WHITE;
+    }
+    public Component getCooldownBarIcon() {
+        return Component.text("\uE000")
+                .font(COOLDOWN_BAR_FONT);
+    }
 
     /**
      * Gets remaining ticks that ability need to recharge
@@ -115,52 +126,34 @@ public abstract class BaseAbility implements Listener {
         return allowedAbilities.contains(this);
     }
 
-    /**
-     * Gets ability display name as the text component
-     * @return Component with translate and fallback
-     * @see #getAbilityDisplay(Player)
-     */
-    public Component getDisplayName() {
-        String name = this.getClass().getSimpleName();
+    public void updateCooldownBar(Player player) {
+        float remainingTicks = (float) getRemainingTicks(player);
+        float cooldownTicks = (float) getCooldownTicks();
 
-        // Regex go brrrrr😎
-        String removedSuffix = name.replaceFirst("Ability$", "");
-        String snakeCase = removedSuffix.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+        if (remainingTicks <= 0 || cooldownTicks <= 0) {
+            removeCooldownBar(player);
+            return;
+        }
 
-        String translate = String.format("ability.%s.name", snakeCase);
-        String fallback = removedSuffix.replaceAll("(\\p{Lu})", " $1").trim();
+        float progress = Math.clamp(remainingTicks / cooldownTicks, BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
+        final Component iconWithOffset = getCooldownBarIcon().shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
+        final BossBar.Color color = getCooldownBarColor();
 
-        return Component.translatable(translate).fallback(fallback);
+        BossBar cooldownBar = activeCooldownsBar.computeIfAbsent(player.getUniqueId(), uuid -> {
+            BossBar bar = BossBar.bossBar(iconWithOffset, progress, color, BossBar.Overlay.NOTCHED_6);
+            player.showBossBar(bar);
+            return bar;
+        });
+
+        cooldownBar.name(iconWithOffset);
+        cooldownBar.color(color);
+        cooldownBar.progress(progress);
     }
 
-    /**
-     * Gets ability display as the text component. That can be almost anything.
-     * From basic ability name and cooldown to a very specific stats
-     * @param player Player from which we get the ability display
-     * @return Ability display as component
-     * @apiNote Use {@code Component.empty()} to hide the ability display
-     * @see #getDisplayName()
-     */
-    public Component getAbilityDisplay(Player player) {
-        Component displayName = getDisplayName();
-        long remainingTicks = getRemainingTicks(player);
-        long remainingSeconds = getRemainingSeconds(player);
-
-        Component abilityOnCooldownMessage = Component
-                .translatable("ability.base.cooldown_display")
-                .fallback("%s: %s")
-                .arguments(displayName, Component.text(remainingSeconds))
-                .color(abilitySecondaryColor);
-
-        Component abilityReadyMessage = Component
-                .translatable("ability.base.ready_display")
-                .fallback("%s")
-                .arguments(displayName)
-                .color(abilityPrimaryColor)
-                .decorate(TextDecoration.UNDERLINED);
-
-        if (remainingTicks > 0) return abilityOnCooldownMessage;
-        return abilityReadyMessage;
+    protected void removeCooldownBar(Player player) {
+        BossBar bossBar = activeCooldownsBar.remove(player.getUniqueId());
+        if (bossBar == null) return;
+        player.hideBossBar(bossBar);
     }
 
     // Handlers

@@ -1,11 +1,10 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Configs.Ability.GluttonyExecuteAbilityConfig;
 import justjabka.JustRacesShowcase.DataProvider.EntityTypeTagKeysProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRaces.Managers.AbilityManager;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -44,12 +43,6 @@ public class GluttonyExecuteAbility extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return 0;
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        if (!AbilityManager.isAbilityActive(player, TRUE_FORM_KEY)) return Component.empty();
-        return super.getAbilityDisplay(player);
     }
 
     @EventHandler

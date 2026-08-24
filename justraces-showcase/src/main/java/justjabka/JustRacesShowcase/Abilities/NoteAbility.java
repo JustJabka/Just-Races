@@ -1,10 +1,8 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.Managers.AbilityManager;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LivingEntity;
@@ -33,18 +31,6 @@ public class NoteAbility extends BaseAbility {
     @Override
     public NamespacedKey getKey() {
         return NOTE_ABILITY_KEY;
-    }
-
-    @Override
-    public Component getAbilityDisplay(Player player) {
-        return Component
-                .translatable("ability.note.amount")
-                .fallback("%s/%s")
-                .arguments(
-                        Component.text(getNotes(player)),
-                        Component.text(maxNoteAmount)
-                )
-                .color(NamedTextColor.LIGHT_PURPLE);
     }
 
     @Override
