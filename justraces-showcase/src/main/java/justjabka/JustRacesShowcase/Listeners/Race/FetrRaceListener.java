@@ -54,9 +54,9 @@ public class FetrRaceListener extends BaseRaceListener {
 
         if (event.getType() != Material.GOAT_HORN) return;
 
-        int hornBuffDuration = getConfig().node("horn_buff", "duration").getInt() * 20;
-        double hornBuffRadius = getConfig().node("horn_buff", "radius").getDouble();
-        int hornBuffNotesPerPlayer = getConfig().node("horn_buff", "notes_per_player").getInt();
+        int hornBuffDuration = getConfigInt("horn_buff", "duration") * 20;
+        double hornBuffRadius = getConfigDouble("horn_buff", "radius");
+        int hornBuffNotesPerPlayer = getConfigInt("horn_buff", "notes_per_player");
 
         Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(hornBuffRadius);
         int playerCount = playersNearby.size();

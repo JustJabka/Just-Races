@@ -9,16 +9,14 @@ repositories {
 }
 
 dependencies {
+    compileOnly(project(":justraces-api"))
+    compileOnly(project(":justraces-core"))
+
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:24.1.0")
 
-    implementation(project(":justraces-api"))
-    compileOnly(project(":justraces-core"))
-
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
-    compileOnly("com.jeff-media:MorePersistentDataTypes:2.4.0")
-    compileOnly("org.spongepowered:configurate-gson:4.2.0")
-    compileOnly("org.spongepowered:configurate-extra-guice:4.2.0")
+    implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
 }
 
 java {

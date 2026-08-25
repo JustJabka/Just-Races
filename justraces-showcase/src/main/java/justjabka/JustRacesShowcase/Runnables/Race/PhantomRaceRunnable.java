@@ -60,7 +60,7 @@ public class PhantomRaceRunnable extends BaseRaceRunnable {
     private boolean handleHelmetLogic(Player player, boolean hasHelmet) {
         if (!hasHelmet) return false;
 
-        int helmetDurabilityDrain = getConfig().node("helmet_durability_drain").getInt();
+        int helmetDurabilityDrain = getConfigInt("helmet_durability_drain");
 
         player.getEquipment().getHelmet().damage(helmetDurabilityDrain, player);
         return true;
@@ -77,7 +77,7 @@ public class PhantomRaceRunnable extends BaseRaceRunnable {
 
             if (hasModifier) return;
 
-            double nightMovementSpeedBonus = getConfig().node("night_movement_speed_bonus").getDouble();
+            double nightMovementSpeedBonus = getConfigDouble("night_movement_speed_bonus");
 
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),

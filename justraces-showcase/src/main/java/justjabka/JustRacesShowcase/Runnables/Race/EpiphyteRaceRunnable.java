@@ -34,7 +34,7 @@ public class EpiphyteRaceRunnable extends BaseRaceRunnable {
         boolean removeBuff = !steppingOnBuffBlock && hasModifier;
 
         if (giveBuff) {
-            double mossMovementSpeedBonus = getConfig().node("moss_movement_speed_bonus").getDouble();
+            double mossMovementSpeedBonus = getConfigDouble("moss_movement_speed_bonus");
 
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),

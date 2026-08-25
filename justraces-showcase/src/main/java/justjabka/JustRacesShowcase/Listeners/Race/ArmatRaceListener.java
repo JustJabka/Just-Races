@@ -61,7 +61,7 @@ public class ArmatRaceListener extends BaseRaceListener {
     }
 
     private boolean handleDamageCauses(EntityDamageEvent event, DamageType damageType, Player player) {
-        double vulnerableMultiplier = getConfig().node("vulnerable_damage_multiplier").getDouble();
+        double vulnerableMultiplier = getConfigDouble("vulnerable_damage_multiplier");
 
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
@@ -82,7 +82,7 @@ public class ArmatRaceListener extends BaseRaceListener {
 
     private boolean handleDodge(EntityDamageEvent event, Player player, DamageType damageType) {
         double dodgeChance;
-        double maxDodgeChance = getConfig().node("damage_dodge", "max_chance").getDouble();
+        double maxDodgeChance = getConfigDouble("damage_dodge", "max_chance");
 
         // Calc Dodge Chance
         AttributeInstance luckInstance = player.getAttribute(Attribute.LUCK);
@@ -111,8 +111,8 @@ public class ArmatRaceListener extends BaseRaceListener {
     }
 
     private void handleIronArmorSetBonus(EntityDamageEvent event, double damage) {
-        double startingPoint = getConfig().node("damage_reduction", "starting_point").getDouble();
-        double damageMultiplier = getConfig().node("damage_reduction", "damage_multiplier").getDouble();
+        double startingPoint = getConfigDouble("damage_reduction", "starting_point");
+        double damageMultiplier = getConfigDouble("damage_reduction", "damage_multiplier");
 
         if (damage < startingPoint) return;
 
@@ -125,8 +125,8 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (!successfullyDodged) return;
         if (!(causingEntity instanceof LivingEntity attacker)) return;
 
-        double parryDamagePercent = getConfig().node("damage_dodge", "parry", "damage_percent").getDouble();
-        int parryArmorPenalty = getConfig().node("damage_dodge", "parry", "armor_penalty").getInt();
+        double parryDamagePercent = getConfigDouble("damage_dodge", "parry", "damage_percent");
+        int parryArmorPenalty = getConfigInt("damage_dodge", "parry", "armor_penalty");
 
         double parryDamage = damage * parryDamagePercent;
         DamageSource parrySource = DamageSource.builder(damageType)
@@ -151,8 +151,8 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (!isRequiredRace(attacker)) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
 
-        double absoluteDamageAmount = getConfig().node("absolute_damage", "amount").getDouble();
-        float absoluteDamageCooldown = getConfig().node("absolute_damage", "min_attack_cooldown").getFloat();
+        double absoluteDamageAmount = getConfigDouble("absolute_damage", "amount");
+        float absoluteDamageCooldown = getConfigFloat("absolute_damage", "min_attack_cooldown");
 
         if (attacker.getAttackCooldown() < absoluteDamageCooldown) return;
 
@@ -216,7 +216,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         EntityPotionEffectEvent.Action action = event.getAction();
         if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
 
-        double effectDurationMultiplier = getConfig().node("alchemy", "effect_duration_multiplier").getDouble();
+        double effectDurationMultiplier = getConfigDouble("alchemy", "effect_duration_multiplier");
         JustRacesShowcase.LOGGER.info(String.valueOf(effectDurationMultiplier));
 
         PersistentDataContainer pdc = player.getPersistentDataContainer();
@@ -273,8 +273,8 @@ public class ArmatRaceListener extends BaseRaceListener {
 
         if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
 
-        double miningBonusMax = getConfig().node("mining_bonus", "upper_bound").getDouble();
-        double miningBonusStep = getConfig().node("mining_bonus", "step").getDouble();
+        double miningBonusMax = getConfigDouble("mining_bonus", "upper_bound");
+        double miningBonusStep = getConfigDouble("mining_bonus", "step");
 
         // Calc new attribute
         double durability = ArmorManager.getAverageDurability(player);

@@ -1,22 +1,11 @@
 package justjabka.JustRaces.Runnables.Generic;
 
-import justjabka.JustRaces.Managers.RaceManager;
+import justjabka.JustRaces.Interfaces.RaceContext;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spongepowered.configurate.CommentedConfigurationNode;
 
-public abstract class BaseRaceRunnable extends BukkitRunnable {
-    public abstract NamespacedKey getRaceKey();
-
-    public CommentedConfigurationNode getConfig() {
-        return RaceManager.getRaceByKey(getRaceKey()).getConfig();
-    }
-
-    public boolean isRequiredRace(Player player) {
-        return RaceManager.isRace(player, getRaceKey());
-    }
+public abstract class BaseRaceRunnable extends BukkitRunnable implements RaceContext {
 
     @Override
     public void run() {

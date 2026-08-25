@@ -81,7 +81,7 @@ public class SkyzernRaceListener extends BaseRaceListener {
         boolean willReceiveBuff = hasAbilitySlotSelected && !hasModifier;
 
         if (willReceiveBuff) {
-            double additionalKnockbackValue = getConfig().node("additional_knockback_value").getDouble();
+            double additionalKnockbackValue = getConfigDouble("additional_knockback_value");
 
             AttributeModifier modifier = new AttributeModifier(
                     getRaceKey(),
