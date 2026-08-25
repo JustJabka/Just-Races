@@ -47,13 +47,11 @@ public class ArmorManager {
 
     /**
      * Checks if player has any armor equipped
-     * @param player Player whoose equipment will be checked
+     * @param player Player whose equipment will be checked
      * @return {@code true} if player has any armor
      */
     public static boolean hasAnyArmor(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
-
-        JustRacesAPI.getLogger().info(String.valueOf(equipment.length));
 
         for (ItemStack item : equipment) {
             if (item == null) continue;
