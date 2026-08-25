@@ -1,5 +1,0 @@
-cooldown: 5
-effect:
-  duration: 10
-  amplifier: 1
-projectile-damage: 4

@@ -16,11 +16,6 @@ public class ListenersRegistry {
         PluginManager manager = plugin.getServer().getPluginManager();
 
         manager.registerEvents(new ArmatRaceListener(), plugin);
-        manager.registerEvents(new PhantomRaceListener(), plugin);
-        manager.registerEvents(new SkyzernRaceListener(), plugin);
-        manager.registerEvents(new EpiphyteRaceListener(), plugin);
-        manager.registerEvents(new LizardRaceListener(), plugin);
-        manager.registerEvents(new FetrRaceListener(), plugin);
 
         JustRacesShowcase.LOGGER.info("Successfully registered race listeners!");
     }

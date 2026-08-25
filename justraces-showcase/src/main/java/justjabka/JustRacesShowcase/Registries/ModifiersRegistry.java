@@ -4,10 +4,6 @@ import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.ItemModifier;
 import justjabka.JustRacesShowcase.Modifiers.Armor.*;
-import justjabka.JustRacesShowcase.Modifiers.Food.GlowBerriesFoodModifier;
-import justjabka.JustRacesShowcase.Modifiers.Food.MossFoodModifier;
-import justjabka.JustRacesShowcase.Modifiers.Food.PhantomMembraneFoodModifier;
-import justjabka.JustRacesShowcase.Modifiers.Food.SweetBerriesFoodModifier;
 import org.bukkit.NamespacedKey;
 
 import java.util.List;
@@ -26,12 +22,7 @@ public class ModifiersRegistry {
                 new CopperArmorModifier(create("copper_armor"), configs.copperArmorModifierConfig),
                 new ChainmailArmorModifier(create("chainmail_armor"), configs.chainmailArmorModifierConfig),
                 new IronArmorModifier(create("iron_armor"), configs.ironArmorModifierConfig),
-                new GoldenArmorModifier(create("golden_armor"), configs.goldenArmorModifierConfig),
-
-                new PhantomMembraneFoodModifier(create("phantom_membrane"), configs.phantomMembraneFoodModifierConfig),
-                new GlowBerriesFoodModifier(create("glow_berries"), configs.glowBerriesFoodModifierConfig),
-                new MossFoodModifier(create("moss"), configs.mossFoodModifierConfig),
-                new SweetBerriesFoodModifier(create("sweet_berries"), configs.sweetBerriesFoodModifierConfig)
+                new GoldenArmorModifier(create("golden_armor"), configs.goldenArmorModifierConfig)
         );
 
         // Register modifiers globally

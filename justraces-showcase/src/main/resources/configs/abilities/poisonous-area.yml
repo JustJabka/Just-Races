@@ -1,7 +1,0 @@
-cooldown: 3
-
-fuel-drain-amount: 1
-
-effect:
-  duration: 3
-  radius: 10
