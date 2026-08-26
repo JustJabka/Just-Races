@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.JustRacesAPI;
+import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.EffectManager;
 import org.bukkit.Bukkit;
@@ -66,16 +67,17 @@ public class GlobalListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        fullRefresh(player);
+        inventoryRefresh(player);
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        fullRefresh(player);
+        inventoryRefresh(player);
+        AbilityManager.getAbilitiesForPlayer(player).forEach(ability -> ability.resetCooldown(player));
     }
 
-    private static void fullRefresh(Player player) {
+    private static void inventoryRefresh(Player player) {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> {
             ArmorManager.updateArmorSet(player);
             refreshModifiers(player);

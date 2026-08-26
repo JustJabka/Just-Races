@@ -97,6 +97,16 @@ public class AbilityManager {
         return raceAbilities;
     }
 
+    /**
+     * Returns abilities that this player has
+     * @param player Player that abilities will be got
+     * @see AbilityManager#getAbilitiesForRace(RaceInstance)
+     * @return Abilities of the player
+     */
+    public static Set<BaseAbility> getAbilitiesForPlayer(Player player) {
+        return getAbilitiesForRace(RaceManager.getRace(player));
+    }
+
     //endregion
 
 

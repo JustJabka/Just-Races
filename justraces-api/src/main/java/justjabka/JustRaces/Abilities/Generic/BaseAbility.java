@@ -1,9 +1,7 @@
 package justjabka.JustRaces.Abilities.Generic;
 
-import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
-import justjabka.JustRaces.Managers.RaceManager;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -14,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,8 +51,7 @@ public abstract class BaseAbility implements Listener {
      * @see #getRemainingTicks(Player)
      */
     public long getRemainingSeconds(Player player) {
-        float tickRate = Bukkit.getServerTickManager().getTickRate();
-        float remainingSeconds = getRemainingTicks(player) / tickRate;
+        float remainingSeconds = getRemainingTicks(player) / 20f;
 
         return (long) remainingSeconds;
     }
@@ -78,6 +74,17 @@ public abstract class BaseAbility implements Listener {
     public void putOnCooldown(Player player) {
         long expiresAt = getGameTime() + getCooldownTicks();
         setCooldownTicks(player, expiresAt);
+    }
+
+    /**
+     * Resets the active cooldown for the specified player, making the ability instantly available.
+     *
+     * @param player the player whose ability cooldown is being reset
+     * @see #setCooldownTicks(Player, long)
+     * @see #getCooldownTicks()
+     */
+    public void resetCooldown(Player player) {
+        cooldowns.remove(player.getUniqueId());
     }
 
     /**
@@ -110,14 +117,12 @@ public abstract class BaseAbility implements Listener {
     }
 
     /**
-     * Check if player's race has this ability
+     * Check if player has this ability
      * @param player Player that will be checked
      * @return {@code true} if player has this ability
      */
-    public boolean raceHasAbility(Player player) {
-        RaceInstance race = RaceManager.getRace(player);
-        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(race);
-        return allowedAbilities.contains(this);
+    public boolean playerHasAbility(Player player) {
+        return AbilityManager.getAbilitiesForPlayer(player).contains(this);
     }
 
     public void updateCooldownBar(Player player) {
@@ -166,7 +171,7 @@ public abstract class BaseAbility implements Listener {
      * @see #onActivation(Player, Object...)
      */
     protected void tryActivate(Player player, Object... ctx) {
-        if (!raceHasAbility(player)) return;
+        if (!playerHasAbility(player)) return;
 
         if (!canActivate(player)) return;
 

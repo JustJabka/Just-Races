@@ -142,7 +142,7 @@ public class RaceManager {
         Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
         // Disable abilities
-        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForRace(getRace(player));
+        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForPlayer(player);
         allowedAbilities.forEach(ability -> {
             if (!(ability instanceof BaseValidationAbility validationAbility)) return;
             validationAbility.onDeactivation(player);
