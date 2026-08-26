@@ -2,6 +2,8 @@ package justjabka.JustRaces.Managers;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Abilities.Generic.BaseResettableAbility;
+import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
@@ -17,8 +19,6 @@ import java.util.UUID;
 public class AbilityManager {
     private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
     private static final NamespacedKey ABILITY_VISIBILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "ability_visibility");
-
-    private static final int activationSlot = 8;
 
     //region Container Manipulations
     public static PersistentDataContainer getAbilitiesContainer(Player player) {
@@ -125,6 +125,26 @@ public class AbilityManager {
     }
     //endregion
 
+
+    public static void endAbilities(Player player) {
+        Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
+
+        abilities.forEach(ability -> {
+            ability.resetCooldown(player);
+            clearAbilityStates(player, ability);
+        });
+    }
+
+    public static void clearAbilitiesStates(Player player) {
+        Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
+
+        abilities.forEach(ability -> clearAbilityStates(player, ability));
+    }
+
+    private static void clearAbilityStates(Player player, BaseAbility ability) {
+        if (ability instanceof BaseResettableAbility resettable) resettable.resetState(player);
+        else if (ability instanceof BaseValidationAbility validation) validation.onInvalidated(player);
+    }
 
 
     // region Data Manipulation

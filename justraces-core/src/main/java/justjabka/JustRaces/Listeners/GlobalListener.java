@@ -68,13 +68,14 @@ public class GlobalListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
+        AbilityManager.clearAbilitiesStates(player);
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
-        AbilityManager.getAbilitiesForPlayer(player).forEach(ability -> ability.resetCooldown(player));
+        AbilityManager.endAbilities(player);
     }
 
     private static void inventoryRefresh(Player player) {

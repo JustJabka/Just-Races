@@ -2,15 +2,13 @@ package justjabka.JustRaces.Abilities.Generic;
 
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 /**
  * Base ability class for abilities that have a toggleable state and require validation.
  * <p>
  * It is intended to be subclassed by abilities that need to maintain a persistent state
  * (e.g., passive buffs, continuous effects) rather than instant activation.
  */
-public abstract class BaseValidationAbility extends BaseAbility {
+public interface BaseValidationAbility {
 
     /**
      * Checks if the current state of the ability is valid for the given player.
@@ -22,25 +20,17 @@ public abstract class BaseValidationAbility extends BaseAbility {
      * @return {@code true} if the ability state is valid and should remain active;
      *         {@code false} if the ability should be deactivated.
      */
-    public boolean isStateValid(Player player) {
+    default boolean isStateValid(Player player) {
         return true;
     }
 
     /**
-     * Called when the ability is deactivated.
+     * Called when the ability state is invalid.
      * <p>
      * This method allows subclasses to perform cleanup actions or trigger events
      * when the ability is turned off. It is called automatically when the ability
      * is toggled off or when {@link #isStateValid(Player)} returns {@code false}.
      * @param player The player from whom the ability was deactivated.
      */
-    public void onDeactivation(Player player) {}
-
-    /**
-     * Stops any recurring tasks associated with this ability for the given player.
-     * <p>
-     * This is useful for abilities that run periodic checks using runnables. Subclasses should override this method to cancel their specific tasks.
-     * @param pid The UUID of the player whose task should be stopped.
-     */
-    public void stopTask(UUID pid) {}
+    void onInvalidated(Player player);
 }

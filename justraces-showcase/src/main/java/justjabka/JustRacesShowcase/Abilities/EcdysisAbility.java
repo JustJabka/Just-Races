@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Abilities.Generic.BaseDurationAbility;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
@@ -17,22 +18,27 @@ import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class EcdysisAbility extends BaseAbility {
+public class EcdysisAbility extends BaseAbility implements BaseDurationAbility {
     private final EcdysisAbilityConfig config;
 
     private final Set<PotionEffect> userEffects;
     private final Map<Attribute, AttributeModifier> userModifiers;
+
+    private final Map<UUID, BukkitTask> chainTasks = new ConcurrentHashMap<>();
+    private final Map<UUID, BukkitTask> effectTasks = new ConcurrentHashMap<>();
 
     public EcdysisAbility(EcdysisAbilityConfig config) {
         this.config = config;
@@ -65,6 +71,11 @@ public class EcdysisAbility extends BaseAbility {
     }
 
     @Override
+    public int getDurationTicks() {
+        return config.effectDuration;
+    }
+
+    @Override
     public BossBar.Color getCooldownBarColor(Player player) {
         return isSuicideUse(player) ? BossBar.Color.RED : BossBar.Color.PURPLE;
     }
@@ -77,14 +88,6 @@ public class EcdysisAbility extends BaseAbility {
     @Override
     protected boolean canActivate(Player player) {
         return ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        if (AbilityManager.getAbilityValue(player, getKey()) == 0) return;
-        breakUseChain(player);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -106,6 +109,18 @@ public class EcdysisAbility extends BaseAbility {
         return true;
     }
 
+    @Override
+    public void resetState(UUID pid) {
+        cancelTasks(pid);
+
+        Player player = Bukkit.getPlayer(pid);
+        if (player == null) return;
+
+        AttributeManager.removeModifiers(player, userModifiers);
+        userEffects.forEach(effect -> player.removePotionEffect(effect.getType()));
+        onChainExpire(player);
+    }
+
     private boolean isSuicideUse(Player player) {
         double avrgDurability = ArmorManager.getAverageDurability(player);
         return avrgDurability <= config.suicideDurabilityPercent;
@@ -113,14 +128,14 @@ public class EcdysisAbility extends BaseAbility {
 
     private void handleNormalUse(Player player) {
         int nextChain = getNextChain(player);
-        int scaledDurationTicks = config.effectDuration * nextChain;
+        int effectDuration = getDurationTicks() * nextChain;
         UUID pid = player.getUniqueId();
 
         damageArmor(player);
 
         // Apply effects
         userEffects.forEach(effect ->
-                player.addPotionEffect(effect.withDuration(scaledDurationTicks))
+                player.addPotionEffect(effect.withDuration(effectDuration))
         );
         if (!AttributeManager.hasModifiers(player, userModifiers)) {
             AttributeManager.addModifiers(player, userModifiers);
@@ -128,22 +143,20 @@ public class EcdysisAbility extends BaseAbility {
 
         createExplosion(player, Material.NETHERITE_BLOCK, config.explosionPowerNormal);
 
-        Bukkit.getScheduler().runTaskLater(JustRacesShowcase.INSTANCE, () -> {
-            // Get Player
-            Player plr = Bukkit.getPlayer(pid);
-            if (plr == null) return;
+        cancelTasks(pid);
+        BukkitScheduler scheduler = Bukkit.getScheduler();
 
-            // Get active chain
-            int activeChain = AbilityManager.getAbilityValue(plr, getKey());
-            if (activeChain != nextChain) return;
+        BukkitTask chainTask = scheduler.runTaskLater(JustRacesShowcase.INSTANCE, () -> {
+            onChainExpire(player);
+            chainTasks.remove(pid);
+        }, getDurationTicks());
+        chainTasks.put(pid, chainTask);
 
-            breakUseChain(plr);
-        }, config.effectDuration);
-    }
-
-    private void breakUseChain(Player player) {
-        AbilityManager.setAbilityValue(player, getKey(), 0);
-        AttributeManager.removeModifiers(player, userModifiers);
+        BukkitTask effectTask = scheduler.runTaskLater(JustRacesShowcase.INSTANCE, () -> {
+            onExpire(player);
+            effectTasks.remove(pid);
+        }, effectDuration);
+        effectTasks.put(pid, effectTask);
     }
 
     private int getNextChain(Player player) {
@@ -157,6 +170,18 @@ public class EcdysisAbility extends BaseAbility {
         DamageSource damageSource = DamageSource.builder(DamageType.PLAYER_EXPLOSION).withDirectEntity(player).withDamageLocation(player.getLocation()).build();
         player.damage(Integer.MAX_VALUE, damageSource);
         createExplosion(player, Material.REDSTONE_BLOCK, config.explosionPowerSuicide);
+    }
+
+    private void cancelTasks(UUID pid) {
+        BukkitTask chainTask = chainTasks.remove(pid);
+        if (chainTask != null) chainTask.cancel();
+
+        BukkitTask effectTask = effectTasks.remove(pid);
+        if (effectTask != null) effectTask.cancel();
+    }
+
+    private void onChainExpire(Player player) {
+        AbilityManager.setAbilityValue(player, getKey(), 0);
     }
 
     private static void createExplosion(Player player, Material material, float power) {

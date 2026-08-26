@@ -1,6 +1,7 @@
 package justjabka.JustRaces.Abilities.Generic;
 
 import justjabka.JustRaces.Managers.AbilityManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
  * <p>
  * Subclasses should implement {@link #onToggle(Player, boolean)} to handle custom logic when the state changes.
  */
-public abstract class BaseTogglableAbility extends BaseValidationAbility {
+public abstract class BaseTogglableAbility extends BaseAbility implements BaseValidationAbility, BaseResettableAbility {
 
     /**
      * Toggles the ability's state for the given player.
@@ -47,13 +48,25 @@ public abstract class BaseTogglableAbility extends BaseValidationAbility {
      * Disables the ability for the given player.
      * <p>
      * This method sets the ability's state to inactive in the {@link AbilityManager}
-     * and stops any associated tasks by calling {@link #stopTask(UUID)}.
+     * and stops any associated tasks by calling {@link #resetState(Player)}.
      *
      * @param player The player for whom the ability is being disabled.
      */
     public void disable(Player player) {
+        resetState(player);
+    }
+
+    @Override
+    public void onInvalidated(Player player) {
+        disable(player);
+    }
+
+    @Override
+    public void resetState(UUID pid) {
+        Player player = Bukkit.getPlayer(pid);
+        if (player == null) return;
+
         AbilityManager.setAbilityState(player, getKey(), false);
-        stopTask(player.getUniqueId());
     }
 
     /**

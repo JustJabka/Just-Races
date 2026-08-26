@@ -1,7 +1,5 @@
 package justjabka.JustRaces.Managers;
 
-import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
 import justjabka.JustRaces.Events.Race.Cause;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
@@ -18,7 +16,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Set;
 
 import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 
@@ -142,11 +139,7 @@ public class RaceManager {
         Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
         // Disable abilities
-        Set<BaseAbility> allowedAbilities = AbilityManager.getAbilitiesForPlayer(player);
-        allowedAbilities.forEach(ability -> {
-            if (!(ability instanceof BaseValidationAbility validationAbility)) return;
-            validationAbility.onDeactivation(player);
-        });
+        AbilityManager.endAbilities(player);
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));

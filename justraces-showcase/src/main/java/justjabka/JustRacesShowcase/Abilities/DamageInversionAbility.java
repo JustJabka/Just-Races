@@ -91,11 +91,6 @@ public class DamageInversionAbility extends BaseTogglableAbility {
     }
 
     @Override
-    public void onDeactivation(Player player) {
-        disable(player);
-    }
-
-    @Override
     public void onToggle(Player player, boolean state) {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CANDLE_EXTINGUISH, SoundCategory.PLAYERS, 1, 2);
         player.getWorld().spawnParticle(
