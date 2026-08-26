@@ -8,6 +8,7 @@ import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRacesShowcase.Configs.Ability.EcdysisAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -32,13 +33,6 @@ public class EcdysisAbility extends BaseAbility {
 
     private final Set<PotionEffect> userEffects;
     private final Map<Attribute, AttributeModifier> userModifiers;
-
-    // TODO: move constants to the ability config
-    private static final float DAMAGE_PERCENT_PER_USE = 0.25f;
-    private static final float NORMAL_USE_EXPLOSION_POWER = 6f; // end crystal
-    private static final float SUICIDE_USE_EXPLOSION_POWER = 7f; // wither birth
-
-    private static final int MAX_CHAIN_AMOUNT = 6;
 
     public EcdysisAbility(EcdysisAbilityConfig config) {
         this.config = config;
@@ -75,10 +69,9 @@ public class EcdysisAbility extends BaseAbility {
         return isSuicideUse(player) ? BossBar.Color.RED : BossBar.Color.PURPLE;
     }
 
-    // TODO: draw icon
     @Override
     public Component getCooldownBarIcon(Player player) {
-        return super.getCooldownBarIcon(player);
+        return Component.text("\uE001").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
@@ -133,7 +126,7 @@ public class EcdysisAbility extends BaseAbility {
             AttributeManager.addModifiers(player, userModifiers);
         }
 
-        createExplosion(player, Material.NETHERITE_BLOCK, NORMAL_USE_EXPLOSION_POWER);
+        createExplosion(player, Material.NETHERITE_BLOCK, config.explosionPowerNormal);
 
         Bukkit.getScheduler().runTaskLater(JustRacesShowcase.INSTANCE, () -> {
             // Get Player
@@ -155,15 +148,15 @@ public class EcdysisAbility extends BaseAbility {
 
     private int getNextChain(Player player) {
         int currentChain = AbilityManager.getAbilityValue(player, getKey());
-        int nextChain = Math.clamp(currentChain + 1, 1, MAX_CHAIN_AMOUNT);
+        int nextChain = Math.clamp(currentChain + 1, 1, config.maxChainAmount);
         AbilityManager.setAbilityValue(player, getKey(), nextChain);
         return nextChain;
     }
 
-    private static void handleSuicideUse(Player player) {
+    private void handleSuicideUse(Player player) {
         DamageSource damageSource = DamageSource.builder(DamageType.PLAYER_EXPLOSION).withDirectEntity(player).withDamageLocation(player.getLocation()).build();
         player.damage(Integer.MAX_VALUE, damageSource);
-        createExplosion(player, Material.REDSTONE_BLOCK, SUICIDE_USE_EXPLOSION_POWER);
+        createExplosion(player, Material.REDSTONE_BLOCK, config.explosionPowerSuicide);
     }
 
     private static void createExplosion(Player player, Material material, float power) {
@@ -198,7 +191,7 @@ public class EcdysisAbility extends BaseAbility {
         world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 2, 1);
     }
 
-    private static void damageArmor(Player player) {
+    private void damageArmor(Player player) {
         for (ItemStack armor : player.getEquipment().getArmorContents()) {
             if (armor == null) continue;
             if (!(armor.getItemMeta() instanceof Damageable meta)) continue;
@@ -207,7 +200,7 @@ public class EcdysisAbility extends BaseAbility {
                     ? meta.getMaxDamage()
                     : armor.getType().getMaxDurability();
 
-            int damagePerUse = (int) (maxDamage * DAMAGE_PERCENT_PER_USE);
+            int damagePerUse = (int) (maxDamage * config.durabilityPercentPerUse);
             int minDurability = maxDamage - 1;
             int newDurability = meta.getDamage() + damagePerUse;
 

@@ -1,12 +1,19 @@
 # Cooldown of the ability
-cooldown: 10
+cooldown: 9
 
 # Duration of the ability
 effect-duration: 11
 
-# Durability of the armor
-# that will last after ability use
-durability-after-use: 1
+# Power of explosion that will be created after use
+explosion-power:
+  normal: 6.0 # end crystal
+  suicide: 7.0 # wither birth
+
+# Percent of armor durability that will be taken after use
+durability-percent-per-use: 0.25
+
+# Max amount of times ability can be chained
+max-chain-amount: 6
 
 # Average percent of armor durability
 # that will trigger death
