@@ -2,10 +2,6 @@ package justjabka.JustRacesShowcase.Registries;
 
 import justjabka.JustRacesShowcase.Configs.Ability.*;
 import justjabka.JustRacesShowcase.Configs.Modifier.Armor.*;
-import justjabka.JustRacesShowcase.Configs.Modifier.Food.GlowBerriesFoodModifierConfig;
-import justjabka.JustRacesShowcase.Configs.Modifier.Food.MossFoodModifierConfig;
-import justjabka.JustRacesShowcase.Configs.Modifier.Food.PhantomMembraneFoodModifierConfig;
-import justjabka.JustRacesShowcase.Configs.Modifier.Food.SweetBerriesFoodModifierConfig;
 import org.bukkit.plugin.Plugin;
 
 import static justjabka.JustRaces.Managers.ConfigManager.loadAbilityConfig;
