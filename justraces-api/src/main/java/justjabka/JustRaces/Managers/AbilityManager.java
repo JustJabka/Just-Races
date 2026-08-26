@@ -109,6 +109,10 @@ public class AbilityManager {
     public static int getAbilityValue(Player player, NamespacedKey key) {
         return getAbilitiesContainer(player).getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
+
+    public static UUID getAbilityOwner(Player player, NamespacedKey key) {
+        return getAbilitiesContainer(player).get(key, DataType.UUID);
+    }
     //endregion
 
 
@@ -156,15 +160,6 @@ public class AbilityManager {
 
     public static void setAbilityValue(Player player, NamespacedKey key, int value) {
         setAbilityData(player, key, PersistentDataType.INTEGER, value);
-    }
-
-    public static int getActivationSlot() {
-        return activationSlot;
-    }
-
-    public static boolean isActivationSlotSelected(Player player) {
-        int hotbarSlot = player.getInventory().getHeldItemSlot();
-        return hotbarSlot == activationSlot;
     }
     //endregion
 }

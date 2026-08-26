@@ -4,20 +4,14 @@ import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.RaceManager;
-import justjabka.JustRaces.Types.AbilityActivateAction;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 import java.util.Map;
 import java.util.Set;
@@ -34,10 +28,10 @@ public abstract class BaseAbility implements Listener {
     public abstract NamespacedKey getKey();
     public abstract long getCooldownTicks();
 
-    public BossBar.Color getCooldownBarColor() {
+    public BossBar.Color getCooldownBarColor(Player player) {
         return BossBar.Color.WHITE;
     }
-    public Component getCooldownBarIcon() {
+    public Component getCooldownBarIcon(Player player) {
         return Component.text("\uE000")
                 .font(COOLDOWN_BAR_FONT);
     }
@@ -136,8 +130,8 @@ public abstract class BaseAbility implements Listener {
         }
 
         float progress = Math.clamp(remainingTicks / cooldownTicks, BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
-        final Component iconWithOffset = getCooldownBarIcon().shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
-        final BossBar.Color color = getCooldownBarColor();
+        final Component iconWithOffset = getCooldownBarIcon(player).shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
+        final BossBar.Color color = getCooldownBarColor(player);
 
         BossBar cooldownBar = activeCooldownsBar.computeIfAbsent(player.getUniqueId(), uuid -> {
             BossBar bar = BossBar.bossBar(iconWithOffset, progress, color, BossBar.Overlay.NOTCHED_6);
@@ -154,44 +148,6 @@ public abstract class BaseAbility implements Listener {
         BossBar bossBar = activeCooldownsBar.remove(player.getUniqueId());
         if (bossBar == null) return;
         player.hideBossBar(bossBar);
-    }
-
-    // Handlers
-    public void handleInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-
-        if (!interactionAction(event, player)) return;
-        tryActivate(player);
-    }
-
-    public void handleToggleSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
-
-        if (!toggleSneakAction(event, player)) return;
-        tryActivate(player);
-    }
-
-    public void handleEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof LivingEntity victim)) return;
-        if (!(event.getDamager() instanceof Player attacker)) return;
-
-        tryActivate(attacker, victim);
-    }
-
-    public void handleEntityInteract(PlayerInteractEntityEvent event) {
-        if (!(event.getRightClicked() instanceof LivingEntity clickedEntity)) return;
-        Player player = event.getPlayer();
-
-        tryActivate(player, clickedEntity);
-    }
-
-    // Actions
-    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
-        return AbilityActivateAction.RIGHT_CLICK.check(event, player);
-    }
-
-    protected boolean toggleSneakAction(PlayerToggleSneakEvent event, Player player) {
-        return event.isSneaking();
     }
 
     /**
@@ -213,7 +169,6 @@ public abstract class BaseAbility implements Listener {
         if (!raceHasAbility(player)) return;
 
         if (!canActivate(player)) return;
-        if (!AbilityManager.isActivationSlotSelected(player)) return;
 
         if (isOnCooldown(player)) return;
 

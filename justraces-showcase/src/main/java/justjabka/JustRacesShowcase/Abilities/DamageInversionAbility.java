@@ -2,13 +2,15 @@ package justjabka.JustRacesShowcase.Abilities;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.Abilities.Generic.BaseTogglableAbility;
+import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Managers.ArmorManager;
+import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRacesShowcase.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRaces.Managers.AbilityManager;
-import justjabka.JustRaces.Managers.ArmorManager;
-import justjabka.JustRaces.Types.AbilityActivateAction;
-import justjabka.JustRaces.Types.ArmorSet;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.Range;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -19,7 +21,7 @@ import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import java.util.Collection;
 
@@ -42,6 +44,17 @@ public class DamageInversionAbility extends BaseTogglableAbility {
     }
 
     @Override
+    public BossBar.Color getCooldownBarColor(Player player) {
+        boolean isActive = AbilityManager.isAbilityActive(player, getKey());
+        return isActive ? BossBar.Color.GREEN : BossBar.Color.RED;
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE000").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
+
+    @Override
     protected boolean canActivate(Player player) {
         return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
     }
@@ -61,9 +74,14 @@ public class DamageInversionAbility extends BaseTogglableAbility {
         disable(player);
     }
 
-    @EventHandler
-    public void handleInteract(PlayerInteractEvent event) {
-        super.handleInteract(event);
+    @EventHandler(ignoreCancelled = true)
+    public void trigger(PlayerSwapHandItemsEvent event) {
+        Player player = event.getPlayer();
+
+        if (!event.getMainHandItem().isEmpty()) return;
+        if (!event.getOffHandItem().isEmpty()) return;
+
+        tryActivate(player);
     }
 
     @Override
@@ -111,10 +129,5 @@ public class DamageInversionAbility extends BaseTogglableAbility {
 
         double finalDamage = (config.upperBound + config.lowerBound) - damage;
         event.setDamage(finalDamage);
-    }
-
-    @Override
-    protected boolean interactionAction(PlayerInteractEvent event, Player player) {
-        return AbilityActivateAction.SHIFT_RIGHT_CLICK.check(event, player);
     }
 }
