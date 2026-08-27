@@ -13,5 +13,6 @@ public class RunnablesRegistry {
 
     private static void registerRaceRunnables(Plugin plugin) {
         new ArmatRaceRunnable().runTaskTimer(plugin, 0L, 5L);
+        new HumanRaceRunnable().runTaskTimer(plugin, 0L, 5L);
     }
 }

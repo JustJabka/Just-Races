@@ -16,6 +16,7 @@ public class ListenersRegistry {
         PluginManager manager = plugin.getServer().getPluginManager();
 
         manager.registerEvents(new ArmatRaceListener(), plugin);
+        manager.registerEvents(new HumanRaceListener(), plugin);
 
         JustRacesShowcase.LOGGER.info("Successfully registered race listeners!");
     }

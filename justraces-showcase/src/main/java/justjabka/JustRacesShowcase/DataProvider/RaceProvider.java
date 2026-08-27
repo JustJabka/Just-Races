@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 public class RaceProvider {
+    public static final NamespacedKey HUMAN = create("human");
     public static final NamespacedKey ARMAT = create("armat");
 
     @NotNull

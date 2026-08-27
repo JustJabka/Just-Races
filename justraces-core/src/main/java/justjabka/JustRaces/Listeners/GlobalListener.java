@@ -55,7 +55,7 @@ public class GlobalListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onDropItem(EntityDropItemEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player)) return;
 
         ItemStack item = event.getItemDrop().getItemStack();
 
