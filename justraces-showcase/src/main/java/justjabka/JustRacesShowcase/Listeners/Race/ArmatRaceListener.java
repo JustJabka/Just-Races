@@ -1,17 +1,14 @@
 package justjabka.JustRacesShowcase.Listeners.Race;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
+import justjabka.JustRaces.Managers.ArmorManager;
+import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeProvider;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
-import justjabka.JustRaces.Managers.ArmorManager;
-import justjabka.JustRaces.Types.ArmorSet;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -37,6 +34,10 @@ public class ArmatRaceListener extends BaseRaceListener {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "ignore_potion");
+    private static final Particle.Spell ABSOLUTE_DAMAGE_PARTICLE = new Particle.Spell(
+            Color.fromARGB(255,210,252,243),
+            1f
+    );
 
     @Override
     public NamespacedKey getRaceKey() {
@@ -97,6 +98,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         // Dodge
         if (DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DODGE).contains(damageType)) return false;
 
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 2f, 0.8f);
         event.setCancelled(true);
         return true;
     }
@@ -141,6 +143,13 @@ public class ArmatRaceListener extends BaseRaceListener {
             if (armor == null) continue;
             armor.damage(parryArmorPenalty, player);
         }
+
+        // SFX
+        World world = player.getWorld();
+        Location location = player.getLocation();
+
+        world.playSound(location, Sound.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.PLAYERS, 2f, 1f);
+        world.playSound(location, Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 2f, 1f);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -165,6 +174,16 @@ public class ArmatRaceListener extends BaseRaceListener {
                 .build();
 
         victim.damage(absoluteDamageAmount, absoluteDamageSource);
+
+        victim.getWorld().spawnParticle(
+                Particle.INSTANT_EFFECT,
+                victim.getEyeLocation().subtract(0, 0.5, 0),
+                1,
+                0.25,
+                0.5,
+                0.25,
+                ABSOLUTE_DAMAGE_PARTICLE
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -230,7 +249,6 @@ public class ArmatRaceListener extends BaseRaceListener {
         PotionEffect effect = event.getNewEffect();
         if (effect == null) return;
 
-        // TODO: FIX TS PLS
         event.setCancelled(true);
 
         pdc.set(IGNORE_POTION_KEY, PersistentDataType.BOOLEAN, true);
