@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseAbility implements Listener {
     private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
-    private final Map<UUID, BossBar> activeCooldownsBar = new ConcurrentHashMap<>();
+    private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 
     protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown");
     protected static final Component COOLDOWN_BAR_ICON_OFFSET = Component.text("\uDB00\uDCC6").font(COOLDOWN_BAR_FONT);
@@ -138,7 +138,7 @@ public abstract class BaseAbility implements Listener {
         final Component iconWithOffset = getCooldownBarIcon(player).shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
         final BossBar.Color color = getCooldownBarColor(player);
 
-        BossBar cooldownBar = activeCooldownsBar.computeIfAbsent(player.getUniqueId(), uuid -> {
+        BossBar cooldownBar = cooldownBars.computeIfAbsent(player.getUniqueId(), uuid -> {
             BossBar bar = BossBar.bossBar(iconWithOffset, progress, color, BossBar.Overlay.NOTCHED_6);
             player.showBossBar(bar);
             return bar;
@@ -150,7 +150,7 @@ public abstract class BaseAbility implements Listener {
     }
 
     protected void removeCooldownBar(Player player) {
-        BossBar bossBar = activeCooldownsBar.remove(player.getUniqueId());
+        BossBar bossBar = cooldownBars.remove(player.getUniqueId());
         if (bossBar == null) return;
         player.hideBossBar(bossBar);
     }
