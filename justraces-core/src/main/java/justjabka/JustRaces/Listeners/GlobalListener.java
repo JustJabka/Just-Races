@@ -27,14 +27,14 @@ import static justjabka.JustRaces.Managers.ModifierManager.tryUndoInventory;
 
 public class GlobalListener implements Listener {
     // Inventory
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
         ArmorManager.updateArmorSet(player);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryAction(InventoryClickEvent event) {
         /*
         Probably shouldn't bother about this, but there are possible bug
@@ -46,32 +46,32 @@ public class GlobalListener implements Listener {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPickupItem(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
         tryUndoInventory(event.getInventory().getContents());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         tryUndoInventory(event.getInventory().getContents());
     }
 
     // Interactions
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
         AbilityManager.clearAbilitiesStates(player);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
@@ -86,7 +86,7 @@ public class GlobalListener implements Listener {
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 

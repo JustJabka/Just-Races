@@ -64,7 +64,7 @@ public class DamageInversionAbility extends BaseTogglableAbility {
         return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 

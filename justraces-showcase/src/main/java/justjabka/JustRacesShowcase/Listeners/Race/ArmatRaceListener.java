@@ -43,7 +43,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         return RaceProvider.ARMAT;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!isRequiredRace(player)) return;
@@ -143,7 +143,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
@@ -167,7 +167,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         victim.damage(absoluteDamageAmount, absoluteDamageSource);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
@@ -177,7 +177,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         applyCopperArmorBonus(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
@@ -206,7 +206,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         player.setAbsorptionAmount(Math.min(current + bonus, limit));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
