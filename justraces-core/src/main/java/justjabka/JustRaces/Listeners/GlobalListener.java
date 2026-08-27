@@ -7,6 +7,7 @@ import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.EffectManager;
+import justjabka.JustRaces.Managers.ModifierManager;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,9 +23,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
-import static justjabka.JustRaces.Managers.ModifierManager.tryUndoInventory;
+import org.bukkit.inventory.ItemStack;
 
 public class GlobalListener implements Listener {
     // Inventory
@@ -36,31 +36,41 @@ public class GlobalListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryAction(InventoryClickEvent event) {
-        /*
-        Probably shouldn't bother about this, but there are possible bug
-        You can drop item and equip it to some other entity for example: zombie (зондре перец💀🌶️)
-        */
+        // зондре перец💀🌶️ was there
 
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ModifierManager.refreshModifiers(player));
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPickupItem(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
+        ItemStack item = event.getItem().getItemStack();
+
+        ModifierManager.refreshModifiersOnItem(player, item);
+        event.getItem().setItemStack(item);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    public void onDropItem(EntityDropItemEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        ItemStack item = event.getItemDrop().getItemStack();
+
+        ModifierManager.tryUndo(item);
+        event.getItemDrop().setItemStack(item);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        tryUndoInventory(event.getInventory().getContents());
+        ModifierManager.tryUndoInventory(event.getInventory().getContents());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
-        tryUndoInventory(event.getInventory().getContents());
+        ModifierManager.tryUndoInventory(event.getInventory().getContents());
     }
 
     // Interactions
@@ -81,7 +91,7 @@ public class GlobalListener implements Listener {
     private static void inventoryRefresh(Player player) {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> {
             ArmorManager.updateArmorSet(player);
-            refreshModifiers(player);
+            ModifierManager.refreshModifiers(player);
         });
     }
 

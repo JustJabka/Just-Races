@@ -4,18 +4,11 @@ import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.ItemModifier;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
@@ -72,22 +65,23 @@ public class ModifierManager {
         }
     }
 
+    public static void refreshModifiersOnItem(Player player, ItemStack item) {
+        if (item == null) return;
+        if (item.getType().isAir()) return;
+
+        tryUndo(item);
+        tryApply(player, item);
+    }
+
     public static void refreshModifiers(Player player) {
-        ItemStack cursor = player.getItemOnCursor();
+        ItemStack cursorItem = player.getItemOnCursor();
         ItemStack[] inventoryContents = player.getInventory().getContents();
 
         for (ItemStack item : inventoryContents) {
-            if (item == null) continue;
-            if (item.getType().isAir()) continue;
-
-            ModifierManager.tryUndo(item);
-            ModifierManager.tryApply(player, item);
+            refreshModifiersOnItem(player, item);
         }
 
-        if (!cursor.getType().isAir()) {
-            ModifierManager.tryUndo(cursor);
-            ModifierManager.tryApply(player, cursor);
-        }
+        refreshModifiersOnItem(player, cursorItem);
     }
 
     private static void addMarker(ItemStack item, ItemModifier type) {
