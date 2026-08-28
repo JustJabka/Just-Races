@@ -96,7 +96,9 @@ public class ModifierManager {
         );
     }
 
-    private static boolean isModifiedWith(ItemStack item, ItemModifier type) {
+    public static boolean isModifiedWith(ItemStack item, ItemModifier type) {
+        if (type == null) return false;
+
         String modifier = getAppliedModifier(item);
         return type.getKey().asString().equals(modifier);
     }

@@ -1,9 +1,11 @@
 package justjabka.JustRacesShowcase.Registries;
 
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRacesShowcase.Modifiers.Armor.*;
+import justjabka.JustRacesShowcase.Modifiers.Food.MagmaCreamFoodModifier;
+import justjabka.JustRacesShowcase.Modifiers.Food.SlimeBallFoodModifier;
 import org.bukkit.NamespacedKey;
 
 import java.util.List;
@@ -22,7 +24,10 @@ public class ModifiersRegistry {
                 new CopperArmorModifier(create("copper_armor"), configs.copperArmorModifierConfig),
                 new ChainmailArmorModifier(create("chainmail_armor"), configs.chainmailArmorModifierConfig),
                 new IronArmorModifier(create("iron_armor"), configs.ironArmorModifierConfig),
-                new GoldenArmorModifier(create("golden_armor"), configs.goldenArmorModifierConfig)
+                new GoldenArmorModifier(create("golden_armor"), configs.goldenArmorModifierConfig),
+
+                new SlimeBallFoodModifier(create("slime_ball")),
+                new MagmaCreamFoodModifier(create("magma_cream"))
         );
 
         // Register modifiers globally

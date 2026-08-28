@@ -17,6 +17,9 @@
     "minecraft:water_movement_efficiency": 1,
     "minecraft:burning_time": 1.25
   },
-  "item_modifiers": {},
+  "item_modifiers": {
+    "justracesshowcase:slime_ball": "minecraft:slime_ball",
+    "justracesshowcase:magma_cream": "minecraft:magma_cream"
+  },
   "config": {}
 }
