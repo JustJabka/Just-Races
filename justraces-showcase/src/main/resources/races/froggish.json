@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "race.froggish.name",
+    "fallback": "Froggish"
+  },
+  "abilities": [
+    "justracesshowcase:frog_tongue"
+  ],
+  "attributes": {
+    "minecraft:max_health": 16,
+    "minecraft:scale": 0.95,
+    "minecraft:jump_strength": 0.62,
+    "minecraft:fall_damage_multiplier": 0.5,
+    "minecraft:entity_interaction_range": 2.5,
+    "minecraft:safe_fall_distance": 6,
+    "minecraft:oxygen_bonus": 2,
+    "minecraft:water_movement_efficiency": 1,
+    "minecraft:burning_time": 1.25
+  },
+  "item_modifiers": {},
+  "config": {}
+}

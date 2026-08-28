@@ -81,7 +81,8 @@ public class DamageInversionAbility extends BaseTogglableAbility {
         if (!event.getMainHandItem().isEmpty()) return;
         if (!event.getOffHandItem().isEmpty()) return;
 
-        tryActivate(player);
+        if (!tryActivate(player)) return;
+        event.setCancelled(true);
     }
 
     @Override

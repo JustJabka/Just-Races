@@ -97,7 +97,7 @@ public class EcdysisAbility extends BaseAbility implements BaseDurationAbility {
         if (!player.isSneaking()) return;
         if (!player.getInventory().getItemInMainHand().isEmpty()) return;
 
-        tryActivate(player);
+        if (!tryActivate(player)) return;
         event.setCancelled(true);
     }
 

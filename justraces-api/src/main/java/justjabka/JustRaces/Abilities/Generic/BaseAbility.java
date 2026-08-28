@@ -170,15 +170,17 @@ public abstract class BaseAbility implements Listener {
      * @param ctx Context of the activation. Literally any {@link Object }
      * @see #onActivation(Player, Object...)
      */
-    protected void tryActivate(Player player, Object... ctx) {
-        if (!playerHasAbility(player)) return;
+    protected boolean tryActivate(Player player, Object... ctx) {
+        if (!playerHasAbility(player)) return false;
 
-        if (!canActivate(player)) return;
+        if (!canActivate(player)) return false;
 
-        if (isOnCooldown(player)) return;
+        if (isOnCooldown(player)) return false;
 
-        if (!onActivation(player, ctx)) return;
+        if (!onActivation(player, ctx)) return false;
         putOnCooldown(player);
+
+        return true;
     }
 
     /**

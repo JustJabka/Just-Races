@@ -123,6 +123,10 @@ public class AbilityManager {
     public static UUID getAbilityOwner(Player player, NamespacedKey key) {
         return getAbilitiesContainer(player).get(key, DataType.UUID);
     }
+
+    public static String getAbilityString(Player player, NamespacedKey key) {
+        return getAbilitiesContainer(player).get(key, DataType.STRING);
+    }
     //endregion
 
 
@@ -190,6 +194,10 @@ public class AbilityManager {
 
     public static void setAbilityValue(Player player, NamespacedKey key, int value) {
         setAbilityData(player, key, PersistentDataType.INTEGER, value);
+    }
+
+    public static void setAbilityString(Player player, NamespacedKey key, String string) {
+        setAbilityData(player, key, PersistentDataType.STRING, string);
     }
     //endregion
 }
