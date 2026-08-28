@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
  * It is intended to be subclassed by abilities that need to maintain a persistent state
  * (e.g., passive buffs, continuous effects) rather than instant activation.
  */
-public interface BaseValidationAbility {
+public interface ValidationAbility {
 
     /**
      * Checks if the current state of the ability is valid for the given player.

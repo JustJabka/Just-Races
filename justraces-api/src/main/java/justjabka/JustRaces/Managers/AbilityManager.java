@@ -2,8 +2,8 @@ package justjabka.JustRaces.Managers;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.Abilities.Generic.BaseResettableAbility;
-import justjabka.JustRaces.Abilities.Generic.BaseValidationAbility;
+import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
+import justjabka.JustRaces.Abilities.Generic.ValidationAbility;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
@@ -130,24 +130,24 @@ public class AbilityManager {
     //endregion
 
 
-    public static void endAbilities(Player player) {
+    public static void endAbilities(Player player, ResettableAbility.Reason reason) {
         Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
 
         abilities.forEach(ability -> {
             ability.resetCooldown(player);
-            clearAbilityStates(player, ability);
+            clearAbilityStates(player, ability, reason);
         });
     }
 
-    public static void clearAbilitiesStates(Player player) {
+    public static void clearAbilitiesStates(Player player, ResettableAbility.Reason reason) {
         Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
 
-        abilities.forEach(ability -> clearAbilityStates(player, ability));
+        abilities.forEach(ability -> clearAbilityStates(player, ability, reason));
     }
 
-    private static void clearAbilityStates(Player player, BaseAbility ability) {
-        if (ability instanceof BaseResettableAbility resettable) resettable.resetState(player);
-        else if (ability instanceof BaseValidationAbility validation) validation.onInvalidated(player);
+    private static void clearAbilityStates(Player player, BaseAbility ability, ResettableAbility.Reason reason) {
+        if (ability instanceof ResettableAbility resettable) resettable.resetState(player, reason);
+        else if (ability instanceof ValidationAbility validation) validation.onInvalidated(player);
     }
 
 

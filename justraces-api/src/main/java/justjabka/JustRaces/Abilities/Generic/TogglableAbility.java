@@ -11,7 +11,7 @@ import java.util.UUID;
  * <p>
  * Subclasses should implement {@link #onToggle(Player, boolean)} to handle custom logic when the state changes.
  */
-public abstract class BaseTogglableAbility extends BaseAbility implements BaseValidationAbility, BaseResettableAbility {
+public abstract class TogglableAbility extends BaseAbility implements ValidationAbility, ResettableAbility {
 
     /**
      * Toggles the ability's state for the given player.
@@ -48,12 +48,12 @@ public abstract class BaseTogglableAbility extends BaseAbility implements BaseVa
      * Disables the ability for the given player.
      * <p>
      * This method sets the ability's state to inactive in the {@link AbilityManager}
-     * and stops any associated tasks by calling {@link #resetState(Player)}.
+     * and stops any associated tasks by calling {@link #resetState(Player, Reason)}.
      *
      * @param player The player for whom the ability is being disabled.
      */
     public void disable(Player player) {
-        resetState(player);
+        resetState(player, Reason.ABILITY_END);
     }
 
     @Override
@@ -62,7 +62,9 @@ public abstract class BaseTogglableAbility extends BaseAbility implements BaseVa
     }
 
     @Override
-    public void resetState(UUID pid) {
+    public void resetState(UUID pid, Reason reason) {
+        if (reason == Reason.QUIT) return;
+
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 

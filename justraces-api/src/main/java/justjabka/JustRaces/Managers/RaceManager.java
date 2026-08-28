@@ -1,5 +1,6 @@
 package justjabka.JustRaces.Managers;
 
+import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Events.Race.Cause;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
@@ -139,7 +140,7 @@ public class RaceManager {
         Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
         // Disable abilities
-        AbilityManager.endAbilities(player);
+        AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));

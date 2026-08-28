@@ -3,6 +3,7 @@ package justjabka.JustRaces.Listeners;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
@@ -78,14 +79,14 @@ public class GlobalListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
-        AbilityManager.clearAbilitiesStates(player);
+        AbilityManager.clearAbilitiesStates(player, ResettableAbility.Reason.QUIT);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
         inventoryRefresh(player);
-        AbilityManager.endAbilities(player);
+        AbilityManager.endAbilities(player, ResettableAbility.Reason.DEATH);
     }
 
     private static void inventoryRefresh(Player player) {

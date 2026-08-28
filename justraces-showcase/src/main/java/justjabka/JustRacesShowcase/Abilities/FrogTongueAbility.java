@@ -3,7 +3,7 @@ package justjabka.JustRacesShowcase.Abilities;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import justjabka.JustRaces.Abilities.Generic.BaseResettableAbility;
+import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
-public class FrogTongueAbility extends BaseHookAbility implements BaseResettableAbility {
+public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility {
     private static final double STEP = 0.4;
     private static final float TONGUE_SIZE = 0.8f;
 
@@ -99,7 +99,9 @@ public class FrogTongueAbility extends BaseHookAbility implements BaseResettable
     }
 
     @Override
-    public void resetState(UUID pid) {
+    public void resetState(UUID pid, Reason reason) {
+        if (reason == Reason.QUIT) return;
+
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 
@@ -119,7 +121,7 @@ public class FrogTongueAbility extends BaseHookAbility implements BaseResettable
         List<ConsumeEffect> consumeEffects = consumable.consumeEffects();
         if (!consumeEffects.contains(ConsumeEffect.clearAllStatusEffects())) return;
 
-        resetState(player);
+        resetState(player, Reason.CUSTOM);
     }
 
     // Hook Settings
