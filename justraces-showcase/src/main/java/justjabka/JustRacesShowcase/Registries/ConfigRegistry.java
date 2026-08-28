@@ -1,6 +1,9 @@
 package justjabka.JustRacesShowcase.Registries;
 
-import justjabka.JustRacesShowcase.Configs.Ability.*;
+import justjabka.JustRacesShowcase.Configs.Ability.DamageInversionAbilityConfig;
+import justjabka.JustRacesShowcase.Configs.Ability.EcdysisAbilityConfig;
+import justjabka.JustRacesShowcase.Configs.Ability.FrogTongueAbilityConfig;
+import justjabka.JustRacesShowcase.Configs.Ability.SlimeTrailAbilityConfig;
 import justjabka.JustRacesShowcase.Configs.Modifier.Armor.*;
 import org.bukkit.plugin.Plugin;
 
@@ -11,6 +14,8 @@ public class ConfigRegistry {
     // Abilities
     public final DamageInversionAbilityConfig damageInversionAbilityConfig;
     public final EcdysisAbilityConfig ecdysisAbilityConfig;
+    public final FrogTongueAbilityConfig frogTongueAbilityConfig;
+    public final SlimeTrailAbilityConfig slimeTrailAbilityConfig;
 
     // Modifiers
     public final LeatherArmorModifierConfig leatherArmorModifierConfig;
@@ -23,6 +28,8 @@ public class ConfigRegistry {
         // Abilities
         this.damageInversionAbilityConfig = new DamageInversionAbilityConfig(loadAbilityConfig(plugin, "damage-inversion"));
         this.ecdysisAbilityConfig = new EcdysisAbilityConfig(loadAbilityConfig(plugin, "ecdysis"));
+        this.frogTongueAbilityConfig = new FrogTongueAbilityConfig(loadAbilityConfig(plugin, "frog-tongue"));
+        this.slimeTrailAbilityConfig = new SlimeTrailAbilityConfig(loadAbilityConfig(plugin, "slime-trail"));
 
         // Modifiers
         this.leatherArmorModifierConfig = new LeatherArmorModifierConfig(loadModifierConfig(plugin, "armor/leather"));

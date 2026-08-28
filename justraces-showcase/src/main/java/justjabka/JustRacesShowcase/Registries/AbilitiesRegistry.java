@@ -10,8 +10,8 @@ public class AbilitiesRegistry {
     private static void registerAbilities(ConfigRegistry configs) {
         registerAbility(new DamageInversionAbility(configs.damageInversionAbilityConfig));
         registerAbility(new EcdysisAbility(configs.ecdysisAbilityConfig));
-        registerAbility(new FrogTongueAbility());
-        registerAbility(new SlimeTrailAbility());
+        registerAbility(new FrogTongueAbility(configs.frogTongueAbilityConfig));
+        registerAbility(new SlimeTrailAbility(configs.slimeTrailAbilityConfig));
     }
 
     public static void register(ConfigRegistry configs) {

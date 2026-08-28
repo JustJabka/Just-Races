@@ -3,9 +3,9 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
+import justjabka.JustRacesShowcase.Configs.Ability.SlimeTrailAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -27,17 +27,19 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility {
+    private final SlimeTrailAbilityConfig config;
     private final Map<UUID, BukkitTask> activeTrails = new ConcurrentHashMap<>();
 
-    private static final float TRAIL_RADIUS = 1.2f;
     private static final Color TRAIL_COLOR = Color.fromRGB(153, 255, 163);
 
-    private final int TRAIL_DURATION = (int) getDurationTicks();
-    private static final int TRAIL_EFFECTS_DURATION = 3 * 20;
     private final static Set<PotionEffect> TRAIL_EFFECTS = Set.of(
             new PotionEffect(PotionEffectType.SLOWNESS, 0, 1, false, true, true),
             new PotionEffect(PotionEffectType.OOZING, 0, 0, false, true, true)
     );
+
+    public SlimeTrailAbility(SlimeTrailAbilityConfig config) {
+        this.config = config;
+    }
 
     @Override
     public NamespacedKey getKey() {
@@ -46,12 +48,12 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
 
     @Override
     public long getCooldownTicks() {
-        return 48 * 20;
+        return config.cooldown;
     }
 
     @Override
     public long getDurationTicks() {
-        return 6 * 20;
+        return config.duration;
     }
 
     @Override
@@ -115,13 +117,13 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
                         AreaEffectCloud.class,
                         CreatureSpawnEvent.SpawnReason.CUSTOM,
                         cloud -> {
-                            cloud.setRadius(TRAIL_RADIUS);
-                            cloud.setDuration(TRAIL_DURATION);
+                            cloud.setRadius(config.trailRadius);
+                            cloud.setDuration(config.trailDuration);
                             cloud.setWaitTime(0);
                             cloud.setColor(TRAIL_COLOR);
                             cloud.setSource(player);
                             for (PotionEffect effect : TRAIL_EFFECTS) {
-                                cloud.addCustomEffect(effect.withDuration(TRAIL_EFFECTS_DURATION), true);
+                                cloud.addCustomEffect(effect.withDuration(config.trailEffectsDuration), true);
                             }
                         }
                 );

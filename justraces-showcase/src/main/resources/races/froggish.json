@@ -8,7 +8,7 @@
     "justracesshowcase:slime_trail"
   ],
   "attributes": {
-    "minecraft:max_health": 16,
+    "minecraft:max_health": 18,
     "minecraft:scale": 0.95,
     "minecraft:jump_strength": 0.62,
     "minecraft:fall_damage_multiplier": 0.5,

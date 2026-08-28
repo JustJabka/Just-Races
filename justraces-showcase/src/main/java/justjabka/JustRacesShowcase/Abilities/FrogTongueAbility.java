@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
+import justjabka.JustRacesShowcase.Configs.Ability.FrogTongueAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.*;
@@ -27,8 +28,13 @@ import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility {
+    private final FrogTongueAbilityConfig config;
+
     private static final double STEP = 0.4;
-    private static final float TONGUE_SIZE = 0.8f;
+
+    public FrogTongueAbility(FrogTongueAbilityConfig config) {
+        this.config = config;
+    }
 
     public enum TongueType {
         NORMAL(24, Color.fromRGB(255, 138, 138), true, true, true, false, false, false, 1f),
@@ -80,7 +86,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     public long getCooldownTicks() {
-        return 10;
+        return config.cooldown;
     }
 
     @Override
@@ -146,7 +152,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         World world = shooter.getWorld();
 
         TongueType tongueType = getTongueType(shooter);
-        Particle.DustOptions particleOptions = new Particle.DustOptions(tongueType.color, TONGUE_SIZE);
+        Particle.DustOptions particleOptions = new Particle.DustOptions(tongueType.color, config.size);
 
         double distance = ctx.getActualDistance();
         for (double d = 0; d < distance; d += STEP) {
