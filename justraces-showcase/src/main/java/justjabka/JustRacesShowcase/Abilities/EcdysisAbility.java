@@ -43,8 +43,8 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility {
     public EcdysisAbility(EcdysisAbilityConfig config) {
         this.config = config;
         this.userEffects = Set.of(
-                new PotionEffect(PotionEffectType.RESISTANCE, config.effectDuration, 4, false, true),
-                new PotionEffect(PotionEffectType.SPEED, config.effectDuration, 1, false, true)
+                new PotionEffect(PotionEffectType.RESISTANCE, (int) config.effectDuration, 4, false, true),
+                new PotionEffect(PotionEffectType.SPEED, (int) config.effectDuration, 1, false, true)
         );
         this.userModifiers = Map.of(
                 Attribute.KNOCKBACK_RESISTANCE, new AttributeModifier(
@@ -71,7 +71,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility {
     }
 
     @Override
-    public int getDurationTicks() {
+    public long getDurationTicks() {
         return config.effectDuration;
     }
 
@@ -128,7 +128,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility {
 
     private void handleNormalUse(Player player) {
         int nextChain = getNextChain(player);
-        int effectDuration = getDurationTicks() * nextChain;
+        int effectDuration = Math.toIntExact(getDurationTicks() * nextChain);
         UUID pid = player.getUniqueId();
 
         damageArmor(player);

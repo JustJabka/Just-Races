@@ -11,6 +11,7 @@ public class AbilitiesRegistry {
         registerAbility(new DamageInversionAbility(configs.damageInversionAbilityConfig));
         registerAbility(new EcdysisAbility(configs.ecdysisAbilityConfig));
         registerAbility(new FrogTongueAbility());
+        registerAbility(new SlimeTrailAbility());
     }
 
     public static void register(ConfigRegistry configs) {

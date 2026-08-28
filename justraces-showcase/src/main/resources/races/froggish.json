@@ -4,7 +4,8 @@
     "fallback": "Froggish"
   },
   "abilities": [
-    "justracesshowcase:frog_tongue"
+    "justracesshowcase:frog_tongue",
+    "justracesshowcase:slime_trail"
   ],
   "attributes": {
     "minecraft:max_health": 16,
