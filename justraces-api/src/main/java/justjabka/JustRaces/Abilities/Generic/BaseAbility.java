@@ -72,8 +72,7 @@ public abstract class BaseAbility implements Listener {
      * @see #getCooldownTicks()
      */
     public void putOnCooldown(Player player) {
-        long expiresAt = getGameTime() + getCooldownTicks();
-        setCooldownTicks(player, expiresAt);
+        setCooldownTicks(player, getCooldownTicks());
     }
 
     /**
@@ -96,7 +95,8 @@ public abstract class BaseAbility implements Listener {
      * @see #getCooldownTicks()
      */
     public void setCooldownTicks(Player player, long newCooldown) {
-        cooldowns.put(player.getUniqueId(), newCooldown);
+        long expiresAt = getGameTime() + newCooldown;
+        cooldowns.put(player.getUniqueId(), expiresAt);
     }
 
     /**

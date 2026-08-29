@@ -86,7 +86,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     public long getCooldownTicks() {
-        return config.cooldown;
+        return config.cooldownDefault;
     }
 
     @Override
@@ -186,6 +186,8 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         // SFX
         shooter.getWorld().playSound(shooterLocation, Sound.ENTITY_SLIME_ATTACK, 1.0f, 0.8f);
 
+        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownEntity));
+
         // Easter Egg
         if (tryConsumeMobEasterEgg(shooter, target)) return;
 
@@ -215,6 +217,8 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         Player shooter = ctx.shooter();
         applyImpulse(shooter, shooter.getLocation(), Objects.requireNonNull(ctx.getHitLocation()), 1.8, 0.4);
         shooter.getWorld().playSound(shooter.getLocation(), Sound.ENTITY_FROG_TONGUE, 1.0f, 1.0f);
+
+        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownBlock));
     }
 
     // Easter Egg
