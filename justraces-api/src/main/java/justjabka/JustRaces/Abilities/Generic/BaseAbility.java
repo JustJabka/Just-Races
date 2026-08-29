@@ -2,6 +2,7 @@ package justjabka.JustRaces.Abilities.Generic;
 
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Types.CooldownEntry;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -16,7 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseAbility implements Listener {
-    private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
+    private final Map<UUID, CooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 
     protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown");
@@ -96,7 +97,9 @@ public abstract class BaseAbility implements Listener {
      */
     public void setCooldownTicks(Player player, long newCooldown) {
         long expiresAt = getGameTime() + newCooldown;
-        cooldowns.put(player.getUniqueId(), expiresAt);
+        CooldownEntry entry = new CooldownEntry(newCooldown, expiresAt);
+
+        cooldowns.put(player.getUniqueId(), entry);
     }
 
     /**
@@ -105,7 +108,8 @@ public abstract class BaseAbility implements Listener {
      * @return expire stamp
      */
     private Long getExpireStamp(Player player) {
-        return cooldowns.getOrDefault(player.getUniqueId(), 0L);
+        CooldownEntry entry = new CooldownEntry(getCooldownTicks(), 0L);
+        return cooldowns.getOrDefault(player.getUniqueId(), entry).expiresAt();
     }
 
     /**
@@ -126,13 +130,13 @@ public abstract class BaseAbility implements Listener {
     }
 
     public void updateCooldownBar(Player player) {
-        float remainingTicks = (float) getRemainingTicks(player);
-        float cooldownTicks = (float) getCooldownTicks();
-
-        if (remainingTicks <= 0 || cooldownTicks <= 0) {
+        if (!isOnCooldown(player)) {
             removeCooldownBar(player);
             return;
         }
+
+        float remainingTicks = (float) getRemainingTicks(player);
+        float cooldownTicks = (float) cooldowns.get(player.getUniqueId()).ticks();
 
         float progress = Math.clamp(remainingTicks / cooldownTicks, BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
         final Component iconWithOffset = getCooldownBarIcon(player).shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
