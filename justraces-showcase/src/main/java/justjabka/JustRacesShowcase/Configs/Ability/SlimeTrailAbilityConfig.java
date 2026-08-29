@@ -17,6 +17,6 @@ public class SlimeTrailAbilityConfig {
 
         this.trailRadius = (float) config.getDouble("trail.radius");
         this.trailDuration = config.getInt("trail.duration");
-        this.trailEffectsDuration = config.getInt("trail.effect-duration");
+        this.trailEffectsDuration = config.getInt("trail.effects-duration");
     }
 }

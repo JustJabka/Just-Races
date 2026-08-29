@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,12 +38,13 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     public enum TongueType {
-        NORMAL(24, Color.fromRGB(255, 138, 138), true, true, true, false, false, false, 1f),
-        SLIME(24, Color.fromRGB(126, 191, 110), true, true, false, true, true, false, 0f),
-        MAGMA(12, Color.fromRGB(201, 57, 6), true, true, false, false, true, true, 3f);
+        NORMAL(24, Color.fromRGB(255, 138, 138), BossBar.Color.PINK, true, true, true, false, false, false, 1f),
+        SLIME(24, Color.fromRGB(126, 191, 110), BossBar.Color.GREEN, true, true, false, true, true, false, 0f),
+        MAGMA(12, Color.fromRGB(201, 57, 6), BossBar.Color.RED, true, true, false, false, true, true, 3f);
 
         private final double maxDistance;
         private final Color color;
+        @Nullable private final BossBar.Color cooldownBarColor;
         private final boolean hooksEntities;
         private final boolean hooksBlocks;
         private final boolean canBeCanceled; // TODO
@@ -54,6 +56,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         TongueType(
                 double maxDistance,
                 Color tongueColor,
+                @Nullable BossBar.Color cooldownBarColor,
                 boolean hooksEntities,
                 boolean hooksToBlocks,
                 boolean canBeCanceled,
@@ -64,6 +67,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         ) {
             this.maxDistance = maxDistance;
             this.color = tongueColor;
+            this.cooldownBarColor = cooldownBarColor;
             this.hooksEntities = hooksEntities;
             this.hooksBlocks = hooksToBlocks;
             this.canBeCanceled = canBeCanceled;
@@ -91,7 +95,8 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     public BossBar.Color getCooldownBarColor(Player player) {
-        return BossBar.Color.PINK;
+        BossBar.Color cooldownBarColor = getTongueType(player).cooldownBarColor;
+        return cooldownBarColor != null ? cooldownBarColor : super.getCooldownBarColor(player);
     }
 
     // State

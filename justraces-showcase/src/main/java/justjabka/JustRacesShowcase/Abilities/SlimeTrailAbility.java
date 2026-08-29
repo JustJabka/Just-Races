@@ -28,17 +28,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility {
     private final SlimeTrailAbilityConfig config;
+    private final Set<PotionEffect> trailEffects;
     private final Map<UUID, BukkitTask> activeTrails = new ConcurrentHashMap<>();
 
     private static final Color TRAIL_COLOR = Color.fromRGB(153, 255, 163);
 
-    private final static Set<PotionEffect> TRAIL_EFFECTS = Set.of(
-            new PotionEffect(PotionEffectType.SLOWNESS, 0, 1, false, true, true),
-            new PotionEffect(PotionEffectType.OOZING, 0, 0, false, true, true)
-    );
-
     public SlimeTrailAbility(SlimeTrailAbilityConfig config) {
         this.config = config;
+        this.trailEffects = Set.of(
+                new PotionEffect(PotionEffectType.SLOWNESS, config.trailEffectsDuration, 1, false, true, true),
+                new PotionEffect(PotionEffectType.OOZING, config.trailEffectsDuration, 0, false, true, true)
+        );
     }
 
     @Override
@@ -122,9 +122,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
                             cloud.setWaitTime(0);
                             cloud.setColor(TRAIL_COLOR);
                             cloud.setSource(player);
-                            for (PotionEffect effect : TRAIL_EFFECTS) {
-                                cloud.addCustomEffect(effect.withDuration(config.trailEffectsDuration), true);
-                            }
+                            trailEffects.forEach(effect -> cloud.addCustomEffect(effect, true));
                         }
                 );
             }
