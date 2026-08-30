@@ -22,7 +22,7 @@ public class SetRaceCommand {
 
     public static LiteralCommandNode<CommandSourceStack> setRace() {
         return Commands.literal("setrace")
-                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRacesAPI.NAMESPACE)))
+                .requires(stack -> stack.getSender().hasPermission("%s.command.setrace".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .then(Commands.argument("race", new RaceArgument())
                                 .executes(ctx -> {

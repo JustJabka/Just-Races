@@ -35,7 +35,7 @@ public class SelectRaceCommand {
 
     public static LiteralCommandNode<CommandSourceStack> selectRace() {
         return Commands.literal("selectrace")
-                .requires(stack -> stack.getSender().hasPermission("%s.admin".formatted(JustRacesAPI.NAMESPACE)))
+                .requires(stack -> stack.getSender().hasPermission("%s.command.selectrace".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .executes(ctx -> {
                             final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
