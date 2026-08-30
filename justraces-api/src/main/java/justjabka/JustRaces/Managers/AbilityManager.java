@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class AbilityManager {
     private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
-    private static final NamespacedKey ABILITY_VISIBILITY_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "ability_visibility");
 
     //region Container Manipulations
     public static PersistentDataContainer getAbilitiesContainer(Player player) {
@@ -40,21 +39,6 @@ public class AbilityManager {
         );
     }
 
-    public static void changeAbilitiesVisibility(Player player, boolean status) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        pdc.set(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, status);
-    }
-
-    /**
-     * Checks if player abilities is visible
-     * @param player Player whose abilities visibility will be checked
-     * @return {@code true} if abilities is visible
-     * @apiNote This doesn't return {@code true} if player hasn't any abilities. This method checks if player disabled abilities visibility through command {@code /showabilities}
-     */
-    public static boolean isAbilitiesVisible(Player player) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        return pdc.getOrDefault(ABILITY_VISIBILITY_KEY, PersistentDataType.BOOLEAN, true);
-    }
     //endregion
 
 
