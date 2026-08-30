@@ -6,6 +6,7 @@ import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import justjabka.JustRaces.Commands.GetRaceCommand;
+import justjabka.JustRaces.Commands.MainCommand;
 import justjabka.JustRaces.Commands.SelectRaceCommand;
 import justjabka.JustRaces.Commands.SetRaceCommand;
 
@@ -21,6 +22,7 @@ public class JustRacesBootstrap implements PluginBootstrap {
             SetRaceCommand.register(registrar);
             GetRaceCommand.register(registrar);
             SelectRaceCommand.register(registrar);
+            MainCommand.register(registrar);
         });
     }
 }

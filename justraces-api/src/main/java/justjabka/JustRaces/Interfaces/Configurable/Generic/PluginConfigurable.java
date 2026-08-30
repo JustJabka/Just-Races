@@ -26,7 +26,8 @@ public interface PluginConfigurable extends Configurable {
         return configFile;
     }
 
-    default void initializeConfigFile() {
+    @Override
+    default void reloadConfigFile() {
         try {
             getConfigNode();
         } catch (Exception e) {
@@ -34,6 +35,7 @@ public interface PluginConfigurable extends Configurable {
         }
     }
 
+    // TODO: actually cache configs instead of getting values from disk every time
     @Override
     default ConfigurationNode getConfigNode() {
         Plugin owningPlugin = JavaPlugin.getProvidingPlugin(this.getClass());

@@ -9,4 +9,7 @@ public interface RaceConfigurable extends Configurable {
     default ConfigurationNode getConfigNode() {
         return RaceManager.getRaceByKey(getKey()).getConfig();
     }
+
+    @Override
+    default void reloadConfigFile() {}
 }

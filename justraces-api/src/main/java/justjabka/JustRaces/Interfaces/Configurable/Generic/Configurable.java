@@ -9,8 +9,12 @@ import java.util.List;
 
 public interface Configurable {
     NamespacedKey getKey();
-
     ConfigurationNode getConfigNode();
+    void reloadConfigFile();
+
+    default void initializeConfigFile() {
+        reloadConfigFile();
+    }
 
     private ConfigurationNode getRawConfigNode(Object... path) {
         ConfigurationNode root = getConfigNode();
