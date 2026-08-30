@@ -1,0 +1,11 @@
+{
+  "cooldown": 180,
+  "effect_duration": 220,
+  "explosion_power": {
+    "normal": 6.0,
+    "suicide": 7.0
+  },
+  "durability_percent_per_use": 0.25,
+  "max_chain_amount": 6,
+  "suicide_durability_percent": 0.1
+}

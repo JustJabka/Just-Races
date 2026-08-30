@@ -13,7 +13,7 @@ public class HumanRaceRunnable extends BaseRaceRunnable {
     private static final NamespacedKey ADRENALINE_RUSH_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adrenaline_rush");
 
     @Override
-    public NamespacedKey getRaceKey() {
+    public NamespacedKey getKey() {
         return RaceProvider.HUMAN;
     }
 

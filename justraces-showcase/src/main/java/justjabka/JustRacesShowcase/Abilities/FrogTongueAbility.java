@@ -6,7 +6,6 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
-import justjabka.JustRacesShowcase.Configs.Ability.FrogTongueAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.*;
@@ -29,13 +28,7 @@ import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility {
-    private final FrogTongueAbilityConfig config;
-
     private static final double STEP = 0.4;
-
-    public FrogTongueAbility(FrogTongueAbilityConfig config) {
-        this.config = config;
-    }
 
     public enum TongueType {
         NORMAL(24, Color.fromRGB(255, 138, 138), BossBar.Color.PINK, true, true, true, false, false, false, 1f),

@@ -9,22 +9,10 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("UnstableApiUsage")
-public class BaseArmorModifier extends BaseModifier {
-    private final Attribute attribute;
-    private final double amount;
-    private final AttributeModifier.Operation operation;
-
-    public BaseArmorModifier(
-            NamespacedKey key,
-            Attribute attribute,
-            double amount,
-            AttributeModifier.Operation operation
-    ) {
-        super(key);
-        this.attribute = attribute;
-        this.amount = amount;
-        this.operation = operation;
-    }
+public abstract class BaseArmorModifier extends BaseModifier {
+    public abstract Attribute getAttribute();
+    public abstract double getAttributeAmount();
+    public abstract AttributeModifier.Operation getAttributeOperation();
 
     @Override
     public void apply(ItemStack item) {
@@ -38,10 +26,10 @@ public class BaseArmorModifier extends BaseModifier {
                 );
 
         // Apply Modifier
-        attributes.addModifier(this.attribute, new AttributeModifier(
+        attributes.addModifier(getAttribute(), new AttributeModifier(
                 getDynamicKey(item),
-                this.amount,
-                this.operation,
+                getAttributeAmount(),
+                getAttributeOperation(),
                 getItemGroupSlot(item)
         ));
 

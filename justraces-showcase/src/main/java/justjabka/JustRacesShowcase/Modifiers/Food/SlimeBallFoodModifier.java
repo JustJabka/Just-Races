@@ -2,26 +2,46 @@ package justjabka.JustRacesShowcase.Modifiers.Food;
 
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
+import io.papermc.paper.datacomponent.item.UseCooldown;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import justjabka.JustRacesShowcase.Abilities.FrogTongueAbility;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRacesShowcase.Modifiers.Food.Generic.BaseFrogTongueTypeChangerFoodModifier;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("UnstableApiUsage")
 public class SlimeBallFoodModifier extends BaseFrogTongueTypeChangerFoodModifier {
-    public SlimeBallFoodModifier(NamespacedKey key) {
-        super(
-                key,
-                FoodProperties.food()
-                        .nutrition(3)
-                        .canAlwaysEat(true)
-                        .build(),
-                Consumable.consumable()
-                        .animation(ItemUseAnimation.EAT)
-                        .consumeSeconds(0.8f)
-                        .hasConsumeParticles(true)
-                        .build(),
-                FrogTongueAbility.TongueType.SLIME
-        );
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "slime_ball_food");
+    }
+
+    @Override
+    public FrogTongueAbility.TongueType getFrogTongueType() {
+        return FrogTongueAbility.TongueType.SLIME;
+    }
+
+    @Override
+    public Consumable getConsumable() {
+        return Consumable.consumable()
+                .animation(ItemUseAnimation.EAT)
+                .consumeSeconds(0.8f)
+                .hasConsumeParticles(true)
+                .build();
+    }
+
+    @Override
+    public FoodProperties getFoodProperties() {
+        return FoodProperties.food()
+                .nutrition(3)
+                .canAlwaysEat(true)
+                .build();
+    }
+
+    @Override
+    public @Nullable UseCooldown getUseCooldown() {
+        return null;
     }
 }

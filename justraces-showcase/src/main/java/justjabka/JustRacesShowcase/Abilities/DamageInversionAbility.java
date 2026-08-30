@@ -5,7 +5,6 @@ import justjabka.JustRaces.Abilities.Generic.TogglableAbility;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.ArmorSet;
-import justjabka.JustRacesShowcase.Configs.Ability.DamageInversionAbilityConfig;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
@@ -26,12 +25,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import java.util.Collection;
 
 public class DamageInversionAbility extends TogglableAbility {
-    private final DamageInversionAbilityConfig config;
     private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
-
-    public DamageInversionAbility(DamageInversionAbilityConfig config) {
-        this.config = config;
-    }
 
     @Override
     public NamespacedKey getKey() {

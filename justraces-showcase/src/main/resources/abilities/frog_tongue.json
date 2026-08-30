@@ -1,0 +1,8 @@
+{
+  "cooldown": {
+    "entity": 160,
+    "block": 12,
+    "default": 12
+  },
+  "size": 0.8
+}

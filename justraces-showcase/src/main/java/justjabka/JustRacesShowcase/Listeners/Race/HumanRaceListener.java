@@ -18,7 +18,7 @@ public class HumanRaceListener extends BaseRaceListener {
     private static final NamespacedKey ADAPTATION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
 
     @Override
-    public NamespacedKey getRaceKey() {
+    public NamespacedKey getKey() {
         return RaceProvider.HUMAN;
     }
 

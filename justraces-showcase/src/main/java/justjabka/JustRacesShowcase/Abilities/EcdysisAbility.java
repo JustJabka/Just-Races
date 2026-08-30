@@ -6,7 +6,6 @@ import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.ArmorSet;
-import justjabka.JustRacesShowcase.Configs.Ability.EcdysisAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -32,33 +31,26 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EcdysisAbility extends BaseAbility implements DurationAbility {
-    private final EcdysisAbilityConfig config;
 
-    private final Set<PotionEffect> userEffects;
-    private final Map<Attribute, AttributeModifier> userModifiers;
+    private final Set<PotionEffect> userEffects = Set.of(
+            new PotionEffect(PotionEffectType.RESISTANCE, (int) config.effectDuration, 4, false, true),
+            new PotionEffect(PotionEffectType.SPEED, (int) config.effectDuration, 1, false, true)
+    );
+    private final Map<Attribute, AttributeModifier> userModifiers = Map.of(
+            Attribute.KNOCKBACK_RESISTANCE, new AttributeModifier(
+                    getKey(),
+                    1024,
+                    AttributeModifier.Operation.ADD_NUMBER
+            ),
+            Attribute.EXPLOSION_KNOCKBACK_RESISTANCE, new AttributeModifier(
+                    getKey(),
+                    1024,
+                    AttributeModifier.Operation.ADD_NUMBER
+            )
+    );
 
     private final Map<UUID, BukkitTask> chainTasks = new ConcurrentHashMap<>();
     private final Map<UUID, BukkitTask> effectTasks = new ConcurrentHashMap<>();
-
-    public EcdysisAbility(EcdysisAbilityConfig config) {
-        this.config = config;
-        this.userEffects = Set.of(
-                new PotionEffect(PotionEffectType.RESISTANCE, (int) config.effectDuration, 4, false, true),
-                new PotionEffect(PotionEffectType.SPEED, (int) config.effectDuration, 1, false, true)
-        );
-        this.userModifiers = Map.of(
-                Attribute.KNOCKBACK_RESISTANCE, new AttributeModifier(
-                        getKey(),
-                        1024,
-                        AttributeModifier.Operation.ADD_NUMBER
-                ),
-                Attribute.EXPLOSION_KNOCKBACK_RESISTANCE, new AttributeModifier(
-                        getKey(),
-                        1024,
-                        AttributeModifier.Operation.ADD_NUMBER
-                )
-        );
-    }
 
     @Override
     public NamespacedKey getKey() {

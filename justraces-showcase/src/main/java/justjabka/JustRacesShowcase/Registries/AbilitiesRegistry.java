@@ -1,21 +1,24 @@
 package justjabka.JustRacesShowcase.Registries;
 
-import justjabka.JustRacesShowcase.Abilities.*;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRaces.JustRacesRegistries;
+import justjabka.JustRacesShowcase.Abilities.DamageInversionAbility;
+import justjabka.JustRacesShowcase.Abilities.EcdysisAbility;
+import justjabka.JustRacesShowcase.Abilities.FrogTongueAbility;
+import justjabka.JustRacesShowcase.Abilities.SlimeTrailAbility;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.jetbrains.annotations.NotNull;
 
 public class AbilitiesRegistry {
-    private static void registerAbilities(ConfigRegistry configs) {
-        registerAbility(new DamageInversionAbility(configs.damageInversionAbilityConfig));
-        registerAbility(new EcdysisAbility(configs.ecdysisAbilityConfig));
-        registerAbility(new FrogTongueAbility(configs.frogTongueAbilityConfig));
-        registerAbility(new SlimeTrailAbility(configs.slimeTrailAbilityConfig));
+    private static void registerAbilities() {
+        registerAbility(new DamageInversionAbility());
+        registerAbility(new EcdysisAbility());
+        registerAbility(new FrogTongueAbility());
+        registerAbility(new SlimeTrailAbility());
     }
 
-    public static void register(ConfigRegistry configs) {
-        registerAbilities(configs);
+    public static void register() {
+        registerAbilities();
 
         JustRacesShowcase.LOGGER.info("Successfully registered {} abilities!", JustRacesRegistries.ABILITIES.keys().size());
     }

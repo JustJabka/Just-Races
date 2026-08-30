@@ -40,7 +40,7 @@ public class ArmatRaceListener extends BaseRaceListener {
     );
 
     @Override
-    public NamespacedKey getRaceKey() {
+    public NamespacedKey getKey() {
         return RaceProvider.ARMAT;
     }
 
@@ -268,13 +268,13 @@ public class ArmatRaceListener extends BaseRaceListener {
         double armorValue = armorInstance.getValue();
 
         // Delete old attribute
-        maxHealthInstance.removeModifier(getRaceKey());
+        maxHealthInstance.removeModifier(getKey());
 
         // Calc new attribute
         if (armorValue <= 0) return;
 
         AttributeModifier modifier = new AttributeModifier(
-                getRaceKey(),
+                getKey(),
                 armorValue,
                 AttributeModifier.Operation.ADD_NUMBER
         );
@@ -287,7 +287,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (miningEfficiencyInstance == null) return;
 
         // Delete old attribute
-        miningEfficiencyInstance.removeModifier(getRaceKey());
+        miningEfficiencyInstance.removeModifier(getKey());
 
         if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
 
@@ -304,7 +304,7 @@ public class ArmatRaceListener extends BaseRaceListener {
         if (miningBonus <= 0) return;
 
         AttributeModifier modifier = new AttributeModifier(
-                getRaceKey(),
+                getKey(),
                 miningBonus,
                 AttributeModifier.Operation.ADD_NUMBER
         );

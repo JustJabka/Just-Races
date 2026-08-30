@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class ArmatRaceRunnable extends BaseRaceRunnable {
     @Override
-    public NamespacedKey getRaceKey() {
+    public NamespacedKey getKey() {
         return RaceProvider.ARMAT;
     }
 
@@ -25,7 +25,7 @@ public class ArmatRaceRunnable extends BaseRaceRunnable {
         if (gravityInstance == null) return;
 
         boolean shouldSink = player.isInWater() && ArmorManager.hasAnyArmor(player);
-        boolean hasModifier = gravityInstance.getModifier(getRaceKey()) != null;
+        boolean hasModifier = gravityInstance.getModifier(getKey()) != null;
 
         boolean giveModifier = shouldSink && !hasModifier;
         boolean clearModifier = !shouldSink && hasModifier;
@@ -34,14 +34,14 @@ public class ArmatRaceRunnable extends BaseRaceRunnable {
             double sinkGravity = getConfigDouble("sink_gravity_value");
 
             AttributeModifier modifier = new AttributeModifier(
-                    getRaceKey(),
+                    getKey(),
                     sinkGravity,
                     AttributeModifier.Operation.ADD_NUMBER
             );
 
             gravityInstance.addModifier(modifier);
         } else if (clearModifier) {
-            gravityInstance.removeModifier(getRaceKey());
+            gravityInstance.removeModifier(getKey());
         }
     }
 }

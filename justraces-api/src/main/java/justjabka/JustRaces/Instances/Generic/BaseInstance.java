@@ -2,14 +2,15 @@ package justjabka.JustRaces.Instances.Generic;
 
 import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Map;
 
 public abstract class BaseInstance {
     private transient String key;
     private Map<String, Object> config;
-    private transient CommentedConfigurationNode configNode;
+    private transient ConfigurationNode configNode;
 
     // Key
     public NamespacedKey getKey() {
@@ -21,10 +22,10 @@ public abstract class BaseInstance {
     }
 
     // Config
-    public CommentedConfigurationNode getConfig() {
+    public ConfigurationNode getConfig() {
         if (configNode == null) {
             try {
-                configNode = CommentedConfigurationNode.root();
+                configNode = BasicConfigurationNode.root();
 
                 if (config != null) {
                     configNode.set(config);

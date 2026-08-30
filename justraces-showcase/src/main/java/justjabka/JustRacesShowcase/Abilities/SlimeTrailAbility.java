@@ -3,7 +3,6 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
-import justjabka.JustRacesShowcase.Configs.Ability.SlimeTrailAbilityConfig;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Color;
@@ -27,19 +26,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility {
-    private final SlimeTrailAbilityConfig config;
-    private final Set<PotionEffect> trailEffects;
+    private final Set<PotionEffect> trailEffects = Set.of(
+            new PotionEffect(PotionEffectType.SLOWNESS, config.trailEffectsDuration, 1, false, true, true),
+            new PotionEffect(PotionEffectType.OOZING, config.trailEffectsDuration, 0, false, true, true)
+    );
     private final Map<UUID, BukkitTask> activeTrails = new ConcurrentHashMap<>();
 
     private static final Color TRAIL_COLOR = Color.fromRGB(153, 255, 163);
-
-    public SlimeTrailAbility(SlimeTrailAbilityConfig config) {
-        this.config = config;
-        this.trailEffects = Set.of(
-                new PotionEffect(PotionEffectType.SLOWNESS, config.trailEffectsDuration, 1, false, true, true),
-                new PotionEffect(PotionEffectType.OOZING, config.trailEffectsDuration, 0, false, true, true)
-        );
-    }
 
     @Override
     public NamespacedKey getKey() {

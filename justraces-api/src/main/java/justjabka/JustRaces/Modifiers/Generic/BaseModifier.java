@@ -6,16 +6,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class BaseModifier implements ItemModifier {
-    private final NamespacedKey key;
-
-    public BaseModifier(NamespacedKey key) {
-        this.key = key;
-    }
-
     @Override
-    public NamespacedKey getKey() {
-        return key;
-    }
+    public abstract NamespacedKey getKey();
 
     public boolean isRequiredModifier(ItemStack item) {
         return ModifierManager.isModifiedWith(item, this);

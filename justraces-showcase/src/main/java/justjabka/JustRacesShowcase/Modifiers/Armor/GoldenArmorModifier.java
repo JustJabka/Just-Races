@@ -1,18 +1,29 @@
 package justjabka.JustRacesShowcase.Modifiers.Armor;
 
-import justjabka.JustRacesShowcase.Configs.Modifier.Armor.GoldenArmorModifierConfig;
 import justjabka.JustRaces.Modifiers.Generic.BaseArmorModifier;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 
 public class GoldenArmorModifier extends BaseArmorModifier {
-    public GoldenArmorModifier(NamespacedKey key, GoldenArmorModifierConfig config) {
-        super(
-                key,
-                Attribute.MAX_ABSORPTION,
-                config.attributeAmount,
-                AttributeModifier.Operation.ADD_NUMBER
-        );
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "golden_armor");
+    }
+    @Override
+    public Attribute getAttribute() {
+        return Attribute.MAX_ABSORPTION;
+    }
+
+    @Override
+    public double getAttributeAmount() {
+        return 0;
+    }
+
+    @Override
+    public AttributeModifier.Operation getAttributeOperation() {
+        return AttributeModifier.Operation.ADD_NUMBER;
     }
 }
