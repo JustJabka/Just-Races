@@ -42,7 +42,6 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
         );
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(ignoreCancelled = true)
     public void onDamageTaken(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;

@@ -17,7 +17,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
 public class EffectManager {
     public static double calcAbsorptionAmountFromConsumable(Consumable consumable) {
         for (ConsumeEffect effect : consumable.consumeEffects()) {

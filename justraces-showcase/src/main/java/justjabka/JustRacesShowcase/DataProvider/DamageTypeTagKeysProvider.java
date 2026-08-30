@@ -21,7 +21,6 @@ public class DamageTypeTagKeysProvider {
         return DamageTypeTagKeys.create(Key.key(JustRacesShowcase.NAMESPACE, key));
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     public static Collection<DamageType> getTagValues(TagKey<DamageType> key) {
         return RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).getTagValues(key);
     }

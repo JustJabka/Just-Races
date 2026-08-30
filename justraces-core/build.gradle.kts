@@ -12,7 +12,7 @@ repositories {
 dependencies {
     implementation(project(":justraces-api"))
 
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
 
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
@@ -23,7 +23,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -43,7 +43,7 @@ tasks {
         // Configure the Minecraft version for our task.
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.2")
         jvmArgs("-Xms2G", "-Xmx2G")
         runDirectory.set(rootProject.file("run"))
     }

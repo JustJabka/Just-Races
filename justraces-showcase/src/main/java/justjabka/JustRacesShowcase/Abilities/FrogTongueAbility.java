@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@SuppressWarnings("UnstableApiUsage")
 public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, AbilityConfigurable {
     private static final double STEP = 0.4;
 

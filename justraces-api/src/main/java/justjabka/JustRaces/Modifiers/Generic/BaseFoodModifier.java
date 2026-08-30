@@ -7,7 +7,6 @@ import io.papermc.paper.datacomponent.item.UseCooldown;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 public abstract class BaseFoodModifier extends BaseModifier {
     public abstract Consumable getConsumable();
     public abstract FoodProperties getFoodProperties();

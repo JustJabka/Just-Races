@@ -10,7 +10,6 @@ import justjabka.JustRacesShowcase.Modifiers.Food.Generic.BaseFrogTongueTypeChan
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 public class MagmaCreamFoodModifier extends BaseFrogTongueTypeChangerFoodModifier {
 
     @Override

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-@SuppressWarnings("UnstableApiUsage")
 public class SelectRaceCommand {
     private static final int dialogColumns = 2;
     private static final int navigationActionsWidth = 100;

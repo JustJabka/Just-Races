@@ -80,6 +80,7 @@ public class GlobalListener implements Listener {
         Player player = event.getPlayer();
         inventoryRefresh(player);
         AbilityManager.clearAbilitiesStates(player, ResettableAbility.Reason.QUIT);
+        // TODO: refresh attributes after rejoin & reload
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -96,7 +97,6 @@ public class GlobalListener implements Listener {
         });
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
