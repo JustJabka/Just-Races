@@ -26,10 +26,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility {
-    private final Set<PotionEffect> trailEffects = Set.of(
-            new PotionEffect(PotionEffectType.SLOWNESS, config.trailEffectsDuration, 1, false, true, true),
-            new PotionEffect(PotionEffectType.OOZING, config.trailEffectsDuration, 0, false, true, true)
-    );
+//    private final Set<PotionEffect> trailEffects = Set.of(
+//            new PotionEffect(PotionEffectType.SLOWNESS, config.trailEffectsDuration, 1, false, true, true),
+//            new PotionEffect(PotionEffectType.OOZING, config.trailEffectsDuration, 0, false, true, true)
+//    );
     private final Map<UUID, BukkitTask> activeTrails = new ConcurrentHashMap<>();
 
     private static final Color TRAIL_COLOR = Color.fromRGB(153, 255, 163);
@@ -41,12 +41,14 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
 
     @Override
     public long getCooldownTicks() {
-        return config.cooldown;
+//        return config.cooldown;
+        return 0;
     }
 
     @Override
     public long getDurationTicks() {
-        return config.duration;
+//        return config.duration;
+        return 0;
     }
 
     @Override
@@ -105,19 +107,19 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
 
                 if (!player.isOnGround()) return;
 
-                world.spawn(
-                        location,
-                        AreaEffectCloud.class,
-                        CreatureSpawnEvent.SpawnReason.CUSTOM,
-                        cloud -> {
-                            cloud.setRadius(config.trailRadius);
-                            cloud.setDuration(config.trailDuration);
-                            cloud.setWaitTime(0);
-                            cloud.setColor(TRAIL_COLOR);
-                            cloud.setSource(player);
-                            trailEffects.forEach(effect -> cloud.addCustomEffect(effect, true));
-                        }
-                );
+//                world.spawn(
+//                        location,
+//                        AreaEffectCloud.class,
+//                        CreatureSpawnEvent.SpawnReason.CUSTOM,
+//                        cloud -> {
+//                            cloud.setRadius(config.trailRadius);
+//                            cloud.setDuration(config.trailDuration);
+//                            cloud.setWaitTime(0);
+//                            cloud.setColor(TRAIL_COLOR);
+//                            cloud.setSource(player);
+//                            trailEffects.forEach(effect -> cloud.addCustomEffect(effect, true));
+//                        }
+//                );
             }
         };
     }

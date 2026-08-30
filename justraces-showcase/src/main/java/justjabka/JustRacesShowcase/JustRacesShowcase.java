@@ -20,7 +20,7 @@ public final class JustRacesShowcase extends JavaPlugin {
         ListenersRegistry.register(this);
         RunnablesRegistry.register(this);
 
-        ResourceManager.registerRacesFromResources(this, "races/");
+        ResourceManager.registerRacesFromPlugin(this);
     }
 
     @Override

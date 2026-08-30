@@ -14,6 +14,10 @@ import java.util.zip.ZipInputStream;
 
 public class ResourceManager {
 
+    public static void registerRacesFromPlugin(Plugin addonPlugin) {
+        ResourceManager.registerRacesFromResources(addonPlugin, "races/");
+    }
+
     public static void registerRacesFromResources(Plugin plugin, String resourceDir) {
         String namespace = plugin.getName().toLowerCase();
 

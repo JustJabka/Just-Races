@@ -24,7 +24,7 @@ public final class JustRaces extends JavaPlugin {
         });
 
         // Register
-        RacesRegistry.register(this);
+        RacesRegistry.loadAllRaces();
 
         ListenersRegistry.register(this);
         RunnablesRegistry.register(this);

@@ -6,7 +6,6 @@ import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.ResourceManager;
 import org.bukkit.NamespacedKey;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,10 +17,13 @@ import java.util.stream.Stream;
 public class RacesRegistry {
     private static final Gson gson = new Gson();
 
-    public static void register(Plugin plugin) {
-        ResourceManager.registerRacesFromResources(plugin, "races/");
+    public static void loadAllRaces() {
+        File rootRacesFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races");
+        if (!rootRacesFolder.exists()) {
+            rootRacesFolder.mkdirs();
+        }
 
-        File rootRacesFolder = new File(plugin.getDataFolder(), "races");
+        ResourceManager.registerRacesFromPlugin(JustRacesAPI.getInstance());
         registerRaces(rootRacesFolder);
 
         JustRacesAPI.getLogger().info("Successfully registered {} races!", JustRacesRegistries.RACES.keys().size());
@@ -45,7 +47,6 @@ public class RacesRegistry {
             RaceInstance race = gson.fromJson(reader, RaceInstance.class);
 
             Path relativePath = rootFolder.relativize(filePath);
-
             NamespacedKey key = parseNamespacedKey(relativePath.toString());
 
             race.setKey(key.toString());

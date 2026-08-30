@@ -83,7 +83,8 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     public long getCooldownTicks() {
-        return config.cooldownDefault;
+//        return config.cooldownDefault;
+        return 0;
     }
 
     @Override
@@ -146,17 +147,17 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     protected void renderHook(HookHitContext ctx) {
-        Player shooter = ctx.shooter();
-        World world = shooter.getWorld();
-
-        TongueType tongueType = getTongueType(shooter);
-        Particle.DustOptions particleOptions = new Particle.DustOptions(tongueType.color, config.size);
-
-        double distance = ctx.getActualDistance();
-        for (double d = 0; d < distance; d += STEP) {
-            Location point = ctx.startLocation().clone().add(ctx.direction().clone().multiply(d));
-            world.spawnParticle(Particle.DUST, point, 1, particleOptions);
-        }
+//        Player shooter = ctx.shooter();
+//        World world = shooter.getWorld();
+//
+//        TongueType tongueType = getTongueType(shooter);
+//        Particle.DustOptions particleOptions = new Particle.DustOptions(tongueType.color, config.size);
+//
+//        double distance = ctx.getActualDistance();
+//        for (double d = 0; d < distance; d += STEP) {
+//            Location point = ctx.startLocation().clone().add(ctx.direction().clone().multiply(d));
+//            world.spawnParticle(Particle.DUST, point, 1, particleOptions);
+//        }
     }
 
     // Triggers
@@ -174,49 +175,49 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     @Override
     protected void onEntityHit(HookHitContext ctx, LivingEntity target) {
         // Get Values
-        Player shooter = ctx.shooter();
-
-        Location shooterLocation = shooter.getLocation();
-        Location targetLocation = target.getLocation();
-
-        TongueType tongueType = getTongueType(shooter);
-
-        // SFX
-        shooter.getWorld().playSound(shooterLocation, Sound.ENTITY_SLIME_ATTACK, 1.0f, 0.8f);
-
-        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownEntity));
-
-        // Easter Egg
-        if (tryConsumeMobEasterEgg(shooter, target)) return;
-
-        // Damage Target
-        if (tongueType.damage > 0) {
-            DamageSource hookDamage = DamageSource.builder(DamageType.PLAYER_ATTACK).withDirectEntity(shooter).build();
-            target.damage(tongueType.damage, hookDamage);
-        }
-
-        // Ignite Target
-        if (tongueType.ignitesTarget) {
-            target.setFireTicks(80);
-        }
-
-        // Hook
-        double multiplier = ctx.getActualDistance() * 0.18 + 0.25;
-
-        if (tongueType.isInverted) {
-            applyImpulse(shooter, shooterLocation, targetLocation, multiplier, 0.3);
-        } else {
-            applyImpulse(target, targetLocation, shooterLocation, multiplier, 0.3);
-        }
+//        Player shooter = ctx.shooter();
+//
+//        Location shooterLocation = shooter.getLocation();
+//        Location targetLocation = target.getLocation();
+//
+//        TongueType tongueType = getTongueType(shooter);
+//
+//        // SFX
+//        shooter.getWorld().playSound(shooterLocation, Sound.ENTITY_SLIME_ATTACK, 1.0f, 0.8f);
+//
+//        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownEntity));
+//
+//        // Easter Egg
+//        if (tryConsumeMobEasterEgg(shooter, target)) return;
+//
+//        // Damage Target
+//        if (tongueType.damage > 0) {
+//            DamageSource hookDamage = DamageSource.builder(DamageType.PLAYER_ATTACK).withDirectEntity(shooter).build();
+//            target.damage(tongueType.damage, hookDamage);
+//        }
+//
+//        // Ignite Target
+//        if (tongueType.ignitesTarget) {
+//            target.setFireTicks(80);
+//        }
+//
+//        // Hook
+//        double multiplier = ctx.getActualDistance() * 0.18 + 0.25;
+//
+//        if (tongueType.isInverted) {
+//            applyImpulse(shooter, shooterLocation, targetLocation, multiplier, 0.3);
+//        } else {
+//            applyImpulse(target, targetLocation, shooterLocation, multiplier, 0.3);
+//        }
     }
 
     @Override
     protected void onBlockHit(HookHitContext ctx, Block block) {
-        Player shooter = ctx.shooter();
-        applyImpulse(shooter, shooter.getLocation(), Objects.requireNonNull(ctx.getHitLocation()), 1.8, 0.4);
-        shooter.getWorld().playSound(shooter.getLocation(), Sound.ENTITY_FROG_TONGUE, 1.0f, 1.0f);
-
-        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownBlock));
+//        Player shooter = ctx.shooter();
+//        applyImpulse(shooter, shooter.getLocation(), Objects.requireNonNull(ctx.getHitLocation()), 1.8, 0.4);
+//        shooter.getWorld().playSound(shooter.getLocation(), Sound.ENTITY_FROG_TONGUE, 1.0f, 1.0f);
+//
+//        Bukkit.getScheduler().runTask(JustRacesShowcase.INSTANCE, () -> setCooldownTicks(shooter, config.cooldownBlock));
     }
 
     // Easter Egg
