@@ -10,7 +10,7 @@ public class IronArmorModifier extends BaseArmorModifier {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "iron_armor");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/iron");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class IronArmorModifier extends BaseArmorModifier {
 
     @Override
     public double getAttributeAmount() {
-        return 0;
+        return getConfigDouble("attribute_amount");
     }
 
     @Override

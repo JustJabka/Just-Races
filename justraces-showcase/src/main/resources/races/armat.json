@@ -11,11 +11,11 @@
     "minecraft:max_health": 10
   },
   "item_modifiers": {
-    "justracesshowcase:leather_armor": "#justracesshowcase:leather_armor",
-    "justracesshowcase:copper_armor": "#justracesshowcase:copper_armor",
-    "justracesshowcase:chainmail_armor": "#justracesshowcase:chainmail_armor",
-    "justracesshowcase:iron_armor": "#justracesshowcase:iron_armor",
-    "justracesshowcase:golden_armor": "#justracesshowcase:golden_armor"
+    "justracesshowcase:armor/leather": "#justracesshowcase:leather_armor",
+    "justracesshowcase:armor/copper": "#justracesshowcase:copper_armor",
+    "justracesshowcase:armor/chainmail": "#justracesshowcase:chainmail_armor",
+    "justracesshowcase:armor/iron": "#justracesshowcase:iron_armor",
+    "justracesshowcase:armor/golden": "#justracesshowcase:golden_armor"
   },
   "config": {
     "vulnerable_damage_multiplier": 1.5,

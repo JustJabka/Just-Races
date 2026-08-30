@@ -1,11 +1,13 @@
 package justjabka.JustRaces.Modifiers.Generic;
 
+import justjabka.JustRaces.Interfaces.Configurable.ItemModifierConfigurable;
 import justjabka.JustRaces.Managers.ModifierManager;
 import justjabka.JustRaces.Modifiers.ItemModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class BaseModifier implements ItemModifier {
+public abstract class BaseModifier implements ItemModifier, ItemModifierConfigurable {
+
     @Override
     public abstract NamespacedKey getKey();
 

@@ -34,8 +34,7 @@ public class DamageInversionAbility extends TogglableAbility {
 
     @Override
     public long getCooldownTicks() {
-//        return config.cooldown;
-        return 0;
+        return getConfigCooldown();
     }
 
     @Override
@@ -102,23 +101,26 @@ public class DamageInversionAbility extends TogglableAbility {
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
-//        if (!(event.getEntity() instanceof Player player)) return;
-//        if (!AbilityManager.isAbilityActive(player, getKey())) return;
-//
-//        double damage = event.getDamage();
-//        DamageSource damageSource = event.getDamageSource();
-//        DamageType damageType = damageSource.getDamageType();
-//
-//        boolean canBypassInversion = bypassesDamageInversion.contains(damageType);
-//
-//        if (canBypassInversion) return;
-//
-//        Range<Double> damageBoundary = Range.between(config.lowerBound, config.upperBound);
-//        boolean damageInBoundary = damageBoundary.contains(damage);
-//
-//        if (!damageInBoundary) return;
-//
-//        double finalDamage = (config.upperBound + config.lowerBound) - damage;
-//        event.setDamage(finalDamage);
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!AbilityManager.isAbilityActive(player, getKey())) return;
+
+        double damage = event.getDamage();
+        DamageSource damageSource = event.getDamageSource();
+        DamageType damageType = damageSource.getDamageType();
+
+        boolean canBypassInversion = bypassesDamageInversion.contains(damageType);
+
+        if (canBypassInversion) return;
+
+        double lowerBound = getConfigDouble("lower_bound");
+        double upperBound = getConfigDouble("upper_bound");
+
+        Range<Double> damageBoundary = Range.between(lowerBound, upperBound);
+        boolean damageInBoundary = damageBoundary.contains(damage);
+
+        if (!damageInBoundary) return;
+
+        double finalDamage = (upperBound + lowerBound) - damage;
+        event.setDamage(finalDamage);
     }
 }

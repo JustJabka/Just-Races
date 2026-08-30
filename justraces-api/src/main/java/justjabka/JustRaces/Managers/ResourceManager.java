@@ -2,6 +2,9 @@ package justjabka.JustRaces.Managers;
 
 import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.plugin.Plugin;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +27,34 @@ public class ResourceManager {
         File targetFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races/" + namespace);
 
         ResourceManager.extractResources(plugin, resourceDir, targetFolder, ".json");
+    }
+
+    public static ConfigurationNode loadJsonNode(Plugin plugin, File targetFile, String internalResourcePath) {
+        if (!targetFile.exists()) createDefaultConfig(plugin, targetFile, internalResourcePath);
+
+        GsonConfigurationLoader loader = GsonConfigurationLoader.builder()
+                .path(targetFile.toPath())
+                .build();
+
+        try {
+            return loader.load();
+        } catch (ConfigurateException e) {
+            JustRacesAPI.getLogger().error("Failed to load JSON config at: {}", targetFile.getAbsolutePath(), e);
+            return loader.createNode();
+        }
+    }
+
+    private static void createDefaultConfig(Plugin plugin, File targetFile, String internalResourcePath) {
+        try (InputStream in = plugin.getResource(internalResourcePath)) {
+            if (in != null) {
+                Files.copy(in, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                JustRacesAPI.getLogger().info("Created default config for {} at {}", targetFile.getName(), targetFile.getPath());
+            } else {
+                throw new IOException("Config for %s not found in %s".formatted(targetFile.getName(), targetFile.getPath()));
+            }
+        } catch (IOException e) {
+            JustRacesAPI.getLogger().error("Failed to save default config resource '{}' from {}", internalResourcePath, plugin.getName(), e);
+        }
     }
 
     public static void extractResources(Plugin plugin, String resourceDir, File targetFolder, String extension) {

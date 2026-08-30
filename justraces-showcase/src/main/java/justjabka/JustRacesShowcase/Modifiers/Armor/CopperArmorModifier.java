@@ -9,7 +9,7 @@ import org.bukkit.attribute.AttributeModifier;
 public class CopperArmorModifier extends BaseArmorModifier {
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "copper_armor");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/copper");
     }
 
     @Override
@@ -19,7 +19,7 @@ public class CopperArmorModifier extends BaseArmorModifier {
 
     @Override
     public double getAttributeAmount() {
-        return 0;
+        return getConfigDouble("attribute_amount");
     }
 
     @Override

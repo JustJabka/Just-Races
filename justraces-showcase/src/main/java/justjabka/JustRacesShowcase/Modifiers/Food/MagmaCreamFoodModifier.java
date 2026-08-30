@@ -15,7 +15,7 @@ public class MagmaCreamFoodModifier extends BaseFrogTongueTypeChangerFoodModifie
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "magma_cream_food");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "food/magma_cream");
     }
 
     @Override

@@ -19,8 +19,8 @@
     "minecraft:burning_time": 1.25
   },
   "item_modifiers": {
-    "justracesshowcase:slime_ball": "minecraft:slime_ball",
-    "justracesshowcase:magma_cream": "minecraft:magma_cream"
+    "justracesshowcase:food/slime_ball": "minecraft:slime_ball",
+    "justracesshowcase:food/magma_cream": "minecraft:magma_cream"
   },
   "config": {}
 }

@@ -10,7 +10,7 @@ public class GoldenArmorModifier extends BaseArmorModifier {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "golden_armor");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/golden");
     }
     @Override
     public Attribute getAttribute() {
@@ -19,7 +19,7 @@ public class GoldenArmorModifier extends BaseArmorModifier {
 
     @Override
     public double getAttributeAmount() {
-        return 0;
+        return getConfigDouble("attribute_amount");
     }
 
     @Override

@@ -10,7 +10,7 @@ public class ChainmailArmorModifier extends BaseArmorModifier {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "chainmail_armor");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/chainmail");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ChainmailArmorModifier extends BaseArmorModifier {
 
     @Override
     public double getAttributeAmount() {
-        return 0;
+        return getConfigDouble("attribute_amount");
     }
 
     @Override

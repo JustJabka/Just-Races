@@ -15,7 +15,7 @@ public class SlimeBallFoodModifier extends BaseFrogTongueTypeChangerFoodModifier
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "slime_ball_food");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "food/slime_ball");
     }
 
     @Override
