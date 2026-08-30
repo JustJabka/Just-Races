@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Listeners.Race;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
 import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.ArmorSet;
@@ -30,7 +31,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.Random;
 
-public class ArmatRaceListener extends BaseRaceListener {
+public class ArmatRaceListener extends BaseRaceListener implements RaceConfigurable {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "ignore_potion");

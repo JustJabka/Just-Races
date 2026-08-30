@@ -2,6 +2,7 @@ package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
@@ -30,7 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EcdysisAbility extends BaseAbility implements DurationAbility {
+public class EcdysisAbility extends BaseAbility implements DurationAbility, AbilityConfigurable {
 
     private final Set<PotionEffect> userEffects = Set.of(
             new PotionEffect(PotionEffectType.RESISTANCE, (int) getConfigDuration(), 4, false, true),

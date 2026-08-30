@@ -1,5 +1,6 @@
 package justjabka.JustRaces;
 
+import justjabka.JustRaces.Interfaces.Configurable.Generic.PluginConfigurable;
 import justjabka.JustRaces.Registries.ListenersRegistry;
 import justjabka.JustRaces.Registries.RacesRegistry;
 import justjabka.JustRaces.Registries.RunnablesRegistry;
@@ -15,11 +16,19 @@ public final class JustRaces extends JavaPlugin {
         // Add Hooks
         JustRacesRegistries.ABILITIES.addHook((key, ability) -> {
             Bukkit.getPluginManager().registerEvents(ability, JustRacesAPI.getInstance());
+
+            if (ability instanceof PluginConfigurable configurable) {
+                configurable.initializeConfigFile();
+            }
         });
 
         JustRacesRegistries.MODIFIERS.addHook((key, modifier) -> {
             if (modifier instanceof Listener listener) {
                 Bukkit.getPluginManager().registerEvents(listener, JustRacesAPI.getInstance());
+            }
+
+            if (modifier instanceof PluginConfigurable configurable) {
+                configurable.initializeConfigFile();
             }
         });
 

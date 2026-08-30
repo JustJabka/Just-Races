@@ -26,6 +26,14 @@ public interface PluginConfigurable extends Configurable {
         return configFile;
     }
 
+    default void initializeConfigFile() {
+        try {
+            getConfigNode();
+        } catch (Exception e) {
+            JustRacesAPI.getLogger().error("Failed to initialize config for '{}' in {}", getKey(), getCategory().toString(), e);
+        }
+    }
+
     @Override
     default ConfigurationNode getConfigNode() {
         Plugin owningPlugin = JavaPlugin.getProvidingPlugin(this.getClass());

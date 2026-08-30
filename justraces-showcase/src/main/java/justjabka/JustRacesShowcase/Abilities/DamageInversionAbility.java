@@ -2,6 +2,7 @@ package justjabka.JustRacesShowcase.Abilities;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.Abilities.Generic.TogglableAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.ArmorSet;
@@ -24,7 +25,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import java.util.Collection;
 
-public class DamageInversionAbility extends TogglableAbility {
+public class DamageInversionAbility extends TogglableAbility implements AbilityConfigurable {
     private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
 
     @Override

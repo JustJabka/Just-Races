@@ -3,6 +3,7 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Color;
@@ -25,7 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility {
+public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility, AbilityConfigurable {
     private final Set<PotionEffect> trailEffects = Set.of(
             new PotionEffect(PotionEffectType.SLOWNESS, getConfigInt("trail", "effects_duration"), 1, false, true, true),
             new PotionEffect(PotionEffectType.OOZING, getConfigInt("trail", "effects_duration"), 0, false, true, true)

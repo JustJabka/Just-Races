@@ -1,6 +1,5 @@
 package justjabka.JustRaces.Abilities.Generic;
 
-import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.CooldownEntry;
@@ -17,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseAbility implements Listener, AbilityConfigurable {
+public abstract class BaseAbility implements Listener {
     private final Map<UUID, CooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 

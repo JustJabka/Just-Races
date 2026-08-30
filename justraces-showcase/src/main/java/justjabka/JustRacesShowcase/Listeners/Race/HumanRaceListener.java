@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Listeners.Race;
 
 import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
+import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
 import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
 import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -14,7 +15,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.tag.DamageTypeTags;
 
-public class HumanRaceListener extends BaseRaceListener {
+public class HumanRaceListener extends BaseRaceListener implements RaceConfigurable {
     private static final NamespacedKey ADAPTATION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
 
     @Override

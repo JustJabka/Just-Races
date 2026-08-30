@@ -1,5 +1,6 @@
 package justjabka.JustRacesShowcase.Runnables.Race;
 
+import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
 import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
 import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -9,7 +10,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
-public class HumanRaceRunnable extends BaseRaceRunnable {
+public class HumanRaceRunnable extends BaseRaceRunnable implements RaceConfigurable {
     private static final NamespacedKey ADRENALINE_RUSH_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adrenaline_rush");
 
     @Override

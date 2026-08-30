@@ -3,7 +3,7 @@ package justjabka.JustRaces.Managers;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
-import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class ModifierManager {
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
-    public static ItemModifier getByKey(NamespacedKey key) {
+    public static BaseModifier getByKey(NamespacedKey key) {
         return JustRacesRegistries.MODIFIERS.get(key);
     }
 
@@ -22,7 +22,7 @@ public class ModifierManager {
         if (item.isEmpty()) return;
 
         RaceInstance race = RaceManager.getRace(player);
-        ItemModifier type = race.getModifier(item.getType());
+        BaseModifier type = race.getModifier(item.getType());
 
         if (type == null) return;
         if (isModifiedWith(item, type)) return;
@@ -41,7 +41,7 @@ public class ModifierManager {
         NamespacedKey key = NamespacedKey.fromString(modifierId, JustRacesAPI.getInstance());
         if (key == null) return;
 
-        ItemModifier type = getByKey(key);
+        BaseModifier type = getByKey(key);
 
         if (type == null) {
             removeMarker(item);
@@ -84,7 +84,7 @@ public class ModifierManager {
         refreshModifiersOnItem(player, cursorItem);
     }
 
-    private static void addMarker(ItemStack item, ItemModifier type) {
+    private static void addMarker(ItemStack item, BaseModifier type) {
         item.editPersistentDataContainer(pdc ->
                 pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getKey().toString())
         );
@@ -96,7 +96,7 @@ public class ModifierManager {
         );
     }
 
-    public static boolean isModifiedWith(ItemStack item, ItemModifier type) {
+    public static boolean isModifiedWith(ItemStack item, BaseModifier type) {
         if (type == null) return false;
 
         String modifier = getAppliedModifier(item);

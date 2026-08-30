@@ -1,15 +1,16 @@
 package justjabka.JustRacesShowcase.Runnables.Race;
 
-import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
+import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
+import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
-public class ArmatRaceRunnable extends BaseRaceRunnable {
+public class ArmatRaceRunnable extends BaseRaceRunnable implements RaceConfigurable {
     @Override
     public NamespacedKey getKey() {
         return RaceProvider.ARMAT;

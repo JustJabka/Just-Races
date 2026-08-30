@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import justjabka.JustRaces.Instances.Generic.BaseInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
-import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
@@ -19,7 +19,7 @@ public class RaceInstance extends BaseInstance {
     private Map<String, Double> attributes;
     private Set<String> abilities;
     private Map<String, JsonElement> item_modifiers;
-    private transient Map<Material, ItemModifier> cachedModifiers = new HashMap<>();
+    private transient Map<Material, BaseModifier> cachedModifiers = new HashMap<>();
     private transient boolean isModifiersCacheBuilt = false;
 
     public Component getName() {
@@ -75,7 +75,7 @@ public class RaceInstance extends BaseInstance {
         return abilities;
     }
 
-    public ItemModifier getModifier(Material material) {
+    public BaseModifier getModifier(Material material) {
         if (!this.isModifiersCacheBuilt) buildModifierCache();
 
         return this.cachedModifiers.get(material);
@@ -97,7 +97,7 @@ public class RaceInstance extends BaseInstance {
 
             if (materials.isEmpty()) continue;
 
-            ItemModifier modifier = JustRacesRegistries.MODIFIERS.get(modifierKey);
+            BaseModifier modifier = JustRacesRegistries.MODIFIERS.get(modifierKey);
 
             for (Material material : materials) {
                 this.cachedModifiers.put(material, modifier);

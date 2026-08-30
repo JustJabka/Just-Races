@@ -1,7 +1,7 @@
 package justjabka.JustRacesShowcase.Registries;
 
 import justjabka.JustRaces.JustRacesRegistries;
-import justjabka.JustRaces.Modifiers.ItemModifier;
+import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRacesShowcase.Modifiers.Armor.*;
 import justjabka.JustRacesShowcase.Modifiers.Food.MagmaCreamFoodModifier;
@@ -27,7 +27,7 @@ public class ModifiersRegistry {
         JustRacesShowcase.LOGGER.info("Successfully registered {} item modifiers!", JustRacesRegistries.MODIFIERS.keys().size());
     }
 
-    private static void registerModifier(ItemModifier  modifier) {
+    private static void registerModifier(BaseModifier modifier) {
         JustRacesRegistries.MODIFIERS.register(modifier.getKey(), modifier);
     }
 }

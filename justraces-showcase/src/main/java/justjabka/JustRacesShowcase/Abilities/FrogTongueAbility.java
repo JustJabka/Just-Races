@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -27,7 +28,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
-public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility {
+public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, AbilityConfigurable {
     private static final double STEP = 0.4;
 
     public enum TongueType {
