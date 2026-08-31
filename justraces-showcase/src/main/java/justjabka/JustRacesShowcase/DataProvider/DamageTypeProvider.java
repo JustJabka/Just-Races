@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DamageTypeProvider {
     public static final DamageType ABSOLUTE_DAMAGE = getDamageType("absolute_damage");
+    public static final DamageType FROG_TONGUE = getDamageType("frog_tongue");
 
     @NotNull
     private static DamageType getDamageType(@NotNull @KeyPattern.Value String key) {

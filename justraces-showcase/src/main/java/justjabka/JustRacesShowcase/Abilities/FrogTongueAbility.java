@@ -8,12 +8,12 @@ import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
+import justjabka.JustRacesShowcase.DataProvider.DamageTypeProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
@@ -215,7 +215,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     private boolean applyDamageAndAndCheckBlock(Player shooter, LivingEntity target, TongueType tongueType) {
         if (tongueType.damage <= 0) return false;
 
-        DamageSource tongueDamageSource = DamageSource.builder(DamageType.PLAYER_ATTACK)
+        DamageSource tongueDamageSource = DamageSource.builder(DamageTypeProvider.FROG_TONGUE)
                 .withCausingEntity(shooter)
                 .withDirectEntity(shooter)
                 .build();
