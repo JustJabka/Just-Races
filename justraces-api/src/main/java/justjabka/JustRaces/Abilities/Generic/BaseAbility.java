@@ -20,7 +20,7 @@ public abstract class BaseAbility implements Listener {
     private final Map<UUID, CooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 
-    protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown");
+    protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown_bar");
     protected static final Component COOLDOWN_BAR_ICON_OFFSET = Component.text("\uDB00\uDCC6").font(COOLDOWN_BAR_FONT);
 
     public abstract NamespacedKey getKey();

@@ -6,6 +6,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
@@ -29,19 +30,20 @@ import java.util.UUID;
 
 public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, AbilityConfigurable {
     private static final double STEP = 0.4;
+    private static final int FIRE_TICKS = 4 * 20;
+    private static final int BLOCK_COOLDOWN = 8 * 20;
 
     public enum TongueType {
-        NORMAL(24, Color.fromRGB(255, 138, 138), BossBar.Color.PINK, true, true, true, false, false, false, 1f),
-        SLIME(24, Color.fromRGB(126, 191, 110), BossBar.Color.GREEN, true, true, false, true, true, false, 0f),
-        MAGMA(12, Color.fromRGB(201, 57, 6), BossBar.Color.RED, true, true, false, false, true, true, 3f);
+        NORMAL(24, Color.fromRGB(255, 138, 138), BossBar.Color.PINK, true, true, false, false, false, 1f),
+        SLIME(24, Color.fromRGB(126, 191, 110), BossBar.Color.GREEN, true, true, true, true, false, 1f),
+        MAGMA(12, Color.fromRGB(201, 57, 6), BossBar.Color.RED, true, true, false, true, true, 3f);
 
         private final double maxDistance;
         private final Color color;
         @Nullable private final BossBar.Color cooldownBarColor;
         private final boolean hooksEntities;
         private final boolean hooksBlocks;
-        private final boolean canBeCanceled; // TODO
-        private final boolean bypassesShields; // TODO
+        private final boolean bypassesShields;
         private final boolean isInverted;
         private final boolean ignitesTarget;
         private final float damage;
@@ -52,7 +54,6 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
                 @Nullable BossBar.Color cooldownBarColor,
                 boolean hooksEntities,
                 boolean hooksToBlocks,
-                boolean canBeCanceled,
                 boolean bypassesShields,
                 boolean invertedHook,
                 boolean ignitesEntities,
@@ -63,7 +64,6 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
             this.cooldownBarColor = cooldownBarColor;
             this.hooksEntities = hooksEntities;
             this.hooksBlocks = hooksToBlocks;
-            this.canBeCanceled = canBeCanceled;
             this.bypassesShields = bypassesShields;
             this.isInverted = invertedHook;
             this.ignitesTarget = ignitesEntities;
@@ -193,15 +193,14 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         if (tryConsumeMobEasterEgg(shooter, target)) return;
 
         // Damage Target
-        if (tongueType.damage > 0) {
-            DamageSource hookDamage = DamageSource.builder(DamageType.PLAYER_ATTACK).withDirectEntity(shooter).build();
-            target.damage(tongueType.damage, hookDamage);
-        }
+        boolean hitBlocked = applyDamageAndAndCheckBlock(shooter, target, tongueType);
 
         // Ignite Target
         if (tongueType.ignitesTarget) {
-            target.setFireTicks(80);
+            target.setFireTicks(FIRE_TICKS);
         }
+
+        if (hitBlocked && !tongueType.bypassesShields) return;
 
         // Hook
         double multiplier = ctx.getActualDistance() * 0.18 + 0.25;
@@ -211,6 +210,23 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         } else {
             applyImpulse(target, targetLocation, shooterLocation, multiplier, 0.3);
         }
+    }
+
+    private boolean applyDamageAndAndCheckBlock(Player shooter, LivingEntity target, TongueType tongueType) {
+        if (tongueType.damage <= 0) return false;
+
+        DamageSource tongueDamageSource = DamageSource.builder(DamageType.PLAYER_ATTACK)
+                .withCausingEntity(shooter)
+                .withDirectEntity(shooter)
+                .build();
+
+        if (target instanceof Player targetPlayer) {
+            int cooldown = tongueType.bypassesShields ? BLOCK_COOLDOWN : 0;
+            return CombatManager.attackAndTryDisableBlock(targetPlayer, cooldown, tongueType.damage, tongueDamageSource);
+        }
+
+        target.damage(tongueType.damage, tongueDamageSource);
+        return false;
     }
 
     @Override

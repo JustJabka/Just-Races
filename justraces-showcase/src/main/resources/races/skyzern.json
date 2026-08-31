@@ -1,0 +1,24 @@
+{
+  "name": {
+    "translate": "race.skyzern.name",
+    "fallback": "Skyzern"
+  },
+  "abilities": [
+    "justracesshowcase:air_burst"
+  ],
+  "attributes": {
+    "minecraft:max_health": 18,
+    "minecraft:scale": 1.1,
+    "minecraft:air_drag_modifier": 0.65,
+    "minecraft:fall_damage_multiplier": 0.25,
+    "minecraft:safe_fall_distance": 10,
+    "minecraft:attack_knockback": 0.3
+  },
+  "item_modifiers": {},
+  "config": {
+    "air_damage_multiplier": {
+      "bonus": 0.1,
+      "min_attack_cooldown": 0.8
+    }
+  }
+}
