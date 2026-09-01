@@ -4,6 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
+import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -17,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -62,22 +62,19 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
         return BossBar.Color.GREEN;
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onTrigger(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-
-        if (!event.getAction().isLeftClick()) return;
-
-        if (!player.isSneaking()) return;
-        if (!player.getInventory().getItemInMainHand().isEmpty()) return;
-
-        if (!tryActivate(player)) return;
-        event.setCancelled(true);
+    @Override
+    public Trigger getTrigger() {
+        return Trigger.LEFT_CLICK;
     }
 
     @Override
     protected boolean canActivate(Player player) {
-        return player.isOnGround();
+        boolean isOnGround = player.isOnGround();
+
+        boolean isSneaking = player.isSneaking();
+        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
+
+        return isOnGround && isSneaking && emptyHand;
     }
 
     @Override

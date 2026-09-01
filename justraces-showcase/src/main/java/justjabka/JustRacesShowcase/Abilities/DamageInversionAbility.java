@@ -6,6 +6,7 @@ import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.ArmorSet;
+import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeTagKeysProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
@@ -21,7 +22,6 @@ import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import java.util.Collection;
 
@@ -50,8 +50,18 @@ public class DamageInversionAbility extends TogglableAbility implements AbilityC
     }
 
     @Override
+    public Trigger getTrigger() {
+        return Trigger.OFFHAND_SWAP;
+    }
+
+    @Override
     protected boolean canActivate(Player player) {
-        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+        boolean hasLeatherArmor = ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+
+        boolean isSneaking = player.isSneaking();
+        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
+
+        return hasLeatherArmor && isSneaking && emptyHand;
     }
 
     @Override
@@ -67,17 +77,6 @@ public class DamageInversionAbility extends TogglableAbility implements AbilityC
         if (isStateValid(player)) return;
 
         disable(player);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void trigger(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
-
-        if (!event.getMainHandItem().isEmpty()) return;
-        if (!event.getOffHandItem().isEmpty()) return;
-
-        if (!tryActivate(player)) return;
-        event.setCancelled(true);
     }
 
     @Override

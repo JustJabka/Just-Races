@@ -7,6 +7,7 @@ import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.CombatManager;
+import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -22,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -169,15 +169,17 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     // Triggers
-    @EventHandler(ignoreCancelled = true)
-    public void onTrigger(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
+    @Override
+    public Trigger getTrigger() {
+        return Trigger.OFFHAND_SWAP;
+    }
 
-        if (!player.isSneaking()) return;
-        if (!player.getInventory().getItemInMainHand().isEmpty()) return;
+    @Override
+    protected boolean canActivate(Player player) {
+        boolean isSneaking = player.isSneaking();
+        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
 
-        if (!tryActivate(player)) return;
-        event.setCancelled(true);
+        return isSneaking && emptyHand;
     }
 
     @Override

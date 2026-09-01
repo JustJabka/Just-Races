@@ -3,6 +3,7 @@ package justjabka.JustRaces.Abilities.Generic;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.CooldownEntry;
+import justjabka.JustRaces.Types.Trigger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -159,6 +160,10 @@ public abstract class BaseAbility implements Listener {
         player.hideBossBar(bossBar);
     }
 
+    public Trigger getTrigger() {
+        return Trigger.CUSTOM;
+    }
+
     /**
      * The additional conditions that needed for the ability activation
      * @param player Player for which the ability activation is checked
@@ -174,7 +179,7 @@ public abstract class BaseAbility implements Listener {
      * @return {@code true} if ability activated successfully
      * @see #onActivation(Player)
      */
-    protected boolean tryActivate(Player player) {
+    public boolean tryActivate(Player player) {
         if (!playerHasAbility(player)) return false;
 
         if (!canActivate(player)) return false;

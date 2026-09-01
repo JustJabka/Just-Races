@@ -3,6 +3,7 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
+import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -13,8 +14,6 @@ import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.util.Vector;
 import org.jspecify.annotations.NonNull;
 
@@ -37,15 +36,16 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
         return Component.text("\uE004").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onTrigger(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
+    @Override
+    public Trigger getTrigger() {
+        return Trigger.OFFHAND_SWAP;
+    }
 
-        if (!player.isSneaking()) return;
-        if (!player.getInventory().getItemInMainHand().isEmpty()) return;
-
-        if (!tryActivate(player)) return;
-        event.setCancelled(true);
+    @Override
+    protected boolean canActivate(Player player) {
+        boolean isSneaking = player.isSneaking();
+        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
+        return isSneaking && emptyHand;
     }
 
     @Override

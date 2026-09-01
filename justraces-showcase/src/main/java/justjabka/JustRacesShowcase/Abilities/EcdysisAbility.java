@@ -7,6 +7,7 @@ import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.ArmorSet;
+import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -17,8 +18,6 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.potion.PotionEffect;
@@ -79,19 +78,18 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     @Override
-    protected boolean canActivate(Player player) {
-        return ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
+    public Trigger getTrigger() {
+        return Trigger.OFFHAND_SWAP;
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void trigger(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
+    @Override
+    protected boolean canActivate(Player player) {
+        boolean hasNetheriteArmor = ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
 
-        if (!player.isSneaking()) return;
-        if (!player.getInventory().getItemInMainHand().isEmpty()) return;
+        boolean isSneaking = player.isSneaking();
+        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
 
-        if (!tryActivate(player)) return;
-        event.setCancelled(true);
+        return hasNetheriteArmor && isSneaking && emptyHand;
     }
 
     @Override
