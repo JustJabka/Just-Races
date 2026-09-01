@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Instances.Generic;
+package justjabka.JustRaces.Definitions.Generic;
 
 import com.google.gson.JsonElement;
 import justjabka.JustRaces.JustRacesAPI;
@@ -8,9 +8,10 @@ import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Map;
 
-public abstract class BaseInstance {
+public abstract class BaseDefinition {
     private transient String key;
     private Map<String, Object> config;
+
     private transient ConfigurationNode configNode;
 
     // Key

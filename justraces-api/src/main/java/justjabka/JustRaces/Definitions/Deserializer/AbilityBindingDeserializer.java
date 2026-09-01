@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Instances.Deserializer;
+package justjabka.JustRaces.Definitions.Deserializer;
 
 import com.google.gson.*;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
@@ -21,7 +21,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
         if (json.isJsonPrimitive()) return deserializeDefault(json);
         if (json.isJsonObject()) return deserializeOverride(json);
 
-        throw new JsonParseException("Invalid ability format in JSON");
+        throw new JsonParseException("Invalid ability format");
     }
 
     private static @NonNull AbilityBinding deserializeDefault(JsonElement json) {
@@ -29,7 +29,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
 
         BaseAbility ability = AbilityManager.getAbilityByKey(NamespacedKey.fromString(id));
         if (ability == null) {
-            throw new JsonParseException("Unknown ability ID: " + id);
+            throw new JsonParseException("Unknown ability: %s".formatted(id));
         }
 
         return AbilityBinding.ofDefault(ability);
@@ -41,7 +41,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
         String id = obj.get("id").getAsString();
         BaseAbility ability = AbilityManager.getAbilityByKey(NamespacedKey.fromString(id));
         if (ability == null) {
-            throw new JsonParseException("Unknown ability ID in override: " + id);
+            throw new JsonParseException("Unknown ability in override: %s".formatted(id));
         }
 
         Trigger trigger = getTrigger(ability, obj);

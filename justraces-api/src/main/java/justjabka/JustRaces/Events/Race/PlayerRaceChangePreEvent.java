@@ -1,6 +1,6 @@
 package justjabka.JustRaces.Events.Race;
 
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private final RaceInstance oldRace;
-    private RaceInstance newRace;
+    private final RaceDefinition oldRace;
+    private RaceDefinition newRace;
     private final Cause cause;
 
     private boolean cancelled;
@@ -24,8 +24,8 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
     @ApiStatus.Internal
     public PlayerRaceChangePreEvent(
             @NotNull Player player,
-            @NotNull RaceInstance oldRace,
-            @NotNull RaceInstance newRace,
+            @NotNull RaceDefinition oldRace,
+            @NotNull RaceDefinition newRace,
             @NotNull Cause cause
     ) {
         super(player);
@@ -38,7 +38,7 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
      * @return Player's race, that will be changed
      */
     @NotNull
-    public RaceInstance getOldRace() {
+    public RaceDefinition getOldRace() {
         return oldRace;
     }
 
@@ -46,14 +46,14 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
      * @return Player's race, that will be set
      */
     @NotNull
-    public RaceInstance getNewRace() {
+    public RaceDefinition getNewRace() {
         return newRace;
     }
 
     /**
      * @param race Player's new race
      */
-    public void setNewRace(@NotNull RaceInstance race) {
+    public void setNewRace(@NotNull RaceDefinition race) {
         this.newRace = race;
     }
 

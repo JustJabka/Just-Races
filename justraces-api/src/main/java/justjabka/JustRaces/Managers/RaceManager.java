@@ -4,7 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Events.Race.Cause;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
 import justjabka.JustRaces.Events.Race.PlayerRaceChangePreEvent;
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import org.bukkit.Bukkit;
@@ -23,7 +23,7 @@ import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
     public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
-    public static final RaceInstance NONE = getRaceByKey(NONE_KEY);
+    public static final RaceDefinition NONE = getRaceByKey(NONE_KEY);
 
     /**
      * Gets player's race
@@ -32,20 +32,20 @@ public class RaceManager {
      * @see #isRace(Player, NamespacedKey)
      */
     @NotNull
-    public static RaceInstance getRace(@NotNull Player player) {
+    public static RaceDefinition getRace(@NotNull Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         String raceString = pdc.get(RACE_KEY, PersistentDataType.STRING);
 
         if (raceString == null) return NONE;
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
 
-        RaceInstance instance = JustRacesRegistries.RACES.get(raceKey);
+        RaceDefinition instance = JustRacesRegistries.RACES.get(raceKey);
         return instance != null ? instance : NONE;
     }
 
     @NotNull
-    public static RaceInstance getRaceByKey(NamespacedKey key) {
-        RaceInstance instance = JustRacesRegistries.RACES.get(key);
+    public static RaceDefinition getRaceByKey(NamespacedKey key) {
+        RaceDefinition instance = JustRacesRegistries.RACES.get(key);
         if (instance == null) {
             throw new IllegalArgumentException("Unregistered race: %s".formatted(key));
         }
@@ -62,14 +62,14 @@ public class RaceManager {
      * @see RaceManager#getRaceByKey(NamespacedKey)
      */
     public static boolean setRace(@NotNull Player player, NamespacedKey raceKey, @NotNull Cause cause) {
-        RaceInstance currentRace = getRace(player);
-        RaceInstance newRace = getRaceByKey(raceKey);
+        RaceDefinition currentRace = getRace(player);
+        RaceDefinition newRace = getRaceByKey(raceKey);
 
         PlayerRaceChangePreEvent pre = new PlayerRaceChangePreEvent(player, currentRace, newRace, cause);
         pre.callEvent();
         if (pre.isCancelled()) return false;
 
-        RaceInstance finalRace = pre.getNewRace();
+        RaceDefinition finalRace = pre.getNewRace();
         applyRace(pre.getPlayer(), finalRace);
 
         PlayerRaceChangeEvent post = new PlayerRaceChangeEvent(player, currentRace, finalRace, cause);
@@ -81,11 +81,11 @@ public class RaceManager {
     /**
      * @see RaceManager#setRace(Player, NamespacedKey, Cause)
      */
-    public static boolean setRace(@NotNull Player player, @NotNull RaceInstance race, @NotNull Cause cause) {
+    public static boolean setRace(@NotNull Player player, @NotNull RaceDefinition race, @NotNull Cause cause) {
         return setRace(player, race.getKey(), cause);
     }
 
-    private static void applyRace(@NotNull Player player, @NotNull RaceInstance race) {
+    private static void applyRace(@NotNull Player player, @NotNull RaceDefinition race) {
         resetRace(player);
 
         PersistentDataContainer data = player.getPersistentDataContainer();
@@ -101,14 +101,14 @@ public class RaceManager {
      * @return {@code true} if races matches
      */
     public static boolean isRace(@NotNull Player player, NamespacedKey key) {
-        RaceInstance race = getRace(player);
+        RaceDefinition race = getRace(player);
         return race.getKey().equals(key);
     }
 
     /**
      * @see RaceManager#isRace(Player, NamespacedKey)
      */
-    public static boolean isRace(@NotNull Player player, @NotNull RaceInstance race) {
+    public static boolean isRace(@NotNull Player player, @NotNull RaceDefinition race) {
         return isRace(player, race.getKey());
     }
 
@@ -121,7 +121,7 @@ public class RaceManager {
         return !isRace(player, NONE_KEY);
     }
 
-    private static void initRace(@NotNull Player player, @NotNull RaceInstance race) {
+    private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
         Map<Attribute, Double> attributes = race.getAttributes();
         attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
     }

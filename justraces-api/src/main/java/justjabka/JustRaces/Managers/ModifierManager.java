@@ -1,6 +1,6 @@
 package justjabka.JustRaces.Managers;
 
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
@@ -21,7 +21,7 @@ public class ModifierManager {
         if (item == null) return;
         if (item.isEmpty()) return;
 
-        RaceInstance race = RaceManager.getRace(player);
+        RaceDefinition race = RaceManager.getRace(player);
         BaseModifier type = race.getModifier(item.getType());
 
         if (type == null) return;

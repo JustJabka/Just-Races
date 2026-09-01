@@ -13,7 +13,7 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import justjabka.JustRaces.Events.Race.Cause;
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.RaceManager;
@@ -48,16 +48,16 @@ public class SelectRaceCommand {
                 .build();
     }
 
-    private static void handleRaceSelection(Audience audience, RaceInstance race) {
+    private static void handleRaceSelection(Audience audience, RaceDefinition race) {
         if (!(audience instanceof Player player)) return;
 
         RaceManager.setRace(player, race, Cause.DIALOG);
     }
 
     private static void openRaceDialog(Player player, int page) {
-        Collection<RaceInstance> races = JustRacesRegistries.RACES.values();
+        Collection<RaceDefinition> races = JustRacesRegistries.RACES.values();
 
-        List<RaceInstance> raceList = races.stream()
+        List<RaceDefinition> raceList = races.stream()
                 .filter(instance -> !instance.isHidden())
                 .sorted(Comparator.comparing(instance -> instance.getKey().toString()))
                 .toList();
@@ -72,13 +72,13 @@ public class SelectRaceCommand {
         if (page >= raceList.size()) page = 0;
 
         final int currentPage = page;
-        RaceInstance selectedRace = raceList.get(currentPage);
+        RaceDefinition selectedRace = raceList.get(currentPage);
 
         Dialog dialog = buildDialog(player, selectedRace, currentPage);
         player.showDialog(dialog);
     }
 
-    private static Dialog buildDialog(Player player, RaceInstance selectedRace, int currentPage) {
+    private static Dialog buildDialog(Player player, RaceDefinition selectedRace, int currentPage) {
         List<DialogBody> body = new ArrayList<>();
 
         Component selectedRaceName = selectedRace.getName();

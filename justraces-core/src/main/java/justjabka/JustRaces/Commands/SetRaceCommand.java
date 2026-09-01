@@ -8,7 +8,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.JustRaces.Commands.Arguments.RaceArgument;
 import justjabka.JustRaces.Events.Race.Cause;
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.RaceManager;
 import net.kyori.adventure.text.Component;
@@ -29,7 +29,7 @@ public class SetRaceCommand {
                                     final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
                                     final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
-                                    RaceInstance race = ctx.getArgument("race", RaceInstance.class);
+                                    RaceDefinition race = ctx.getArgument("race", RaceDefinition.class);
 
                                     boolean success = RaceManager.setRace(target, race, Cause.COMMAND);
                                     if (!success) {

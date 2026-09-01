@@ -2,13 +2,18 @@ package justjabka.JustRaces.Registries;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import justjabka.JustRaces.Instances.Deserializer.AbilityBindingDeserializer;
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.Deserializer.AbilityBindingDeserializer;
+import justjabka.JustRaces.Definitions.Deserializer.AttributeDeserializer;
+import justjabka.JustRaces.Definitions.Deserializer.ItemModifierDeserializer;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.ResourceManager;
+import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,8 +23,11 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class RacesRegistry {
-    private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(AbilityBinding .class, new AbilityBindingDeserializer())
+    private static final Gson gson = GsonComponentSerializer.gson().populator()
+            .apply(new GsonBuilder())
+            .registerTypeAdapter(AbilityBinding.class, new AbilityBindingDeserializer())
+            .registerTypeAdapter(Attribute.class, new AttributeDeserializer())
+            .registerTypeAdapter(BaseModifier.class, new ItemModifierDeserializer())
             .create();
 
     public static void loadAllRaces() {
@@ -49,7 +57,7 @@ public class RacesRegistry {
     private static void loadRaceFile(Path rootFolder, Path filePath) {
         File file = filePath.toFile();
         try (FileReader reader = new FileReader(file)) {
-            RaceInstance race = gson.fromJson(reader, RaceInstance.class);
+            RaceDefinition race = gson.fromJson(reader, RaceDefinition.class);
 
             Path relativePath = rootFolder.relativize(filePath);
             NamespacedKey key = parseNamespacedKey(relativePath.toString());

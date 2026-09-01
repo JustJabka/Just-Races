@@ -1,7 +1,7 @@
 package justjabka.JustRaces.Listeners;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
-import justjabka.JustRaces.Managers.RaceManager;
+import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.AbilityBinding;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
@@ -85,7 +85,7 @@ public class TriggerListener implements Listener {
     }
 
     private static boolean triggerAbilities(Player player, Trigger requiredTrigger) {
-        Set<AbilityBinding> abilityBindings = RaceManager.getRace(player).getAbilitiesBindings();
+        Set<AbilityBinding> abilityBindings = AbilityManager.getAbilitiesBindingsForPlayer(player);
 
         for (AbilityBinding binding : abilityBindings) {
             if (binding.trigger() != requiredTrigger) continue;

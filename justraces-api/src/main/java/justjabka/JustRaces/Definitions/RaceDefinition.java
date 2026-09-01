@@ -1,63 +1,38 @@
-package justjabka.JustRaces.Instances;
+package justjabka.JustRaces.Definitions;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.Instances.Generic.BaseInstance;
+import justjabka.JustRaces.Definitions.Generic.BaseDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RaceInstance extends BaseInstance {
-    private JsonElement name;
-    private List<JsonObject> description;
-    private Map<String, Double> attributes;
+public class RaceDefinition extends BaseDefinition {
+    private Component name;
+    private List<Component> description;
+    private Map<Attribute, Double> attributes;
     private Set<AbilityBinding> abilities;
-    private Map<String, JsonElement> item_modifiers;
+    @SerializedName("item_modifiers")
+    private Map<BaseModifier, JsonElement> itemModifiers;
     private Boolean hidden;
 
     private transient Map<Material, BaseModifier> cachedModifiers = new HashMap<>();
     private transient boolean isModifiersCacheBuilt = false;
 
     public Component getName() {
-        if (name == null || name.isJsonNull() || isEmptyObject(name)) {
-            return Component.empty();
-        }
-
-        try {
-            return GsonComponentSerializer.gson().deserializeFromTree(name);
-        } catch (Exception e) {
-            JustRacesAPI.getLogger().error("Failed to parse name for race: {}. Returning key instead of name", getKey(), e);
-            return Component.text(getKey().getKey());
-        }
+        return name != null ? name : Component.empty();
     }
 
     public List<Component> getDescription() {
-        List<Component> contents = new ArrayList<>();
-
-        if (description == null || description.isEmpty()) {
-            contents.add(Component.empty());
-            return contents;
-        }
-
-        for (JsonObject object : description) {
-            try {
-                Component line = GsonComponentSerializer.gson().deserializeFromTree(object);
-                contents.add(line);
-            } catch (Exception e) {
-                JustRacesAPI.getLogger().error("Failed to parse description for race: {}", getKey(), e);
-            }
-        }
-
-        return contents;
+        return description != null ? description : Collections.emptyList();
     }
 
     public boolean isHidden() {
@@ -69,19 +44,7 @@ public class RaceInstance extends BaseInstance {
     }
 
     public Map<Attribute, Double> getAttributes() {
-        Map<Attribute, Double> bukkitAttributes = new HashMap<>();
-        if (attributes == null) return bukkitAttributes;
-
-        for (Map.Entry<String, Double> entry : attributes.entrySet()) {
-            NamespacedKey key = NamespacedKey.fromString(entry.getKey());
-            if (key == null) continue;
-
-            Attribute attribute = Registry.ATTRIBUTE.get(key);
-            if (attribute == null) continue;
-
-            bukkitAttributes.put(attribute, entry.getValue());
-        }
-        return bukkitAttributes;
+        return attributes != null ? attributes : Collections.emptyMap();
     }
 
     public Set<BaseAbility> getAbilities() {
@@ -109,19 +72,17 @@ public class RaceInstance extends BaseInstance {
         this.cachedModifiers.clear();
         this.isModifiersCacheBuilt = true;
 
-        if (this.item_modifiers == null) return;
-        if (this.item_modifiers.isEmpty()) return;
+        if (this.itemModifiers == null) return;
+        if (this.itemModifiers.isEmpty()) return;
 
-        for (NamespacedKey modifierKey : JustRacesRegistries.MODIFIERS.keys()) {
-            Set<Material> materials = getMaterialsForModifier(modifierKey.toString());
+        for (BaseModifier modifier : JustRacesRegistries.MODIFIERS.values()) {
+            Set<Material> materials = getMaterialsForModifier(modifier);
 
             if (materials.isEmpty()) {
-                materials = getMaterialsForModifier(modifierKey.getKey());
+                materials = getMaterialsForModifier(modifier);
             }
 
             if (materials.isEmpty()) continue;
-
-            BaseModifier modifier = JustRacesRegistries.MODIFIERS.get(modifierKey);
 
             for (Material material : materials) {
                 this.cachedModifiers.put(material, modifier);
@@ -129,13 +90,13 @@ public class RaceInstance extends BaseInstance {
         }
     }
 
-    public Set<Material> getMaterialsForModifier(String modifierId) {
+    private Set<Material> getMaterialsForModifier(BaseModifier modifier) {
         Set<Material> materials = new HashSet<>();
 
-        if (item_modifiers == null) return materials;
-        if (!item_modifiers.containsKey(modifierId)) return materials;
+        if (itemModifiers == null) return materials;
+        if (!itemModifiers.containsKey(modifier)) return materials;
 
-        JsonElement element = item_modifiers.get(modifierId);
+        JsonElement element = itemModifiers.get(modifier);
 
         boolean isArray = element.isJsonArray();
 
@@ -175,7 +136,7 @@ public class RaceInstance extends BaseInstance {
             NamespacedKey materialKey = NamespacedKey.fromString(value);
             if (materialKey == null) return;
 
-            Material material = org.bukkit.Registry.MATERIAL.get(materialKey);
+            Material material = Registry.MATERIAL.get(materialKey);
             if (material == null) return;
 
             materials.add(material);

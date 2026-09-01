@@ -4,9 +4,10 @@ import com.jeff_media.morepersistentdatatypes.DataType;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Abilities.Generic.ValidationAbility;
-import justjabka.JustRaces.Instances.RaceInstance;
+import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
+import justjabka.JustRaces.Types.AbilityBinding;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -64,18 +65,26 @@ public class AbilityManager {
      * @param race Race that abilities will be got
      * @return Abilities of the race
      */
-    public static @NotNull Set<BaseAbility> getAbilitiesForRace(RaceInstance race) {
+    public static @NotNull Set<BaseAbility> getAbilitiesForRace(RaceDefinition race) {
         return race != null ? race.getAbilities() : Collections.emptySet();
     }
 
     /**
      * Returns abilities that this player has
      * @param player Player that abilities will be got
-     * @see AbilityManager#getAbilitiesForRace(RaceInstance)
+     * @see AbilityManager#getAbilitiesForRace(RaceDefinition)
      * @return Abilities of the player
      */
     public static Set<BaseAbility> getAbilitiesForPlayer(Player player) {
         return getAbilitiesForRace(RaceManager.getRace(player));
+    }
+
+    public static Set<AbilityBinding> getAbilitiesBindingsForRace(RaceDefinition race) {
+        return race.getAbilitiesBindings();
+    }
+
+    public static Set<AbilityBinding> getAbilitiesBindingsForPlayer(Player player) {
+        return getAbilitiesBindingsForRace(RaceManager.getRace(player));
     }
 
     //endregion
@@ -128,7 +137,7 @@ public class AbilityManager {
      * @param player Player that abilities would be checked
      * @param key Ability key
      * @return {@code true} if player has data in PDC
-     * @apiNote Don't confuse with {@link #getAbilitiesForRace(RaceInstance)}
+     * @apiNote Don't confuse with {@link #getAbilitiesForRace(RaceDefinition)}
      */
     public static boolean hasAbilityData(Player player, NamespacedKey key) {
         return getAbilitiesContainer(player).has(key);
