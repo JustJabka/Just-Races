@@ -81,7 +81,7 @@ public class DamageInversionAbility extends TogglableAbility implements AbilityC
     }
 
     @Override
-    protected boolean onActivation(Player player, Object... ctx) {
+    protected boolean onActivation(Player player) {
         toggle(player);
         return true;
     }

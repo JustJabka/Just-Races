@@ -95,7 +95,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     @Override
-    protected boolean onActivation(Player player, Object... ctx) {
+    protected boolean onActivation(Player player) {
         if (isSuicideUse(player)) handleSuicideUse(player);
         else handleNormalUse(player);
 

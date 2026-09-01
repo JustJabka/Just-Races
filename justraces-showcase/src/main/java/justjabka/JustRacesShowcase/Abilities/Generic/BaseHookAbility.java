@@ -52,14 +52,13 @@ public abstract class BaseHookAbility extends BaseAbility {
     protected void onMiss(HookHitContext ctx) {}
 
     @Override
-    protected boolean onActivation(Player shooter, Object... ctx) {
+    protected boolean onActivation(Player shooter) {
         World world = shooter.getWorld();
         Location startLoc = shooter.getEyeLocation();
         Vector direction = startLoc.getDirection().normalize();
 
         double maxDistance = getMaxDistance(shooter);
 
-        // TODO: Use slowcast instead of raycast
         RayTraceResult result = world.rayTrace(
                 startLoc,
                 direction,

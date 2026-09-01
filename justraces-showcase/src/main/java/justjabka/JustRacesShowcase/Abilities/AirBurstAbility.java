@@ -42,7 +42,7 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
     }
 
     @Override
-    protected boolean onActivation(Player player, Object... ctx) {
+    protected boolean onActivation(Player player) {
         World world = player.getWorld();
         Location playerLocation = player.getLocation();
         Location playerEyeLocation = player.getEyeLocation();

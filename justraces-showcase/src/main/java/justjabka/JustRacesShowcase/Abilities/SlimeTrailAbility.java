@@ -74,7 +74,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     }
 
     @Override
-    protected boolean onActivation(Player player, Object... ctx) {
+    protected boolean onActivation(Player player) {
         BukkitTask task = createRunnable(player).runTaskTimer(JustRacesShowcase.INSTANCE, 0L, 4L);
         activeTrails.put(player.getUniqueId(), task);
         return true;

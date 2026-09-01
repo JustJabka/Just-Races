@@ -171,17 +171,17 @@ public abstract class BaseAbility implements Listener {
     /**
      * Tries to activate the ability
      * @param player Player for which the ability is tried to be to activated
-     * @param ctx Context of the activation. Literally any {@link Object }
-     * @see #onActivation(Player, Object...)
+     * @return {@code true} if ability activated successfully
+     * @see #onActivation(Player)
      */
-    protected boolean tryActivate(Player player, Object... ctx) {
+    protected boolean tryActivate(Player player) {
         if (!playerHasAbility(player)) return false;
 
         if (!canActivate(player)) return false;
 
         if (isOnCooldown(player)) return false;
 
-        if (!onActivation(player, ctx)) return false;
+        if (!onActivation(player)) return false;
         putOnCooldown(player);
 
         return true;
@@ -190,9 +190,8 @@ public abstract class BaseAbility implements Listener {
     /**
      * Will be executed on ability activation
      * @param player Player for which the ability will be activated
-     * @param ctx Context of the activation. Literally any {@link Object }
      * @return {@code true} if ability activated successfully. {@code false} to cancel ability activation
-     * @see #tryActivate(Player, Object...)
+     * @see #tryActivate(Player)
      */
-    protected abstract boolean onActivation(Player player, Object... ctx);
+    protected abstract boolean onActivation(Player player);
 }
