@@ -1,5 +1,6 @@
 package justjabka.JustRaces.Instances.Generic;
 
+import com.google.gson.JsonElement;
 import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -40,5 +41,13 @@ public abstract class BaseInstance {
 
     public void clearConfigCache() {
         this.configNode = null;
+    }
+
+    protected boolean isEmptyObject(JsonElement element) {
+        return element.isJsonObject() && element.getAsJsonObject().asMap().isEmpty();
+    }
+
+    protected boolean isString(JsonElement element) {
+        return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
     }
 }

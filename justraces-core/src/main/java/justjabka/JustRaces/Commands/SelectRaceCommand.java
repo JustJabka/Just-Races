@@ -58,6 +58,7 @@ public class SelectRaceCommand {
         Collection<RaceInstance> races = JustRacesRegistries.RACES.values();
 
         List<RaceInstance> raceList = races.stream()
+                .filter(instance -> !instance.isHidden())
                 .sorted(Comparator.comparing(instance -> instance.getKey().toString()))
                 .toList();
 

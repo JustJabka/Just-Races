@@ -6,5 +6,6 @@
   "abilities": [],
   "attributes": {},
   "item_modifiers": {},
+  "hidden": true,
   "config": {}
 }

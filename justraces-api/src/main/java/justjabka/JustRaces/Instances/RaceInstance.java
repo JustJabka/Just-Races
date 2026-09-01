@@ -19,11 +19,13 @@ public class RaceInstance extends BaseInstance {
     private Map<String, Double> attributes;
     private Set<String> abilities;
     private Map<String, JsonElement> item_modifiers;
+    private Boolean hidden;
+
     private transient Map<Material, BaseModifier> cachedModifiers = new HashMap<>();
     private transient boolean isModifiersCacheBuilt = false;
 
     public Component getName() {
-        if (name == null || name.isJsonNull()) {
+        if (name == null || name.isJsonNull() || isEmptyObject(name)) {
             return Component.empty();
         }
 
@@ -53,6 +55,14 @@ public class RaceInstance extends BaseInstance {
         }
 
         return contents;
+    }
+
+    public boolean isHidden() {
+        if (hidden == null) {
+            return false;
+        }
+
+        return hidden;
     }
 
     public Map<Attribute, Double> getAttributes() {
@@ -127,10 +137,6 @@ public class RaceInstance extends BaseInstance {
         }
 
         return materials;
-    }
-
-    private boolean isString(JsonElement element) {
-        return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
     }
 
     private void parseAndAddMaterialOrTag(String value, Set<Material> materials) {
