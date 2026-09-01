@@ -11,6 +11,8 @@ import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
@@ -84,6 +86,11 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     @Override
     public long getCooldownTicks() {
         return getConfigLong("cooldown", "default");
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE002").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override

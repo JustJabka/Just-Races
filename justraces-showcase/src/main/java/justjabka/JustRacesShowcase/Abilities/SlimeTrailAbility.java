@@ -6,6 +6,8 @@ import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -48,6 +50,11 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     @Override
     public long getDurationTicks() {
         return getConfigDuration();
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE003").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override

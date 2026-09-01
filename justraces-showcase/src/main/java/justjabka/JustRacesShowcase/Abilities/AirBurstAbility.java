@@ -4,6 +4,8 @@ import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -28,6 +30,11 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
     @Override
     public long getCooldownTicks() {
         return getConfigCooldown();
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE004").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @EventHandler(ignoreCancelled = true)
