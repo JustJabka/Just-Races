@@ -1,0 +1,13 @@
+{
+  "cooldown": 80,
+  "damage": 1,
+  "radius": 4,
+  "push": {
+    "multiplier": 2.5,
+    "blocked_multiplier": 0.5
+  },
+  "recoil": {
+    "normal_multiplier": -1,
+    "airborne_multiplier": -1.5
+  }
+}

@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.*;
@@ -15,18 +16,9 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.util.Vector;
 import org.jspecify.annotations.NonNull;
 
-public class AirBurstAbility extends BaseAbility {
-    // TODO: move constants to config
-    private static final double RADIUS = 4;
+public class AirBurstAbility extends BaseAbility implements AbilityConfigurable {
     private static final double ADDITIONAL_Y = 0.35;
     private  static final double DOT = 0.45;
-
-    private static final double DAMAGE = 1;
-
-    private static final double PUSH_MULTIPLIER = 2.5;
-    private static final double NORMAL_RECOIL_MULTIPLIER = -1;
-    private static final double AIRBORNE_RECOIL_MULTIPLIER = -1.5;
-    private static final double BLOCKED_PUSH_MULTIPLIER = 0.5;
 
     @Override
     public NamespacedKey getKey() {
@@ -35,7 +27,7 @@ public class AirBurstAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 4 * 20;
+        return getConfigCooldown();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -57,10 +49,11 @@ public class AirBurstAbility extends BaseAbility {
 
         Vector lookDirection = playerEyeLocation.getDirection().normalize();
         
-        Vector pushVector = calcVelocity(lookDirection, PUSH_MULTIPLIER);
+        Vector pushVector = calcVelocity(lookDirection, getConfigDouble("push", "multiplier"));
         Vector recoilVector = calcVelocity(
                 lookDirection,
-                player.isOnGround() ? NORMAL_RECOIL_MULTIPLIER : AIRBORNE_RECOIL_MULTIPLIER
+                player.isOnGround() ? getConfigDouble("recoil", "normal_multiplier")
+                                    : getConfigDouble("recoil", "airborne_multiplier")
         );
 
         burst(player, playerEyeLocation, playerLocation, lookDirection, pushVector, recoilVector);
@@ -72,7 +65,7 @@ public class AirBurstAbility extends BaseAbility {
         return true;
     }
 
-    private static void burst(
+    private void burst(
             Player player,
             Location playerEyeLocation,
             Location playerLocation,
@@ -80,7 +73,8 @@ public class AirBurstAbility extends BaseAbility {
             Vector pushVector,
             Vector recoilVector
     ) {
-        for (LivingEntity target : playerEyeLocation.getNearbyLivingEntities(RADIUS)) {
+        double radius = getConfigDouble("radius");
+        for (LivingEntity target : playerEyeLocation.getNearbyLivingEntities(radius)) {
             if (target.equals(player)) continue;
 
             // Get distance between player and target
@@ -94,21 +88,22 @@ public class AirBurstAbility extends BaseAbility {
             if (dot < DOT) continue;
 
             // Damage target
+            double damage = getConfigDouble("damage");
             DamageSource damageSource = DamageSource.builder(DamageType.WIND_CHARGE)
                     .withCausingEntity(player)
                     .withDirectEntity(player)
                     .build();
-            target.damage(DAMAGE, damageSource);
+            target.damage(damage, damageSource);
 
             // Apply velocity
-            Vector finalPush = decreasePush(target, pushVector, damageSource);
+            Vector finalPush = decreasePush(target, pushVector, damage, damageSource);
             target.setVelocity(finalPush);
         }
 
         player.setVelocity(recoilVector);
     }
 
-    private static @NonNull Vector decreasePush(LivingEntity target, Vector pushVector, DamageSource damageSource) {
+    private @NonNull Vector decreasePush(LivingEntity target, Vector pushVector, double damage, DamageSource damageSource) {
         Vector finalPush = pushVector.clone();
         AttributeInstance knockbackResistanceInstance = target.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
 
@@ -119,8 +114,9 @@ public class AirBurstAbility extends BaseAbility {
             finalPush.multiply(maxKnockBackResistance - knockbackResistance);
         }
 
-        if (target instanceof Player targetPlayer && CombatManager.attackAndTryDisableBlock(targetPlayer, 0, DAMAGE, damageSource)) {
-            finalPush.multiply(BLOCKED_PUSH_MULTIPLIER);
+        if (target instanceof Player targetPlayer && CombatManager.attackAndTryDisableBlock(targetPlayer, 0, damage, damageSource)) {
+            double blockedPushMultiplier = getConfigDouble("push", "blocked_multiplier");
+            finalPush.multiply(blockedPushMultiplier);
         }
 
         return finalPush;
