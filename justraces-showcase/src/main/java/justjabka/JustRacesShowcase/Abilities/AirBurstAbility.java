@@ -4,6 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRaces.Types.Trigger;
+import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -16,6 +17,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jspecify.annotations.NonNull;
+
+import java.util.Set;
 
 public class AirBurstAbility extends BaseAbility implements AbilityConfigurable {
     private static final double ADDITIONAL_Y = 0.35;
@@ -37,15 +40,13 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
     }
 
     @Override
-    public Trigger getTrigger() {
+    public Trigger getDefaultTrigger() {
         return Trigger.OFFHAND_SWAP;
     }
 
     @Override
-    protected boolean canActivate(Player player) {
-        boolean isSneaking = player.isSneaking();
-        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
-        return isSneaking && emptyHand;
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
     }
 
     @Override

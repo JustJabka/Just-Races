@@ -1,10 +1,13 @@
 package justjabka.JustRaces.Registries;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import justjabka.JustRaces.Instances.Deserializer.AbilityBindingDeserializer;
 import justjabka.JustRaces.Instances.RaceInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.ResourceManager;
+import justjabka.JustRaces.Types.AbilityBinding;
 import org.bukkit.NamespacedKey;
 
 import java.io.File;
@@ -15,7 +18,9 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class RacesRegistry {
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(AbilityBinding .class, new AbilityBindingDeserializer())
+            .create();
 
     public static void loadAllRaces() {
         File rootRacesFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races");

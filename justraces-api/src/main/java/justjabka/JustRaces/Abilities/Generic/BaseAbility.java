@@ -4,6 +4,7 @@ import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.CooldownEntry;
 import justjabka.JustRaces.Types.Trigger;
+import justjabka.JustRaces.Types.TriggerCondition;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -160,8 +162,12 @@ public abstract class BaseAbility implements Listener {
         player.hideBossBar(bossBar);
     }
 
-    public Trigger getTrigger() {
+    public Trigger getDefaultTrigger() {
         return Trigger.CUSTOM;
+    }
+
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of();
     }
 
     /**

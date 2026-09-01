@@ -11,8 +11,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,6 +45,10 @@ public class AbilityManager {
 
 
     //region Registry Related
+    public static BaseAbility getAbilityByKey(NamespacedKey key) {
+        return JustRacesRegistries.ABILITIES.get(key);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
         for (BaseAbility ability : JustRacesRegistries.ABILITIES.values()) {
@@ -59,26 +64,8 @@ public class AbilityManager {
      * @param race Race that abilities will be got
      * @return Abilities of the race
      */
-    public static Set<BaseAbility> getAbilitiesForRace(RaceInstance race) {
-        Set<BaseAbility> raceAbilities = new HashSet<>();
-
-        if (race == null) return raceAbilities;
-        if (race.getAbilities() == null) return raceAbilities;
-
-        for (String abilityString : race.getAbilities()) {
-            NamespacedKey key = NamespacedKey.fromString(abilityString);
-            if (key == null) continue;
-
-            BaseAbility ability = JustRacesRegistries.ABILITIES.get(key);
-
-            if (ability == null) {
-                JustRacesAPI.getLogger().warn("Race '{}' requires unknown ability: {}", race.getKey(), abilityString);
-                continue;
-            }
-            raceAbilities.add(ability);
-        }
-
-        return raceAbilities;
+    public static @NotNull Set<BaseAbility> getAbilitiesForRace(RaceInstance race) {
+        return race != null ? race.getAbilities() : Collections.emptySet();
     }
 
     /**

@@ -12,5 +12,10 @@ public enum Trigger {
     OFFHAND_SWAP,
     RIGHT_CLICK_CHESTPLATE,
 
-    CUSTOM
+    CUSTOM;
+
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

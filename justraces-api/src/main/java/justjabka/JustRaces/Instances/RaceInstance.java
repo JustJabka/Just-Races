@@ -2,22 +2,25 @@ package justjabka.JustRaces.Instances;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Instances.Generic.BaseInstance;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
+import justjabka.JustRaces.Types.AbilityBinding;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RaceInstance extends BaseInstance {
     private JsonElement name;
     private List<JsonObject> description;
     private Map<String, Double> attributes;
-    private Set<String> abilities;
+    private Set<AbilityBinding> abilities;
     private Map<String, JsonElement> item_modifiers;
     private Boolean hidden;
 
@@ -81,7 +84,18 @@ public class RaceInstance extends BaseInstance {
         return bukkitAttributes;
     }
 
-    public Set<String> getAbilities() {
+    public Set<BaseAbility> getAbilities() {
+        if (abilities == null || abilities.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        return abilities.stream()
+                .map(AbilityBinding::ability)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public Set<AbilityBinding> getAbilitiesBindings() {
         return abilities;
     }
 

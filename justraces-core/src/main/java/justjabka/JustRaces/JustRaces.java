@@ -33,10 +33,12 @@ public final class JustRaces extends JavaPlugin {
         });
 
         // Register
-        RacesRegistry.loadAllRaces();
+        Bukkit.getScheduler().runTask(this, () -> {
+            RacesRegistry.loadAllRaces();
 
-        ListenersRegistry.register(this);
-        RunnablesRegistry.register(this);
+            ListenersRegistry.register(this);
+            RunnablesRegistry.register(this);
+        });
     }
 
     @Override

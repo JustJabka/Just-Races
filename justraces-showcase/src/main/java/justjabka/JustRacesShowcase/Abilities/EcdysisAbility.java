@@ -8,6 +8,7 @@ import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRaces.Types.Trigger;
+import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -78,18 +79,18 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     @Override
-    public Trigger getTrigger() {
+    public Trigger getDefaultTrigger() {
         return Trigger.OFFHAND_SWAP;
     }
 
     @Override
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    }
+
+    @Override
     protected boolean canActivate(Player player) {
-        boolean hasNetheriteArmor = ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
-
-        boolean isSneaking = player.isSneaking();
-        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
-
-        return hasNetheriteArmor && isSneaking && emptyHand;
+        return ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
     }
 
     @Override

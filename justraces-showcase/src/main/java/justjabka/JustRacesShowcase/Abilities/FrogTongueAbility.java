@@ -8,6 +8,7 @@ import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRaces.Types.Trigger;
+import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.Abilities.Generic.BaseHookAbility;
 import justjabka.JustRacesShowcase.DataProvider.DamageTypeProvider;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -28,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, AbilityConfigurable {
@@ -170,16 +172,13 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     // Triggers
     @Override
-    public Trigger getTrigger() {
+    public Trigger getDefaultTrigger() {
         return Trigger.OFFHAND_SWAP;
     }
 
     @Override
-    protected boolean canActivate(Player player) {
-        boolean isSneaking = player.isSneaking();
-        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
-
-        return isSneaking && emptyHand;
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
     }
 
     @Override

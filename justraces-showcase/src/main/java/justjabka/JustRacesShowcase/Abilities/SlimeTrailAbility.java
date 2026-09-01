@@ -5,6 +5,7 @@ import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Types.Trigger;
+import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -63,18 +64,18 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     }
 
     @Override
-    public Trigger getTrigger() {
+    public Trigger getDefaultTrigger() {
         return Trigger.LEFT_CLICK;
     }
 
     @Override
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    }
+
+    @Override
     protected boolean canActivate(Player player) {
-        boolean isOnGround = player.isOnGround();
-
-        boolean isSneaking = player.isSneaking();
-        boolean emptyHand = player.getInventory().getItemInMainHand().isEmpty();
-
-        return isOnGround && isSneaking && emptyHand;
+        return player.isOnGround();
     }
 
     @Override
