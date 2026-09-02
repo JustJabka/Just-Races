@@ -5,12 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Definitions.Generic.BaseDefinition;
 import justjabka.JustRaces.JustRacesAPI;
-import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
 import net.kyori.adventure.text.Component;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,91 +25,86 @@ public class RaceDefinition extends BaseDefinition {
     private List<Component> description;
     private Map<Attribute, Double> attributes;
     private Set<AbilityBinding> abilities;
+
     @SerializedName("item_modifiers")
     private Map<BaseModifier, JsonElement> itemModifiers;
     private Boolean hidden;
 
-    private transient Map<Material, BaseModifier> cachedModifiers = new HashMap<>();
-    private transient boolean isModifiersCacheBuilt = false;
+    private transient Set<BaseAbility> cachedAbilities;
+    private transient Map<Material, BaseModifier> cachedModifiers;
 
+    // Getters
     public Component getName() {
         return name != null ? name : Component.empty();
     }
 
-    public List<Component> getDescription() {
-        return description != null ? description : Collections.emptyList();
+    @NotNull
+    public List<@NotNull Component> getDescription() {
+        return description != null ? Collections.unmodifiableList(description) : Collections.emptyList();
     }
 
     public boolean isHidden() {
-        if (hidden == null) {
-            return false;
-        }
-
-        return hidden;
+        return Boolean.TRUE.equals(hidden);
     }
 
-    public Map<Attribute, Double> getAttributes() {
-        return attributes != null ? attributes : Collections.emptyMap();
+    @NotNull
+    public Map<@NotNull Attribute, @NotNull Double> getAttributes() {
+        return attributes != null ? Collections.unmodifiableMap(attributes) : Collections.emptyMap();
     }
 
-    public Set<BaseAbility> getAbilities() {
+    @NotNull
+    public Set<@NotNull BaseAbility> getAbilities() {
+        if (cachedAbilities == null) buildAbilitiesCache();
+        return cachedAbilities;
+    }
+
+    @NotNull
+    public Set<@NotNull AbilityBinding> getAbilitiesBindings() {
+        return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
+    }
+
+    @Nullable
+    public BaseModifier getModifier(Material material) {
+        if (cachedModifiers == null) buildModifiersCache();
+        return cachedModifiers.get(material);
+    }
+
+    // Cache
+    private void buildAbilitiesCache() {
         if (abilities == null || abilities.isEmpty()) {
-            return Collections.emptySet();
+            cachedAbilities = Collections.emptySet();
+            return;
         }
 
-        return abilities.stream()
+        cachedAbilities = abilities.stream()
                 .map(AbilityBinding::ability)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public Set<AbilityBinding> getAbilitiesBindings() {
-        return abilities;
-    }
+    private void buildModifiersCache() {
+        cachedModifiers = new HashMap<>();
 
-    public BaseModifier getModifier(Material material) {
-        if (!this.isModifiersCacheBuilt) buildModifierCache();
+        if (itemModifiers == null || itemModifiers.isEmpty()) return;
 
-        return this.cachedModifiers.get(material);
-    }
+        for (Map.Entry<BaseModifier, JsonElement> entry : itemModifiers.entrySet()) {
+            BaseModifier modifier = entry.getKey();
+            JsonElement element = entry.getValue();
 
-    private void buildModifierCache() {
-        this.cachedModifiers.clear();
-        this.isModifiersCacheBuilt = true;
-
-        if (this.itemModifiers == null) return;
-        if (this.itemModifiers.isEmpty()) return;
-
-        for (BaseModifier modifier : JustRacesRegistries.MODIFIERS.values()) {
-            Set<Material> materials = getMaterialsForModifier(modifier);
-
-            if (materials.isEmpty()) {
-                materials = getMaterialsForModifier(modifier);
-            }
-
-            if (materials.isEmpty()) continue;
-
+            Set<Material> materials = parseMaterialsFromElement(element);
             for (Material material : materials) {
-                this.cachedModifiers.put(material, modifier);
+                cachedModifiers.put(material, modifier);
             }
         }
     }
 
-    private Set<Material> getMaterialsForModifier(BaseModifier modifier) {
+    private Set<Material> parseMaterialsFromElement(JsonElement element) {
         Set<Material> materials = new HashSet<>();
+        if (element == null) return materials;
 
-        if (itemModifiers == null) return materials;
-        if (!itemModifiers.containsKey(modifier)) return materials;
-
-        JsonElement element = itemModifiers.get(modifier);
-
-        boolean isArray = element.isJsonArray();
-
-        // Pase string and array
         if (isString(element)) {
-            String value = element.getAsString();
-            parseAndAddMaterialOrTag(value, materials);
-        } else if (isArray) {
+            parseAndAddMaterialOrTag(element.getAsString(), materials);
+        } else if (element.isJsonArray()) {
             for (JsonElement arrayElement : element.getAsJsonArray()) {
                 if (!isString(arrayElement)) continue;
                 parseAndAddMaterialOrTag(arrayElement.getAsString(), materials);
@@ -129,7 +129,6 @@ public class RaceDefinition extends BaseDefinition {
                 materials.addAll(itemTag.getValues());
                 return;
             }
-
 
             JustRacesAPI.getLogger().warn("Unknown item tag in JSON: {}", value);
         } else {
