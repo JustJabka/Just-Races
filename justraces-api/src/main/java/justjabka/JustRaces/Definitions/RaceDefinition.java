@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public class RaceDefinition extends BaseDefinition {
     private Component name;
     private List<Component> description;

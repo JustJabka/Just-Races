@@ -8,6 +8,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Map;
 
+@SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public abstract class BaseDefinition {
     private transient String key;
     private Map<String, Object> config;
