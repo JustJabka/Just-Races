@@ -71,7 +71,7 @@ public class AbilityManager {
      */
     @NotNull
     public static Set<@NotNull BaseAbility> getAbilitiesForRace(RaceDefinition race) {
-        return race != null ? race.getAbilities() : Collections.emptySet();
+        return race.getAbilities();
     }
 
     /**
