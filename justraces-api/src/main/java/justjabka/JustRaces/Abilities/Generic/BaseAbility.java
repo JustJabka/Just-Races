@@ -110,7 +110,7 @@ public abstract class BaseAbility implements Listener {
      * @param player Player from which we are getting ability cooldown
      * @return expire stamp
      */
-    private Long getExpireStamp(Player player) {
+    private long getExpireStamp(Player player) {
         CooldownEntry entry = new CooldownEntry(getCooldownTicks(), 0L);
         return cooldowns.getOrDefault(player.getUniqueId(), entry).expiresAt();
     }

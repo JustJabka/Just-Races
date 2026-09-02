@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class AbilityManager {
     private static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
 
     //region Container Manipulations
+    @NotNull
     public static PersistentDataContainer getAbilitiesContainer(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
 
@@ -46,11 +48,13 @@ public class AbilityManager {
 
 
     //region Registry Related
+    @Nullable
     public static BaseAbility getAbilityByKey(NamespacedKey key) {
         return JustRacesRegistries.ABILITIES.get(key);
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
         for (BaseAbility ability : JustRacesRegistries.ABILITIES.values()) {
             if (!abilityClass.isInstance(ability)) continue;
@@ -65,7 +69,8 @@ public class AbilityManager {
      * @param race Race that abilities will be got
      * @return Abilities of the race
      */
-    public static @NotNull Set<BaseAbility> getAbilitiesForRace(RaceDefinition race) {
+    @NotNull
+    public static Set<@NotNull BaseAbility> getAbilitiesForRace(RaceDefinition race) {
         return race != null ? race.getAbilities() : Collections.emptySet();
     }
 
@@ -75,15 +80,18 @@ public class AbilityManager {
      * @see AbilityManager#getAbilitiesForRace(RaceDefinition)
      * @return Abilities of the player
      */
-    public static Set<BaseAbility> getAbilitiesForPlayer(Player player) {
+    @NotNull
+    public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
         return getAbilitiesForRace(RaceManager.getRace(player));
     }
 
-    public static Set<AbilityBinding> getAbilitiesBindingsForRace(RaceDefinition race) {
+    @NotNull
+    public static Set<@NotNull AbilityBinding> getAbilitiesBindingsForRace(RaceDefinition race) {
         return race.getAbilitiesBindings();
     }
 
-    public static Set<AbilityBinding> getAbilitiesBindingsForPlayer(Player player) {
+    @NotNull
+    public static Set<@NotNull AbilityBinding> getAbilitiesBindingsForPlayer(Player player) {
         return getAbilitiesBindingsForRace(RaceManager.getRace(player));
     }
 
