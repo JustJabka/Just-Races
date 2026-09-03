@@ -17,8 +17,10 @@
     "justracesshowcase:armor/iron": "#justracesshowcase:iron_armor",
     "justracesshowcase:armor/golden": "#justracesshowcase:golden_armor"
   },
+  "traits": [
+    "justracesshowcase:magic_vulnerability"
+  ],
   "config": {
-    "vulnerable_damage_multiplier": 1.5,
     "sink_gravity_value": 0.42,
     "mining_bonus": {
       "upper_bound": 3.0,

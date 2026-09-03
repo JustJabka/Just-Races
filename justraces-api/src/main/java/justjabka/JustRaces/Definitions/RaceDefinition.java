@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Definitions.Generic.BaseDefinition;
+import justjabka.JustRaces.Interfaces.Trait;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
@@ -26,6 +27,7 @@ public class RaceDefinition extends BaseDefinition {
     private List<Component> description;
     private Map<Attribute, Double> attributes;
     private Set<AbilityBinding> abilities;
+    private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
     private Map<BaseModifier, JsonElement> itemModifiers;
@@ -68,6 +70,11 @@ public class RaceDefinition extends BaseDefinition {
     public BaseModifier getModifier(Material material) {
         if (cachedModifiers == null) buildModifiersCache();
         return cachedModifiers.get(material);
+    }
+
+    @NotNull
+    public Set<@NotNull Trait> getTraits() {
+        return traits != null ? Collections.unmodifiableSet(traits) : Collections.emptySet();
     }
 
     // Cache

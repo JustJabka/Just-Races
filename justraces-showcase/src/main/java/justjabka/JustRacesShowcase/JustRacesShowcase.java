@@ -16,6 +16,7 @@ public final class JustRacesShowcase extends JavaPlugin {
     public void onEnable() {
         AbilitiesRegistry.register();
         ModifiersRegistry.register();
+        TraitsRegistry.register();
 
         ListenersRegistry.register(this);
         RunnablesRegistry.register(this);

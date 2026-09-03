@@ -4,6 +4,7 @@ import justjabka.JustRaces.Interfaces.Configurable.Generic.PluginConfigurable;
 import justjabka.JustRaces.Registries.ListenersRegistry;
 import justjabka.JustRaces.Registries.RacesRegistry;
 import justjabka.JustRaces.Registries.RunnablesRegistry;
+import justjabka.JustRaces.Runnables.Generic.BaseTraitRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -14,7 +15,7 @@ public final class JustRaces extends JavaPlugin {
     @Override
     public void onEnable() {
         // Add Hooks
-        JustRacesRegistries.ABILITIES.addHook((key, ability) -> {
+        JustRacesRegistries.ABILITIES.addHook((_, ability) -> {
             Bukkit.getPluginManager().registerEvents(ability, JustRacesAPI.getInstance());
 
             if (ability instanceof PluginConfigurable configurable) {
@@ -22,13 +23,23 @@ public final class JustRaces extends JavaPlugin {
             }
         });
 
-        JustRacesRegistries.MODIFIERS.addHook((key, modifier) -> {
+        JustRacesRegistries.MODIFIERS.addHook((_, modifier) -> {
             if (modifier instanceof Listener listener) {
                 Bukkit.getPluginManager().registerEvents(listener, JustRacesAPI.getInstance());
             }
 
             if (modifier instanceof PluginConfigurable configurable) {
                 configurable.initializeConfigFile();
+            }
+        });
+
+        JustRacesRegistries.TRAITS.addHook((_, trait) -> {
+            if (trait instanceof Listener listener) {
+                Bukkit.getPluginManager().registerEvents(listener, JustRacesAPI.getInstance());
+            }
+
+            if (trait instanceof BaseTraitRunnable runnable) {
+                runnable.runTaskTimer(JustRacesAPI.getInstance(), 0L, runnable.getTickPeriod());
             }
         });
 

@@ -44,7 +44,8 @@ public interface PluginConfigurable extends Configurable {
 
     enum Category {
         ABILITIES,
-        MODIFIERS;
+        MODIFIERS,
+        TRAITS;
 
         @Override
         public String toString() {

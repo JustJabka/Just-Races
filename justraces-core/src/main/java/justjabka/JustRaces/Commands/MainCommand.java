@@ -25,6 +25,11 @@ public class MainCommand {
                                 configurable.reloadConfigFile();
                             });
 
+                            JustRacesRegistries.TRAITS.values().forEach(trait -> {
+                                if (!(trait instanceof PluginConfigurable configurable)) return;
+                                configurable.reloadConfigFile();
+                            });
+
                             // TODO: reload races
 
                             ctx.getSource().getSender().sendMessage(Component.text("Reloaded"));

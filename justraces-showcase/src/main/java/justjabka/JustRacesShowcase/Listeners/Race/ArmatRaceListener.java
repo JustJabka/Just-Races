@@ -63,15 +63,12 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
     }
 
     private boolean handleDamageCauses(EntityDamageEvent event, DamageType damageType, Player player) {
-        double vulnerableMultiplier = getConfigDouble("vulnerable_damage_multiplier");
-
         EntityDamageEvent.DamageCause damageCause = event.getCause();
 
         boolean isVulnerableTo = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.IS_MAGIC).contains(damageType);
         boolean isImmuneTo = damageCause == EntityDamageEvent.DamageCause.FALL && ArmorManager.hasAnyArmor(player);
 
         if (isVulnerableTo) {
-            event.setDamage(event.getDamage() * vulnerableMultiplier);
             return true;
         } else if (isImmuneTo) {
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 0.5f, 1.5f);

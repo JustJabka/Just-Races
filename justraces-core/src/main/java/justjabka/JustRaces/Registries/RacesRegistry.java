@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import justjabka.JustRaces.Definitions.Deserializer.AbilityBindingDeserializer;
 import justjabka.JustRaces.Definitions.Deserializer.AttributeDeserializer;
 import justjabka.JustRaces.Definitions.Deserializer.ItemModifierDeserializer;
+import justjabka.JustRaces.Definitions.Deserializer.TraitDeserializer;
 import justjabka.JustRaces.Definitions.RaceDefinition;
+import justjabka.JustRaces.Interfaces.Trait;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Managers.ResourceManager;
@@ -28,6 +30,7 @@ public class RacesRegistry {
             .registerTypeAdapter(AbilityBinding.class, new AbilityBindingDeserializer())
             .registerTypeAdapter(Attribute.class, new AttributeDeserializer())
             .registerTypeAdapter(BaseModifier.class, new ItemModifierDeserializer())
+            .registerTypeAdapter(Trait.class, new TraitDeserializer())
             .create();
 
     public static void loadAllRaces() {

@@ -1,16 +1,18 @@
 package justjabka.JustRaces.Runnables.Generic;
 
-import justjabka.JustRaces.Interfaces.RaceContext;
+import justjabka.JustRaces.Interfaces.Trait;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class BaseRaceRunnable extends BukkitRunnable implements PlayerTickRunnable, RaceContext {
+public abstract class BaseTraitRunnable extends BukkitRunnable implements PlayerTickRunnable, Trait {
+
+    public abstract long getTickPeriod();
 
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!isRequiredRace(player)) continue;
+            if (!isRequiredTrait(player)) continue;
 
             onTick(player);
         }
