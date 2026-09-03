@@ -1,0 +1,4 @@
+{
+  "health_threshold_percent": 10.0,
+  "speed_bonus_per_stack": 0.005
+}

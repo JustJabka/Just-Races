@@ -6,15 +6,9 @@
   "abilities": [],
   "attributes": {},
   "item_modifiers": {},
-  "config": {
-    "adaptation": {
-      "min_percent": 0.0,
-      "max_percent": 10.0,
-      "percent_per_hit": 1.0
-    },
-    "adrenaline_rush": {
-      "health_threshold_percent": 10.0,
-      "speed_bonus_per_stack": 0.005
-    }
-  }
+  "traits": [
+    "justracesshowcase:adrenaline_rush",
+    "justracesshowcase:adaptation"
+  ],
+  "config": {}
 }

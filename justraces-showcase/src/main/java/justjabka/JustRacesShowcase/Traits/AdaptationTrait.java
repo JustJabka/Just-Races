@@ -1,9 +1,8 @@
-package justjabka.JustRacesShowcase.Listeners.Race;
+package justjabka.JustRacesShowcase.Traits;
 
 import justjabka.JustRaces.Events.Race.PlayerRaceChangeEvent;
-import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
-import justjabka.JustRaces.Listeners.Generic.BaseRaceListener;
-import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
+import justjabka.JustRaces.Interfaces.Configurable.TraitConfigurable;
+import justjabka.JustRaces.Listeners.Generic.BaseTraitListener;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.damage.DamageType;
@@ -15,12 +14,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.tag.DamageTypeTags;
 
-public class HumanRaceListener extends BaseRaceListener implements RaceConfigurable {
-    private static final NamespacedKey ADAPTATION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
+public class AdaptationTrait extends BaseTraitListener implements TraitConfigurable {
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.HUMAN;
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -28,15 +26,15 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
         resetAdaptations(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void resetAdaptationsOnRaceChange(PlayerRaceChangeEvent event) {
         resetAdaptations(event.getPlayer());
     }
 
-    private static void resetAdaptations(Player player) {
+    private void resetAdaptations(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         pdc.set(
-                ADAPTATION_KEY,
+                getKey(),
                 PersistentDataType.TAG_CONTAINER,
                 pdc.getAdapterContext().newPersistentDataContainer()
         );
@@ -45,7 +43,7 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
     @EventHandler(ignoreCancelled = true)
     public void onDamageTaken(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
 
         final double damage = event.getDamage();
         final DamageType damageType = event.getDamageSource().getDamageType();
@@ -55,13 +53,13 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
         // Get Adaptations
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         PersistentDataContainer adaptations = pdc.getOrDefault(
-                ADAPTATION_KEY,
+                getKey(),
                 PersistentDataType.TAG_CONTAINER,
                 pdc.getAdapterContext().newPersistentDataContainer()
         );
 
         // Get Current Resist Value
-        final float minPercent = getConfigFloat("adaptation", "min_percent");
+        final float minPercent = getConfigFloat("min_percent");
         final float currentValue = adaptations.getOrDefault(damageType.getKey(), PersistentDataType.FLOAT, minPercent);
 
         if (currentValue > 0) {
@@ -78,11 +76,11 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
         final float newValue = Math.clamp(currentValue + getAdaptationAmount(damageType, adaptations, totalSum), minPercent, getMaxAdaptationPercent());
         adaptations.set(damageType.getKey(), PersistentDataType.FLOAT, newValue);
 
-        pdc.set(ADAPTATION_KEY, PersistentDataType.TAG_CONTAINER, adaptations);
+        pdc.set(getKey(), PersistentDataType.TAG_CONTAINER, adaptations);
     }
 
     private float getAdaptationAmount(DamageType damageType, PersistentDataContainer adaptations, float totalSum) {
-        float amount = getConfigFloat("adaptation", "percent_per_hit");
+        float amount = getConfigFloat("percent_per_hit");
 
         if (totalSum + amount <= getMaxAdaptationPercent()) return amount;
 
@@ -107,6 +105,6 @@ public class HumanRaceListener extends BaseRaceListener implements RaceConfigura
     }
 
     private float getMaxAdaptationPercent() {
-        return getConfigFloat("adaptation", "max_percent");
+        return getConfigFloat("max_percent");
     }
 }

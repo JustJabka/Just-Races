@@ -1,8 +1,7 @@
-package justjabka.JustRacesShowcase.Runnables.Race;
+package justjabka.JustRacesShowcase.Traits;
 
-import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
-import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
-import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
+import justjabka.JustRaces.Interfaces.Configurable.TraitConfigurable;
+import justjabka.JustRaces.Runnables.Generic.BaseTraitRunnable;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -10,12 +9,16 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
-public class HumanRaceRunnable extends BaseRaceRunnable implements RaceConfigurable {
-    private static final NamespacedKey ADRENALINE_RUSH_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adrenaline_rush");
+public class AdrenalineRushTrait extends BaseTraitRunnable implements TraitConfigurable {
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.HUMAN;
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "adrenaline_rush");
+    }
+
+    @Override
+    public long getTickPeriod() {
+        return 5;
     }
 
     @Override
@@ -32,8 +35,8 @@ public class HumanRaceRunnable extends BaseRaceRunnable implements RaceConfigura
         double maxHealth = maxHealthInstance.getValue();
         double lostHealthPercent = (maxHealth - currentHealth) / maxHealth;
 
-        final float healthThresholdPercent = getConfigFloat("adrenaline_rush", "health_threshold_percent");
-        final float speedBonusPerStack = getConfigFloat("adrenaline_rush", "speed_bonus_per_stack");
+        final float healthThresholdPercent = getConfigFloat("health_threshold_percent");
+        final float speedBonusPerStack = getConfigFloat("speed_bonus_per_stack");
 
         int step = (int) (lostHealthPercent * healthThresholdPercent);
 
@@ -44,17 +47,17 @@ public class HumanRaceRunnable extends BaseRaceRunnable implements RaceConfigura
         AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
         if (movementSpeedInstance == null) return;
 
-        AttributeModifier modifier = movementSpeedInstance.getModifier(ADRENALINE_RUSH_KEY);
+        AttributeModifier modifier = movementSpeedInstance.getModifier(getKey());
         double currentBonus = modifier != null ? modifier.getAmount() : 0;
 
         if (currentBonus == bonus) return;
 
-        movementSpeedInstance.removeModifier(ADRENALINE_RUSH_KEY);
+        movementSpeedInstance.removeModifier(getKey());
 
         if (bonus <= 0) return;
 
         movementSpeedInstance.addModifier(new AttributeModifier(
-                ADRENALINE_RUSH_KEY,
+                getKey(),
                 bonus,
                 AttributeModifier.Operation.ADD_NUMBER
         ));
