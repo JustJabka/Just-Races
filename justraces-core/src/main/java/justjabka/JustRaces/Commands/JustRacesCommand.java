@@ -9,9 +9,9 @@ import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.JustRacesRegistries;
 import net.kyori.adventure.text.Component;
 
-public class MainCommand {
+public class JustRacesCommand {
 
-    public static LiteralCommandNode<CommandSourceStack> mainCommand() {
+    public static LiteralCommandNode<CommandSourceStack> justraces() {
         return Commands.literal("%s".formatted(JustRacesAPI.NAMESPACE))
                 .then(Commands.literal("reload")
                         .executes(ctx -> {
@@ -41,6 +41,6 @@ public class MainCommand {
     }
 
     public static void register(Commands registrar) {
-        registrar.register(mainCommand());
+        registrar.register(justraces());
     }
 }
