@@ -190,7 +190,6 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
 
         if (!isRequiredRace(player)) return;
 
-        applyBoundShellBonus(player);
         applyCopperArmorBonus(player);
     }
 
@@ -254,29 +253,6 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         int newDuration = (int) (effect.getDuration() * effectDurationMultiplier);
 
         effect.withDuration(newDuration).apply(player);
-    }
-
-    private void applyBoundShellBonus(Player player) {
-        // Get Attributes
-        AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
-        AttributeInstance armorInstance = player.getAttribute(Attribute.ARMOR);
-
-        if (maxHealthInstance == null || armorInstance == null) return;
-
-        double armorValue = armorInstance.getValue();
-
-        // Delete old attribute
-        maxHealthInstance.removeModifier(getKey());
-
-        // Calc new attribute
-        if (armorValue <= 0) return;
-
-        AttributeModifier modifier = new AttributeModifier(
-                getKey(),
-                armorValue,
-                AttributeModifier.Operation.ADD_NUMBER
-        );
-        maxHealthInstance.addModifier(modifier);
     }
 
     private void applyCopperArmorBonus(Player player) {

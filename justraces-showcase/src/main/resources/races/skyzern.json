@@ -15,10 +15,8 @@
     "minecraft:attack_knockback": 0.3
   },
   "item_modifiers": {},
-  "config": {
-    "air_damage_multiplier": {
-      "bonus": 0.1,
-      "min_attack_cooldown": 0.8
-    }
-  }
+  "traits": [
+    "justracesshowcase:celestial_combatant"
+  ],
+  "config": {}
 }

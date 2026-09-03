@@ -2,7 +2,6 @@ package justjabka.JustRacesShowcase.Registries;
 
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRacesShowcase.Listeners.Race.ArmatRaceListener;
-import justjabka.JustRacesShowcase.Listeners.Race.SkyzernRaceListener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
@@ -17,7 +16,6 @@ public class ListenersRegistry {
 
     private static void registerRaceListeners(Plugin plugin, PluginManager manager) {
         manager.registerEvents(new ArmatRaceListener(), plugin);
-        manager.registerEvents(new SkyzernRaceListener(), plugin);
 
         JustRacesShowcase.LOGGER.info("Successfully registered race listeners!");
     }

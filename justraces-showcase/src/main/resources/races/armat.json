@@ -18,7 +18,8 @@
     "justracesshowcase:armor/golden": "#justracesshowcase:golden_armor"
   },
   "traits": [
-    "justracesshowcase:magic_vulnerability"
+    "justracesshowcase:magic_vulnerability",
+    "justracesshowcase:bound_shell"
   ],
   "config": {
     "sink_gravity_value": 0.42,

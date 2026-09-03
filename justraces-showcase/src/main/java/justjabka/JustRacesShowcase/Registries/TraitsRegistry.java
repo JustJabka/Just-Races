@@ -3,15 +3,15 @@ package justjabka.JustRacesShowcase.Registries;
 import justjabka.JustRaces.Interfaces.Trait;
 import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
-import justjabka.JustRacesShowcase.Traits.AdaptationTrait;
-import justjabka.JustRacesShowcase.Traits.AdrenalineRushTrait;
-import justjabka.JustRacesShowcase.Traits.MagicVulnerabilityTrait;
+import justjabka.JustRacesShowcase.Traits.*;
 
 public class TraitsRegistry {
     private static void registerTraits() {
         registerTrait(new MagicVulnerabilityTrait());
         registerTrait(new AdrenalineRushTrait());
         registerTrait(new AdaptationTrait());
+        registerTrait(new CelestialCombatantTrait());
+        registerTrait(new BoundShellTrait());
     }
 
     public static void register() {
