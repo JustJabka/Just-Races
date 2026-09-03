@@ -15,7 +15,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
@@ -49,13 +48,13 @@ public class AbilityManager {
 
     //region Registry Related
     @Nullable
-    public static BaseAbility getAbilityByKey(NamespacedKey key) {
+    public static BaseAbility getByKey(NamespacedKey key) {
         return JustRacesRegistries.ABILITIES.get(key);
     }
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public static <T extends BaseAbility> T getAbility(Class<T> abilityClass) {
+    public static <T extends BaseAbility> T getByClass(Class<T> abilityClass) {
         for (BaseAbility ability : JustRacesRegistries.ABILITIES.values()) {
             if (!abilityClass.isInstance(ability)) continue;
             return (T) ability;

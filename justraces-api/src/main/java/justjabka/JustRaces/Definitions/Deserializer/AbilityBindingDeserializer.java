@@ -27,7 +27,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
     private static @NonNull AbilityBinding deserializeDefault(JsonElement json) {
         String id = json.getAsString();
 
-        BaseAbility ability = AbilityManager.getAbilityByKey(NamespacedKey.fromString(id));
+        BaseAbility ability = AbilityManager.getByKey(NamespacedKey.fromString(id));
         if (ability == null) {
             throw new JsonParseException("Unknown ability: %s".formatted(id));
         }
@@ -39,7 +39,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
         JsonObject obj = json.getAsJsonObject();
 
         String id = obj.get("id").getAsString();
-        BaseAbility ability = AbilityManager.getAbilityByKey(NamespacedKey.fromString(id));
+        BaseAbility ability = AbilityManager.getByKey(NamespacedKey.fromString(id));
         if (ability == null) {
             throw new JsonParseException("Unknown ability in override: %s".formatted(id));
         }

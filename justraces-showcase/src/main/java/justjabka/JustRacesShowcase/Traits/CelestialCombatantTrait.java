@@ -17,7 +17,7 @@ public class CelestialCombatantTrait extends BaseTraitListener implements TraitC
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "celestial_combatant");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;

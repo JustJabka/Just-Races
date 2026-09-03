@@ -12,14 +12,14 @@ import org.bukkit.inventory.ItemStack;
 public abstract class BaseFrogTongueTypeChangerFoodModifier extends BaseFoodModifier implements Listener {
     public abstract FrogTongueAbility.TongueType getFrogTongueType();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
 
         if (!isRequiredModifier(item)) return;
 
-        FrogTongueAbility frogTongueAbility = AbilityManager.getAbility(FrogTongueAbility.class);
+        FrogTongueAbility frogTongueAbility = AbilityManager.getByClass(FrogTongueAbility.class);
         if (frogTongueAbility == null) return;
 
         if (!frogTongueAbility.playerHasAbility(player)) return;
