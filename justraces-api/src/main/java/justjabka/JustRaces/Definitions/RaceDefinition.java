@@ -78,6 +78,12 @@ public class RaceDefinition extends BaseDefinition {
     }
 
     // Cache
+    @Override
+    public void clearDefinitionCache() {
+        this.cachedAbilities = null;
+        this.cachedModifiers = null;
+    }
+
     private void buildAbilitiesCache() {
         if (abilities == null || abilities.isEmpty()) {
             cachedAbilities = Collections.emptySet();

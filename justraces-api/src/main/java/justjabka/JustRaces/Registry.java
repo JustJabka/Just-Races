@@ -37,4 +37,9 @@ public final class Registry<T> {
     public Set<NamespacedKey> keys() {
         return Collections.unmodifiableSet(storage.keySet());
     }
+
+    // TODO: remove ts out of API and make normal registries
+    public void clear() {
+        storage.clear();
+    }
 }

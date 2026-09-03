@@ -33,6 +33,11 @@ public class RacesRegistry {
             .registerTypeAdapter(Trait.class, new TraitDeserializer())
             .create();
 
+    public static void reloadAllRaces() {
+        JustRacesRegistries.RACES.clear();
+        loadAllRaces();
+    }
+
     public static void loadAllRaces() {
         File rootRacesFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races");
         if (!rootRacesFolder.exists()) {

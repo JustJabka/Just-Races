@@ -10,6 +10,10 @@ public enum Cause {
      */
     DIALOG,
     /**
+     * {@code /justraces reload} command
+     */
+    RELOAD,
+    /**
      * Any other cause not covered by the causes above
      */
     CUSTOM

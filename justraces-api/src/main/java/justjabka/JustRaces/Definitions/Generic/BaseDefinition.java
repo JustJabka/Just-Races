@@ -13,7 +13,7 @@ public abstract class BaseDefinition {
     private transient String key;
     private Map<String, Object> config;
 
-    private transient ConfigurationNode configNode;
+    private transient ConfigurationNode cachedConfig;
 
     // Key
     public NamespacedKey getKey() {
@@ -26,25 +26,29 @@ public abstract class BaseDefinition {
 
     // Config
     public ConfigurationNode getConfig() {
-        if (configNode == null) {
-            try {
-                configNode = BasicConfigurationNode.root();
-
-                if (config != null) {
-                    configNode.set(config);
-                }
-            } catch (Exception e) {
-                JustRacesAPI.getLogger().error("Failed to map configuration for instance: {}", key, e);
-            }
-        }
-
-        return configNode;
+        if (cachedConfig == null) buildConfigCache();
+        return cachedConfig;
     }
 
     public void clearConfigCache() {
-        this.configNode = null;
+        this.cachedConfig = null;
     }
 
+    public abstract void clearDefinitionCache();
+
+    private void buildConfigCache() {
+        try {
+            cachedConfig = BasicConfigurationNode.root();
+
+            if (config != null) {
+                cachedConfig.set(config);
+            }
+        } catch (Exception e) {
+            JustRacesAPI.getLogger().error("Failed to map configuration for instance: {}", key, e);
+        }
+    }
+
+    // Utils
     protected boolean isEmptyObject(JsonElement element) {
         return element.isJsonObject() && element.getAsJsonObject().asMap().isEmpty();
     }

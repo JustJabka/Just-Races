@@ -121,6 +121,11 @@ public class RaceManager {
         return !isRace(player, NONE_KEY);
     }
 
+    public static void reloadRace(Player player) {
+        RaceDefinition race = getRace(player);
+        setRace(player, race, Cause.RELOAD);
+    }
+
     private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
         Map<Attribute, Double> attributes = race.getAttributes();
         attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
