@@ -21,6 +21,5 @@
   "item_modifiers": {
     "justracesshowcase:food/slime_ball": "minecraft:slime_ball",
     "justracesshowcase:food/magma_cream": "minecraft:magma_cream"
-  },
-  "config": {}
+  }
 }

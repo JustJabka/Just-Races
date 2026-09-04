@@ -3,9 +3,5 @@
     "translate": "race.none.name",
     "fallback": "None"
   },
-  "abilities": [],
-  "attributes": {},
-  "item_modifiers": {},
-  "hidden": true,
-  "config": {}
+  "hidden": true
 }

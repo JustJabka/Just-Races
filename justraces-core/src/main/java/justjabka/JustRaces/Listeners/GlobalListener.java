@@ -54,6 +54,8 @@ public class GlobalListener implements Listener {
         event.getItem().setItemStack(item);
     }
 
+    // TODO: fix /give, /loot and /item command not refreshing modifiers
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onDropItem(EntityDropItemEvent event) {
         if (!(event.getEntity() instanceof Player)) return;

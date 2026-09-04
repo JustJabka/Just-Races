@@ -36,13 +36,7 @@ public class RaceArgument implements CustomArgumentType.Converted<RaceDefinition
             throw ERROR_INVALID_RACE.create(nativeType);
         }
 
-        RaceDefinition race = RaceManager.getRaceByKey(key);
-
-        if (race == null) {
-            throw ERROR_INVALID_RACE.create(nativeType);
-        }
-
-        return race;
+        return RaceManager.getRaceByKey(key);
     }
 
     @Override

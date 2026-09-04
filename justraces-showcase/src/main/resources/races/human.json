@@ -3,12 +3,8 @@
     "translate": "race.human.name",
     "fallback": "Human"
   },
-  "abilities": [],
-  "attributes": {},
-  "item_modifiers": {},
   "traits": [
     "justracesshowcase:adrenaline_rush",
     "justracesshowcase:adaptation"
-  ],
-  "config": {}
+  ]
 }

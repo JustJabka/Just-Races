@@ -14,9 +14,7 @@
     "minecraft:safe_fall_distance": 10,
     "minecraft:attack_knockback": 0.3
   },
-  "item_modifiers": {},
   "traits": [
     "justracesshowcase:celestial_combatant"
-  ],
-  "config": {}
+  ]
 }
