@@ -67,7 +67,7 @@ public class ModifierManager {
 
     public static void refreshModifiersOnItem(Player player, ItemStack item) {
         if (item == null) return;
-        if (item.getType().isAir()) return;
+        if (item.isEmpty()) return;
 
         tryUndo(item);
         tryApply(player, item);

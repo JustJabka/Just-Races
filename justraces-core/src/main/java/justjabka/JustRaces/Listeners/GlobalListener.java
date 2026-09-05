@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,8 +32,7 @@ public class GlobalListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-
-        ArmorManager.updateArmorSet(player);
+        inventoryRefresh(player);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -44,6 +44,14 @@ public class GlobalListener implements Listener {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ModifierManager.refreshModifiers(player));
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onItemHeld(PlayerItemHeldEvent event) {
+        Player player = event.getPlayer();
+
+        ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
+        ModifierManager.refreshModifiersOnItem(player, newItem);
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPickupItem(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -53,8 +61,6 @@ public class GlobalListener implements Listener {
         ModifierManager.refreshModifiersOnItem(player, item);
         event.getItem().setItemStack(item);
     }
-
-    // TODO: fix /give, /loot and /item command not refreshing modifiers
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onDropItem(EntityDropItemEvent event) {
