@@ -1,5 +1,6 @@
 package justjabka.JustRacesShowcase.Runnables.Race;
 
+import justjabka.JustRaces.Interfaces.Configurable.RaceConfigurable;
 import justjabka.JustRaces.Runnables.Generic.BaseRaceRunnable;
 import justjabka.JustRacesShowcase.DataProvider.RaceProvider;
 import org.bukkit.*;
@@ -12,22 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class BeeRaceRunnable extends BaseRaceRunnable {
+public class BuzzlingRaceRunnable extends BaseRaceRunnable implements RaceConfigurable {
     private static final Random RANDOM = new Random();
-
-    // TODO: add config
-    private static final float CHANCE_PER_FLOWER = 0.01f;
-    private static final float MAX_CHANCE = 0.3f;
-
-    private static final int REQUIRED_FLOWER_COUNT = 4;
-
-    private static final int SEARCH_RADIUS_X = 9;
-    private static final int SEARCH_RADIUS_Y = 2;
-    private static final int SEARCH_RADIUS_Z = 9;
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.BEE;
+        return RaceProvider.BUZZLING;
     }
 
     @Override
@@ -37,9 +28,13 @@ public class BeeRaceRunnable extends BaseRaceRunnable {
         int flowerCount = 0;
         Map<Location, Ageable> cropsNearby = new HashMap<>();
 
-        for (int x = -SEARCH_RADIUS_X; x <= SEARCH_RADIUS_X; x++) {
-            for (int y = -SEARCH_RADIUS_Y; y <= SEARCH_RADIUS_Y; y++) {
-                for (int z = -SEARCH_RADIUS_Z; z <= SEARCH_RADIUS_Z; z++) {
+        final int searchRadiusX = getConfigInt("crop_pollinator", "radius", "x");
+        final int searchRadiusY = getConfigInt("crop_pollinator", "radius", "y");
+        final int searchRadiusZ = getConfigInt("crop_pollinator", "radius", "z");
+
+        for (int x = -searchRadiusX; x <= searchRadiusX; x++) {
+            for (int y = -searchRadiusY; y <= searchRadiusY; y++) {
+                for (int z = -searchRadiusZ; z <= searchRadiusZ; z++) {
                     Block block = location.getBlock().getRelative(x, y, z);
                     Material blockType = block.getType();
 
@@ -55,12 +50,20 @@ public class BeeRaceRunnable extends BaseRaceRunnable {
             }
         }
 
-        if (flowerCount < REQUIRED_FLOWER_COUNT) return;
+        final int minFlowerAmount = getConfigInt("crop_pollinator", "min_flower_amount");
+        if (flowerCount < minFlowerAmount) return;
+
+        final float chancePerFlower = getConfigFloat("crop_pollinator", "chance", "per_flower");
+        final float maxChance = getConfigFloat("crop_pollinator", "chance", "max");
+        float chance = Math.min(flowerCount * chancePerFlower, maxChance);
 
         spawnNectarParticle(player);
 
+        pollinateCrops(chance, cropsNearby);
+    }
+
+    private void pollinateCrops(float chance, Map<Location, Ageable> cropsNearby) {
         if (cropsNearby.isEmpty()) return;
-        float chance = Math.min(flowerCount * CHANCE_PER_FLOWER, MAX_CHANCE);
 
         cropsNearby.forEach((loc, ageable) -> {
             if (RANDOM.nextDouble() > chance) return;

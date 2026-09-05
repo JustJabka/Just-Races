@@ -4,6 +4,7 @@ import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
+import justjabka.JustRaces.Interfaces.Configurable.ItemModifierConfigurable;
 import justjabka.JustRaces.Modifiers.Generic.BaseFoodModifier;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
@@ -14,16 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class HoneyBottleFoodModifier extends BaseFoodModifier {
-    // TODO: add config
-    private static final int SPEED_DURATION = 3 * 60 * 20;
-    private static final int RESISTANCE_DURATION = 90 * 20;
-
-    private static final List<PotionEffect> CONSUME_EFFECTS = List.of(
-            new PotionEffect(PotionEffectType.RESISTANCE, RESISTANCE_DURATION, 0, false, true, true),
-            new PotionEffect(PotionEffectType.HASTE, SPEED_DURATION, 0, false, true, true),
-            new PotionEffect(PotionEffectType.SPEED, SPEED_DURATION, 0, false, true, true)
-    );
+public class HoneyBottleFoodModifier extends BaseFoodModifier implements ItemModifierConfigurable {
 
     @Override
     public NamespacedKey getKey() {
@@ -32,9 +24,15 @@ public class HoneyBottleFoodModifier extends BaseFoodModifier {
 
     @Override
     public Consumer<Consumable.Builder> getConsumable() {
+        final List<PotionEffect> consumeEffects = List.of(
+                new PotionEffect(PotionEffectType.HASTE, getConfigInt("duration", "haste"), 0, false, true, true),
+                new PotionEffect(PotionEffectType.SPEED, getConfigInt("duration", "speed"), 0, false, true, true),
+                new PotionEffect(PotionEffectType.RESISTANCE, getConfigInt("duration", "resistance"), 0, false, true, true)
+        );
+
         return builder -> builder
                 .addEffect(ConsumeEffect.applyStatusEffects(
-                    CONSUME_EFFECTS,
+                    consumeEffects,
                     1f
                 ))
                 .hasConsumeParticles(false);
@@ -43,8 +41,8 @@ public class HoneyBottleFoodModifier extends BaseFoodModifier {
     @Override
     public Consumer<FoodProperties.Builder> getFoodProperties() {
         return builder -> builder
-                .nutrition(20)
-                .saturation(20);
+                .nutrition(getConfigInt("nutrition"))
+                .saturation(getConfigFloat("saturation"));
     }
 
     @Override

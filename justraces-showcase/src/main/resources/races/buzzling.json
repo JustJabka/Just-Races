@@ -1,7 +1,7 @@
 {
   "name": {
-    "translate": "race.bee.name",
-    "fallback": "Bee"
+    "translate": "race.buzzling.name",
+    "fallback": "Buzzling"
   },
   "abilities": [
     "justracesshowcase:poisonous_sting"
@@ -13,5 +13,19 @@
     "minecraft:max_health": 16,
     "minecraft:scale": 0.9,
     "minecraft:movement_speed": 0.125
+  },
+  "config": {
+    "crop_pollinator": {
+      "chance": {
+        "per_flower": 0.02,
+        "max": 0.3
+      },
+      "min_flower_amount": 4,
+      "radius": {
+        "x": 9,
+        "y": 2,
+        "z": 9
+      }
+    }
   }
 }

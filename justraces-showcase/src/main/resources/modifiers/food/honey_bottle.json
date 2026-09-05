@@ -1,0 +1,9 @@
+{
+  "nutrition": 20,
+  "saturation": 20.0,
+  "duration": {
+    "haste": 3600,
+    "speed": 3600,
+    "resistance": 1800
+  }
+}

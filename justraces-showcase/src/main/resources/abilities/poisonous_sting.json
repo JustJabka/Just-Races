@@ -1,0 +1,7 @@
+{
+  "cooldown": 200,
+  "attacker_effect": {
+    "duration": 100,
+    "amplifier": 1
+  }
+}

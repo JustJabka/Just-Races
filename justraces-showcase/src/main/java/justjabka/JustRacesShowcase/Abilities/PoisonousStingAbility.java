@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -16,9 +17,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class PoisonousSting extends BaseAbility {
-    // TODO: add config
-    private static final PotionEffect ATTACKER_EFFECT = new PotionEffect(PotionEffectType.POISON, 100, 1, false, true, true);
+public class PoisonousStingAbility extends BaseAbility implements AbilityConfigurable {
 
     @Override
     public NamespacedKey getKey() {
@@ -27,7 +26,7 @@ public class PoisonousSting extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 200;
+        return getConfigCooldown();
     }
 
     @Override
@@ -53,8 +52,17 @@ public class PoisonousSting extends BaseAbility {
 
     @Override
     protected boolean onActivation(Player player, AbilityContext ctx) {
+        final PotionEffect attackerEffect = new PotionEffect(
+                PotionEffectType.POISON,
+                getConfigInt("attacker_effect", "duration"),
+                getConfigInt("attacker_effect", "amplifier"),
+                false,
+                true,
+                true
+        );
+
         ctx.attacker().ifPresent(attacker -> {
-            attacker.addPotionEffect(ATTACKER_EFFECT);
+            attacker.addPotionEffect(attackerEffect);
             attacker.getWorld().playSound(attacker.getLocation(), Sound.ENTITY_BEE_STING, SoundCategory.PLAYERS, 1f, 1f);
         });
         return true;

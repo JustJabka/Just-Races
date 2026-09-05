@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-public class BeeRaceListener extends BaseRaceListener {
+public class BuzzlingRaceListener extends BaseRaceListener {
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.BEE;
+        return RaceProvider.BUZZLING;
     }
 
     @EventHandler(ignoreCancelled = true)
