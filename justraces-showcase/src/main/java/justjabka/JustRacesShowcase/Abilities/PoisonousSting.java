@@ -1,0 +1,62 @@
+package justjabka.JustRacesShowcase.Abilities;
+
+import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Managers.CombatManager;
+import justjabka.JustRaces.Types.AbilityContext;
+import justjabka.JustRacesShowcase.JustRacesShowcase;
+import net.kyori.adventure.bossbar.BossBar;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+public class PoisonousSting extends BaseAbility {
+    // TODO: add config
+    private static final PotionEffect ATTACKER_EFFECT = new PotionEffect(PotionEffectType.POISON, 100, 1, false, true, true);
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "poisonous_sting");
+    }
+
+    @Override
+    public long getCooldownTicks() {
+        return 200;
+    }
+
+    @Override
+    public BossBar.Color getCooldownBarColor(Player player) {
+        return BossBar.Color.GREEN;
+    }
+
+    // TODO: add icon
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getDamager() instanceof LivingEntity attacker)) return;
+
+        if (!playerHasAbility(player)) return;
+
+        DamageSource damageSource = event.getDamageSource();
+        if (damageSource.isIndirect()) return;
+        if (CombatManager.isFacingAndBlocking(player, damageSource)) return;
+
+        tryActivate(player, AbilityContext.ofAttacker(attacker));
+    }
+
+    @Override
+    protected boolean onActivation(Player player, AbilityContext ctx) {
+        ctx.attacker().ifPresent(attacker -> {
+            attacker.addPotionEffect(ATTACKER_EFFECT);
+            attacker.getWorld().playSound(attacker.getLocation(), Sound.ENTITY_BEE_STING, SoundCategory.PLAYERS, 1f, 1f);
+        });
+        return true;
+    }
+}

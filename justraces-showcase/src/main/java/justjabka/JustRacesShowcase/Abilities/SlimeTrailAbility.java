@@ -4,6 +4,7 @@ import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Abilities.Generic.RunnableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
+import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -79,7 +80,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, AbilityContext ctx) {
         BukkitTask task = createRunnable(player).runTaskTimer(JustRacesShowcase.INSTANCE, 0L, 4L);
         activeTrails.put(player.getUniqueId(), task);
         return true;

@@ -10,6 +10,8 @@ import justjabka.JustRacesShowcase.Modifiers.Food.Generic.BaseFrogTongueTypeChan
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public class MagmaCreamFoodModifier extends BaseFrogTongueTypeChangerFoodModifier {
 
     @Override
@@ -23,20 +25,18 @@ public class MagmaCreamFoodModifier extends BaseFrogTongueTypeChangerFoodModifie
     }
 
     @Override
-    public Consumable getConsumable() {
-        return Consumable.consumable()
+    public Consumer<Consumable.Builder> getConsumable() {
+        return builder -> builder
                 .animation(ItemUseAnimation.EAT)
                 .consumeSeconds(0.8f)
-                .hasConsumeParticles(true)
-                .build();
+                .hasConsumeParticles(true);
     }
 
     @Override
-    public FoodProperties getFoodProperties() {
-        return FoodProperties.food()
+    public Consumer<FoodProperties.Builder> getFoodProperties() {
+        return builder -> builder
                 .nutrition(3)
-                .canAlwaysEat(true)
-                .build();
+                .canAlwaysEat(true);
     }
 
     @Override

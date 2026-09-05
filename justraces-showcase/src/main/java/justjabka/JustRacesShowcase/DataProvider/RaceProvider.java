@@ -10,6 +10,7 @@ public class RaceProvider {
     public static final NamespacedKey ARMAT = create("armat");
     public static final NamespacedKey FROGGISH = create("froggish");
     public static final NamespacedKey SKYZERN = create("skyzern");
+    public static final NamespacedKey BEE = create("bee");
 
     @NotNull
     private static NamespacedKey create(@NotNull @KeyPattern.Value String key) {

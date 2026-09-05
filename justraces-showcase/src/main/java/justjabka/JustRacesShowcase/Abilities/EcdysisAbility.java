@@ -6,6 +6,7 @@ import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
+import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
@@ -94,7 +95,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, AbilityContext ctx) {
         if (isSuicideUse(player)) handleSuicideUse(player);
         else handleNormalUse(player);
 

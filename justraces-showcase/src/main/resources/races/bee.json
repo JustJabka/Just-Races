@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "race.bee.name",
+    "fallback": "Bee"
+  },
+  "abilities": [
+    "justracesshowcase:poisonous_sting"
+  ],
+  "item_modifiers": {
+    "justracesshowcase:food/honey_bottle": "minecraft:honey_bottle"
+  },
+  "attributes": {
+    "minecraft:max_health": 16,
+    "minecraft:scale": 0.9,
+    "minecraft:movement_speed": 0.125
+  }
+}

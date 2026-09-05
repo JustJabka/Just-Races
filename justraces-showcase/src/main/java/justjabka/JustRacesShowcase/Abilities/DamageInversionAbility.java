@@ -5,6 +5,7 @@ import justjabka.JustRaces.Abilities.Generic.TogglableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
+import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.ArmorSet;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
@@ -82,7 +83,7 @@ public class DamageInversionAbility extends TogglableAbility implements AbilityC
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, AbilityContext ctx) {
         toggle(player);
         return true;
     }

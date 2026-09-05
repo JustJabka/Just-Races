@@ -1,6 +1,7 @@
 package justjabka.JustRacesShowcase.Abilities.Generic;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
+import justjabka.JustRaces.Types.AbilityContext;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -52,7 +53,7 @@ public abstract class BaseHookAbility extends BaseAbility {
     protected void onMiss(HookHitContext ctx) {}
 
     @Override
-    protected boolean onActivation(Player shooter) {
+    protected boolean onActivation(Player shooter, AbilityContext ctx) {
         World world = shooter.getWorld();
         Location startLoc = shooter.getEyeLocation();
         Vector direction = startLoc.getDirection().normalize();

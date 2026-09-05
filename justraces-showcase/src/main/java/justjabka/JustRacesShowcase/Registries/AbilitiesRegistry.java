@@ -13,6 +13,7 @@ public class AbilitiesRegistry {
         registerAbility(new FrogTongueAbility());
         registerAbility(new SlimeTrailAbility());
         registerAbility(new AirBurstAbility());
+        registerAbility(new PoisonousSting());
     }
 
     public static void register() {

@@ -2,6 +2,7 @@ package justjabka.JustRaces.Abilities.Generic;
 
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.CooldownEntry;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
@@ -183,16 +184,27 @@ public abstract class BaseAbility implements Listener {
      * Tries to activate the ability
      * @param player Player for which the ability is tried to be to activated
      * @return {@code true} if ability activated successfully
-     * @see #onActivation(Player)
+     * @see #onActivation(Player, AbilityContext)
      */
     public boolean tryActivate(Player player) {
+        return tryActivate(player, AbilityContext.ofEmpty());
+    }
+
+    /**
+     * Tries to activate the ability
+     * @param player Player for which the ability is tried to be to activated
+     * @param ctx Additional context of the ability
+     * @return {@code true} if ability activated successfully
+     * @see #onActivation(Player, AbilityContext)
+     */
+    public boolean tryActivate(Player player, AbilityContext ctx) {
         if (!playerHasAbility(player)) return false;
 
         if (!canActivate(player)) return false;
 
         if (isOnCooldown(player)) return false;
 
-        if (!onActivation(player)) return false;
+        if (!onActivation(player, ctx)) return false;
         putOnCooldown(player);
 
         return true;
@@ -200,9 +212,11 @@ public abstract class BaseAbility implements Listener {
 
     /**
      * Will be executed on ability activation
+     *
      * @param player Player for which the ability will be activated
+     * @param ctx Additional context of the ability
      * @return {@code true} if ability activated successfully. {@code false} to cancel ability activation
      * @see #tryActivate(Player)
      */
-    protected abstract boolean onActivation(Player player);
+    protected abstract boolean onActivation(Player player, AbilityContext ctx);
 }

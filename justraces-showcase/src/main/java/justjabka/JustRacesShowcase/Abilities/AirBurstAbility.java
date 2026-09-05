@@ -3,6 +3,7 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
 import justjabka.JustRaces.Managers.CombatManager;
+import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
@@ -50,7 +51,7 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
     }
 
     @Override
-    protected boolean onActivation(Player player) {
+    protected boolean onActivation(Player player, AbilityContext ctx) {
         World world = player.getWorld();
         Location playerLocation = player.getLocation();
         Location playerEyeLocation = player.getEyeLocation();
