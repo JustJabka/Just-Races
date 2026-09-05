@@ -4,9 +4,7 @@ import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import justjabka.JustRacesShowcase.Modifiers.Armor.*;
-import justjabka.JustRacesShowcase.Modifiers.Food.HoneyBottleFoodModifier;
-import justjabka.JustRacesShowcase.Modifiers.Food.MagmaCreamFoodModifier;
-import justjabka.JustRacesShowcase.Modifiers.Food.SlimeBallFoodModifier;
+import justjabka.JustRacesShowcase.Modifiers.Food.*;
 
 public class ModifiersRegistry {
     private static void registerModifiers() {
@@ -21,6 +19,7 @@ public class ModifiersRegistry {
         registerModifier(new SlimeBallFoodModifier());
         registerModifier(new MagmaCreamFoodModifier());
         registerModifier(new HoneyBottleFoodModifier());
+        registerModifier(new BetterBerriesFoodModifier());
     }
 
     public static void register() {

@@ -14,6 +14,7 @@ public class AbilitiesRegistry {
         registerAbility(new SlimeTrailAbility());
         registerAbility(new AirBurstAbility());
         registerAbility(new PoisonousStingAbility());
+        registerAbility(new DeepPocketsAbility());
     }
 
     public static void register() {

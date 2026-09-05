@@ -10,6 +10,7 @@ import justjabka.JustRaces.JustRacesRegistries;
 import justjabka.JustRaces.Types.AbilityBinding;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -114,6 +115,10 @@ public class AbilityManager {
     public static String getAbilityString(Player player, NamespacedKey key) {
         return getAbilitiesContainer(player).get(key, DataType.STRING);
     }
+
+    public static ItemStack[] getAbilityInventory(Player player, NamespacedKey key) {
+        return getAbilitiesContainer(player).getOrDefault(key, DataType.ITEM_STACK_ARRAY, new ItemStack[]{});
+    }
     //endregion
 
 
@@ -185,6 +190,10 @@ public class AbilityManager {
 
     public static void setAbilityString(Player player, NamespacedKey key, String string) {
         setAbilityData(player, key, PersistentDataType.STRING, string);
+    }
+
+    public static void setAbilityInventory(Player player, NamespacedKey key, ItemStack[] items) {
+        setAbilityData(player, key, DataType.ITEM_STACK_ARRAY, items);
     }
     //endregion
 }

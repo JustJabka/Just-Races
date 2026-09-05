@@ -1,0 +1,20 @@
+{
+  "name": {
+    "translate": "race.prowler.name",
+    "fallback": "Prowler"
+  },
+  "attributes": {
+    "minecraft:max_health": 18,
+    "minecraft:step_height": 1,
+    "minecraft:safe_fall_distance": 5,
+    "minecraft:sneaking_speed": 0.6,
+    "minecraft:submerged_mining_speed": 0.1,
+    "minecraft:knockback_resistance": -0.1
+  },
+  "abilities": [
+    "justracesshowcase:deep_pockets"
+  ],
+  "item_modifiers": {
+    "justracesshowcase:food/better_berries": "#justracesshowcase:modifier/better_berries"
+  }
+}
