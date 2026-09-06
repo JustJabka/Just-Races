@@ -9,12 +9,12 @@ import java.util.Map;
 
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public abstract class BaseDefinition {
-    private transient String key;
     private Map<String, Object> config;
 
+    private transient String key;
     private transient ConfigurationNode cachedConfig;
 
-    // Key
+    // region Key
     public NamespacedKey getKey() {
         return NamespacedKey.fromString(key, JustRacesAPI.getInstance());
     }
@@ -22,8 +22,9 @@ public abstract class BaseDefinition {
     public void setKey(String key) {
         this.key = key;
     }
+    // endregion
 
-    // Config
+    // region Config
     public ConfigurationNode getConfig() {
         if (cachedConfig == null) buildConfigCache();
         return cachedConfig;
@@ -46,4 +47,5 @@ public abstract class BaseDefinition {
             JustRacesAPI.getLogger().error("Failed to map configuration for instance: {}", key, e);
         }
     }
+    // endregion
 }

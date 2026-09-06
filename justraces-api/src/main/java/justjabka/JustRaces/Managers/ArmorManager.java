@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.ApiStatus;
 
 public class ArmorManager {
     private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "armor_set");
@@ -17,7 +16,6 @@ public class ArmorManager {
      * Updates player's armor set
      * @param player Player whose armor set will be updated
      */
-    @ApiStatus.Internal
     public static void updateArmorSet(Player player) {
         ItemStack[] equipment = player.getEquipment().getArmorContents();
 

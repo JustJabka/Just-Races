@@ -22,6 +22,7 @@ import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
+
     public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
     public static final RaceDefinition NONE = getByKey(NONE_KEY);
 
@@ -59,7 +60,8 @@ public class RaceManager {
      * @param raceKey Race key
      * @param cause Cause of race change
      * @return {@code true} if race set successfully
-     * @see RaceManager#getByKey(NamespacedKey)
+     * @see setRace(Player, RaceDefinition, Cause)
+     * @see getByKey(NamespacedKey)
      */
     public static boolean setRace(@NotNull Player player, NamespacedKey raceKey, @NotNull Cause cause) {
         RaceDefinition currentRace = getRace(player);
@@ -78,13 +80,6 @@ public class RaceManager {
         return true;
     }
 
-    /**
-     * @see RaceManager#setRace(Player, NamespacedKey, Cause)
-     */
-    public static boolean setRace(@NotNull Player player, @NotNull RaceDefinition race, @NotNull Cause cause) {
-        return setRace(player, race.getKey(), cause);
-    }
-
     private static void applyRace(@NotNull Player player, @NotNull RaceDefinition race) {
         resetRace(player);
 
@@ -94,11 +89,29 @@ public class RaceManager {
         initRace(player, race);
     }
 
+    private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
+        Map<Attribute, Double> attributes = race.getAttributes();
+        attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
+    }
+
+    /**
+     * Sets player's race
+     * @param player Player which would be set
+     * @param race Race
+     * @param cause Cause of race change
+     * @return {@code true} if race set successfully
+     * @see setRace(Player, NamespacedKey, Cause)
+     */
+    public static boolean setRace(@NotNull Player player, @NotNull RaceDefinition race, @NotNull Cause cause) {
+        return setRace(player, race.getKey(), cause);
+    }
+
     /**
      * Check if player's race matches to provided
      * @param player Player which race will be checked
      * @param key Race key
      * @return {@code true} if races matches
+     * @see isRace(Player, RaceDefinition)
      */
     public static boolean isRace(@NotNull Player player, NamespacedKey key) {
         RaceDefinition race = getRace(player);
@@ -106,7 +119,11 @@ public class RaceManager {
     }
 
     /**
-     * @see RaceManager#isRace(Player, NamespacedKey)
+     * Check if player's race matches to provided
+     * @param player Player which race will be checked
+     * @param race Race
+     * @return {@code true} if races matches
+     * @see isRace(Player, NamespacedKey)
      */
     public static boolean isRace(@NotNull Player player, @NotNull RaceDefinition race) {
         return isRace(player, race.getKey());
@@ -121,19 +138,20 @@ public class RaceManager {
         return !isRace(player, NONE_KEY);
     }
 
+    /**
+     * Reloads player's race
+     * @param player Player which race would be reloaded
+     * @apiNote Don't confuse with {@link resetRace(Player)}
+     */
     public static void reloadRace(Player player) {
         RaceDefinition race = getRace(player);
         setRace(player, race, Cause.RELOAD);
     }
 
-    private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
-        Map<Attribute, Double> attributes = race.getAttributes();
-        attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
-    }
-
     /**
      * Resets player's race
      * @param player Player which race would be reset
+     * @apiNote Don't confuse with {@link reloadRace(Player)}
      */
     public static void resetRace(@NotNull Player player) {
         // Clear potion effects

@@ -30,48 +30,80 @@ public class RaceDefinition extends BaseDefinition {
     private transient Set<BaseAbility> cachedAbilities;
     private transient Map<Material, BaseModifier> cachedModifiers;
 
-    // Getters
+    // region Getters
+
+    /**
+     * @return Name of the race
+     */
     public Component getName() {
         return name != null ? name : Component.empty();
     }
 
+    /**
+     * @return Description of the race
+     */
     @NotNull
     public List<@NotNull Component> getDescription() {
         return description != null ? Collections.unmodifiableList(description) : Collections.emptyList();
     }
 
-    public boolean isHidden() {
-        return hidden != null && hidden;
-    }
-
+    /**
+     * @return Base Attributes of the race
+     */
     @NotNull
     public Map<@NotNull Attribute, @NotNull Double> getAttributes() {
         return attributes != null ? Collections.unmodifiableMap(attributes) : Collections.emptyMap();
     }
 
+    /**
+     * @return Abilities of the race
+     * @see BaseAbility
+     */
     @NotNull
     public Set<@NotNull BaseAbility> getAbilities() {
         if (cachedAbilities == null) buildAbilitiesCache();
         return cachedAbilities;
     }
 
+    /**
+     * @return Ability Bindings of the race
+     * @see AbilityBinding
+     */
     @NotNull
     public Set<@NotNull AbilityBinding> getAbilitiesBindings() {
         return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
     }
 
+    /**
+     * @return Traits of the race
+     * @see Trait
+     */
+    @NotNull
+    public Set<@NotNull Trait> getTraits() {
+        return traits != null ? Collections.unmodifiableSet(traits) : Collections.emptySet();
+    }
+
+    /**
+     * Gets modifier assigned for the material
+     * @param material Material
+     * @return Modifier assigned for the material
+     * @see BaseModifier
+     */
     @Nullable
     public BaseModifier getModifier(Material material) {
         if (cachedModifiers == null) buildModifiersCache();
         return cachedModifiers.get(material);
     }
 
-    @NotNull
-    public Set<@NotNull Trait> getTraits() {
-        return traits != null ? Collections.unmodifiableSet(traits) : Collections.emptySet();
+    /**
+     * @return {@code true} if race is hidden from the race selection dialog ({@code /selectrace})
+     */
+    public boolean isHidden() {
+        return hidden != null && hidden;
     }
+    // endregion
 
-    // Cache
+    // region Cache
     @Override
     public void clearDefinitionCache() {
         this.cachedAbilities = null;
@@ -104,4 +136,5 @@ public class RaceDefinition extends BaseDefinition {
             }
         }
     }
+    // endregion
 }
