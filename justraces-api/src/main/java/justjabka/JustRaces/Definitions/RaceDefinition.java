@@ -1,19 +1,13 @@
 package justjabka.JustRaces.Definitions;
 
-import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Definitions.Generic.BaseDefinition;
 import justjabka.JustRaces.Interfaces.Trait;
-import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +24,7 @@ public class RaceDefinition extends BaseDefinition {
     private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
-    private Map<BaseModifier, JsonElement> itemModifiers;
+    private Map<BaseModifier, Set<Material>> itemModifiers;
     private Boolean hidden;
 
     private transient Set<BaseAbility> cachedAbilities;
@@ -47,7 +41,7 @@ public class RaceDefinition extends BaseDefinition {
     }
 
     public boolean isHidden() {
-        return Boolean.TRUE.equals(hidden);
+        return hidden != null && hidden;
     }
 
     @NotNull
@@ -101,58 +95,13 @@ public class RaceDefinition extends BaseDefinition {
 
         if (itemModifiers == null || itemModifiers.isEmpty()) return;
 
-        for (Map.Entry<BaseModifier, JsonElement> entry : itemModifiers.entrySet()) {
+        for (Map.Entry<BaseModifier, Set<Material>> entry : itemModifiers.entrySet()) {
             BaseModifier modifier = entry.getKey();
-            JsonElement element = entry.getValue();
+            Set<Material> materials = entry.getValue();
 
-            Set<Material> materials = parseMaterialsFromElement(element);
             for (Material material : materials) {
                 cachedModifiers.put(material, modifier);
             }
-        }
-    }
-
-    private Set<Material> parseMaterialsFromElement(JsonElement element) {
-        Set<Material> materials = new HashSet<>();
-        if (element == null) return materials;
-
-        if (isString(element)) {
-            parseAndAddMaterialOrTag(element.getAsString(), materials);
-        } else if (element.isJsonArray()) {
-            for (JsonElement arrayElement : element.getAsJsonArray()) {
-                if (!isString(arrayElement)) continue;
-                parseAndAddMaterialOrTag(arrayElement.getAsString(), materials);
-            }
-        }
-
-        return materials;
-    }
-
-    private void parseAndAddMaterialOrTag(String value, Set<Material> materials) {
-        boolean isTag = value.startsWith("#");
-
-        if (isTag) {
-            String tagKeyString = value.substring(1); // Remove tag prefix
-            NamespacedKey tagKey = NamespacedKey.fromString(tagKeyString);
-
-            if (tagKey == null) return;
-
-            Tag<Material> itemTag = Bukkit.getTag(Tag.REGISTRY_ITEMS, tagKey, Material.class);
-
-            if (itemTag != null) {
-                materials.addAll(itemTag.getValues());
-                return;
-            }
-
-            JustRacesAPI.getLogger().warn("Unknown item tag in JSON: {}", value);
-        } else {
-            NamespacedKey materialKey = NamespacedKey.fromString(value);
-            if (materialKey == null) return;
-
-            Material material = Registry.MATERIAL.get(materialKey);
-            if (material == null) return;
-
-            materials.add(material);
         }
     }
 }

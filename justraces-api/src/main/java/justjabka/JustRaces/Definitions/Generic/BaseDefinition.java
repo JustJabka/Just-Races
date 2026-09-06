@@ -1,6 +1,5 @@
 package justjabka.JustRaces.Definitions.Generic;
 
-import com.google.gson.JsonElement;
 import justjabka.JustRaces.JustRacesAPI;
 import org.bukkit.NamespacedKey;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -46,14 +45,5 @@ public abstract class BaseDefinition {
         } catch (Exception e) {
             JustRacesAPI.getLogger().error("Failed to map configuration for instance: {}", key, e);
         }
-    }
-
-    // Utils
-    protected boolean isEmptyObject(JsonElement element) {
-        return element.isJsonObject() && element.getAsJsonObject().asMap().isEmpty();
-    }
-
-    protected boolean isString(JsonElement element) {
-        return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
     }
 }

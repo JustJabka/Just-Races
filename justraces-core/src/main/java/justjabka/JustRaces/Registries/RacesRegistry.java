@@ -2,10 +2,8 @@ package justjabka.JustRaces.Registries;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import justjabka.JustRaces.Definitions.Deserializer.AbilityBindingDeserializer;
-import justjabka.JustRaces.Definitions.Deserializer.AttributeDeserializer;
-import justjabka.JustRaces.Definitions.Deserializer.ItemModifierDeserializer;
-import justjabka.JustRaces.Definitions.Deserializer.TraitDeserializer;
+import com.google.gson.reflect.TypeToken;
+import justjabka.JustRaces.Definitions.Deserializer.*;
 import justjabka.JustRaces.Definitions.RaceDefinition;
 import justjabka.JustRaces.Interfaces.Trait;
 import justjabka.JustRaces.JustRacesAPI;
@@ -14,23 +12,29 @@ import justjabka.JustRaces.Managers.ResourceManager;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
 import justjabka.JustRaces.Types.AbilityBinding;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class RacesRegistry {
-    private static final Gson gson = GsonComponentSerializer.gson().populator()
+    private static final Type SET_MATERIAL = new TypeToken<Set<Material>>() {}.getType();
+
+    private static final Gson GSON = GsonComponentSerializer.gson().populator()
             .apply(new GsonBuilder())
             .registerTypeAdapter(AbilityBinding.class, new AbilityBindingDeserializer())
             .registerTypeAdapter(Attribute.class, new AttributeDeserializer())
             .registerTypeAdapter(BaseModifier.class, new ItemModifierDeserializer())
             .registerTypeAdapter(Trait.class, new TraitDeserializer())
+            .registerTypeAdapter(SET_MATERIAL, new ItemsDeserializer())
             .create();
 
     public static void reloadAllRaces() {
@@ -65,7 +69,7 @@ public class RacesRegistry {
     private static void loadRaceFile(Path rootFolder, Path filePath) {
         File file = filePath.toFile();
         try (FileReader reader = new FileReader(file)) {
-            RaceDefinition race = gson.fromJson(reader, RaceDefinition.class);
+            RaceDefinition race = GSON.fromJson(reader, RaceDefinition.class);
 
             Path relativePath = rootFolder.relativize(filePath);
             NamespacedKey key = parseNamespacedKey(relativePath.toString());
