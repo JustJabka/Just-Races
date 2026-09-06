@@ -103,7 +103,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     // State
     public TongueType getTongueType(Player player) {
-        String hookTypeString = getConfigString(player, getKey());
+        String hookTypeString = getContainerString(player, getKey());
         return hookTypeString != null ? TongueType.valueOf(hookTypeString.toUpperCase()) : TongueType.NORMAL;
     }
 

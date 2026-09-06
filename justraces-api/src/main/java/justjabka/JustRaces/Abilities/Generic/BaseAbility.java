@@ -163,7 +163,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
         cooldownBar.progress(progress);
     }
 
-    protected void removeCooldownBar(Player player) {
+    public void removeCooldownBar(Player player) {
         BossBar bossBar = cooldownBars.remove(player.getUniqueId());
         if (bossBar == null) return;
         player.hideBossBar(bossBar);

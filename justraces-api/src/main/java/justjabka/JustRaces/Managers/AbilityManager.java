@@ -71,6 +71,7 @@ public class AbilityManager {
 
         abilities.forEach(ability -> {
             ability.resetCooldown(player);
+            ability.removeCooldownBar(player);
             clearAbilityStates(player, ability, reason);
         });
     }
