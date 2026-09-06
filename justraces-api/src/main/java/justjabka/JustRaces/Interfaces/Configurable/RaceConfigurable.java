@@ -18,6 +18,6 @@ public interface RaceConfigurable extends Configurable {
     }
 
     private @NonNull RaceDefinition getRaceByKey() {
-        return RaceManager.getRaceByKey(getKey());
+        return RaceManager.getByKey(getKey());
     }
 }

@@ -23,7 +23,7 @@ import static justjabka.JustRaces.Managers.ModifierManager.refreshModifiers;
 public class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
     public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
-    public static final RaceDefinition NONE = getRaceByKey(NONE_KEY);
+    public static final RaceDefinition NONE = getByKey(NONE_KEY);
 
     /**
      * Gets player's race
@@ -44,7 +44,7 @@ public class RaceManager {
     }
 
     @NotNull
-    public static RaceDefinition getRaceByKey(NamespacedKey key) {
+    public static RaceDefinition getByKey(NamespacedKey key) {
         RaceDefinition instance = JustRacesRegistries.RACES.get(key);
         if (instance == null) {
             throw new IllegalArgumentException("Unregistered race: %s".formatted(key));
@@ -59,11 +59,11 @@ public class RaceManager {
      * @param raceKey Race key
      * @param cause Cause of race change
      * @return {@code true} if race set successfully
-     * @see RaceManager#getRaceByKey(NamespacedKey)
+     * @see RaceManager#getByKey(NamespacedKey)
      */
     public static boolean setRace(@NotNull Player player, NamespacedKey raceKey, @NotNull Cause cause) {
         RaceDefinition currentRace = getRace(player);
-        RaceDefinition newRace = getRaceByKey(raceKey);
+        RaceDefinition newRace = getByKey(raceKey);
 
         PlayerRaceChangePreEvent pre = new PlayerRaceChangePreEvent(player, currentRace, newRace, cause);
         pre.callEvent();
