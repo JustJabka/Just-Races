@@ -212,7 +212,6 @@ public abstract class BaseAbility implements Listener {
 
     /**
      * Will be executed on ability activation
-     *
      * @param player Player for which the ability will be activated
      * @param ctx Additional context of the ability
      * @return {@code true} if ability activated successfully. {@code false} to cancel ability activation

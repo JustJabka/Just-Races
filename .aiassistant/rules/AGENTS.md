@@ -3,7 +3,7 @@ apply: always
 ---
 
 # Project Overview
-This project is a Paper plugin for Minecraft version 1.21.11. It is inspired by the Origins mod and is designed to allow for flexible race creation. While it supports data-driven configuration, the primary focus is a code-driven approach for maximum performance, simplicity, and flexibility.
+This project is a Paper plugin for Minecraft version 26.2. It is inspired by the Origins mod and is designed to allow for flexible race creation. While it supports data-driven configuration, the primary focus is a code-driven approach for maximum performance, simplicity, and flexibility.
 
 # Security & Safety Guardrails
 - Do not push changes or execute git commands automatically. Always ask for confirmation.
