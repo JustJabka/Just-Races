@@ -4,6 +4,11 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Optional;
 
+/**
+ * Ability Context is <b>additional</b> context for the ability
+ * that can be provided in the {@code BaseAbility#tryActivate(Player, AbilityContext)}
+ * and used in {@code BaseAbility#onActivation(Player player, AbilityContext ctx)}
+ */
 public record AbilityContext(
         Optional<LivingEntity> attacker,
         Optional<LivingEntity> victim
