@@ -1,5 +1,6 @@
 package justjabka.JustRaces.Abilities.Generic;
 
+import justjabka.JustRaces.Interfaces.PersistentHolder;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.AbilityContext;
@@ -20,7 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseAbility implements Listener {
+public abstract class BaseAbility implements Listener, PersistentHolder {
     private final Map<UUID, CooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 
@@ -36,6 +37,11 @@ public abstract class BaseAbility implements Listener {
     public Component getCooldownBarIcon(Player player) {
         return Component.text("\uE000")
                 .font(COOLDOWN_BAR_FONT);
+    }
+
+    @Override
+    public NamespacedKey getContainerKey() {
+        return AbilityManager.ABILITIES_CONTAINER_KEY;
     }
 
     /**

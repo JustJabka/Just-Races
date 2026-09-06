@@ -3,7 +3,6 @@ package justjabka.JustRacesShowcase.Abilities;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
 import justjabka.JustRaces.Abilities.Generic.DurationAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
-import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Managers.AttributeManager;
 import justjabka.JustRaces.Types.AbilityContext;
@@ -156,10 +155,10 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
 
     private int getNextChain(Player player) {
         int maxChain = getConfigInt("max_chain_amount");
-        int currentChain = AbilityManager.getAbilityValue(player, getKey());
+        int currentChain = getContainerInt(player, getKey());
         int nextChain = Math.clamp(currentChain + 1, 1, maxChain);
 
-        AbilityManager.setAbilityValue(player, getKey(), nextChain);
+        setContainerInt(player, getKey(), nextChain);
         return nextChain;
     }
 
@@ -178,7 +177,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     private void onChainExpire(Player player) {
-        AbilityManager.setAbilityValue(player, getKey(), 0);
+        setContainerInt(player, getKey(), 0);
     }
 
     private static void createExplosion(Player player, Material material, float power) {

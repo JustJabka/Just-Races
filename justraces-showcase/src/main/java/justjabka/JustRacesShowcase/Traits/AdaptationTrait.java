@@ -32,12 +32,7 @@ public class AdaptationTrait extends BaseTraitListener implements TraitConfigura
     }
 
     private void resetAdaptations(Player player) {
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        pdc.set(
-                getKey(),
-                PersistentDataType.TAG_CONTAINER,
-                pdc.getAdapterContext().newPersistentDataContainer()
-        );
+        removeContainerData(player, getKey());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -51,12 +46,7 @@ public class AdaptationTrait extends BaseTraitListener implements TraitConfigura
         if (DamageTypeTags.BYPASSES_RESISTANCE.isTagged(damageType)) return;
 
         // Get Adaptations
-        PersistentDataContainer pdc = player.getPersistentDataContainer();
-        PersistentDataContainer adaptations = pdc.getOrDefault(
-                getKey(),
-                PersistentDataType.TAG_CONTAINER,
-                pdc.getAdapterContext().newPersistentDataContainer()
-        );
+        PersistentDataContainer adaptations = getContainerTagContainer(player, getKey());
 
         // Get Current Resist Value
         final float minPercent = getConfigFloat("min_percent");
@@ -76,7 +66,7 @@ public class AdaptationTrait extends BaseTraitListener implements TraitConfigura
         final float newValue = Math.clamp(currentValue + getAdaptationAmount(damageType, adaptations, totalSum), minPercent, getMaxAdaptationPercent());
         adaptations.set(damageType.getKey(), PersistentDataType.FLOAT, newValue);
 
-        pdc.set(getKey(), PersistentDataType.TAG_CONTAINER, adaptations);
+        setContainerTagContainer(player, getKey(), adaptations);
     }
 
     private float getAdaptationAmount(DamageType damageType, PersistentDataContainer adaptations, float totalSum) {

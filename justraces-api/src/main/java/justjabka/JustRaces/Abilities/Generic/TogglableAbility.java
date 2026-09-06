@@ -20,7 +20,7 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
      * @param player The player whose ability state is being toggled.
      */
     public void toggle(Player player) {
-        boolean currentState = AbilityManager.isAbilityActive(player, getKey());
+        boolean currentState = getContainerBoolean(player, getKey());
         boolean newState = !currentState;
 
         if (newState) {
@@ -35,19 +35,19 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
     /**
      * Enables the ability for the given player.
      * <p>
-     * This method sets the ability's state to active in the {@link AbilityManager}.
+     * This method sets the ability's state to active in the {@link justjabka.JustRaces.Interfaces.PersistentHolder}.
      * Subclasses should override {@link #onToggle(Player, boolean)} to implement custom activation logic.
      *
      * @param player The player for whom the ability is being enabled.
      */
     public void enable(Player player) {
-        AbilityManager.setAbilityState(player, getKey(), true);
+        setContainerBoolean(player, getKey(), true);
     }
 
     /**
      * Disables the ability for the given player.
      * <p>
-     * This method sets the ability's state to inactive in the {@link AbilityManager}
+     * This method sets the ability's state to inactive in the {@link justjabka.JustRaces.Interfaces.PersistentHolder}
      * and stops any associated tasks by calling {@link #resetState(Player, Reason)}.
      *
      * @param player The player for whom the ability is being disabled.
@@ -68,7 +68,7 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 
-        AbilityManager.setAbilityState(player, getKey(), false);
+        setContainerBoolean(player, getKey(), false);
     }
 
     /**

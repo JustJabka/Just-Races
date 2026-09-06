@@ -50,7 +50,7 @@ public class DeepPocketsAbility extends BaseAbility {
 
         if (!(event.getInventory().getHolder(false) instanceof DeepPocketsAbilityInventory inventory)) return;
 
-        ItemStack[] contents = AbilityManager.getAbilityInventory(player, getKey());
+        ItemStack[] contents = getContainerInventory(player, getKey());
         inventory.getInventory().setContents(contents);
     }
 
@@ -61,7 +61,7 @@ public class DeepPocketsAbility extends BaseAbility {
         if (!(event.getInventory().getHolder(false) instanceof DeepPocketsAbilityInventory inventory)) return;
 
         ItemStack[] contents = inventory.getInventory().getContents();
-        AbilityManager.setAbilityInventory(player, getKey(), contents);
+        setContainerInventory(player, getKey(), contents);
     }
 
     public static class DeepPocketsAbilityInventory implements InventoryHolder {
