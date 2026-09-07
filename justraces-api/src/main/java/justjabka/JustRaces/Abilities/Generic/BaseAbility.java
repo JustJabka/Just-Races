@@ -3,6 +3,7 @@ package justjabka.JustRaces.Abilities.Generic;
 import justjabka.JustRaces.Interfaces.PersistentHolder;
 import justjabka.JustRaces.JustRacesAPI;
 import justjabka.JustRaces.Managers.AbilityManager;
+import justjabka.JustRaces.Managers.TimeManager;
 import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.CooldownEntry;
 import justjabka.JustRaces.Types.Trigger;
@@ -11,7 +12,6 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -51,8 +51,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #getRemainingSeconds(Player)
      */
     public long getRemainingTicks(Player player) {
-        long remaining = getExpireStamp(player) - getGameTime();
-        return Math.max(0, remaining);
+        return TimeManager.getRemainingExpireStampTicks(getExpireStamp(player));
     }
 
     /**
@@ -62,8 +61,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #getRemainingTicks(Player)
      */
     public long getRemainingSeconds(Player player) {
-        float remainingSeconds = getRemainingTicks(player) / 20f;
-
+        final float remainingSeconds = getRemainingTicks(player) / 20f;
         return (long) remainingSeconds;
     }
 
@@ -73,7 +71,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @return {@code true} if ability is on cooldown
      */
     public boolean isOnCooldown(Player player) {
-        return getGameTime() < getExpireStamp(player);
+        return TimeManager.isExpireStampValid(getExpireStamp(player));
     }
 
     /**
@@ -106,7 +104,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #getCooldownTicks()
      */
     public void setCooldownTicks(Player player, long newCooldown) {
-        long expiresAt = getGameTime() + newCooldown;
+        final long expiresAt = TimeManager.getExpireStamp(newCooldown);
         CooldownEntry entry = new CooldownEntry(newCooldown, expiresAt);
 
         cooldowns.put(player.getUniqueId(), entry);
@@ -120,14 +118,6 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
     private long getExpireStamp(Player player) {
         CooldownEntry entry = new CooldownEntry(getCooldownTicks(), 0L);
         return cooldowns.getOrDefault(player.getUniqueId(), entry).expiresAt();
-    }
-
-    /**
-     * Gets gametime from the overworld
-     * @return Gametime
-     */
-    protected static long getGameTime() {
-        return Bukkit.getWorlds().getFirst().getGameTime();
     }
 
     /**
