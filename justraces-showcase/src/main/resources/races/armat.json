@@ -3,6 +3,11 @@
     "translate": "race.armat.name",
     "fallback": "Armat"
   },
+  "description": [
+    "They rely on their armor more than on their own bodies.",
+    "Without armor, they are fragile, but each piece forged onto them grants extra vitality and unique set resonances.",
+    "Because of their artificial nature, they are extremely vulnerable to magic."
+  ],
   "abilities": [
     "justracesshowcase:damage_inversion",
     "justracesshowcase:ecdysis"

@@ -3,6 +3,11 @@
     "translate": "race.buzzling.name",
     "fallback": "Buzzling"
   },
+  "description": [
+    "These amazing little creatures are incredibly dedicated to their work - collecting honey and spreading pollen.",
+    "While their tiny wings cannot grant true flight to their plump bodies, they provide unmatched agility.",
+    "Peaceful by nature, they ask for little - but when their hive is threatened, their venomous stings strike with deadly precision."
+  ],
   "abilities": [
     "justracesshowcase:poisonous_sting"
   ],

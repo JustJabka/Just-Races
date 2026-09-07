@@ -3,6 +3,9 @@
     "translate": "race.human.name",
     "fallback": "Human"
   },
+  "description": [
+    "The mind forgets what it fears to recall, but the body remembers every strike."
+  ],
   "traits": [
     "justracesshowcase:adrenaline_rush",
     "justracesshowcase:adaptation"

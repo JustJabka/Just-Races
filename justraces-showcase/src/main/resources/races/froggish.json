@@ -3,6 +3,11 @@
     "translate": "race.froggish.name",
     "fallback": "Froggish"
   },
+  "description": [
+    "Native to murky swamps and deep waters, Froggish navigate amphibious terrain with powerful leaps and ease.",
+    "Their short limbs make close combat challenging, but their long, adaptable tongue gives them incredible utility and mobility.",
+    "Highly flammable and susceptible to fire, they rely on moisture and mud to thrive."
+  ],
   "abilities": [
     "justracesshowcase:frog_tongue",
     "justracesshowcase:slime_trail"
