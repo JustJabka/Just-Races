@@ -6,6 +6,8 @@ import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRacesShowcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -34,7 +36,10 @@ public class PoisonousStingAbility extends BaseAbility implements AbilityConfigu
         return BossBar.Color.GREEN;
     }
 
-    // TODO: add icon
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE005").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
