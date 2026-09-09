@@ -5,7 +5,6 @@ import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.JustRaces.Abilities.Generic.ResettableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
-import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.CombatManager;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRaces.Types.TriggerCondition;

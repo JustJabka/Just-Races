@@ -1,7 +1,6 @@
 package justjabka.JustRacesShowcase.Abilities;
 
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;
-import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.Trigger;
 import justjabka.JustRacesShowcase.JustRacesShowcase;

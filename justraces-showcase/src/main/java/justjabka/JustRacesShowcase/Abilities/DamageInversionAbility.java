@@ -3,7 +3,6 @@ package justjabka.JustRacesShowcase.Abilities;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.JustRaces.Abilities.Generic.TogglableAbility;
 import justjabka.JustRaces.Interfaces.Configurable.AbilityConfigurable;
-import justjabka.JustRaces.Managers.AbilityManager;
 import justjabka.JustRaces.Managers.ArmorManager;
 import justjabka.JustRaces.Types.AbilityContext;
 import justjabka.JustRaces.Types.ArmorSet;
