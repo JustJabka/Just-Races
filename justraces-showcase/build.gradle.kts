@@ -14,9 +14,6 @@ dependencies {
 
     compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
-
-    compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
-    implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
 }
 
 java {

@@ -1,5 +1,6 @@
 plugins {
     id("java-library")
+    id("maven-publish")
 }
 
 repositories {
@@ -12,11 +13,19 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
 
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
-    compileOnly("com.jeff-media:MorePersistentDataTypes:2.4.0")
-    compileOnly("org.spongepowered:configurate-gson:4.2.0")
-    compileOnly("org.spongepowered:configurate-extra-guice:4.2.0")
+    api("com.jeff-media:MorePersistentDataTypes:2.4.0")
+    api("org.spongepowered:configurate-gson:4.2.0")
+    api("org.spongepowered:configurate-extra-guice:4.2.0")
 }
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
 }
