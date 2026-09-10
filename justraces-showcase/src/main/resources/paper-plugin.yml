@@ -4,7 +4,7 @@ authors: [ JustJabka ]
 
 main: justjabka.justraces.showcase.JustRacesShowcase
 bootstrapper: justjabka.justraces.showcase.JustRacesShowcaseBootstrap
-api-version: '1.21.11'
+api-version: '26.2'
 load: POSTWORLD
 
 dependencies:
