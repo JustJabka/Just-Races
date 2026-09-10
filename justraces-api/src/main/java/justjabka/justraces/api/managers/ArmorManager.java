@@ -9,7 +9,9 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class ArmorManager {
+public final class ArmorManager {
+    private ArmorManager() {}
+
     private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "armor_set");
 
     /**

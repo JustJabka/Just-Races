@@ -10,7 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class CombatManager {
+public final class CombatManager {
+
+    private CombatManager() {}
+
     /**
      * Default cosine threshold for the blocking angle check.
      * <p>

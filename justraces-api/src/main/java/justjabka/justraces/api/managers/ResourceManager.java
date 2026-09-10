@@ -15,7 +15,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ResourceManager {
+public final class ResourceManager {
+
+    private ResourceManager() {}
 
     public static void registerRacesFromPlugin(Plugin addonPlugin) {
         ResourceManager.registerRacesFromResources(addonPlugin, "races/");

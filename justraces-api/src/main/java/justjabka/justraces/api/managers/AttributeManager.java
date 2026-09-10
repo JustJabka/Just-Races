@@ -10,7 +10,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class AttributeManager {
+public final class AttributeManager {
+
+    private AttributeManager() {}
+
     /**
      * Applies attribute modifiers to player
      * @param player Player to which attributes modifiers will be applied

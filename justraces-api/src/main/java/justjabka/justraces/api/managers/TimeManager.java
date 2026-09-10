@@ -2,7 +2,9 @@ package justjabka.justraces.api.managers;
 
 import org.bukkit.Bukkit;
 
-public class TimeManager {
+public final class TimeManager {
+
+    private TimeManager() {}
 
     /**
      * Gets gametime from the overworld

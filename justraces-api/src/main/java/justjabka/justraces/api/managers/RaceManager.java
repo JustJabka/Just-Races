@@ -20,7 +20,10 @@ import java.util.Map;
 
 import static justjabka.justraces.api.managers.ModifierManager.refreshModifiers;
 
-public class RaceManager {
+public final class RaceManager {
+
+    private RaceManager() {}
+
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
     public static final NamespacedKey RACES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "races");
 

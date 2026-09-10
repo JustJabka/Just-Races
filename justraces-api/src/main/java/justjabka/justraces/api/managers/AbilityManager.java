@@ -14,7 +14,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public class AbilityManager {
+public final class AbilityManager {
+
+    private AbilityManager() {}
+
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
 
     //region Registry Related

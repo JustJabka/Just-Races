@@ -17,7 +17,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EffectManager {
+public final class EffectManager {
+
+    private EffectManager() {}
+
     public static double calcAbsorptionAmountFromConsumable(Consumable consumable) {
         for (ConsumeEffect effect : consumable.consumeEffects()) {
             if (!(effect instanceof ConsumeEffect.ApplyStatusEffects applyEffect)) continue;

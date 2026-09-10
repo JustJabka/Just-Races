@@ -11,7 +11,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public class TraitManager {
+public final class TraitManager {
+
+    private TraitManager() {}
+
     public static final NamespacedKey TRAITS_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "traits");
 
     @Nullable

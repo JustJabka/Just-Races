@@ -10,7 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class ModifierManager {
+public final class ModifierManager {
+
+    private ModifierManager() {}
+
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
     public static BaseModifier getByKey(NamespacedKey key) {
