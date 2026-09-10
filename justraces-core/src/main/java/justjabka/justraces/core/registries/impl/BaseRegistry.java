@@ -1,14 +1,16 @@
-package justjabka.justraces.api;
+package justjabka.justraces.core.registries.impl;
 
+import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.interfaces.Registry;
 import org.bukkit.NamespacedKey;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
-public final class Registry<T> {
-    private final Map<NamespacedKey, T> storage = new ConcurrentHashMap<>();
-    private final List<BiConsumer<NamespacedKey, T>> hooks = new ArrayList<>();
+public abstract class BaseRegistry<T> implements Registry<T> {
+    protected final Map<NamespacedKey, T> storage = new ConcurrentHashMap<>();
+    protected final List<BiConsumer<NamespacedKey, T>> hooks = new ArrayList<>();
 
     public void register(NamespacedKey key, T value) {
         if (storage.containsKey(key)) {
@@ -36,10 +38,5 @@ public final class Registry<T> {
 
     public Set<NamespacedKey> keys() {
         return Collections.unmodifiableSet(storage.keySet());
-    }
-
-    // TODO: remove ts out of API and make normal registries
-    public void clear() {
-        storage.clear();
     }
 }

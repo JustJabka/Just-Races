@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="21" />
+    <bytecodeTargetLevel target="21">
+      <module name="justraces-api.JustRaces.justraces-api.main" target="25" />
+      <module name="justraces-core.JustRaces.justraces-core.main" target="25" />
+      <module name="JustRaces.justraces-showcase.main" target="25" />
+    </bytecodeTargetLevel>
   </component>
 </project>

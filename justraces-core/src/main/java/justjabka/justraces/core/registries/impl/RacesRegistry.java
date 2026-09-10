@@ -1,10 +1,11 @@
-package justjabka.justraces.core.registries;
+package justjabka.justraces.core.registries.impl;
 
-import justjabka.justraces.api.definitions.RaceDefinition;
-import justjabka.justraces.core.gson.GsonManager;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
+import justjabka.justraces.api.definitions.RaceDefinition;
+import justjabka.justraces.api.interfaces.ReloadableRegistry;
 import justjabka.justraces.api.managers.ResourceManager;
+import justjabka.justraces.core.gson.GsonManager;
 import org.bukkit.NamespacedKey;
 
 import java.io.File;
@@ -14,14 +15,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-public class RacesRegistry {
+public class RacesRegistry extends BaseRegistry<RaceDefinition> implements ReloadableRegistry {
 
-    public static void reloadAllRaces() {
-        JustRacesRegistries.RACES.clear();
+    @Override
+    public void reload() {
+        storage.clear();
         loadAllRaces();
     }
 
-    public static void loadAllRaces() {
+    private static void loadAllRaces() {
         File rootRacesFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races");
         if (!rootRacesFolder.exists()) {
             rootRacesFolder.mkdirs();
