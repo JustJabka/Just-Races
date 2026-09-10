@@ -2,9 +2,9 @@ name: JustRaces
 version: '${version}'
 authors: [ JustJabka ]
 
-main: justjabka.JustRaces.JustRaces
-bootstrapper: justjabka.JustRaces.JustRacesBootstrap
-api-version: '1.21.11'
+main: justjabka.justraces.core.JustRaces
+bootstrapper: justjabka.justraces.core.JustRacesBootstrap
+api-version: '26.2'
 load: POSTWORLD
 
 dependencies:

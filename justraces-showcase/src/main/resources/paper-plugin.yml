@@ -2,8 +2,8 @@ name: JustRacesShowcase
 version: '1.0'
 authors: [ JustJabka ]
 
-main: justjabka.JustRacesShowcase.JustRacesShowcase
-bootstrapper: justjabka.JustRacesShowcase.JustRacesShowcaseBootstrap
+main: justjabka.justraces.showcase.JustRacesShowcase
+bootstrapper: justjabka.justraces.showcase.JustRacesShowcaseBootstrap
 api-version: '1.21.11'
 load: POSTWORLD
 

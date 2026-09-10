@@ -1,0 +1,128 @@
+package justjabka.justraces.showcase.abilities;
+
+import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
+import justjabka.justraces.api.abilities.generic.TogglableAbility;
+import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.managers.ArmorManager;
+import justjabka.justraces.api.types.AbilityContext;
+import justjabka.justraces.api.types.ArmorSet;
+import justjabka.justraces.api.types.Trigger;
+import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.showcase.dataprovider.DamageTypeTagKeysProvider;
+import justjabka.justraces.showcase.JustRacesShowcase;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.Range;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
+
+import java.util.Collection;
+import java.util.Set;
+
+public class DamageInversionAbility extends TogglableAbility implements AbilityConfigurable {
+    private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
+
+    @Override
+    public NamespacedKey getKey() {
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "damage_inversion");
+    }
+
+    @Override
+    public long getCooldownTicks() {
+        return getConfigCooldown();
+    }
+
+    @Override
+    public BossBar.Color getCooldownBarColor(Player player) {
+        boolean isActive = getContainerBoolean(player, getKey());
+        return isActive ? BossBar.Color.GREEN : BossBar.Color.RED;
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE000").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
+
+    @Override
+    public Trigger getDefaultTrigger() {
+        return Trigger.OFFHAND_SWAP;
+    }
+
+    @Override
+    public Set<TriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    }
+
+    @Override
+    protected boolean canActivate(Player player) {
+        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+    }
+
+    @Override
+    public boolean isStateValid(Player player) {
+        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorChange(EntityEquipmentChangedEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (!getContainerBoolean(player, getKey())) return;
+        if (isStateValid(player)) return;
+
+        disable(player);
+    }
+
+    @Override
+    protected boolean onActivation(Player player, AbilityContext ctx) {
+        toggle(player);
+        return true;
+    }
+
+    @Override
+    public void onToggle(Player player, boolean state) {
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CANDLE_EXTINGUISH, SoundCategory.PLAYERS, 1, 2);
+        player.getWorld().spawnParticle(
+                Particle.CRIT,
+                player.getEyeLocation().subtract(0, 0.5, 0),
+                10,
+                0.25,
+                0.5,
+                0.25,
+                0.05
+        );
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!getContainerBoolean(player, getKey())) return;
+
+        double damage = event.getDamage();
+        DamageSource damageSource = event.getDamageSource();
+        DamageType damageType = damageSource.getDamageType();
+
+        boolean canBypassInversion = bypassesDamageInversion.contains(damageType);
+
+        if (canBypassInversion) return;
+
+        double lowerBound = getConfigDouble("lower_bound");
+        double upperBound = getConfigDouble("upper_bound");
+
+        Range<Double> damageBoundary = Range.between(lowerBound, upperBound);
+        boolean damageInBoundary = damageBoundary.contains(damage);
+
+        if (!damageInBoundary) return;
+
+        double finalDamage = (upperBound + lowerBound) - damage;
+        event.setDamage(finalDamage);
+    }
+}
