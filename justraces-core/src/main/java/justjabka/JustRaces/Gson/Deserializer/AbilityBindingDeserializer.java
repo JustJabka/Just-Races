@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Definitions.Deserializer;
+package justjabka.JustRaces.Gson.Deserializer;
 
 import com.google.gson.*;
 import justjabka.JustRaces.Abilities.Generic.BaseAbility;

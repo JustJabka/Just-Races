@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Definitions.Deserializer;
+package justjabka.JustRaces.Gson.Deserializer;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;

@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Definitions.Deserializer;
+package justjabka.JustRaces.Gson.Deserializer;
 
 import justjabka.JustRaces.Interfaces.Trait;
 import justjabka.JustRaces.Managers.TraitManager;

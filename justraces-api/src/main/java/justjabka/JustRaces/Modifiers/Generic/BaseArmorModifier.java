@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class BaseArmorModifier extends BaseModifier {
+    // TODO: rewrite and add equippable component
+
     public abstract Attribute getAttribute();
     public abstract double getAttributeAmount();
     public abstract AttributeModifier.Operation getAttributeOperation();

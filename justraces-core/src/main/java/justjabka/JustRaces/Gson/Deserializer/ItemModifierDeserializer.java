@@ -1,4 +1,4 @@
-package justjabka.JustRaces.Definitions.Deserializer;
+package justjabka.JustRaces.Gson.Deserializer;
 
 import justjabka.JustRaces.Managers.ModifierManager;
 import justjabka.JustRaces.Modifiers.Generic.BaseModifier;
