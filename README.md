@@ -6,8 +6,6 @@ Fast, lightweight, data-driven Minecraft races framework
 
 ---
 
----
-
 # Creating a Project
 
 > [!TIP]
@@ -39,8 +37,6 @@ dependencies {
 
 > [!NOTE]
 > Thanks to transitive dependencies included in the JustRaces API, you do not need to manually add [Configurate](https://github.com/spongepowered/configurate) or [MorePersistentDataTypes](https://github.com/mfnalex/MorePersistentDataTypes) to your build script - Gradle will resolve them automatically.
-
----
 
 ### Configure `paper-plugin.yml`
 
