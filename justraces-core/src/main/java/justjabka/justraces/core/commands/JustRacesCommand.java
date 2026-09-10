@@ -21,6 +21,7 @@ public class JustRacesCommand {
     public static LiteralCommandNode<CommandSourceStack> justraces() {
         return Commands.literal("%s".formatted(JustRacesAPI.NAMESPACE))
                 .then(Commands.literal("reload")
+                        .requires(stack -> stack.getSender().hasPermission("%s.command.justraces.reload".formatted(JustRacesAPI.NAMESPACE)))
                         .executes(ctx -> {
                             CommandSender sender = ctx.getSource().getSender();
 
