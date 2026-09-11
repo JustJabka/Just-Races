@@ -29,6 +29,8 @@ repositories {
 }
 
 dependencies {
+    // Replace `RELEASE_TAG` with release tag, e.g., `v1.2.0`
+    // Or with `main-SNAPSHOT` if you want use latest version
     compileOnly("com.github.JustJabka:Just-Races:Release")
 }
 
