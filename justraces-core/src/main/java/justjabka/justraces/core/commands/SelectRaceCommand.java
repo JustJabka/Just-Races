@@ -29,8 +29,14 @@ import java.util.Comparator;
 import java.util.List;
 
 public class SelectRaceCommand {
-    private static final int dialogColumns = 2;
-    private static final int navigationActionsWidth = 100;
+    private static final int DIALOG_COLUMNS = 2;
+    private static final int NAVIGATION_ACTIONS_WIDTH = 100;
+
+    private static final Component RACE_SELECTION_TITLE = Component.translatable("gui.race_selection.title").fallback("Select Race");
+
+    private static final Component RACE_SELECTION_PAGE_PREV = Component.translatable("book.page_button.previous");
+    private static final Component RACE_SELECTION_PAGE_NEXT = Component.translatable("book.page_button.next");
+    private static final Component RACE_SELECTION_SELECT = Component.translatable("mco.template.button.select");
 
     public static LiteralCommandNode<CommandSourceStack> selectRace() {
         return Commands.literal("selectrace")
@@ -93,29 +99,27 @@ public class SelectRaceCommand {
             body.add(DialogBody.plainMessage(line));
         }
 
-        // TODO: move components to the constants
-        // TODO: add translate for the "selected race"
-        DialogBase base = DialogBase.builder(Component.text("Select Race"))
+        DialogBase base = DialogBase.builder(RACE_SELECTION_TITLE)
                 .body(body)
                 .pause(true)
                 .canCloseWithEscape(false)
                 .build();
 
         List<ActionButton> navigationActions = List.of(
-                ActionButton.builder(Component.translatable("book.page_button.previous"))
-                        .width(navigationActionsWidth)
+                ActionButton.builder(RACE_SELECTION_PAGE_PREV)
+                        .width(NAVIGATION_ACTIONS_WIDTH)
                         .action(changePage(player, currentPage - 1))
                         .build(),
-                ActionButton.builder(Component.translatable("book.page_button.next"))
-                        .width(navigationActionsWidth)
+                ActionButton.builder(RACE_SELECTION_PAGE_NEXT)
+                        .width(NAVIGATION_ACTIONS_WIDTH)
                         .action(changePage(player, currentPage + 1))
                         .build()
         );
 
         ActionButton selectAction = ActionButton
-                .builder(Component.translatable("mco.template.button.select"))
+                .builder(RACE_SELECTION_SELECT)
                 .action(DialogAction.customClick(
-                        (view, audience) -> handleRaceSelection(audience, selectedRace),
+                        (_, audience) -> handleRaceSelection(audience, selectedRace),
                         singeUseOption()
                 ))
                 .build();
@@ -123,13 +127,13 @@ public class SelectRaceCommand {
         return Dialog.create(builder -> builder
                 .empty()
                 .base(base)
-                .type(DialogType.multiAction(navigationActions, selectAction, dialogColumns))
+                .type(DialogType.multiAction(navigationActions, selectAction, DIALOG_COLUMNS))
         );
     }
 
     private static DialogAction.@NonNull CustomClickAction changePage(Player player, int page) {
         return DialogAction.customClick(
-                (view, audience) -> openRaceDialog(player, page),
+                (_, _) -> openRaceDialog(player, page),
                 singeUseOption()
         );
     }

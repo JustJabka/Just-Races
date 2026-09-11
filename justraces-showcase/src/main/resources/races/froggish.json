@@ -10,7 +10,7 @@
   ],
   "icon": {
     "atlas": "minecraft:blocks",
-    "sprite": "minecraft:blocks/frogspawn"
+    "sprite": "minecraft:block/frogspawn"
   },
   "abilities": [
     "justracesshowcase:frog_tongue",
