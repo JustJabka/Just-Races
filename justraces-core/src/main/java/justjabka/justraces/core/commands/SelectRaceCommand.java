@@ -92,7 +92,7 @@ public class SelectRaceCommand {
         Component selectedRaceIcon = selectedRace.getIcon();
 
         Component selectedRaceTitle = Component.empty() // using empty component to prevent icon from mutating race name properties
-                .append(selectedRaceIcon, selectedRaceName);
+                .append(selectedRaceIcon, Component.space(), selectedRaceName);
 
         body.add(DialogBody.plainMessage(selectedRaceTitle));
         for (Component line : selectedRaceDescription) {

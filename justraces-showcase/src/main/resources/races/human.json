@@ -3,6 +3,11 @@
     "translate": "race.human.name",
     "fallback": "Human"
   },
+  "icon": {
+    "player": {
+      "texture": "minecraft:entity/player/wide/steve"
+    }
+  },
   "description": [
     "The mind forgets what it fears to recall, but the body remembers every strike."
   ],
