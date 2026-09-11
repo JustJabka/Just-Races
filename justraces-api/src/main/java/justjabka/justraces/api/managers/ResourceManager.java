@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -20,7 +21,7 @@ public final class ResourceManager {
     private ResourceManager() {}
 
     public static void registerRacesFromPlugin(Plugin addonPlugin) {
-        ResourceManager.registerRacesFromResources(addonPlugin, "races/");
+        registerRacesFromResources(addonPlugin, "races/");
     }
 
     public static void registerRacesFromResources(Plugin plugin, String resourceDir) {
@@ -28,7 +29,7 @@ public final class ResourceManager {
 
         File targetFolder = new File(JustRacesAPI.getInstance().getDataFolder(), "races/" + namespace);
 
-        ResourceManager.extractResources(plugin, resourceDir, targetFolder, ".json");
+        extractResources(plugin, resourceDir, targetFolder, ".json");
     }
 
     public static ConfigurationNode loadJsonNode(Plugin plugin, File targetFile, String internalResourcePath) {
@@ -94,8 +95,12 @@ public final class ResourceManager {
                 }
 
                 try (InputStream in = plugin.getResource(name)) {
+                    Path destinationFilePath = destinationFile.toPath();
+
                     if (in == null) continue;
-                    Files.copy(in, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    if (Files.exists(destinationFilePath)) continue;
+
+                    Files.copy(in, destinationFilePath);
                     JustRacesAPI.getLogger().info("Extracted resource: {}", fileName);
                 }
             }
