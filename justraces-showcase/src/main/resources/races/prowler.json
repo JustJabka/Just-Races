@@ -11,14 +11,36 @@
     "Their lightweight frame leaves them prone to greater knockback, but their mobility makes them unmatched wanderers of the wild.",
     "Prowlers always carry extra provisions or loot in hidden pouches."
   ],
-  "attributes": {
-    "minecraft:max_health": 18,
-    "minecraft:step_height": 1,
-    "minecraft:safe_fall_distance": 5,
-    "minecraft:sneaking_speed": 0.6,
-    "minecraft:submerged_mining_speed": 0.1,
-    "minecraft:knockback_resistance": -0.1
-  },
+  "attributes": [
+    {
+      "id": "minecraft:max_health",
+      "amount":18
+    },
+    {
+      "id": "minecraft:step_height",
+      "amount": 1
+    },
+    {
+      "id": "minecraft:safe_fall_distance",
+      "amount": 1,
+      "operation": "add_number"
+    },
+    {
+      "id": "minecraft:sneaking_speed",
+      "amount": 1,
+      "operation": "add_scalar"
+    },
+    {
+      "id": "minecraft:submerged_mining_speed",
+      "amount": -0.5,
+      "operation": "add_scalar"
+    },
+    {
+      "id": "minecraft:knockback_resistance",
+      "amount": -0.1,
+      "operation": "add_number"
+    }
+  ],
   "abilities": [
     "justracesshowcase:deep_pockets"
   ],

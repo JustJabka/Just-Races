@@ -7,15 +7,18 @@ import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
+import justjabka.justraces.api.types.RaceAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Map;
 
 import static justjabka.justraces.api.managers.ModifierManager.refreshModifiers;
@@ -94,8 +97,20 @@ public final class RaceManager {
     }
 
     private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
-        Map<Attribute, Double> attributes = race.getAttributes();
-        attributes.forEach((attribute, value) -> AttributeManager.setBaseValue(player, attribute, value));
+        List<RaceAttribute> attributes = race.getAttributes();
+
+        attributes.forEach(raceAttribute -> {
+                Attribute attribute = raceAttribute.attribute();
+                double amount = raceAttribute.amount();
+
+                if (raceAttribute.isBaseValue()) {
+                    AttributeManager.setBaseValue(player, attribute, amount);
+                } else if (raceAttribute.isModifier()) {
+                    AttributeModifier modifier = raceAttribute.createModifier(race.getKey());
+                    AttributeManager.addModifier(player, attribute, modifier);
+                }
+            }
+        );
     }
 
     /**

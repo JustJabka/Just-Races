@@ -21,13 +21,17 @@ public final class AttributeManager {
      * @see #removeModifiers(Player, Map) 
      */
     public static void addModifiers(Player player, Map<Attribute, AttributeModifier> modifiers) {
-        modifiers.forEach((attribute, attributeModifier) -> {
-            AttributeInstance instance = player.getAttribute(attribute);
+        modifiers.forEach((attribute, attributeModifier) ->
+                addModifier(player, attribute, attributeModifier)
+        );
+    }
 
-            if (instance == null) return;
+    public static void addModifier(Player player, Attribute attribute, AttributeModifier modifier) {
+        AttributeInstance instance = player.getAttribute(attribute);
 
-            instance.addModifier(attributeModifier);
-        });
+        if (instance == null) return;
+
+        instance.addModifier(modifier);
     }
 
     /**

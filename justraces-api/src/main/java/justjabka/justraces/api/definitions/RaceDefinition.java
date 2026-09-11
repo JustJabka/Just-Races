@@ -6,6 +6,7 @@ import justjabka.justraces.api.definitions.generic.BaseDefinition;
 import justjabka.justraces.api.interfaces.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
 import justjabka.justraces.api.types.AbilityBinding;
+import justjabka.justraces.api.types.RaceAttribute;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -20,7 +21,7 @@ public class RaceDefinition extends BaseDefinition {
     private Component name;
     private List<Component> description;
     private Component icon;
-    private Map<Attribute, Double> attributes;
+    private List<RaceAttribute> attributes;
     private Set<AbilityBinding> abilities;
     private Set<Trait> traits;
 
@@ -61,8 +62,8 @@ public class RaceDefinition extends BaseDefinition {
      * @return Base Attributes of the race
      */
     @NotNull
-    public Map<@NotNull Attribute, @NotNull Double> getAttributes() {
-        return attributes != null ? Collections.unmodifiableMap(attributes) : Collections.emptyMap();
+    public List<@NotNull RaceAttribute> getAttributes() {
+        return attributes != null ? Collections.unmodifiableList(attributes) : Collections.emptyList();
     }
 
     /**

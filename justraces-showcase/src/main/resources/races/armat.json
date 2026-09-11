@@ -16,9 +16,12 @@
     "justracesshowcase:damage_inversion",
     "justracesshowcase:ecdysis"
   ],
-  "attributes": {
-    "minecraft:max_health": 10
-  },
+  "attributes": [
+    {
+      "id": "minecraft:max_health",
+      "amount": 10
+    }
+  ],
   "item_modifiers": {
     "justracesshowcase:armor/leather": "#justracesshowcase:leather_armor",
     "justracesshowcase:armor/copper": "#justracesshowcase:copper_armor",

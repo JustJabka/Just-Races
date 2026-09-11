@@ -18,11 +18,21 @@
   "item_modifiers": {
     "justracesshowcase:food/honey_bottle": "minecraft:honey_bottle"
   },
-  "attributes": {
-    "minecraft:max_health": 16,
-    "minecraft:scale": 0.9,
-    "minecraft:movement_speed": 0.125
-  },
+  "attributes": [
+    {
+      "id": "minecraft:max_health",
+      "amount": 16
+    },
+    {
+      "id": "minecraft:scale",
+      "amount": 0.9
+    },
+    {
+      "id": "minecraft:movement_speed",
+      "amount": 0.25,
+      "operation": "multiply_scalar_1"
+    }
+  ],
   "config": {
     "crop_pollinator": {
       "chance": {

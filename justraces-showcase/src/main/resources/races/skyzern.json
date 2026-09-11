@@ -14,14 +14,36 @@
   "abilities": [
     "justracesshowcase:air_burst"
   ],
-  "attributes": {
-    "minecraft:max_health": 18,
-    "minecraft:scale": 1.1,
-    "minecraft:air_drag_modifier": 0.65,
-    "minecraft:fall_damage_multiplier": 0.25,
-    "minecraft:safe_fall_distance": 10,
-    "minecraft:attack_knockback": 0.3
-  },
+  "attributes": [
+    {
+      "id": "minecraft:max_health",
+      "amount": 18
+    },
+    {
+      "id": "minecraft:scale",
+      "amount": 1.1
+    },
+    {
+      "id": "minecraft:air_drag_modifier",
+      "amount": -0.35,
+      "operation": "multiply_scalar_1"
+    },
+    {
+      "id": "minecraft:fall_damage_multiplier",
+      "amount": -0.75,
+      "operation": "add_scalar"
+    },
+    {
+      "id": "minecraft:safe_fall_distance",
+      "amount": 7,
+      "operation": "add_number"
+    },
+    {
+      "id": "minecraft:attack_knockback",
+      "amount": 0.5,
+      "operation": "add_number"
+    }
+  ],
   "traits": [
     "justracesshowcase:celestial_combatant"
   ]
