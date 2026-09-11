@@ -38,7 +38,7 @@ public class SelectRaceCommand {
     private static final Component RACE_SELECTION_PAGE_NEXT = Component.translatable("book.page_button.next");
     private static final Component RACE_SELECTION_SELECT = Component.translatable("mco.template.button.select");
 
-    public static LiteralCommandNode<CommandSourceStack> selectRace() {
+    public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("selectrace")
                 .requires(stack -> stack.getSender().hasPermission("%s.command.selectrace".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
@@ -146,6 +146,6 @@ public class SelectRaceCommand {
     }
 
     public static void register(Commands registrar) {
-        registrar.register(selectRace());
+        registrar.register(build());
     }
 }

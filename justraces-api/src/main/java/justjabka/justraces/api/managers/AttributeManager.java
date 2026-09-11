@@ -79,8 +79,8 @@ public final class AttributeManager {
 
     /**
      * Resets base attribute value
-     * @param player Player whose base attribute will be reseted
-     * @param attribute Attribute that will be reseted
+     * @param player Player whose base attribute will be reset
+     * @param attribute Attribute that will be reset
      * @see #setBaseValue(Player, Attribute, double) 
      */
     public static void resetBaseValue(Player player, Attribute attribute) {

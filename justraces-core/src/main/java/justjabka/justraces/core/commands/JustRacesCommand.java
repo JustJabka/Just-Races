@@ -18,7 +18,7 @@ public class JustRacesCommand {
     private static final Component RELOAD_START_MESSAGE = Component.translatable("commands.justraces.reload.start").fallback("Reloading!");
     private static final Component RELOAD_SUCCESS_MESSAGE = Component.translatable("commands.justraces.reload.success").fallback("Successfully Reloaded!");
 
-    public static LiteralCommandNode<CommandSourceStack> justraces() {
+    public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("%s".formatted(JustRacesAPI.NAMESPACE))
                 .then(Commands.literal("reload")
                         .requires(stack -> stack.getSender().hasPermission("%s.command.justraces.reload".formatted(JustRacesAPI.NAMESPACE)))
@@ -54,6 +54,6 @@ public class JustRacesCommand {
     }
 
     public static void register(Commands registrar) {
-        registrar.register(justraces());
+        registrar.register(build());
     }
 }

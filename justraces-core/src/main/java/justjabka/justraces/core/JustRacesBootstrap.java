@@ -5,10 +5,7 @@ import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import justjabka.justraces.core.commands.GetRaceCommand;
-import justjabka.justraces.core.commands.JustRacesCommand;
-import justjabka.justraces.core.commands.SelectRaceCommand;
-import justjabka.justraces.core.commands.SetRaceCommand;
+import justjabka.justraces.core.commands.*;
 
 @SuppressWarnings("UnstableApiUsage")
 public class JustRacesBootstrap implements PluginBootstrap {
@@ -23,6 +20,7 @@ public class JustRacesBootstrap implements PluginBootstrap {
             GetRaceCommand.register(registrar);
             SelectRaceCommand.register(registrar);
             JustRacesCommand.register(registrar);
+            ResetRaceCommand.register(registrar);
         });
     }
 }

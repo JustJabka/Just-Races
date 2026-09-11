@@ -14,13 +14,14 @@ import justjabka.justraces.api.managers.RaceManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SetRaceCommand {
-    private static final TranslatableComponent MESSAGE = Component.translatable("commands.setrace.success").fallback("You became: %s");
+    private static final TranslatableComponent MESSAGE = Component.translatable("commands.setrace.success").fallback("%s became %s");
     private static final TranslatableComponent FAIL_MESSAGE = Component.translatable("commands.setrace.fail").fallback("Failed to change race").color(NamedTextColor.RED);
 
-    public static LiteralCommandNode<CommandSourceStack> setRace() {
+    public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("setrace")
                 .requires(stack -> stack.getSender().hasPermission("%s.command.setrace".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
@@ -28,17 +29,18 @@ public class SetRaceCommand {
                                 .executes(ctx -> {
                                     final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
                                     final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
+                                    CommandSender sender = ctx.getSource().getSender();
 
                                     RaceDefinition race = ctx.getArgument("race", RaceDefinition.class);
 
                                     boolean success = RaceManager.setRace(target, race, Cause.COMMAND);
                                     if (!success) {
-                                        target.sendMessage(FAIL_MESSAGE);
+                                        sender.sendMessage(FAIL_MESSAGE);
                                         return 0;
                                     }
 
                                     Component raceName = race.getName();
-                                    target.sendMessage(MESSAGE.arguments(raceName));
+                                    sender.sendMessage(MESSAGE.arguments(target.name(), raceName));
 
                                     return Command.SINGLE_SUCCESS;
                                 })
@@ -48,6 +50,6 @@ public class SetRaceCommand {
     }
 
     public static void register(Commands registrar) {
-        registrar.register(setRace());
+        registrar.register(build());
     }
 }
