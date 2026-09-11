@@ -8,6 +8,10 @@
     "Without armor, they are fragile, but each piece forged onto them grants extra vitality and unique set resonances.",
     "Because of their artificial nature, they are extremely vulnerable to magic."
   ],
+  "icon": {
+    "atlas": "minecraft:items",
+    "sprite": "minecraft:item/netherite_chestplate"
+  },
   "abilities": [
     "justracesshowcase:damage_inversion",
     "justracesshowcase:ecdysis"

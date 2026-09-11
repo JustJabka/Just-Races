@@ -83,12 +83,18 @@ public class SelectRaceCommand {
 
         Component selectedRaceName = selectedRace.getName();
         List<Component> selectedRaceDescription = selectedRace.getDescription();
+        Component selectedRaceIcon = selectedRace.getIcon();
 
-        body.add(DialogBody.plainMessage(selectedRaceName));
+        Component selectedRaceTitle = Component.empty() // using empty component to prevent icon from mutating race name properties
+                .append(selectedRaceIcon, selectedRaceName);
+
+        body.add(DialogBody.plainMessage(selectedRaceTitle));
         for (Component line : selectedRaceDescription) {
             body.add(DialogBody.plainMessage(line));
         }
 
+        // TODO: move components to the constants
+        // TODO: add translate for the "selected race"
         DialogBase base = DialogBase.builder(Component.text("Select Race"))
                 .body(body)
                 .pause(true)

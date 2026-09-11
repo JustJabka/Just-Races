@@ -8,6 +8,10 @@
     "Their short limbs make close combat challenging, but their long, adaptable tongue gives them incredible utility and mobility.",
     "Highly flammable and susceptible to fire, they rely on moisture and mud to thrive."
   ],
+  "icon": {
+    "atlas": "minecraft:blocks",
+    "sprite": "minecraft:blocks/frogspawn"
+  },
   "abilities": [
     "justracesshowcase:frog_tongue",
     "justracesshowcase:slime_trail"

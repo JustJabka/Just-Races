@@ -8,6 +8,10 @@
     "While their tiny wings cannot grant true flight to their plump bodies, they provide unmatched agility.",
     "Peaceful by nature, they ask for little - but when their hive is threatened, their venomous stings strike with deadly precision."
   ],
+  "icon": {
+    "atlas": "minecraft:items",
+    "sprite": "minecraft:item/honeycomb"
+  },
   "abilities": [
     "justracesshowcase:poisonous_sting"
   ],

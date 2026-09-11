@@ -3,6 +3,10 @@
     "translate": "race.skyzern.name",
     "fallback": "Skyzern"
   },
+  "icon": {
+    "atlas": "minecraft:items",
+    "sprite": "minecraft:item/wind_charge"
+  },
   "description": [
     "Late descendants of the Breeze, Skyzern glide through the air with ease and take minimal fall damage.",
     "Their strike gains devastating force when unleashed from above"

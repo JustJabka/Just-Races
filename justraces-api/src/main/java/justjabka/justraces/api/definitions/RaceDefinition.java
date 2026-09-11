@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class RaceDefinition extends BaseDefinition {
     private Component name;
     private List<Component> description;
+    private Component icon;
     private Map<Attribute, Double> attributes;
     private Set<AbilityBinding> abilities;
     private Set<Trait> traits;
@@ -35,6 +36,7 @@ public class RaceDefinition extends BaseDefinition {
     /**
      * @return Name of the race
      */
+    @NotNull
     public Component getName() {
         return name != null ? name : Component.empty();
     }
@@ -45,6 +47,14 @@ public class RaceDefinition extends BaseDefinition {
     @NotNull
     public List<@NotNull Component> getDescription() {
         return description != null ? Collections.unmodifiableList(description) : Collections.emptyList();
+    }
+
+    /**
+     * @return Icon of the race
+     */
+    @NotNull
+    public Component getIcon() {
+        return icon != null ? icon : Component.empty();
     }
 
     /**

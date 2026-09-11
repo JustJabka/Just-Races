@@ -3,6 +3,10 @@
     "translate": "race.prowler.name",
     "fallback": "Prowler"
   },
+  "icon": {
+    "atlas": "minecraft:items",
+    "sprite": "minecraft:item/sweet_berries"
+  },
   "description": [
     "Their lightweight frame leaves them prone to greater knockback, but their mobility makes them unmatched wanderers of the wild.",
     "Prowlers always carry extra provisions or loot in hidden pouches."
