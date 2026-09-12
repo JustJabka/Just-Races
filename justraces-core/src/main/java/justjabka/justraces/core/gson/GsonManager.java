@@ -3,11 +3,11 @@ package justjabka.justraces.core.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import justjabka.justraces.api.types.RaceAttribute;
+import justjabka.justraces.api.types.race.RaceAttribute;
 import justjabka.justraces.core.gson.deserializer.*;
 import justjabka.justraces.api.interfaces.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
-import justjabka.justraces.api.types.AbilityBinding;
+import justjabka.justraces.api.types.race.RaceAbility;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Material;
 
@@ -19,7 +19,7 @@ public final class GsonManager {
 
     public static final Gson GSON = GsonComponentSerializer.gson().populator()
             .apply(new GsonBuilder())
-            .registerTypeAdapter(AbilityBinding.class, new AbilityBindingDeserializer())
+            .registerTypeAdapter(RaceAbility.class, new RaceAbilityDeserializer())
             .registerTypeAdapter(RaceAttribute.class, new RaceAttributeDeserializer())
             .registerTypeAdapter(BaseModifier.class, new ItemModifierDeserializer())
             .registerTypeAdapter(Trait.class, new TraitDeserializer())

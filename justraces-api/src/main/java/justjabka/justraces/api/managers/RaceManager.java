@@ -7,7 +7,7 @@ import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.types.RaceAttribute;
+import justjabka.justraces.api.types.race.RaceAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -19,7 +19,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 
 import static justjabka.justraces.api.managers.ModifierManager.refreshModifiers;
 

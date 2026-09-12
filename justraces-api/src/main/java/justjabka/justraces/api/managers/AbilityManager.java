@@ -6,7 +6,7 @@ import justjabka.justraces.api.abilities.generic.ValidationAbility;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.types.AbilityBinding;
+import justjabka.justraces.api.types.race.RaceAbility;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -59,12 +59,12 @@ public final class AbilityManager {
     }
 
     @NotNull
-    public static Set<@NotNull AbilityBinding> getAbilitiesBindingsForRace(RaceDefinition race) {
+    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForRace(RaceDefinition race) {
         return race.getAbilitiesBindings();
     }
 
     @NotNull
-    public static Set<@NotNull AbilityBinding> getAbilitiesBindingsForPlayer(Player player) {
+    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForPlayer(Player player) {
         return getAbilitiesBindingsForRace(RaceManager.getRace(player));
     }
     //endregion

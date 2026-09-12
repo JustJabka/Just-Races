@@ -5,11 +5,10 @@ import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.definitions.generic.BaseDefinition;
 import justjabka.justraces.api.interfaces.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
-import justjabka.justraces.api.types.AbilityBinding;
-import justjabka.justraces.api.types.RaceAttribute;
+import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.race.RaceAttribute;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +21,7 @@ public class RaceDefinition extends BaseDefinition {
     private List<Component> description;
     private Component icon;
     private List<RaceAttribute> attributes;
-    private Set<AbilityBinding> abilities;
+    private Set<RaceAbility> abilities;
     private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
@@ -78,10 +77,10 @@ public class RaceDefinition extends BaseDefinition {
 
     /**
      * @return Ability Bindings of the race
-     * @see AbilityBinding
+     * @see RaceAbility
      */
     @NotNull
-    public Set<@NotNull AbilityBinding> getAbilitiesBindings() {
+    public Set<@NotNull RaceAbility> getAbilitiesBindings() {
         return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
     }
 
@@ -128,7 +127,7 @@ public class RaceDefinition extends BaseDefinition {
         }
 
         cachedAbilities = abilities.stream()
-                .map(AbilityBinding::ability)
+                .map(RaceAbility::ability)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableSet());
     }

@@ -1,4 +1,4 @@
-package justjabka.justraces.api.types;
+package justjabka.justraces.api.types.race;
 
 import justjabka.justraces.api.JustRacesAPI;
 import org.bukkit.NamespacedKey;

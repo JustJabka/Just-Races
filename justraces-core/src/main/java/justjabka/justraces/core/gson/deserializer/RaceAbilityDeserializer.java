@@ -3,7 +3,7 @@ package justjabka.justraces.core.gson.deserializer;
 import com.google.gson.*;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.types.AbilityBinding;
+import justjabka.justraces.api.types.race.RaceAbility;
 import justjabka.justraces.api.types.Trigger;
 import justjabka.justraces.api.types.TriggerCondition;
 import org.bukkit.NamespacedKey;
@@ -14,17 +14,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBinding> {
+public class RaceAbilityDeserializer implements JsonDeserializer<RaceAbility> {
 
     @Override
-    public AbilityBinding deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public RaceAbility deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (json.isJsonPrimitive()) return deserializeDefault(json);
         if (json.isJsonObject()) return deserializeOverride(json);
 
         throw new JsonParseException("Invalid ability format");
     }
 
-    private static @NonNull AbilityBinding deserializeDefault(JsonElement json) {
+    private static @NonNull RaceAbility deserializeDefault(JsonElement json) {
         String id = json.getAsString();
 
         BaseAbility ability = AbilityManager.getByKey(NamespacedKey.fromString(id));
@@ -32,10 +32,10 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
             throw new JsonParseException("Unknown ability: %s".formatted(id));
         }
 
-        return AbilityBinding.ofDefault(ability);
+        return RaceAbility.ofDefault(ability);
     }
 
-    private static @NonNull AbilityBinding deserializeOverride(JsonElement json) {
+    private static @NonNull RaceAbility deserializeOverride(JsonElement json) {
         JsonObject obj = json.getAsJsonObject();
 
         String id = obj.get("id").getAsString();
@@ -47,7 +47,7 @@ public class AbilityBindingDeserializer implements JsonDeserializer<AbilityBindi
         Trigger trigger = getTrigger(ability, obj);
         Set<TriggerCondition> conditions = getConditions(ability, obj);
 
-        return new AbilityBinding(ability, trigger, Collections.unmodifiableSet(conditions));
+        return new RaceAbility(ability, trigger, Collections.unmodifiableSet(conditions));
     }
 
     private static Trigger getTrigger(BaseAbility ability, JsonObject obj) {
