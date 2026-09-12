@@ -1,19 +1,17 @@
 package justjabka.justraces.api.managers;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedDataValue;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,36 +37,43 @@ public final class EffectManager {
      * @param entity Entity that will be glowing
      * @param glow {@code true} to enable glow. {@code false} to disable it
      */
-    public static void setClientSideGlow(Player player, LivingEntity entity, boolean glow) {
-        // Magic packets✨ (idk how ts magic shit works💀)
-        ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-        PacketContainer packet = manager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+    public static void setClientSideGlow(Player player, Entity entity, boolean glow) {
+        // Get entity metadata
+        List<EntityData<?>> metadata = new ArrayList<>(
+                SpigotConversionUtil.getEntityMetadata(entity)
+        );
 
-        packet.getIntegers().write(0, entity.getEntityId());
-
+        // Check for existing value with index of 0
         byte currentMask = 0;
+        EntityData<?> existingFlagData = null;
 
-        WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity);
-        if (watcher.hasIndex(0)) {
-            currentMask = (byte) watcher.getObject(0);
+        for (EntityData<?> data : metadata) {
+            if (data.getIndex() != 0) continue;
+            if (!(data.getValue() instanceof Byte b)) continue;
+
+            currentMask = b;
+            existingFlagData = data;
+            break;
         }
 
+        // Change glow bit
         if (glow) {
             currentMask |= 0x40;
         } else {
             currentMask &= ~0x40;
         }
 
-        List<WrappedDataValue> dataValues = new ArrayList<>();
+        if (existingFlagData != null) {
+            metadata.remove(existingFlagData);
+        }
+        metadata.add(new EntityData<>(0, EntityDataTypes.BYTE, currentMask));
 
-        dataValues.add(new WrappedDataValue(
-                0,
-                WrappedDataWatcher.Registry.get((Type) Byte.class),
-                currentMask
-        ));
+        // Send packet
+        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(
+                entity.getEntityId(),
+                metadata
+        );
 
-        packet.getDataValueCollectionModifier().write(0, dataValues);
-
-        manager.sendServerPacket(player, packet);
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 }

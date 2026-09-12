@@ -9,6 +9,6 @@ load: POSTWORLD
 
 dependencies:
   server:
-    ProtocolLib:
+    packetevents:
       load: BEFORE
       required: true
