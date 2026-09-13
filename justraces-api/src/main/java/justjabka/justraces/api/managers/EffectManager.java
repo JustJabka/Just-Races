@@ -5,12 +5,8 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
-import io.papermc.paper.datacomponent.item.Consumable;
-import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +14,6 @@ import java.util.List;
 public final class EffectManager {
 
     private EffectManager() {}
-
-    public static double calcAbsorptionAmountFromConsumable(Consumable consumable) {
-        for (ConsumeEffect effect : consumable.consumeEffects()) {
-            if (!(effect instanceof ConsumeEffect.ApplyStatusEffects applyEffect)) continue;
-
-            for (PotionEffect potionEffect : applyEffect.effects()) {
-                if (!(potionEffect.getType().equals(PotionEffectType.ABSORPTION))) continue;
-                return (potionEffect.getAmplifier() + 1) * 4.0;
-            }
-        }
-        return 0;
-    }
 
     /**
      * Glows target for player on client side
