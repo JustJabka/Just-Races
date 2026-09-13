@@ -21,6 +21,7 @@ public class JustRacesBootstrap implements PluginBootstrap {
             SelectRaceCommand.register(registrar);
             JustRacesCommand.register(registrar);
             ResetRaceCommand.register(registrar);
+            TransCommand.register(registrar);
         });
     }
 }

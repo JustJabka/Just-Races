@@ -1,6 +1,6 @@
 package justjabka.justraces.api.types;
 
-import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.entry.AbilityEntry;
 
 /**
  * The trigger is the general action used to trigger the ability.
@@ -9,7 +9,7 @@ import justjabka.justraces.api.types.race.RaceAbility;
  * First one is to know that player actually wanted to activate ability.
  * Second one is to know if ability can actually work (player has some armor set equipped or have enough score)
  * @see TriggerCondition
- * @see RaceAbility
+ * @see AbilityEntry
  */
 public enum Trigger {
     LEFT_CLICK,

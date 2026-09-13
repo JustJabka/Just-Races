@@ -6,12 +6,13 @@ import justjabka.justraces.api.abilities.generic.ValidationAbility;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.entry.AbilityEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class AbilityManager {
@@ -55,28 +56,47 @@ public final class AbilityManager {
      */
     @NotNull
     public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
-        return getAbilitiesForRace(RaceManager.getRace(player));
+        Set<@NotNull BaseAbility> allAbilities = new HashSet<>();
+
+        allAbilities.addAll(getAbilitiesForRace(RaceManager.getRace(player)));
+        allAbilities.addAll(TransientManager.getTransientAbilities(player));
+
+        return allAbilities;
     }
 
     @NotNull
-    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForRace(RaceDefinition race) {
-        return race.getAbilitiesBindings();
+    public static Set<@NotNull AbilityEntry> getAbilityEntriesForRace(RaceDefinition race) {
+        return race.getAbilityEntries();
     }
 
     @NotNull
-    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForPlayer(Player player) {
-        return getAbilitiesBindingsForRace(RaceManager.getRace(player));
+    public static Set<@NotNull AbilityEntry> getAbilityEntriesForPlayer(Player player) {
+        Set<@NotNull AbilityEntry> allRaceAbilities = new HashSet<>();
+
+        allRaceAbilities.addAll(getAbilityEntriesForRace(RaceManager.getRace(player)));
+
+        Set<@NotNull BaseAbility> transientAbilities = TransientManager.getTransientAbilities(player);
+        transientAbilities.forEach(ability -> {
+            AbilityEntry abilityEntry = AbilityEntry.ofDefault(ability);
+            allRaceAbilities.add(abilityEntry);
+        });
+
+        return allRaceAbilities;
     }
     //endregion
 
     public static void endAbilities(Player player, ResettableAbility.Reason reason) {
         Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
 
-        abilities.forEach(ability -> {
-            ability.resetCooldown(player);
-            ability.removeCooldownBar(player);
-            clearAbilityStates(player, ability, reason);
-        });
+        abilities.forEach(ability ->
+                endAbility(player, ability, reason)
+        );
+    }
+
+    public static void endAbility(Player player, BaseAbility ability, ResettableAbility.Reason reason) {
+        ability.resetCooldown(player);
+        ability.removeCooldownBar(player);
+        clearAbilityStates(player, ability, reason);
     }
 
     public static void clearAbilitiesStates(Player player, ResettableAbility.Reason reason) {

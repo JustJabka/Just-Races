@@ -1,6 +1,6 @@
 package justjabka.justraces.core.gson.deserializer;
 
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.managers.TraitManager;
 import org.bukkit.NamespacedKey;
 

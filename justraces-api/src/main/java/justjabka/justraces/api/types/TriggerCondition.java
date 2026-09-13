@@ -1,6 +1,6 @@
 package justjabka.justraces.api.types;
 
-import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.entry.AbilityEntry;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 
@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  * Don't confuse ability trigger and ability activation requirements ({@code BaseAbility#canActivate(Player)}). Those are two different things
  * First one is to know that player actually wanted to activate ability.
  * Second one is to know if ability can actually work (player has some armor set equipped or have enough score)
- * @see RaceAbility
+ * @see AbilityEntry
  * @see Trigger
  */
 public enum TriggerCondition {

@@ -1,9 +1,13 @@
 package justjabka.justraces.showcase.listeners.race;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Consumable;
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.justraces.api.interfaces.configurable.RaceConfigurable;
 import justjabka.justraces.api.listeners.generic.BaseRaceListener;
 import justjabka.justraces.api.managers.ArmorManager;
+import justjabka.justraces.api.managers.EffectManager;
 import justjabka.justraces.api.types.ArmorSet;
 import justjabka.justraces.showcase.dataprovider.DamageTypeProvider;
 import justjabka.justraces.showcase.dataprovider.DamageTypeTagKeysProvider;
@@ -28,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
 
@@ -222,6 +227,38 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         player.setAbsorptionAmount(Math.min(current + bonus, limit));
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onAbsorptionConsume(PlayerItemConsumeEvent event) {
+        Player player = event.getPlayer();
+
+        AttributeInstance maxAbsorptionInstance = player.getAttribute(Attribute.MAX_ABSORPTION);
+        if (maxAbsorptionInstance == null) return;
+        if (maxAbsorptionInstance.getValue() <= 0) return;
+
+        Consumable consumable = event.getItem().getData(DataComponentTypes.CONSUMABLE);
+        if (consumable == null) return;
+
+        double bonus = calcAbsorptionAmountFromConsumable(consumable);
+        if (bonus <= 0) return;
+
+        double current = player.getAbsorptionAmount();
+        double limit = maxAbsorptionInstance.getValue();
+
+        player.setAbsorptionAmount(Math.min(current + bonus, limit));
+    }
+
+    private static double calcAbsorptionAmountFromConsumable(Consumable consumable) {
+        for (ConsumeEffect effect : consumable.consumeEffects()) {
+            if (!(effect instanceof ConsumeEffect.ApplyStatusEffects applyEffect)) continue;
+
+            for (PotionEffect potionEffect : applyEffect.effects()) {
+                if (!(potionEffect.getType().equals(PotionEffectType.ABSORPTION))) continue;
+                return (potionEffect.getAmplifier() + 1) * 4.0;
+            }
+        }
+        return 0;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -233,7 +270,6 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
 
         double effectDurationMultiplier = getConfigDouble("alchemy", "effect_duration_multiplier");
-        JustRacesShowcase.LOGGER.info(String.valueOf(effectDurationMultiplier));
 
         PersistentDataContainer pdc = player.getPersistentDataContainer();
 

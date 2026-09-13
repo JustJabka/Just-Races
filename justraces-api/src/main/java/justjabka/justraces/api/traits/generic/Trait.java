@@ -1,5 +1,6 @@
-package justjabka.justraces.api.interfaces;
+package justjabka.justraces.api.traits.generic;
 
+import justjabka.justraces.api.interfaces.PersistentHolder;
 import justjabka.justraces.api.managers.TraitManager;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

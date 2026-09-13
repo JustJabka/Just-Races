@@ -1,7 +1,7 @@
-package justjabka.justraces.core.gson.deserializer;
+package justjabka.justraces.core.gson.deserializer.entry;
 
 import com.google.gson.*;
-import justjabka.justraces.api.types.race.RaceAttribute;
+import justjabka.justraces.api.types.entry.AttributeEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -10,10 +10,10 @@ import org.bukkit.attribute.AttributeModifier;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
-public class RaceAttributeDeserializer implements JsonDeserializer<RaceAttribute> {
+public class AttributeEntryDeserializer implements JsonDeserializer<AttributeEntry> {
 
     @Override
-    public RaceAttribute deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public AttributeEntry deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (!json.isJsonObject()) return null;
 
         JsonObject obj = json.getAsJsonObject();
@@ -22,7 +22,7 @@ public class RaceAttributeDeserializer implements JsonDeserializer<RaceAttribute
         double amount = getAmount(obj);
         Optional<AttributeModifier.Operation> operation = getOperation(obj);
 
-        return new RaceAttribute(attribute, amount, operation);
+        return new AttributeEntry(attribute, amount, operation);
     }
 
     private static Attribute getAttribute(JsonObject obj) {

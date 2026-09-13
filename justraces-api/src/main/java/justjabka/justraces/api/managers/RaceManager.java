@@ -1,13 +1,13 @@
 package justjabka.justraces.api.managers;
 
+import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
+import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.events.race.Cause;
 import justjabka.justraces.api.events.race.PlayerRaceChangeEvent;
 import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
-import justjabka.justraces.api.definitions.RaceDefinition;
-import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.types.race.RaceAttribute;
+import justjabka.justraces.api.types.entry.AttributeEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -96,20 +96,21 @@ public final class RaceManager {
     }
 
     private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
-        List<RaceAttribute> attributes = race.getAttributes();
+        List<AttributeEntry> attributes = race.getAttributeEntries();
 
-        attributes.forEach(raceAttribute -> {
-                Attribute attribute = raceAttribute.attribute();
-                double amount = raceAttribute.amount();
+        for (AttributeEntry attributeEntry : attributes) {
+            Attribute attribute = attributeEntry.attribute();
+            double amount = attributeEntry.amount();
 
-                if (raceAttribute.isBaseValue()) {
-                    AttributeManager.setBaseValue(player, attribute, amount);
-                } else if (raceAttribute.isModifier()) {
-                    AttributeModifier modifier = raceAttribute.createModifier(race.getKey());
-                    AttributeManager.addModifier(player, attribute, modifier);
-                }
+            if (attributeEntry.isBaseValue()) {
+                AttributeManager.setBaseValue(player, attribute, amount);
+            } else if (attributeEntry.isModifier()) {
+                AttributeModifier modifier = attributeEntry.createModifier(race.getKey());
+                AttributeManager.addModifier(player, attribute, modifier);
             }
-        );
+        }
+
+        TraitManager.startTraits(player);
     }
 
     /**
@@ -182,6 +183,9 @@ public final class RaceManager {
 
         // Disable abilities
         AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
+
+        // Disable traits
+        TraitManager.endTraits(player);
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));

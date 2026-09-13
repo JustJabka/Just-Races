@@ -1,6 +1,6 @@
 package justjabka.justraces.showcase.registries;
 
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import justjabka.justraces.showcase.traits.*;

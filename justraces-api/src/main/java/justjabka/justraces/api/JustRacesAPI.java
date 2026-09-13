@@ -3,7 +3,7 @@ package justjabka.justraces.api;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.interfaces.Registry;
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
 import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
