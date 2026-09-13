@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import justjabka.justraces.api.types.race.RaceAttribute;
 import justjabka.justraces.core.gson.deserializer.*;
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
 import justjabka.justraces.api.types.race.RaceAbility;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;

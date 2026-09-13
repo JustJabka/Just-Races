@@ -2,10 +2,8 @@ package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
-import justjabka.justraces.api.interfaces.Trait;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.types.TransientContainer;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +19,14 @@ public final class TransientManager {
     private static final Map<UUID, TransientContainer> TRANSIENT_CONTAINER = new ConcurrentHashMap<>();
 
     public static TransientContainer getTransientContainer(Player player) {
-        return TRANSIENT_CONTAINER.getOrDefault(player.getUniqueId(), TransientContainer.ofDefault());
+        return TRANSIENT_CONTAINER.computeIfAbsent(
+                player.getUniqueId(),
+                _ -> TransientContainer.ofDefault()
+        );
+    }
+
+    public static void clearTransientContainer(Player player) {
+        TRANSIENT_CONTAINER.remove(player.getUniqueId());
     }
 
     @NotNull
@@ -52,7 +57,7 @@ public final class TransientManager {
 
             boolean expired = !TimeManager.isExpireStampValid(stamp);
             if (expired) {
-                // TODO: add resettable trait
+                TraitManager.endTrait(player, trait);
             }
             return expired;
         });
@@ -60,51 +65,21 @@ public final class TransientManager {
         return transientTraits.keySet();
     }
 
-//    @NotNull
-//    public static Map<BaseModifier, Set<Material>> getTransientItemModifiers(Player player) {
-//
-//    }
-
-    // TODO: refactor
     public static void addTransientAbility(Player player, BaseAbility ability, long ticks) {
         TransientContainer container = getTransientContainer(player);
         long expireStamp = TimeManager.getExpireStamp(ticks);
 
-        Map<BaseAbility, Long> newAbilities = new ConcurrentHashMap<>(Map.copyOf(container.abilities()));
-        newAbilities.put(ability, expireStamp);
-
-        TRANSIENT_CONTAINER.put(player.getUniqueId(), new TransientContainer(
-                newAbilities,
-                container.traits(),
-                container.itemModifiers()
-        ));
+        container.abilities().put(ability, expireStamp);
     }
 
     public static void addTransientTrait(Player player, Trait trait, long ticks) {
         TransientContainer container = getTransientContainer(player);
         long expireStamp = TimeManager.getExpireStamp(ticks);
 
-        Map<Trait, Long> newTraits = new ConcurrentHashMap<>(Map.copyOf(container.traits()));
-        newTraits.put(trait, expireStamp);
+        container.traits().put(trait, expireStamp);
 
-        TRANSIENT_CONTAINER.put(player.getUniqueId(), new TransientContainer(
-                container.abilities(),
-                newTraits,
-                container.itemModifiers()
-        ));
+        TraitManager.startTrait(player, trait);
     }
 
-//    public static void addTransientItemModifier(Player player, Map<BaseModifier, Set<Material>> modifier, long ticks) {
-//        TransientContainer container = getTransientContainer(player);
-//        long expireStamp = TimeManager.getExpireStamp(ticks);
-//
-//        Map<Map<BaseModifier, Set<Material>>, Long> newItemModifiers = new ConcurrentHashMap<>(Map.copyOf(container.itemModifiers()));
-//        newItemModifiers.put(modifier, expireStamp);
-//
-//        TRANSIENT_CONTAINER.put(player.getUniqueId(), new TransientContainer(
-//                container.abilities(),
-//                container.traits(),
-//                newItemModifiers
-//        ));
-//    }
+    // TODO: add transient item modifier
 }

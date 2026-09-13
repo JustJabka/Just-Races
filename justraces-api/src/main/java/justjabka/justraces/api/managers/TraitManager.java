@@ -1,7 +1,8 @@
 package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.definitions.RaceDefinition;
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import org.bukkit.NamespacedKey;
@@ -48,5 +49,31 @@ public final class TraitManager {
         allTraits.addAll(TransientManager.getTransientTraits(player));
 
         return allTraits;
+    }
+
+    public static void startTraits(Player player) {
+        Set<@NotNull Trait> traits = getTraitsForRace(RaceManager.getRace(player));
+
+        traits.forEach(trait ->
+                startTrait(player, trait)
+        );
+    }
+
+    public static void startTrait(Player player, Trait trait) {
+        if (!(trait instanceof ResettableTrait resettable)) return;
+        resettable.applyState(player);
+    }
+
+    public static void endTraits(Player player) {
+        Set<@NotNull Trait> traits = getTraitsForPlayer(player);
+
+        traits.forEach(trait ->
+                endTrait(player, trait)
+        );
+    }
+
+    public static void endTrait(Player player, Trait trait) {
+        if (!(trait instanceof ResettableTrait resettable)) return;
+        resettable.resetState(player);
     }
 }

@@ -1,34 +1,34 @@
 package justjabka.justraces.showcase.traits;
 
-import justjabka.justraces.api.events.race.PlayerRaceChangeEvent;
 import justjabka.justraces.api.interfaces.configurable.TraitConfigurable;
 import justjabka.justraces.api.listeners.generic.BaseTraitListener;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.showcase.JustRacesShowcase;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.tag.DamageTypeTags;
 
-public class AdaptationTrait extends BaseTraitListener implements TraitConfigurable {
+import java.util.UUID;
+
+public class AdaptationTrait extends BaseTraitListener implements ResettableTrait, TraitConfigurable {
 
     @Override
     public NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void resetAdaptationsOnDeath(PlayerDeathEvent event) {
-        resetAdaptations(event.getPlayer());
-    }
+    @Override
+    public void resetState(UUID pid) {
+        Player player = Bukkit.getPlayer(pid);
+        if (player == null) return;
 
-    @EventHandler(ignoreCancelled = true)
-    public void resetAdaptationsOnRaceChange(PlayerRaceChangeEvent event) {
-        resetAdaptations(event.getPlayer());
+        resetAdaptations(player);
     }
 
     private void resetAdaptations(Player player) {

@@ -2,14 +2,18 @@ package justjabka.justraces.showcase.traits;
 
 import justjabka.justraces.api.interfaces.configurable.TraitConfigurable;
 import justjabka.justraces.api.runnables.generic.BaseTraitRunnable;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.showcase.JustRacesShowcase;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 
-public class AdrenalineRushTrait extends BaseTraitRunnable implements TraitConfigurable {
+import java.util.UUID;
+
+public class AdrenalineRushTrait extends BaseTraitRunnable implements ResettableTrait, TraitConfigurable {
 
     @Override
     public NamespacedKey getKey() {
@@ -25,6 +29,17 @@ public class AdrenalineRushTrait extends BaseTraitRunnable implements TraitConfi
     public void onTick(Player player) {
         double speedBonusPerStack = calcAdrenalineRushBonus(player);
         applyAdrenalineRushBonus(player, speedBonusPerStack);
+    }
+
+    @Override
+    public void resetState(UUID pid) {
+        Player player = Bukkit.getPlayer(pid);
+        if (player == null) return;
+
+        AttributeInstance movementSpeedInstance = player.getAttribute(Attribute.MOVEMENT_SPEED);
+        if (movementSpeedInstance == null) return;
+
+        movementSpeedInstance.removeModifier(getKey());
     }
 
     private double calcAdrenalineRushBonus(Player player) {

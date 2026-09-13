@@ -3,7 +3,7 @@ package justjabka.justraces.api.definitions;
 import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.definitions.generic.BaseDefinition;
-import justjabka.justraces.api.interfaces.Trait;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
 import justjabka.justraces.api.types.race.RaceAbility;
 import justjabka.justraces.api.types.race.RaceAttribute;

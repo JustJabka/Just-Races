@@ -5,10 +5,7 @@ import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.managers.ArmorManager;
-import justjabka.justraces.api.managers.EffectManager;
-import justjabka.justraces.api.managers.ModifierManager;
+import justjabka.justraces.api.managers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -25,6 +22,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GlobalListener implements Listener {
@@ -44,6 +42,7 @@ public class GlobalListener implements Listener {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ModifierManager.refreshModifiers(player));
     }
 
+    // TODO: move some events to separate ModifierListener
     @EventHandler(ignoreCancelled = true)
     public void onItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
@@ -86,16 +85,30 @@ public class GlobalListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
         inventoryRefresh(player);
+
         AbilityManager.clearAbilitiesStates(player, ResettableAbility.Reason.QUIT);
+        TraitManager.endTraits(player);
         // TODO: refresh attributes after rejoin & reload
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        TransientManager.clearTransientContainer(player);
+        // TODO: clear abilities cooldown
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+
         inventoryRefresh(player);
+
         AbilityManager.endAbilities(player, ResettableAbility.Reason.DEATH);
+        TraitManager.endTraits(player);
     }
 
     private static void inventoryRefresh(Player player) {
