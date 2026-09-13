@@ -1,4 +1,4 @@
-package justjabka.justraces.api.types.race;
+package justjabka.justraces.api.types.entry;
 
 import justjabka.justraces.api.JustRacesAPI;
 import org.bukkit.NamespacedKey;
@@ -7,7 +7,7 @@ import org.bukkit.attribute.AttributeModifier;
 
 import java.util.Optional;
 
-public record RaceAttribute(
+public record AttributeEntry(
         Attribute attribute,
         double amount,
         Optional<AttributeModifier.Operation> operation

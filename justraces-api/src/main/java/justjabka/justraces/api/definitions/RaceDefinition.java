@@ -5,8 +5,8 @@ import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.definitions.generic.BaseDefinition;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
-import justjabka.justraces.api.types.race.RaceAbility;
-import justjabka.justraces.api.types.race.RaceAttribute;
+import justjabka.justraces.api.types.entry.AbilityEntry;
+import justjabka.justraces.api.types.entry.AttributeEntry;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +20,8 @@ public class RaceDefinition extends BaseDefinition {
     private Component name;
     private List<Component> description;
     private Component icon;
-    private List<RaceAttribute> attributes;
-    private Set<RaceAbility> abilities;
+    private List<AttributeEntry> attributes;
+    private Set<AbilityEntry> abilities;
     private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
@@ -58,10 +58,10 @@ public class RaceDefinition extends BaseDefinition {
     }
 
     /**
-     * @return Base Attributes of the race
+     * @return Base Attribute Entries of the race
      */
     @NotNull
-    public List<@NotNull RaceAttribute> getAttributes() {
+    public List<@NotNull AttributeEntry> getAttributeEntries() {
         return attributes != null ? Collections.unmodifiableList(attributes) : Collections.emptyList();
     }
 
@@ -76,11 +76,11 @@ public class RaceDefinition extends BaseDefinition {
     }
 
     /**
-     * @return Ability Bindings of the race
-     * @see RaceAbility
+     * @return Ability Entries of the race
+     * @see AbilityEntry
      */
     @NotNull
-    public Set<@NotNull RaceAbility> getAbilitiesBindings() {
+    public Set<@NotNull AbilityEntry> getAbilityEntries() {
         return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
     }
 
@@ -127,7 +127,7 @@ public class RaceDefinition extends BaseDefinition {
         }
 
         cachedAbilities = abilities.stream()
-                .map(RaceAbility::ability)
+                .map(AbilityEntry::ability)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableSet());
     }

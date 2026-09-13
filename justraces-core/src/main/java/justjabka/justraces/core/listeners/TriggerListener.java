@@ -2,7 +2,7 @@ package justjabka.justraces.core.listeners;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.entry.AbilityEntry;
 import justjabka.justraces.api.types.Trigger;
 import justjabka.justraces.api.types.TriggerCondition;
 import org.bukkit.entity.Player;
@@ -85,9 +85,9 @@ public class TriggerListener implements Listener {
     }
 
     private static boolean triggerAbilities(Player player, Trigger requiredTrigger) {
-        Set<RaceAbility> raceAbilities = AbilityManager.getAbilitiesBindingsForPlayer(player);
+        Set<AbilityEntry> raceAbilities = AbilityManager.getAbilityEntriesForPlayer(player);
 
-        for (RaceAbility ability : raceAbilities) {
+        for (AbilityEntry ability : raceAbilities) {
             if (ability.trigger() != requiredTrigger) continue;
 
             if (!isConditionsMet(player, ability)) continue;
@@ -98,7 +98,7 @@ public class TriggerListener implements Listener {
         return false;
     }
 
-    private static boolean isConditionsMet(Player player, RaceAbility ability) {
+    private static boolean isConditionsMet(Player player, AbilityEntry ability) {
         Set<TriggerCondition> conditions = ability.conditions();
 
         if (conditions == null || conditions.isEmpty()) {

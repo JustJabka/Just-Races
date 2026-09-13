@@ -6,7 +6,7 @@ import justjabka.justraces.api.abilities.generic.ValidationAbility;
 import justjabka.justraces.api.definitions.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.types.race.RaceAbility;
+import justjabka.justraces.api.types.entry.AbilityEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -65,20 +65,20 @@ public final class AbilityManager {
     }
 
     @NotNull
-    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForRace(RaceDefinition race) {
-        return race.getAbilitiesBindings();
+    public static Set<@NotNull AbilityEntry> getAbilityEntriesForRace(RaceDefinition race) {
+        return race.getAbilityEntries();
     }
 
     @NotNull
-    public static Set<@NotNull RaceAbility> getAbilitiesBindingsForPlayer(Player player) {
-        Set<@NotNull RaceAbility> allRaceAbilities = new HashSet<>();
+    public static Set<@NotNull AbilityEntry> getAbilityEntriesForPlayer(Player player) {
+        Set<@NotNull AbilityEntry> allRaceAbilities = new HashSet<>();
 
-        allRaceAbilities.addAll(getAbilitiesBindingsForRace(RaceManager.getRace(player)));
+        allRaceAbilities.addAll(getAbilityEntriesForRace(RaceManager.getRace(player)));
 
         Set<@NotNull BaseAbility> transientAbilities = TransientManager.getTransientAbilities(player);
         transientAbilities.forEach(ability -> {
-            RaceAbility raceAbility = RaceAbility.ofDefault(ability);
-            allRaceAbilities.add(raceAbility);
+            AbilityEntry abilityEntry = AbilityEntry.ofDefault(ability);
+            allRaceAbilities.add(abilityEntry);
         });
 
         return allRaceAbilities;
