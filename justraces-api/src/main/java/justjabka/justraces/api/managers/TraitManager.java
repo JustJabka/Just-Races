@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class TraitManager {
@@ -41,6 +42,11 @@ public final class TraitManager {
      */
     @NotNull
     public static Set<@NotNull Trait> getTraitsForPlayer(Player player) {
-        return getTraitsForRace(RaceManager.getRace(player));
+        Set<@NotNull Trait> allTraits = new HashSet<>();
+
+        allTraits.addAll(getTraitsForRace(RaceManager.getRace(player)));
+        allTraits.addAll(TransientManager.getTransientTraits(player));
+
+        return allTraits;
     }
 }

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class AbilityManager {
@@ -55,7 +56,12 @@ public final class AbilityManager {
      */
     @NotNull
     public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
-        return getAbilitiesForRace(RaceManager.getRace(player));
+        Set<@NotNull BaseAbility> allAbilities = new HashSet<>();
+
+        allAbilities.addAll(getAbilitiesForRace(RaceManager.getRace(player)));
+        allAbilities.addAll(TransientManager.getTransientAbilities(player));
+
+        return allAbilities;
     }
 
     @NotNull
@@ -65,18 +71,32 @@ public final class AbilityManager {
 
     @NotNull
     public static Set<@NotNull RaceAbility> getAbilitiesBindingsForPlayer(Player player) {
-        return getAbilitiesBindingsForRace(RaceManager.getRace(player));
+        Set<@NotNull RaceAbility> allRaceAbilities = new HashSet<>();
+
+        allRaceAbilities.addAll(getAbilitiesBindingsForRace(RaceManager.getRace(player)));
+
+        Set<@NotNull BaseAbility> transientAbilities = TransientManager.getTransientAbilities(player);
+        transientAbilities.forEach(ability -> {
+            RaceAbility raceAbility = RaceAbility.ofDefault(ability);
+            allRaceAbilities.add(raceAbility);
+        });
+
+        return allRaceAbilities;
     }
     //endregion
 
     public static void endAbilities(Player player, ResettableAbility.Reason reason) {
         Set<BaseAbility> abilities = getAbilitiesForPlayer(player);
 
-        abilities.forEach(ability -> {
-            ability.resetCooldown(player);
-            ability.removeCooldownBar(player);
-            clearAbilityStates(player, ability, reason);
-        });
+        abilities.forEach(ability ->
+                endAbility(player, ability, reason)
+        );
+    }
+
+    public static void endAbility(Player player, BaseAbility ability, ResettableAbility.Reason reason) {
+        ability.resetCooldown(player);
+        ability.removeCooldownBar(player);
+        clearAbilityStates(player, ability, reason);
     }
 
     public static void clearAbilitiesStates(Player player, ResettableAbility.Reason reason) {
