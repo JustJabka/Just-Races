@@ -7,7 +7,7 @@ import justjabka.justraces.core.registries.ListenersRegistry;
 import justjabka.justraces.core.registries.RunnablesRegistry;
 import justjabka.justraces.api.traits.generic.BaseTraitRunnable;
 import justjabka.justraces.core.registries.impl.AbilitiesRegistry;
-import justjabka.justraces.core.registries.impl.ModifiersRegistry;
+import justjabka.justraces.core.registries.impl.ItemModifiersRegistry;
 import justjabka.justraces.core.registries.impl.RacesRegistry;
 import justjabka.justraces.core.registries.impl.TraitsRegistry;
 import org.bukkit.Bukkit;
@@ -19,7 +19,7 @@ public final class JustRaces extends JavaPlugin {
 
     private final AbilitiesRegistry abilitiesRegistry = new AbilitiesRegistry();
     private final TraitsRegistry traitsRegistry = new TraitsRegistry();
-    private final ModifiersRegistry modifiersRegistry = new ModifiersRegistry();
+    private final ItemModifiersRegistry itemModifiersRegistry = new ItemModifiersRegistry();
     private final RacesRegistry racesRegistry = new RacesRegistry();
 
     @Override
@@ -33,7 +33,7 @@ public final class JustRaces extends JavaPlugin {
             }
         });
 
-        JustRacesRegistries.MODIFIERS.addHook((_, modifier) -> {
+        JustRacesRegistries.ITEM_MODIFIERS.addHook((_, modifier) -> {
             if (modifier instanceof Listener listener) {
                 Bukkit.getPluginManager().registerEvents(listener, JustRacesAPI.getInstance());
             }
@@ -70,7 +70,7 @@ public final class JustRaces extends JavaPlugin {
                 racesRegistry,
                 abilitiesRegistry,
                 traitsRegistry,
-                modifiersRegistry
+                itemModifiersRegistry
         );
     }
 

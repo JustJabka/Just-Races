@@ -1,13 +1,13 @@
 package justjabka.justraces.core.gson.deserializer;
 
-import justjabka.justraces.api.managers.ModifierManager;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.managers.ItemModifierManager;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import org.bukkit.NamespacedKey;
 
-public class ItemModifierDeserializer implements NamespacedKeyDeserializer<BaseModifier> {
+public class ItemModifierDeserializer implements NamespacedKeyDeserializer<BaseItemModifier> {
 
     @Override
-    public BaseModifier getByKey(NamespacedKey key) {
-        return ModifierManager.getByKey(key);
+    public BaseItemModifier getByKey(NamespacedKey key) {
+        return ItemModifierManager.getByKey(key);
     }
 }

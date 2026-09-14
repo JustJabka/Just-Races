@@ -1,4 +1,4 @@
-package justjabka.justraces.api.modifiers.generic;
+package justjabka.justraces.api.itemmodifiers.generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public abstract class BaseFoodModifier extends BaseModifier {
+public abstract class BaseFoodItemModifier extends BaseItemModifier {
     public abstract @Nullable Consumer<FoodProperties.Builder> getFoodProperties();
     public abstract @Nullable Consumer<Consumable.Builder> getConsumable();
     public abstract @Nullable UseCooldown getUseCooldown();

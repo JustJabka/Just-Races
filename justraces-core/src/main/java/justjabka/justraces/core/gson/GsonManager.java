@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import justjabka.justraces.api.common.entry.AttributeEntry;
 import justjabka.justraces.core.gson.deserializer.*;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.core.gson.deserializer.entry.AbilityEntryDeserializer;
 import justjabka.justraces.core.gson.deserializer.entry.AttributeEntryDeserializer;
@@ -23,7 +23,7 @@ public final class GsonManager {
             .apply(new GsonBuilder())
             .registerTypeAdapter(AbilityEntry.class, new AbilityEntryDeserializer())
             .registerTypeAdapter(AttributeEntry.class, new AttributeEntryDeserializer())
-            .registerTypeAdapter(BaseModifier.class, new ItemModifierDeserializer())
+            .registerTypeAdapter(BaseItemModifier.class, new ItemModifierDeserializer())
             .registerTypeAdapter(Trait.class, new TraitDeserializer())
             .registerTypeAdapter(SET_MATERIAL, new ItemsDeserializer())
             .create();

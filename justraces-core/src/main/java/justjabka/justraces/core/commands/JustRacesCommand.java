@@ -38,7 +38,7 @@ public class JustRacesCommand {
     private static void reloadAll(CommandSender sender) {
         reload(JustRacesRegistries.ABILITIES);
         reload(JustRacesRegistries.TRAITS);
-        reload(JustRacesRegistries.MODIFIERS);
+        reload(JustRacesRegistries.ITEM_MODIFIERS);
         reload(JustRacesRegistries.RACES);
 
         for (Player player : Bukkit.getOnlinePlayers()) {

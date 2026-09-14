@@ -1,4 +1,4 @@
-package justjabka.justraces.api.modifiers.generic;
+package justjabka.justraces.api.itemmodifiers.generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("UnstableApiUsage")
-public abstract class BaseArmorModifier extends BaseModifier {
+public abstract class BaseArmorItemModifier extends BaseItemModifier {
     // TODO: rewrite and add equippable component
 
     public abstract Attribute getAttribute();

@@ -4,7 +4,7 @@ import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.races.RaceDefinition;
 import justjabka.justraces.api.common.registry.Registry;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class JustRacesAPI {
             Registry<RaceDefinition> races,
             Registry<BaseAbility> abilities,
             Registry<Trait> traits,
-            Registry<BaseModifier> modifiers
+            Registry<BaseItemModifier> itemModifiers
             ) {
         INSTANCE = plugin;
         LOGGER = logger;
@@ -39,6 +39,6 @@ public class JustRacesAPI {
         JustRacesRegistries.RACES = races;
         JustRacesRegistries.ABILITIES = abilities;
         JustRacesRegistries.TRAITS = traits;
-        JustRacesRegistries.MODIFIERS = modifiers;
+        JustRacesRegistries.ITEM_MODIFIERS = itemModifiers;
     }
 }

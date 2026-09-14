@@ -58,7 +58,7 @@ public interface PluginConfigurable extends Configurable {
 
     enum Category {
         ABILITIES,
-        MODIFIERS,
+        ITEM_MODIFIERS,
         TRAITS;
 
         @Override

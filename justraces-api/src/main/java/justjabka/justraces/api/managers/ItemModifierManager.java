@@ -3,21 +3,21 @@ package justjabka.justraces.api.managers;
 import justjabka.justraces.api.races.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class ModifierManager {
+public final class ItemModifierManager {
 
-    private ModifierManager() {}
+    private ItemModifierManager() {}
 
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
-    public static BaseModifier getByKey(NamespacedKey key) {
-        return JustRacesRegistries.MODIFIERS.get(key);
+    public static BaseItemModifier getByKey(NamespacedKey key) {
+        return JustRacesRegistries.ITEM_MODIFIERS.get(key);
     }
 
     public static void tryApply(Player player, ItemStack item) {
@@ -25,7 +25,7 @@ public final class ModifierManager {
         if (item.isEmpty()) return;
 
         RaceDefinition race = RaceManager.getRace(player);
-        BaseModifier type = race.getModifier(item.getType());
+        BaseItemModifier type = race.getItemModifierForMaterial(item.getType());
 
         if (type == null) return;
         if (isModifiedWith(item, type)) return;
@@ -44,7 +44,7 @@ public final class ModifierManager {
         NamespacedKey key = NamespacedKey.fromString(modifierId, JustRacesAPI.getInstance());
         if (key == null) return;
 
-        BaseModifier type = getByKey(key);
+        BaseItemModifier type = getByKey(key);
 
         if (type == null) {
             removeMarker(item);
@@ -64,7 +64,7 @@ public final class ModifierManager {
     public static void tryUndoInventory(ItemStack[] inventoryContents) {
         for (ItemStack item : inventoryContents) {
             if (item == null) continue;
-            ModifierManager.tryUndo(item);
+            ItemModifierManager.tryUndo(item);
         }
     }
 
@@ -87,7 +87,7 @@ public final class ModifierManager {
         refreshModifiersOnItem(player, cursorItem);
     }
 
-    private static void addMarker(ItemStack item, BaseModifier type) {
+    private static void addMarker(ItemStack item, BaseItemModifier type) {
         item.editPersistentDataContainer(pdc ->
                 pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getKey().toString())
         );
@@ -99,7 +99,7 @@ public final class ModifierManager {
         );
     }
 
-    public static boolean isModifiedWith(ItemStack item, BaseModifier type) {
+    public static boolean isModifiedWith(ItemStack item, BaseItemModifier type) {
         if (type == null) return false;
 
         String modifier = getAppliedModifier(item);

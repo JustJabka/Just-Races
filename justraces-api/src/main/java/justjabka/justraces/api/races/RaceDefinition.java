@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.common.BaseDefinition;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.common.entry.AttributeEntry;
 import net.kyori.adventure.text.Component;
@@ -25,11 +25,11 @@ public class RaceDefinition extends BaseDefinition {
     private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
-    private Map<BaseModifier, Set<Material>> itemModifiers;
+    private Map<BaseItemModifier, Set<Material>> itemModifiers;
     private Boolean hidden;
 
     private transient Set<BaseAbility> cachedAbilities;
-    private transient Map<Material, BaseModifier> cachedModifiers;
+    private transient Map<Material, BaseItemModifier> cachedModifiers;
 
     // region Getters
 
@@ -97,11 +97,11 @@ public class RaceDefinition extends BaseDefinition {
      * Gets modifier assigned for the material
      * @param material Material
      * @return Modifier assigned for the material
-     * @see BaseModifier
+     * @see BaseItemModifier
      */
     @Nullable
-    public BaseModifier getModifier(Material material) {
-        if (cachedModifiers == null) buildModifiersCache();
+    public BaseItemModifier getItemModifierForMaterial(Material material) {
+        if (cachedModifiers == null) buildItemModifiersCache();
         return cachedModifiers.get(material);
     }
 
@@ -132,13 +132,13 @@ public class RaceDefinition extends BaseDefinition {
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    private void buildModifiersCache() {
+    private void buildItemModifiersCache() {
         cachedModifiers = new HashMap<>();
 
         if (itemModifiers == null || itemModifiers.isEmpty()) return;
 
-        for (Map.Entry<BaseModifier, Set<Material>> entry : itemModifiers.entrySet()) {
-            BaseModifier modifier = entry.getKey();
+        for (Map.Entry<BaseItemModifier, Set<Material>> entry : itemModifiers.entrySet()) {
+            BaseItemModifier modifier = entry.getKey();
             Set<Material> materials = entry.getValue();
 
             for (Material material : materials) {

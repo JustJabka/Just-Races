@@ -2,7 +2,7 @@ package justjabka.justraces.core.listeners;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.managers.ModifierManager;
+import justjabka.justraces.api.managers.ItemModifierManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,12 +18,12 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class ModifierListener implements Listener {
+public class ItemModifierListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        ModifierManager.refreshModifiers(player);
+        ItemModifierManager.refreshModifiers(player);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -40,7 +40,7 @@ public class ModifierListener implements Listener {
         Player player = event.getPlayer();
 
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
-        ModifierManager.refreshModifiersOnItem(player, newItem);
+        ItemModifierManager.refreshModifiersOnItem(player, newItem);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -49,7 +49,7 @@ public class ModifierListener implements Listener {
 
         ItemStack item = event.getItem().getItemStack();
 
-        ModifierManager.refreshModifiersOnItem(player, item);
+        ItemModifierManager.refreshModifiersOnItem(player, item);
         event.getItem().setItemStack(item);
     }
 
@@ -59,18 +59,18 @@ public class ModifierListener implements Listener {
 
         ItemStack item = event.getItemDrop().getItemStack();
 
-        ModifierManager.tryUndo(item);
+        ItemModifierManager.tryUndo(item);
         event.getItemDrop().setItemStack(item);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        ModifierManager.tryUndoInventory(event.getInventory().getContents());
+        ItemModifierManager.tryUndoInventory(event.getInventory().getContents());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
-        ModifierManager.tryUndoInventory(event.getInventory().getContents());
+        ItemModifierManager.tryUndoInventory(event.getInventory().getContents());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -89,7 +89,7 @@ public class ModifierListener implements Listener {
 
     private static void inventoryRefresh(Player player) {
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () ->
-                ModifierManager.refreshModifiers(player)
+                ItemModifierManager.refreshModifiers(player)
         );
     }
 }

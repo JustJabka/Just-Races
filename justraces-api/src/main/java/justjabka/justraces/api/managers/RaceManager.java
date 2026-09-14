@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static justjabka.justraces.api.managers.ModifierManager.refreshModifiers;
+import static justjabka.justraces.api.managers.ItemModifierManager.refreshModifiers;
 
 public final class RaceManager {
 

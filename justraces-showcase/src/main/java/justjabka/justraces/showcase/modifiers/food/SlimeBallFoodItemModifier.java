@@ -6,13 +6,13 @@ import io.papermc.paper.datacomponent.item.UseCooldown;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import justjabka.justraces.showcase.abilities.FrogTongueAbility;
 import justjabka.justraces.showcase.JustRacesShowcase;
-import justjabka.justraces.showcase.modifiers.food.Generic.BaseFrogTongueTypeChangerFoodModifier;
+import justjabka.justraces.showcase.modifiers.food.Generic.BaseFrogTongueTypeChangerFoodItemModifier;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class SlimeBallFoodModifier extends BaseFrogTongueTypeChangerFoodModifier {
+public class SlimeBallFoodItemModifier extends BaseFrogTongueTypeChangerFoodItemModifier {
 
     @Override
     public NamespacedKey getKey() {

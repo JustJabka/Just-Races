@@ -2,9 +2,9 @@ package justjabka.justraces.core.registries.impl;
 
 import justjabka.justraces.api.common.registry.ReloadableRegistry;
 import justjabka.justraces.api.common.configurable.PluginConfigurable;
-import justjabka.justraces.api.modifiers.generic.BaseModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 
-public class ModifiersRegistry extends BaseRegistry<BaseModifier> implements ReloadableRegistry {
+public class ItemModifiersRegistry extends BaseRegistry<BaseItemModifier> implements ReloadableRegistry {
 
     @Override
     public void reload() {

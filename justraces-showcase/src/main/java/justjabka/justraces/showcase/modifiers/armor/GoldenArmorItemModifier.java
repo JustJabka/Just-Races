@@ -1,22 +1,21 @@
 package justjabka.justraces.showcase.modifiers.armor;
 
-import justjabka.justraces.api.modifiers.generic.ConfigurableItemModifier;
-import justjabka.justraces.api.modifiers.generic.BaseArmorModifier;
+import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseArmorItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 
-public class IronArmorModifier extends BaseArmorModifier implements ConfigurableItemModifier {
+public class GoldenArmorItemModifier extends BaseArmorItemModifier implements ConfigurableItemModifier {
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/iron");
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/golden");
     }
-
     @Override
     public Attribute getAttribute() {
-        return Attribute.ARMOR_TOUGHNESS;
+        return Attribute.MAX_ABSORPTION;
     }
 
     @Override

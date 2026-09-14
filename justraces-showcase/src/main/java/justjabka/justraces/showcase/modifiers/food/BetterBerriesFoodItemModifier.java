@@ -3,15 +3,15 @@ package justjabka.justraces.showcase.modifiers.food;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
-import justjabka.justraces.api.modifiers.generic.ConfigurableItemModifier;
-import justjabka.justraces.api.modifiers.generic.BaseFoodModifier;
+import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
+import justjabka.justraces.api.itemmodifiers.generic.BaseFoodItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class BetterBerriesFoodModifier extends BaseFoodModifier implements ConfigurableItemModifier {
+public class BetterBerriesFoodItemModifier extends BaseFoodItemModifier implements ConfigurableItemModifier {
 
     @Override
     public NamespacedKey getKey() {
