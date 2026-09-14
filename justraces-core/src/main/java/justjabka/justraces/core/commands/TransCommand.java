@@ -11,8 +11,8 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.managers.TransientManager;
+import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.core.commands.arguments.AbilityArgument;
 import justjabka.justraces.core.commands.arguments.TraitArgument;
 import net.kyori.adventure.text.Component;
@@ -32,23 +32,17 @@ public class TransCommand {
                         .then(Commands.literal("ability")
                                 .then(Commands.argument("ability", new AbilityArgument())
                                         .then(Commands.argument("ticks", LongArgumentType.longArg(0, Long.MAX_VALUE))
-                                                .executes(TransCommand::executeAbility))
+                                                .executes(TransCommand::executeAbility)
                                         )
                                 )
-//                        .then(Commands.literal("modifier")
-//                                .then(Commands.argument("modifier", new ItemModifierArgument())
-//                                        .then(Commands.argument("material", ArgumentTypes.itemPredicate())
-//                                                .then(Commands.argument("ticks", LongArgumentType.longArg(0, Long.MAX_VALUE))
-//                                                        .executes(TransCommand::executeModifier)
-//                                                )
-//                                        )
-//                                )
+                        )
                         .then(Commands.literal("trait")
                                 .then(Commands.argument("trait", new TraitArgument())
                                         .then(Commands.argument("ticks", LongArgumentType.longArg(0, Long.MAX_VALUE))
-                                                .executes(TransCommand::executeTrait))
+                                                .executes(TransCommand::executeTrait)
                                         )
                                 )
+                        )
                 )
                 .build();
     }
@@ -62,16 +56,6 @@ public class TransCommand {
         sendSuccess(ctx, target, ability.getKey());
         return Command.SINGLE_SUCCESS;
     }
-
-//    private static int executeModifier(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-//        Player target = resolveTarget(ctx);
-//        BaseModifier modifier = ctx.getArgument("modifier", BaseModifier.class);
-//        long ticks = getTicks(ctx);
-//
-//        TransientManager.addTransientItemModifier(target, modifier, ticks);
-//        sendSuccess(ctx, target, modifier.getKey());
-//        return Command.SINGLE_SUCCESS;
-//    }
 
     private static int executeTrait(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         Player target = resolveTarget(ctx);
