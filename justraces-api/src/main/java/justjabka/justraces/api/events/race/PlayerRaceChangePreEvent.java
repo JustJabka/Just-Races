@@ -1,6 +1,6 @@
 package justjabka.justraces.api.events.race;
 
-import justjabka.justraces.api.definitions.RaceDefinition;
+import justjabka.justraces.api.races.RaceDefinition;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;

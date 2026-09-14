@@ -4,7 +4,7 @@ import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.UseCooldown;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import justjabka.justraces.api.interfaces.configurable.ItemModifierConfigurable;
+import justjabka.justraces.api.modifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.api.modifiers.generic.BaseFoodModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class HoneyBottleFoodModifier extends BaseFoodModifier implements ItemModifierConfigurable {
+public class HoneyBottleFoodModifier extends BaseFoodModifier implements ConfigurableItemModifier {
 
     @Override
     public NamespacedKey getKey() {

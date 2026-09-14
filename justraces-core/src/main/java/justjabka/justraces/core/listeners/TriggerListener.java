@@ -2,9 +2,9 @@ package justjabka.justraces.core.listeners;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.types.entry.AbilityEntry;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.common.entry.AbilityEntry;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -28,9 +28,9 @@ public class TriggerListener implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
 
-        Trigger trigger;
-        if (action.isLeftClick()) trigger = Trigger.LEFT_CLICK;
-        else if (action.isRightClick()) trigger = Trigger.RIGHT_CLICK;
+        AbilityTrigger trigger;
+        if (action.isLeftClick()) trigger = AbilityTrigger.LEFT_CLICK;
+        else if (action.isRightClick()) trigger = AbilityTrigger.RIGHT_CLICK;
         else return;
 
         triggerAndCancel(player, trigger, event);
@@ -42,24 +42,24 @@ public class TriggerListener implements Listener {
         boolean isSneaking = event.isSneaking();
 
 
-        Trigger trigger = isSneaking ? Trigger.SNEAK_ON : Trigger.SNEAK_OFF;
+        AbilityTrigger trigger = isSneaking ? AbilityTrigger.SNEAK_ON : AbilityTrigger.SNEAK_OFF;
         if (triggerAndCancel(player, trigger, event)) {
             return;
         }
 
-        triggerAndCancel(player, Trigger.SNEAK_TOGGLE, event);
+        triggerAndCancel(player, AbilityTrigger.SNEAK_TOGGLE, event);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJump(PlayerJumpEvent event) {
         Player player = event.getPlayer();
-        triggerAndCancel(player, Trigger.JUMP, event);
+        triggerAndCancel(player, AbilityTrigger.JUMP, event);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
-        triggerAndCancel(player, Trigger.OFFHAND_SWAP, event);
+        triggerAndCancel(player, AbilityTrigger.OFFHAND_SWAP, event);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -71,10 +71,10 @@ public class TriggerListener implements Listener {
         if (event.getSlotType() != InventoryType.SlotType.ARMOR) return;
         if (event.getSlot() != CHESTPLATE_SLOT) return;
 
-        triggerAndCancel(player, Trigger.RIGHT_CLICK_CHESTPLATE, event);
+        triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_CHESTPLATE, event);
     }
 
-    private static boolean triggerAndCancel(Player player, Trigger requiredTrigger, Event event) {
+    private static boolean triggerAndCancel(Player player, AbilityTrigger requiredTrigger, Event event) {
         boolean triggered = triggerAbilities(player, requiredTrigger);
         if (!triggered) return false;
 
@@ -84,7 +84,7 @@ public class TriggerListener implements Listener {
         return true;
     }
 
-    private static boolean triggerAbilities(Player player, Trigger requiredTrigger) {
+    private static boolean triggerAbilities(Player player, AbilityTrigger requiredTrigger) {
         Set<AbilityEntry> raceAbilities = AbilityManager.getAbilityEntriesForPlayer(player);
 
         for (AbilityEntry ability : raceAbilities) {
@@ -99,13 +99,13 @@ public class TriggerListener implements Listener {
     }
 
     private static boolean isConditionsMet(Player player, AbilityEntry ability) {
-        Set<TriggerCondition> conditions = ability.conditions();
+        Set<AbilityTriggerCondition> conditions = ability.conditions();
 
         if (conditions == null || conditions.isEmpty()) {
             return true;
         }
 
-        for (TriggerCondition condition : conditions) {
+        for (AbilityTriggerCondition condition : conditions) {
             if (condition.test(player)) continue;
             return false;
         }

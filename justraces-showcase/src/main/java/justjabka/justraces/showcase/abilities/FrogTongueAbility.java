@@ -4,10 +4,10 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.api.managers.CombatManager;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.showcase.abilities.generic.BaseHookAbility;
 import justjabka.justraces.showcase.dataprovider.DamageTypeProvider;
 import justjabka.justraces.showcase.JustRacesShowcase;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, AbilityConfigurable {
+public class FrogTongueAbility extends BaseHookAbility implements ResettableAbility, ConfigurableAbility {
     private static final double STEP = 0.4;
     private static final int FIRE_TICKS = 4 * 20;
     private static final int BLOCK_COOLDOWN = 8 * 20;
@@ -171,13 +171,13 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     // Triggers
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.OFFHAND_SWAP;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.OFFHAND_SWAP;
     }
 
     @Override
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
     }
 
     @Override

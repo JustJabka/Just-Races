@@ -2,8 +2,9 @@ package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
+import justjabka.justraces.api.modifiers.generic.BaseModifier;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.types.TransientContainer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,4 +83,18 @@ public final class TransientManager {
     }
 
     // TODO: add transient item modifier
+
+    public record TransientContainer(
+            Map<BaseAbility, Long> abilities,
+            Map<Trait, Long> traits,
+            Map<Map<BaseModifier, Set<Material>>, Long> itemModifiers
+    ) {
+        public static TransientContainer ofDefault() {
+            return new TransientContainer(
+                    new ConcurrentHashMap<>(),
+                    new ConcurrentHashMap<>(),
+                    new ConcurrentHashMap<>()
+            );
+        }
+    }
 }

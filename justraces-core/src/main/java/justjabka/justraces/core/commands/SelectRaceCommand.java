@@ -13,7 +13,7 @@ import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
 import justjabka.justraces.api.events.race.Cause;
-import justjabka.justraces.api.definitions.RaceDefinition;
+import justjabka.justraces.api.races.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.managers.RaceManager;

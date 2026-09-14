@@ -3,10 +3,10 @@ package justjabka.justraces.showcase.abilities;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.DurationAbility;
 import justjabka.justraces.api.abilities.generic.RunnableAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility, AbilityConfigurable {
+public class SlimeTrailAbility extends BaseAbility implements DurationAbility, RunnableAbility, ConfigurableAbility {
     private final Set<PotionEffect> trailEffects = Set.of(
             new PotionEffect(PotionEffectType.SLOWNESS, getConfigInt("trail", "effects_duration"), 1, false, true, true),
             new PotionEffect(PotionEffectType.OOZING, getConfigInt("trail", "effects_duration"), 0, false, true, true)
@@ -65,13 +65,13 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     }
 
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.LEFT_CLICK;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.LEFT_CLICK;
     }
 
     @Override
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package justjabka.justraces.showcase.abilities;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.api.managers.CombatManager;
-import justjabka.justraces.api.types.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityContext;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -19,7 +19,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class PoisonousStingAbility extends BaseAbility implements AbilityConfigurable {
+public class PoisonousStingAbility extends BaseAbility implements ConfigurableAbility {
 
     @Override
     public NamespacedKey getKey() {

@@ -29,6 +29,7 @@ public class TransCommand {
         return Commands.literal("trans")
                 .requires(stack -> stack.getSender().hasPermission("%s.command.trans".formatted(JustRacesAPI.NAMESPACE)))
                 .then(Commands.argument("target", ArgumentTypes.player())
+                        // TODO: use AbilityEntry instead of BaseAbility
                         .then(Commands.literal("ability")
                                 .then(Commands.argument("ability", new AbilityArgument())
                                         .then(Commands.argument("ticks", LongArgumentType.longArg(0, Long.MAX_VALUE))

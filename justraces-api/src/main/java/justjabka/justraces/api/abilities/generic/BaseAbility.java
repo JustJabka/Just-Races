@@ -1,13 +1,13 @@
 package justjabka.justraces.api.abilities.generic;
 
-import justjabka.justraces.api.interfaces.PersistentHolder;
+import justjabka.justraces.api.common.PersistentHolder;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.managers.TimeManager;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.CooldownEntry;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityCooldownEntry;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseAbility implements Listener, PersistentHolder {
-    private final Map<UUID, CooldownEntry> cooldowns = new ConcurrentHashMap<>();
+    private final Map<UUID, AbilityCooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
 
     protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown_bar");
@@ -105,7 +105,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      */
     public void setCooldownTicks(Player player, long newCooldown) {
         final long expiresAt = TimeManager.getExpireStamp(newCooldown);
-        CooldownEntry entry = new CooldownEntry(newCooldown, expiresAt);
+        AbilityCooldownEntry entry = new AbilityCooldownEntry(newCooldown, expiresAt);
 
         cooldowns.put(player.getUniqueId(), entry);
     }
@@ -116,7 +116,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @return expire stamp
      */
     private long getExpireStamp(Player player) {
-        CooldownEntry entry = new CooldownEntry(getCooldownTicks(), 0L);
+        AbilityCooldownEntry entry = new AbilityCooldownEntry(getCooldownTicks(), 0L);
         return cooldowns.getOrDefault(player.getUniqueId(), entry).expiresAt();
     }
 
@@ -159,11 +159,11 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
         player.hideBossBar(bossBar);
     }
 
-    public Trigger getDefaultTrigger() {
-        return Trigger.CUSTOM;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.CUSTOM;
     }
 
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
         return Set.of();
     }
 

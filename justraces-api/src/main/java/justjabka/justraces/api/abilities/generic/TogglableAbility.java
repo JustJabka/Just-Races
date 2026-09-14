@@ -1,6 +1,6 @@
 package justjabka.justraces.api.abilities.generic;
 
-import justjabka.justraces.api.interfaces.PersistentHolder;
+import justjabka.justraces.api.common.PersistentHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

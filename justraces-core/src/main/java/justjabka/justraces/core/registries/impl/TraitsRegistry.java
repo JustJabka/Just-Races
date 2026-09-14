@@ -1,8 +1,8 @@
 package justjabka.justraces.core.registries.impl;
 
-import justjabka.justraces.api.interfaces.ReloadableRegistry;
+import justjabka.justraces.api.common.registry.ReloadableRegistry;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.interfaces.configurable.generic.PluginConfigurable;
+import justjabka.justraces.api.common.configurable.PluginConfigurable;
 
 public class TraitsRegistry extends BaseRegistry<Trait> implements ReloadableRegistry {
 

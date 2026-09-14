@@ -6,7 +6,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
-import justjabka.justraces.api.interfaces.Registry;
+import justjabka.justraces.api.common.registry.Registry;
 import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NullMarked;
 

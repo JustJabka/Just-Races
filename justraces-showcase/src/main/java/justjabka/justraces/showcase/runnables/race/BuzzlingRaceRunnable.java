@@ -1,7 +1,7 @@
 package justjabka.justraces.showcase.runnables.race;
 
-import justjabka.justraces.api.interfaces.configurable.RaceConfigurable;
-import justjabka.justraces.api.runnables.generic.BaseRaceRunnable;
+import justjabka.justraces.api.races.generic.ConfigurableRace;
+import justjabka.justraces.api.races.generic.BaseRaceRunnable;
 import justjabka.justraces.showcase.dataprovider.RaceProvider;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class BuzzlingRaceRunnable extends BaseRaceRunnable implements RaceConfigurable {
+public class BuzzlingRaceRunnable extends BaseRaceRunnable implements ConfigurableRace {
     private static final Random RANDOM = new Random();
 
     @Override

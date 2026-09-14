@@ -2,13 +2,12 @@ package justjabka.justraces.showcase.abilities;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.DurationAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.api.managers.ArmorManager;
 import justjabka.justraces.api.managers.AttributeManager;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.ArmorSet;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -31,7 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class EcdysisAbility extends BaseAbility implements DurationAbility, AbilityConfigurable {
+public class EcdysisAbility extends BaseAbility implements DurationAbility, ConfigurableAbility {
 
     private final Set<PotionEffect> userEffects = Set.of(
             new PotionEffect(PotionEffectType.RESISTANCE, (int) getConfigDuration(), 4, false, true),
@@ -79,18 +78,18 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Abil
     }
 
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.OFFHAND_SWAP;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.OFFHAND_SWAP;
     }
 
     @Override
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
     }
 
     @Override
     protected boolean canActivate(Player player) {
-        return ArmorManager.getArmorSet(player) == ArmorSet.NETHERITE;
+        return ArmorManager.getArmorSet(player) == ArmorManager.ArmorSet.NETHERITE;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package justjabka.justraces.showcase.traits;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.justraces.api.listeners.generic.BaseTraitListener;
+import justjabka.justraces.api.traits.generic.BaseTraitListener;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.Bukkit;

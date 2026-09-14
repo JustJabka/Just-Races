@@ -4,11 +4,9 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.justraces.api.interfaces.configurable.RaceConfigurable;
-import justjabka.justraces.api.listeners.generic.BaseRaceListener;
+import justjabka.justraces.api.races.generic.ConfigurableRace;
+import justjabka.justraces.api.races.generic.BaseRaceListener;
 import justjabka.justraces.api.managers.ArmorManager;
-import justjabka.justraces.api.managers.EffectManager;
-import justjabka.justraces.api.types.ArmorSet;
 import justjabka.justraces.showcase.dataprovider.DamageTypeProvider;
 import justjabka.justraces.showcase.dataprovider.DamageTypeTagKeysProvider;
 import justjabka.justraces.showcase.dataprovider.RaceProvider;
@@ -36,7 +34,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
 
-public class ArmatRaceListener extends BaseRaceListener implements RaceConfigurable {
+public class ArmatRaceListener extends BaseRaceListener implements ConfigurableRace {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "ignore_potion");
@@ -107,7 +105,7 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
     }
 
     private void handleArmorSetBonusesOnDamage(EntityDamageEvent event, Player player, double damage, Entity causingEntity, DamageType damageType, boolean successfullyDodged) {
-        if (ArmorManager.getArmorSet(player) == ArmorSet.NONE) return;
+        if (ArmorManager.getArmorSet(player) == ArmorManager.ArmorSet.NONE) return;
 
         switch (ArmorManager.getArmorSet(player)) {
             case CHAINMAIL -> handleChainmailArmorSetBonus(player, damage, causingEntity, damageType, successfullyDodged);
@@ -161,7 +159,7 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         if (!(event.getDamager() instanceof Player attacker)) return;
 
         if (!isRequiredRace(attacker)) return;
-        if (ArmorManager.getArmorSet(attacker) != ArmorSet.DIAMOND) return;
+        if (ArmorManager.getArmorSet(attacker) != ArmorManager.ArmorSet.DIAMOND) return;
 
         double absoluteDamageAmount = getConfigDouble("absolute_damage", "amount");
         float absoluteDamageCooldown = getConfigFloat("absolute_damage", "min_attack_cooldown");
@@ -203,7 +201,7 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         Player player = event.getPlayer();
 
         if (!isRequiredRace(player)) return;
-        if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
+        if (ArmorManager.getArmorSet(player) != ArmorManager.ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
 
@@ -264,7 +262,7 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (!isRequiredRace(player)) return;
-        if (ArmorManager.getArmorSet(player) != ArmorSet.GOLDEN) return;
+        if (ArmorManager.getArmorSet(player) != ArmorManager.ArmorSet.GOLDEN) return;
 
         EntityPotionEffectEvent.Action action = event.getAction();
         if (action != EntityPotionEffectEvent.Action.ADDED && action != EntityPotionEffectEvent.Action.CHANGED) return;
@@ -299,7 +297,7 @@ public class ArmatRaceListener extends BaseRaceListener implements RaceConfigura
         // Delete old attribute
         miningEfficiencyInstance.removeModifier(getKey());
 
-        if (ArmorManager.getArmorSet(player) != ArmorSet.COPPER) return;
+        if (ArmorManager.getArmorSet(player) != ArmorManager.ArmorSet.COPPER) return;
 
         double miningBonusMax = getConfigDouble("mining_bonus", "upper_bound");
         double miningBonusStep = getConfigDouble("mining_bonus", "step");

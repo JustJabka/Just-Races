@@ -1,7 +1,7 @@
 package justjabka.justraces.core.registries.impl;
 
 import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.interfaces.Registry;
+import justjabka.justraces.api.common.registry.Registry;
 import org.bukkit.NamespacedKey;
 
 import java.util.*;

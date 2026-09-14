@@ -1,7 +1,7 @@
 package justjabka.justraces.showcase.abilities.generic;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.types.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityContext;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.World;

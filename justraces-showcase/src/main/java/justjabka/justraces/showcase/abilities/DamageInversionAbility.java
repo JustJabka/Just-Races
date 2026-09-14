@@ -2,12 +2,11 @@ package justjabka.justraces.showcase.abilities;
 
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.justraces.api.abilities.generic.TogglableAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.api.managers.ArmorManager;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.ArmorSet;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.showcase.dataprovider.DamageTypeTagKeysProvider;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
@@ -27,7 +26,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.Collection;
 import java.util.Set;
 
-public class DamageInversionAbility extends TogglableAbility implements AbilityConfigurable {
+public class DamageInversionAbility extends TogglableAbility implements ConfigurableAbility {
     private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
 
     @Override
@@ -52,23 +51,23 @@ public class DamageInversionAbility extends TogglableAbility implements AbilityC
     }
 
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.OFFHAND_SWAP;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.OFFHAND_SWAP;
     }
 
     @Override
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
     }
 
     @Override
     protected boolean canActivate(Player player) {
-        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+        return ArmorManager.getArmorSet(player) == ArmorManager.ArmorSet.LEATHER;
     }
 
     @Override
     public boolean isStateValid(Player player) {
-        return ArmorManager.getArmorSet(player) == ArmorSet.LEATHER;
+        return ArmorManager.getArmorSet(player) == ArmorManager.ArmorSet.LEATHER;
     }
 
     @EventHandler(ignoreCancelled = true)

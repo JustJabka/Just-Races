@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface ResettableTrait {
 
-    default void applyState(Player player) {};
+    default void applyState(Player player) {}
     void resetState(UUID pid);
 
     default void resetState(Player player) {

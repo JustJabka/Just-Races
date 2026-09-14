@@ -4,7 +4,7 @@ import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import justjabka.justraces.api.listeners.generic.BaseRaceListener;
+import justjabka.justraces.api.races.generic.BaseRaceListener;
 import justjabka.justraces.api.managers.RaceManager;
 import justjabka.justraces.showcase.dataprovider.RaceProvider;
 import justjabka.justraces.showcase.JustRacesShowcase;

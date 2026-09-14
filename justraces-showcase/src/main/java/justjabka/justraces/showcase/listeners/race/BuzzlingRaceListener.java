@@ -1,6 +1,6 @@
 package justjabka.justraces.showcase.listeners.race;
 
-import justjabka.justraces.api.listeners.generic.BaseRaceListener;
+import justjabka.justraces.api.races.generic.BaseRaceListener;
 import justjabka.justraces.showcase.dataprovider.RaceProvider;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Bee;

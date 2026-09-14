@@ -8,7 +8,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import justjabka.justraces.core.commands.arguments.RaceArgument;
 import justjabka.justraces.api.events.race.Cause;
-import justjabka.justraces.api.definitions.RaceDefinition;
+import justjabka.justraces.api.races.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.managers.RaceManager;
 import net.kyori.adventure.text.Component;

@@ -1,8 +1,8 @@
 package justjabka.justraces.api;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.definitions.RaceDefinition;
-import justjabka.justraces.api.interfaces.Registry;
+import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.registry.Registry;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.modifiers.generic.BaseModifier;
 

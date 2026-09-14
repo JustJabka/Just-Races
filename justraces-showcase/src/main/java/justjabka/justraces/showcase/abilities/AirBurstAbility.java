@@ -1,11 +1,11 @@
 package justjabka.justraces.showcase.abilities;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.interfaces.configurable.AbilityConfigurable;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.api.managers.CombatManager;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.Trigger;
-import justjabka.justraces.api.types.TriggerCondition;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -21,7 +21,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Set;
 
-public class AirBurstAbility extends BaseAbility implements AbilityConfigurable {
+public class AirBurstAbility extends BaseAbility implements ConfigurableAbility {
     private static final double ADDITIONAL_Y = 0.35;
     private  static final double DOT = 0.45;
 
@@ -41,13 +41,13 @@ public class AirBurstAbility extends BaseAbility implements AbilityConfigurable 
     }
 
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.OFFHAND_SWAP;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.OFFHAND_SWAP;
     }
 
     @Override
-    public Set<TriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(TriggerCondition.SNEAKING, TriggerCondition.EMPTY_HAND);
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
     }
 
     @Override

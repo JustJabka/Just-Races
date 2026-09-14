@@ -1,7 +1,7 @@
 package justjabka.justraces.core.gson.deserializer.entry;
 
 import com.google.gson.*;
-import justjabka.justraces.api.types.entry.AttributeEntry;
+import justjabka.justraces.api.common.entry.AttributeEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;

@@ -2,10 +2,10 @@ package justjabka.justraces.core;
 
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.interfaces.configurable.generic.PluginConfigurable;
+import justjabka.justraces.api.common.configurable.PluginConfigurable;
 import justjabka.justraces.core.registries.ListenersRegistry;
 import justjabka.justraces.core.registries.RunnablesRegistry;
-import justjabka.justraces.api.runnables.generic.BaseTraitRunnable;
+import justjabka.justraces.api.traits.generic.BaseTraitRunnable;
 import justjabka.justraces.core.registries.impl.AbilitiesRegistry;
 import justjabka.justraces.core.registries.impl.ModifiersRegistry;
 import justjabka.justraces.core.registries.impl.RacesRegistry;

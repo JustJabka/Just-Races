@@ -1,13 +1,13 @@
 package justjabka.justraces.showcase.modifiers.armor;
 
-import justjabka.justraces.api.interfaces.configurable.ItemModifierConfigurable;
+import justjabka.justraces.api.modifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.api.modifiers.generic.BaseArmorModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 
-public class LeatherArmorModifier extends BaseArmorModifier implements ItemModifierConfigurable {
+public class LeatherArmorModifier extends BaseArmorModifier implements ConfigurableItemModifier {
 
     @Override
     public NamespacedKey getKey() {

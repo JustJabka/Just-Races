@@ -1,8 +1,8 @@
 package justjabka.justraces.showcase.abilities;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.types.AbilityContext;
-import justjabka.justraces.api.types.Trigger;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -30,8 +30,8 @@ public class DeepPocketsAbility extends BaseAbility {
     }
 
     @Override
-    public Trigger getDefaultTrigger() {
-        return Trigger.RIGHT_CLICK_CHESTPLATE;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.RIGHT_CLICK_CHESTPLATE;
     }
 
     @Override

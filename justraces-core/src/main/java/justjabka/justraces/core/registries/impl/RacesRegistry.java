@@ -2,8 +2,8 @@ package justjabka.justraces.core.registries.impl;
 
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.definitions.RaceDefinition;
-import justjabka.justraces.api.interfaces.ReloadableRegistry;
+import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.registry.ReloadableRegistry;
 import justjabka.justraces.api.managers.ResourceManager;
 import justjabka.justraces.core.gson.GsonManager;
 import org.bukkit.NamespacedKey;

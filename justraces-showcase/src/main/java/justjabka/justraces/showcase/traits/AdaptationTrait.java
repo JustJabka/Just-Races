@@ -1,7 +1,7 @@
 package justjabka.justraces.showcase.traits;
 
-import justjabka.justraces.api.interfaces.configurable.TraitConfigurable;
-import justjabka.justraces.api.listeners.generic.BaseTraitListener;
+import justjabka.justraces.api.traits.generic.ConfigurableTrait;
+import justjabka.justraces.api.traits.generic.BaseTraitListener;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.Bukkit;
@@ -16,7 +16,7 @@ import org.bukkit.tag.DamageTypeTags;
 
 import java.util.UUID;
 
-public class AdaptationTrait extends BaseTraitListener implements ResettableTrait, TraitConfigurable {
+public class AdaptationTrait extends BaseTraitListener implements ResettableTrait, ConfigurableTrait {
 
     @Override
     public NamespacedKey getKey() {

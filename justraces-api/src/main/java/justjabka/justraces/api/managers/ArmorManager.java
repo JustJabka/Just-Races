@@ -1,7 +1,6 @@
 package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.types.ArmorSet;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -119,5 +118,32 @@ public final class ArmorManager {
         }
 
         return count == 0 ? 0 : (totalPercent / count);
+    }
+
+    public enum ArmorSet {
+        NONE,
+        LEATHER,
+        COPPER,
+        CHAINMAIL,
+        IRON,
+        GOLDEN,
+        DIAMOND,
+        NETHERITE;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
+
+        public static ArmorSet fromMaterialName(String name) {
+            if (name.startsWith("leather_")) return LEATHER;
+            if (name.startsWith("copper_")) return COPPER;
+            if (name.startsWith("chainmail_")) return CHAINMAIL;
+            if (name.startsWith("iron_")) return IRON;
+            if (name.startsWith("golden_")) return GOLDEN;
+            if (name.startsWith("diamond_")) return DIAMOND;
+            if (name.startsWith("netherite_")) return NETHERITE;
+            return NONE;
+        }
     }
 }

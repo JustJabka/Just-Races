@@ -1,6 +1,6 @@
 package justjabka.justraces.api.managers;
 
-import justjabka.justraces.api.definitions.RaceDefinition;
+import justjabka.justraces.api.races.RaceDefinition;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.JustRacesAPI;
