@@ -1,11 +1,12 @@
 package justjabka.justraces.showcase.modifiers.armor;
 
-import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.api.itemmodifiers.generic.BaseArmorItemModifier;
+import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.jetbrains.annotations.Nullable;
 
 public class CopperArmorItemModifier extends BaseArmorItemModifier implements ConfigurableItemModifier {
     @Override
@@ -14,17 +15,11 @@ public class CopperArmorItemModifier extends BaseArmorItemModifier implements Co
     }
 
     @Override
-    public Attribute getAttribute() {
-        return Attribute.BLOCK_INTERACTION_RANGE;
-    }
-
-    @Override
-    public double getAttributeAmount() {
-        return getConfigDouble("attribute_amount");
-    }
-
-    @Override
-    public AttributeModifier.Operation getAttributeOperation() {
-        return AttributeModifier.Operation.ADD_NUMBER;
+    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+        return new UnkeyedAttributeModifier(
+                Attribute.BLOCK_INTERACTION_RANGE,
+                getConfigDouble("attribute_amount"),
+                AttributeModifier.Operation.ADD_NUMBER
+        );
     }
 }

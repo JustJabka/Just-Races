@@ -1,26 +1,67 @@
 package justjabka.justraces.api.itemmodifiers.generic;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Equippable;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class BaseArmorItemModifier extends BaseItemModifier {
-    // TODO: rewrite and add equippable component
 
-    public abstract Attribute getAttribute();
-    public abstract double getAttributeAmount();
-    public abstract AttributeModifier.Operation getAttributeOperation();
+    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+        return null;
+    }
+
+    public @Nullable Consumer<Equippable.Builder> getEquippable() {
+        return null;
+    }
+    public @NotNull EquipmentSlot getEquippableSlotFallBack() {
+        return EquipmentSlot.HAND;
+    }
 
     @Override
     public void apply(ItemStack item) {
-        // Filter Attributes
+        applyEquippable(item);
+        applyAttributeModifier(item);
+    }
+
+    @Override
+    public void undo(ItemStack item) {
+        undoEquippable(item);
+        undoAttributeModifier(item);
+    }
+
+    private void applyEquippable(ItemStack item) {
+        if (getEquippable() == null) return;
+        mergeComponent(
+                item,
+                DataComponentTypes.EQUIPPABLE,
+                getEquippable(),
+                Equippable.equippable(getEquippableSlotFallBack())
+        );
+    }
+
+    private void undoEquippable(ItemStack item) {
+        if (getEquippable() == null) return;
+        item.resetData(DataComponentTypes.EQUIPPABLE);
+    }
+
+    private void applyAttributeModifier(ItemStack item) {
+        UnkeyedAttributeModifier modifier = getAttributeModifier();
+        if (modifier == null) return;
+
         ItemAttributeModifiers.Builder attributes = ItemAttributeModifiers.itemAttributes();
-        item.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS).modifiers()
+
+        item.getDataOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.itemAttributes().build()).modifiers()
                 .stream()
                 .filter(entry -> !entry.modifier().key().equals(getDynamicKey(item)))
                 .forEach(entry ->
@@ -28,10 +69,10 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
                 );
 
         // Apply Modifier
-        attributes.addModifier(getAttribute(), new AttributeModifier(
+        attributes.addModifier(modifier.attribute(), new AttributeModifier(
                 getDynamicKey(item),
-                getAttributeAmount(),
-                getAttributeOperation(),
+                modifier.amount(),
+                modifier.operation(),
                 getItemGroupSlot(item)
         ));
 
@@ -39,26 +80,38 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
         item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes.build());
     }
 
-    @Override
-    public void undo(ItemStack item) {
+    private void undoAttributeModifier(ItemStack item) {
+        UnkeyedAttributeModifier modifier = getAttributeModifier();
+        if (modifier == null) return;
+
         ItemAttributeModifiers currentAttributes = item.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+        if (currentAttributes == null) return;
 
-        if (currentAttributes != null) {
-            // Filter and Build Attributes
-            ItemAttributeModifiers.Builder attributes = ItemAttributeModifiers.itemAttributes();
-            currentAttributes.modifiers().stream()
-                    .filter(entry -> !entry.modifier().key().equals(getDynamicKey(item)))
-                    .forEach(entry -> attributes.addModifier(entry.attribute(), entry.modifier(), entry.getGroup(), entry.display()));
+        // Filter and Build Attributes
+        ItemAttributeModifiers.Builder attributes = ItemAttributeModifiers.itemAttributes();
+        currentAttributes.modifiers().stream()
+                .filter(entry -> !entry.modifier().key().equals(getDynamicKey(item)))
+                .forEach(entry -> attributes.addModifier(entry.attribute(), entry.modifier(), entry.getGroup(), entry.display()));
 
-            item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes.build());
-        }
+        item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, attributes.build());
     }
 
     private NamespacedKey getDynamicKey(ItemStack item) {
-        return new NamespacedKey(getKey().getNamespace(), getKey().getKey() + "." + getItemGroupSlot(item));
+        String dynamicKey = "%s.%s".formatted(getKey(), getItemGroupSlot(item));
+        return NamespacedKey.fromString(dynamicKey);
     }
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {
-        return item.getData(DataComponentTypes.EQUIPPABLE).slot().getGroup();
+        Equippable equippable = item.getData(DataComponentTypes.EQUIPPABLE);
+        if (equippable == null) return getEquippableSlotFallBack().getGroup();
+
+        return equippable.slot().getGroup();
+    }
+
+    public record UnkeyedAttributeModifier(
+            Attribute attribute,
+            double amount,
+            AttributeModifier.Operation operation
+    ) {
     }
 }

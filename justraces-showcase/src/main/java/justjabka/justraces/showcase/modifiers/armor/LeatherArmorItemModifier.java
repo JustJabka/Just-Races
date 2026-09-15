@@ -1,11 +1,12 @@
 package justjabka.justraces.showcase.modifiers.armor;
 
-import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.api.itemmodifiers.generic.BaseArmorItemModifier;
+import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.jetbrains.annotations.Nullable;
 
 public class LeatherArmorItemModifier extends BaseArmorItemModifier implements ConfigurableItemModifier {
 
@@ -15,17 +16,11 @@ public class LeatherArmorItemModifier extends BaseArmorItemModifier implements C
     }
 
     @Override
-    public Attribute getAttribute() {
-        return Attribute.MOVEMENT_SPEED;
-    }
-
-    @Override
-    public double getAttributeAmount() {
-        return getConfigDouble("attribute_amount");
-    }
-
-    @Override
-    public AttributeModifier.Operation getAttributeOperation() {
-        return AttributeModifier.Operation.ADD_NUMBER;
+    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+        return new UnkeyedAttributeModifier(
+                Attribute.MOVEMENT_SPEED,
+                getConfigDouble("attribute_amount"),
+                AttributeModifier.Operation.ADD_NUMBER
+        );
     }
 }
