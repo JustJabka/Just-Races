@@ -5,15 +5,40 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.Equippable;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class EffectManager {
 
     private EffectManager() {}
+
+    private static final ItemStack GLIDER_FLIGHT_STACK;
+
+    static {
+        ItemStack elytra = new ItemStack(Material.POISONOUS_POTATO);
+
+        elytra.setData(DataComponentTypes.EQUIPPABLE, Equippable.equippable(EquipmentSlot.SADDLE)
+                .swappable(false)
+                .build());
+        elytra.setData(DataComponentTypes.GLIDER);
+
+        elytra.addUnsafeEnchantments(Map.of(
+                Enchantment.BINDING_CURSE, 1,
+                Enchantment.VANISHING_CURSE, 1
+        ));
+
+        GLIDER_FLIGHT_STACK = elytra;
+    }
 
     /**
      * Glows target for player on client side
@@ -59,5 +84,18 @@ public final class EffectManager {
         );
 
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
+    }
+
+    public static void setGliderFlight(Player player, boolean gliderFlight) {
+        ItemStack glider;
+
+        if (gliderFlight) {
+            glider = GLIDER_FLIGHT_STACK;
+        } else {
+            glider = ItemStack.empty();
+        }
+
+        player.getEquipment().setItem(EquipmentSlot.SADDLE, glider);
+        player.sendEquipmentChange(player, EquipmentSlot.SADDLE, glider);
     }
 }
