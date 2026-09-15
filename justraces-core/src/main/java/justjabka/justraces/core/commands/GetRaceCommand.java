@@ -5,7 +5,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.managers.RaceManager;
 import net.kyori.adventure.text.Component;

@@ -1,6 +1,6 @@
 package justjabka.justraces.api.managers;
 
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.JustRacesAPI;
@@ -49,6 +49,14 @@ public final class TraitManager {
         allTraits.addAll(TransientManager.getTransientTraits(player));
 
         return allTraits;
+    }
+
+    public static boolean playerHasTrait(Player player, Trait trait) {
+        return TraitManager.getTraitsForPlayer(player).contains(trait);
+    }
+
+    public static boolean playerHasTrait(Player player, NamespacedKey traitKey) {
+        return playerHasTrait(player, getByKey(traitKey));
     }
 
     public static void startTraits(Player player) {

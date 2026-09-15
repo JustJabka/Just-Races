@@ -3,7 +3,7 @@ package justjabka.justraces.api.managers;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.abilities.generic.ValidationAbility;
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.common.entry.AbilityEntry;

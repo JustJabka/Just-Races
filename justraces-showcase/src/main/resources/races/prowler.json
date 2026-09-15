@@ -44,6 +44,10 @@
   "abilities": [
     "justracesshowcase:deep_pockets"
   ],
+  "traits": [
+    "justracesshowcase:chicken_fright",
+    "justracesshowcase:berry_bush_immunity"
+  ],
   "item_modifiers": {
     "justracesshowcase:food/better_berries": "#justracesshowcase:modifier/better_berries"
   }

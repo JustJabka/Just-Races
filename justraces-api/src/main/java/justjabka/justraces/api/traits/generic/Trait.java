@@ -14,6 +14,6 @@ public interface Trait extends PersistentHolder {
     }
 
     default boolean isRequiredTrait(Player player) {
-        return TraitManager.getTraitsForPlayer(player).contains(this);
+        return TraitManager.playerHasTrait(player, this);
     }
 }

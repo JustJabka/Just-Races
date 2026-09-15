@@ -11,9 +11,6 @@
     "Late descendants of the Breeze, Skyzern glide through the air with ease and take minimal fall damage.",
     "Their strike gains devastating force when unleashed from above"
   ],
-  "abilities": [
-    "justracesshowcase:air_burst"
-  ],
   "attributes": [
     {
       "id": "minecraft:max_health",
@@ -43,6 +40,9 @@
       "amount": 0.5,
       "operation": "add_number"
     }
+  ],
+  "abilities": [
+    "justracesshowcase:air_burst"
   ],
   "traits": [
     "justracesshowcase:celestial_combatant"

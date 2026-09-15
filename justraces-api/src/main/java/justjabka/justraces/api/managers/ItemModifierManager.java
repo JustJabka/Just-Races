@@ -1,6 +1,6 @@
 package justjabka.justraces.api.managers;
 
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;

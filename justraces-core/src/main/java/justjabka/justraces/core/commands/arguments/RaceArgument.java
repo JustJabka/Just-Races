@@ -5,7 +5,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import io.papermc.paper.command.brigadier.MessageComponentSerializer;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.common.registry.Registry;
 import justjabka.justraces.api.managers.RaceManager;
 import net.kyori.adventure.text.Component;

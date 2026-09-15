@@ -1,0 +1,12 @@
+{
+  "chance": {
+    "per_flower": 0.02,
+    "max": 0.3
+  },
+  "min_flower_amount": 4,
+  "radius": {
+    "x": 9,
+    "y": 2,
+    "z": 9
+  }
+}

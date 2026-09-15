@@ -12,12 +12,6 @@
     "atlas": "minecraft:items",
     "sprite": "minecraft:item/honeycomb"
   },
-  "abilities": [
-    "justracesshowcase:poisonous_sting"
-  ],
-  "item_modifiers": {
-    "justracesshowcase:food/honey_bottle": "minecraft:honey_bottle"
-  },
   "attributes": [
     {
       "id": "minecraft:max_health",
@@ -33,18 +27,14 @@
       "operation": "multiply_scalar_1"
     }
   ],
-  "config": {
-    "crop_pollinator": {
-      "chance": {
-        "per_flower": 0.02,
-        "max": 0.3
-      },
-      "min_flower_amount": 4,
-      "radius": {
-        "x": 9,
-        "y": 2,
-        "z": 9
-      }
-    }
+  "abilities": [
+    "justracesshowcase:poisonous_sting"
+  ],
+  "traits": [
+    "justracesshowcase:passive_bees",
+    "justracesshowcase:crop_pollinator"
+  ],
+  "item_modifiers": {
+    "justracesshowcase:food/honey_bottle": "minecraft:honey_bottle"
   }
 }

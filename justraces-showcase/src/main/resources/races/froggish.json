@@ -12,10 +12,6 @@
     "atlas": "minecraft:blocks",
     "sprite": "minecraft:block/frogspawn"
   },
-  "abilities": [
-    "justracesshowcase:frog_tongue",
-    "justracesshowcase:slime_trail"
-  ],
   "attributes": [
     {
       "id": "minecraft:max_health",
@@ -58,6 +54,10 @@
       "amount": 0.25,
       "operation": "add_scalar"
     }
+  ],
+  "abilities": [
+    "justracesshowcase:frog_tongue",
+    "justracesshowcase:slime_trail"
   ],
   "item_modifiers": {
     "justracesshowcase:food/slime_ball": "minecraft:slime_ball",

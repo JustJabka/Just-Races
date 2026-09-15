@@ -3,7 +3,7 @@ package justjabka.justraces.api.managers;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
-import justjabka.justraces.api.races.RaceDefinition;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.events.race.Cause;
 import justjabka.justraces.api.events.race.PlayerRaceChangeEvent;
 import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
@@ -173,24 +173,20 @@ public final class RaceManager {
      * @apiNote Don't confuse with {@link reloadRace(Player)}
      */
     public static void resetRace(@NotNull Player player) {
-        // Clear potion effects
-        player.clearActivePotionEffects();
-
-        // Reset all attributes
+        // Reset Attributes
         AttributeManager.removeAllModifiers(player);
-
         Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
-        // Disable abilities
+        // Disable Abilities
         AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
 
-        // Disable traits
+        // Disable Traits
         TraitManager.endTraits(player);
 
         // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
 
-        // Remove race
+        // Remove Race
         player.getPersistentDataContainer().remove(RACE_KEY);
     }
 }

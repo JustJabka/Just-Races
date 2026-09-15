@@ -1,8 +1,8 @@
-package justjabka.justraces.showcase.runnables.race;
+package justjabka.justraces.showcase.traits;
 
-import justjabka.justraces.api.races.generic.ConfigurableRace;
-import justjabka.justraces.api.races.generic.BaseRaceRunnable;
-import justjabka.justraces.showcase.dataprovider.RaceProvider;
+import justjabka.justraces.api.traits.generic.BaseTraitRunnable;
+import justjabka.justraces.api.traits.generic.ConfigurableTrait;
+import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -13,12 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class BuzzlingRaceRunnable extends BaseRaceRunnable implements ConfigurableRace {
+public class CropPollinatorTrait extends BaseTraitRunnable implements ConfigurableTrait {
     private static final Random RANDOM = new Random();
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.BUZZLING;
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "crop_pollinator");
+    }
+
+    @Override
+    public long getTickPeriod() {
+        return 200;
     }
 
     @Override
@@ -28,9 +33,9 @@ public class BuzzlingRaceRunnable extends BaseRaceRunnable implements Configurab
         int flowerCount = 0;
         Map<Location, Ageable> cropsNearby = new HashMap<>();
 
-        final int searchRadiusX = getConfigInt("crop_pollinator", "radius", "x");
-        final int searchRadiusY = getConfigInt("crop_pollinator", "radius", "y");
-        final int searchRadiusZ = getConfigInt("crop_pollinator", "radius", "z");
+        final int searchRadiusX = getConfigInt("radius", "x");
+        final int searchRadiusY = getConfigInt("radius", "y");
+        final int searchRadiusZ = getConfigInt("radius", "z");
 
         for (int x = -searchRadiusX; x <= searchRadiusX; x++) {
             for (int y = -searchRadiusY; y <= searchRadiusY; y++) {
@@ -50,11 +55,11 @@ public class BuzzlingRaceRunnable extends BaseRaceRunnable implements Configurab
             }
         }
 
-        final int minFlowerAmount = getConfigInt("crop_pollinator", "min_flower_amount");
+        final int minFlowerAmount = getConfigInt("min_flower_amount");
         if (flowerCount < minFlowerAmount) return;
 
-        final float chancePerFlower = getConfigFloat("crop_pollinator", "chance", "per_flower");
-        final float maxChance = getConfigFloat("crop_pollinator", "chance", "max");
+        final float chancePerFlower = getConfigFloat("chance", "per_flower");
+        final float maxChance = getConfigFloat("chance", "max");
         float chance = Math.min(flowerCount * chancePerFlower, maxChance);
 
         spawnNectarParticle(player);

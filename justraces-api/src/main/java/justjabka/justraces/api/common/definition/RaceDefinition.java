@@ -1,8 +1,7 @@
-package justjabka.justraces.api.races;
+package justjabka.justraces.api.common.definition;
 
 import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.common.BaseDefinition;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.common.entry.AbilityEntry;
@@ -114,12 +113,6 @@ public class RaceDefinition extends BaseDefinition {
     // endregion
 
     // region Cache
-    @Override
-    public void clearDefinitionCache() {
-        this.cachedAbilities = null;
-        this.cachedModifiers = null;
-    }
-
     private void buildAbilitiesCache() {
         if (abilities == null || abilities.isEmpty()) {
             cachedAbilities = Collections.emptySet();

@@ -1,16 +1,16 @@
-package justjabka.justraces.showcase.listeners.race;
+package justjabka.justraces.showcase.traits;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
-import justjabka.justraces.api.races.generic.ConfigurableRace;
-import justjabka.justraces.api.races.generic.BaseRaceListener;
 import justjabka.justraces.api.managers.ArmorManager;
+import justjabka.justraces.api.traits.generic.BaseTraitListener;
+import justjabka.justraces.api.traits.generic.ConfigurableTrait;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
+import justjabka.justraces.showcase.JustRacesShowcase;
 import justjabka.justraces.showcase.dataprovider.DamageTypeProvider;
 import justjabka.justraces.showcase.dataprovider.DamageTypeTagKeysProvider;
-import justjabka.justraces.showcase.dataprovider.RaceProvider;
-import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -33,8 +33,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
+import java.util.UUID;
 
-public class ArmatRaceListener extends BaseRaceListener implements ConfigurableRace {
+public class ArmorResonanceTrait extends BaseTraitListener implements ResettableTrait, ConfigurableTrait {
     private static final Random RANDOM = new Random();
 
     private static final NamespacedKey IGNORE_POTION_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "ignore_potion");
@@ -45,13 +46,27 @@ public class ArmatRaceListener extends BaseRaceListener implements ConfigurableR
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.ARMAT;
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor_resonance");
+    }
+
+
+    @Override
+    public void resetState(UUID pid) {
+        Player player = Bukkit.getPlayer(pid);
+        if (player == null) return;
+
+        AttributeInstance miningEfficiencyInstance = player.getAttribute(Attribute.MINING_EFFICIENCY);
+        if (miningEfficiencyInstance != null) {
+            miningEfficiencyInstance.removeModifier(getKey());
+        }
+
+        player.getPersistentDataContainer().remove(IGNORE_POTION_KEY);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
 
         DamageSource damageSource = event.getDamageSource();
         Entity causingEntity = damageSource.getCausingEntity();
@@ -158,7 +173,7 @@ public class ArmatRaceListener extends BaseRaceListener implements ConfigurableR
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
         if (!(event.getDamager() instanceof Player attacker)) return;
 
-        if (!isRequiredRace(attacker)) return;
+        if (!isRequiredTrait(attacker)) return;
         if (ArmorManager.getArmorSet(attacker) != ArmorManager.ArmorSet.DIAMOND) return;
 
         double absoluteDamageAmount = getConfigDouble("absolute_damage", "amount");
@@ -191,7 +206,7 @@ public class ArmatRaceListener extends BaseRaceListener implements ConfigurableR
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
 
         applyCopperArmorBonus(player);
     }
@@ -200,7 +215,7 @@ public class ArmatRaceListener extends BaseRaceListener implements ConfigurableR
     public void onItemConsume(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
 
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
         if (ArmorManager.getArmorSet(player) != ArmorManager.ArmorSet.GOLDEN) return;
 
         ItemStack consumedItem = event.getItem();
@@ -261,7 +276,7 @@ public class ArmatRaceListener extends BaseRaceListener implements ConfigurableR
     public void onPotionApply(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
         if (ArmorManager.getArmorSet(player) != ArmorManager.ArmorSet.GOLDEN) return;
 
         EntityPotionEffectEvent.Action action = event.getAction();

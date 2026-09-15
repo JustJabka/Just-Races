@@ -1,18 +1,18 @@
-package justjabka.justraces.showcase.listeners.race;
+package justjabka.justraces.showcase.traits;
 
-import justjabka.justraces.api.races.generic.BaseRaceListener;
-import justjabka.justraces.showcase.dataprovider.RaceProvider;
+import justjabka.justraces.api.traits.generic.BaseTraitListener;
+import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Bee;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
-public class BuzzlingRaceListener extends BaseRaceListener {
+public class PassiveBeesTrait extends BaseTraitListener {
 
     @Override
     public NamespacedKey getKey() {
-        return RaceProvider.BUZZLING;
+        return new NamespacedKey(JustRacesShowcase.NAMESPACE, "passive_bees");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -20,7 +20,7 @@ public class BuzzlingRaceListener extends BaseRaceListener {
         if (!(event.getTarget() instanceof Player player)) return;
         if (!(event.getEntity() instanceof Bee)) return;
 
-        if (!isRequiredRace(player)) return;
+        if (!isRequiredTrait(player)) return;
 
         event.setCancelled(true);
     }

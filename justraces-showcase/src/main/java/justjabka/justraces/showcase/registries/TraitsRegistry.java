@@ -12,6 +12,12 @@ public class TraitsRegistry {
         registerTrait(new AdaptationTrait());
         registerTrait(new CelestialCombatantTrait());
         registerTrait(new BoundShellTrait());
+        registerTrait(new CropPollinatorTrait());
+        registerTrait(new SinksInWaterTrait());
+        registerTrait(new ArmorResonanceTrait());
+        registerTrait(new PassiveBeesTrait());
+        registerTrait(new BerryBushImmunityTrait());
+        registerTrait(new ChickenFrightTrait());
     }
 
     public static void register() {

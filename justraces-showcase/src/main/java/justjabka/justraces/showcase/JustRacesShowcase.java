@@ -1,7 +1,10 @@
 package justjabka.justraces.showcase;
 
 import justjabka.justraces.api.managers.ResourceManager;
-import justjabka.justraces.showcase.registries.*;
+import justjabka.justraces.showcase.registries.AbilitiesRegistry;
+import justjabka.justraces.showcase.registries.DatapackRegistry;
+import justjabka.justraces.showcase.registries.ItemModifiersRegistry;
+import justjabka.justraces.showcase.registries.TraitsRegistry;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -17,9 +20,6 @@ public final class JustRacesShowcase extends JavaPlugin {
         AbilitiesRegistry.register();
         ItemModifiersRegistry.register();
         TraitsRegistry.register();
-
-        ListenersRegistry.register(this);
-        RunnablesRegistry.register(this);
 
         ResourceManager.registerRacesFromPlugin(this);
     }
