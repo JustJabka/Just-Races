@@ -24,6 +24,8 @@ public class GlobalListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        // TODO: fix cooldown reset exploit
+        // TODO: fix cooldown memory leak
         RaceManager.reloadRace(player);
     }
 
@@ -31,14 +33,19 @@ public class GlobalListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        TransientManager.clearTransientContainer(player);
+        endEverything(player, ResettableAbility.Reason.QUIT);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 
-        AbilityManager.endAbilities(player, ResettableAbility.Reason.DEATH);
+        endEverything(player, ResettableAbility.Reason.DEATH);
+    }
+
+    private static void endEverything(Player player, ResettableAbility.Reason death) {
+        AbilityManager.endAbilities(player, death);
         TraitManager.endTraits(player);
+        TransientManager.resetTransientContainer(player);
     }
 }

@@ -27,7 +27,6 @@ public final class RaceManager {
     private RaceManager() {}
 
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
-    public static final NamespacedKey RACES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "races");
 
     public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
     public static final RaceDefinition NONE = getByKey(NONE_KEY);
@@ -177,13 +176,11 @@ public final class RaceManager {
         AttributeManager.removeAllModifiers(player);
         Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
 
-        // Disable Abilities
+        // End Everything
         AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
-
-        // Disable Traits
         TraitManager.endTraits(player);
+        TransientManager.resetTransientContainer(player);
 
-        // Reset Item Modifiers
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
 
         // Remove Race

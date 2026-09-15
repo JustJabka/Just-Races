@@ -26,7 +26,7 @@ public final class TransientManager {
         );
     }
 
-    public static void clearTransientContainer(Player player) {
+    public static void resetTransientContainer(Player player) {
         TRANSIENT_CONTAINER.remove(player.getUniqueId());
     }
 
