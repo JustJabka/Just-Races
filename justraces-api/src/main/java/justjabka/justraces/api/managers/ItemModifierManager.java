@@ -1,14 +1,15 @@
 package justjabka.justraces.api.managers;
 
-import justjabka.justraces.api.common.definition.RaceDefinition;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
+import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 
 public final class ItemModifierManager {
 
@@ -16,48 +17,50 @@ public final class ItemModifierManager {
 
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
+    @Nullable
     public static BaseItemModifier getByKey(NamespacedKey key) {
         return JustRacesRegistries.ITEM_MODIFIERS.get(key);
+    }
+
+    @Nullable
+    public static BaseItemModifier getItemModifierForMaterial(Player player, ItemStack item) {
+        RaceDefinition race = RaceManager.getRace(player);
+        return race.getItemModifierForMaterial(item.getType());
     }
 
     public static void tryApply(Player player, ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
 
-        RaceDefinition race = RaceManager.getRace(player);
-        BaseItemModifier type = race.getItemModifierForMaterial(item.getType());
+        BaseItemModifier modifier = getItemModifierForMaterial(player, item);
 
-        if (type == null) return;
-        if (isModifiedWith(item, type)) return;
+        if (modifier == null) return;
+        if (isModifiedWith(item, modifier)) return;
+        if (isCustomItem(item)) return;
 
-        type.apply(item);
-        addMarker(item, type);
+        modifier.apply(item);
+        addMarker(item, modifier);
     }
 
     public static void tryUndo(ItemStack item) {
         if (item == null) return;
-        if (!item.hasItemMeta()) return;
+        if (item.isEmpty()) return;
+        if (!item.getPersistentDataContainer().has(ITEM_MODIFIED_KEY)) return;
 
-        String modifierId = getAppliedModifier(item);
-        if (modifierId == null) return;
+        BaseItemModifier modifier = getAppliedModifier(item);
 
-        NamespacedKey key = NamespacedKey.fromString(modifierId, JustRacesAPI.getInstance());
-        if (key == null) return;
-
-        BaseItemModifier type = getByKey(key);
-
-        if (type == null) {
+        if (modifier == null) {
             removeMarker(item);
 
-            JustRacesAPI.getLogger().warn("Tried to undo unknown or unregistered modifier: {}", modifierId);
+            JustRacesAPI.getLogger().warn("Tried to undo unknown or unregistered modifier");
             return;
         }
 
         try {
-            type.undo(item);
+            modifier.undo(item);
             removeMarker(item);
         } catch (IllegalArgumentException e) {
-            JustRacesAPI.getLogger().error("Error while undoing modifier {} on item {}", modifierId, item.getType(), e);
+            JustRacesAPI.getLogger().error("Error while undoing modifier {} on item {}", modifier.getKey(), item.getType(), e);
         }
     }
 
@@ -87,9 +90,17 @@ public final class ItemModifierManager {
         refreshModifiersOnItem(player, cursorItem);
     }
 
-    private static void addMarker(ItemStack item, BaseItemModifier type) {
+    public static boolean isCustomItem(ItemStack item) {
+        PersistentDataContainerView pdc = item.getPersistentDataContainer();
+        if (pdc.isEmpty()) return false;
+
+        boolean hasOnlyMarker = pdc.getSize() == 1 && pdc.has(ITEM_MODIFIED_KEY);
+        return !hasOnlyMarker;
+    }
+
+    private static void addMarker(ItemStack item, BaseItemModifier modifier) {
         item.editPersistentDataContainer(pdc ->
-                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, type.getKey().toString())
+                pdc.set(ITEM_MODIFIED_KEY, PersistentDataType.STRING, modifier.getKey().toString())
         );
     }
 
@@ -99,15 +110,21 @@ public final class ItemModifierManager {
         );
     }
 
-    public static boolean isModifiedWith(ItemStack item, BaseItemModifier type) {
-        if (type == null) return false;
-
-        String modifier = getAppliedModifier(item);
-        return type.getKey().asString().equals(modifier);
+    public static boolean isModifiedWith(ItemStack item, BaseItemModifier modifier) {
+        if (modifier == null) return false;
+        return modifier.equals(getAppliedModifier(item));
     }
 
-    public static String getAppliedModifier(ItemStack item) {
-        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
-        return pdc.get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
+    @Nullable
+    public static BaseItemModifier getAppliedModifier(ItemStack item) {
+        PersistentDataContainerView pdc = item.getPersistentDataContainer();
+
+        String keyStr = pdc.get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
+        if (keyStr == null) return null;
+
+        NamespacedKey key = NamespacedKey.fromString(keyStr, JustRacesAPI.getInstance());
+        if (key == null) return null;
+
+        return getByKey(key);
     }
 }
