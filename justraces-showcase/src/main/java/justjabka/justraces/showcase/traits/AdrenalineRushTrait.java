@@ -1,5 +1,6 @@
 package justjabka.justraces.showcase.traits;
 
+import justjabka.justraces.api.managers.HealthManager;
 import justjabka.justraces.api.traits.generic.ConfigurableTrait;
 import justjabka.justraces.api.traits.generic.BaseTraitRunnable;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
@@ -43,12 +44,7 @@ public class AdrenalineRushTrait extends BaseTraitRunnable implements Resettable
     }
 
     private double calcAdrenalineRushBonus(Player player) {
-        AttributeInstance maxHealthInstance = player.getAttribute(Attribute.MAX_HEALTH);
-        if (maxHealthInstance == null) return 0;
-
-        double currentHealth = player.getHealth();
-        double maxHealth = maxHealthInstance.getValue();
-        double lostHealthPercent = (maxHealth - currentHealth) / maxHealth;
+        double lostHealthPercent = HealthManager.getLostHealthPercent(player);
 
         final float healthThresholdPercent = getConfigFloat("health_threshold_percent");
         final float speedBonusPerStack = getConfigFloat("speed_bonus_per_stack");

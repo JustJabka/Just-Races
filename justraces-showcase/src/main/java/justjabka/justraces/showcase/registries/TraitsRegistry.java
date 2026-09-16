@@ -18,6 +18,7 @@ public class TraitsRegistry {
         registerTrait(new PassiveBeesTrait());
         registerTrait(new BerryBushImmunityTrait());
         registerTrait(new ChickenFrightTrait());
+        registerTrait(new HalfLifeTrait());
     }
 
     public static void register() {

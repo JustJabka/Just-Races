@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "race.name.atomar",
+    "fallback": "Atomar"
+  },
+  "description": [
+    "It is a absolutely unstable being due to constant half-life decay.",
+    "There is no possible way to identify a pattern in the changes of its properties."
+  ],
+  "icon": {
+    "atlas": "minecraft:items",
+    "sprite": "minecraft:item/missingno"
+  },
+  "traits": [
+    "justracesshowcase:half_life"
+  ]
+}
