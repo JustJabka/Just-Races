@@ -4,6 +4,7 @@ import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.AbilityContext;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.showcase.JustRacesShowcase;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -27,6 +28,11 @@ public class DeepPocketsAbility extends BaseAbility {
     @Override
     public long getCooldownTicks() {
         return 0;
+    }
+
+    @Override
+    public Component getCooldownBarIcon(Player player) {
+        return Component.text("\uE006").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
