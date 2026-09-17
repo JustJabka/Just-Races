@@ -2,6 +2,7 @@ package justjabka.justraces.api.common.definition;
 
 import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
+import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.common.entry.AbilityEntry;
@@ -24,7 +25,7 @@ public class RaceDefinition extends BaseDefinition {
     private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
-    private Map<BaseItemModifier, Set<Material>> itemModifiers;
+    private Set<ItemModifierEntry> itemModifiers;
     private Boolean hidden;
 
     private transient Set<BaseAbility> cachedAbilities;
@@ -130,9 +131,9 @@ public class RaceDefinition extends BaseDefinition {
 
         if (itemModifiers == null || itemModifiers.isEmpty()) return;
 
-        for (Map.Entry<BaseItemModifier, Set<Material>> entry : itemModifiers.entrySet()) {
-            BaseItemModifier modifier = entry.getKey();
-            Set<Material> materials = entry.getValue();
+        for (ItemModifierEntry entry : itemModifiers) {
+            BaseItemModifier modifier = entry.modifier();
+            Set<Material> materials = entry.materials();
 
             for (Material material : materials) {
                 cachedModifiers.put(material, modifier);

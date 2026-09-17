@@ -16,6 +16,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
 
+    // TODO: relocate or do something else with javax, com.google and org.aopalliance
     compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
     implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
     implementation("org.spongepowered:configurate-gson:4.2.0")
