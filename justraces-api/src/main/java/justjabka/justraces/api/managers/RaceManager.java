@@ -20,8 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static justjabka.justraces.api.managers.ItemModifierManager.refreshModifiers;
-
 public final class RaceManager {
 
     private RaceManager() {}
@@ -181,7 +179,7 @@ public final class RaceManager {
         TraitManager.endTraits(player);
         TransientManager.resetTransientContainer(player);
 
-        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> refreshModifiers(player));
+        Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ItemModifierManager.refreshModifiers(player));
 
         // Remove Race
         player.getPersistentDataContainer().remove(RACE_KEY);

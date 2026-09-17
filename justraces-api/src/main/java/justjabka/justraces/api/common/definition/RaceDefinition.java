@@ -29,7 +29,6 @@ public class RaceDefinition extends BaseDefinition {
     private Boolean hidden;
 
     private transient Set<BaseAbility> cachedAbilities;
-    private transient Map<Material, BaseItemModifier> cachedModifiers;
 
     // region Getters
 
@@ -101,8 +100,16 @@ public class RaceDefinition extends BaseDefinition {
      */
     @Nullable
     public BaseItemModifier getItemModifierForMaterial(Material material) {
-        if (cachedModifiers == null) buildItemModifiersCache();
-        return cachedModifiers.get(material);
+        if (itemModifiers == null || itemModifiers.isEmpty() || material == null) return null;
+
+        for (ItemModifierEntry entry : itemModifiers) {
+            Set<Material> materials = entry.materials();
+
+            if (!materials.contains(material)) continue;
+            return entry.modifier();
+        }
+
+        return null;
     }
 
     /**
@@ -124,21 +131,6 @@ public class RaceDefinition extends BaseDefinition {
                 .map(AbilityEntry::ability)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private void buildItemModifiersCache() {
-        cachedModifiers = new HashMap<>();
-
-        if (itemModifiers == null || itemModifiers.isEmpty()) return;
-
-        for (ItemModifierEntry entry : itemModifiers) {
-            BaseItemModifier modifier = entry.modifier();
-            Set<Material> materials = entry.materials();
-
-            for (Material material : materials) {
-                cachedModifiers.put(material, modifier);
-            }
-        }
     }
     // endregion
 }

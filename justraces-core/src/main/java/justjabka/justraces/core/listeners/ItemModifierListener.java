@@ -63,12 +63,12 @@ public class ItemModifierListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        ItemModifierManager.tryUndoInventory(event.getInventory().getContents());
+        ItemModifierManager.tryUndoInventory(event.getInventory());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
-        ItemModifierManager.tryUndoInventory(event.getInventory().getContents());
+        ItemModifierManager.tryUndoInventory(event.getInventory());
     }
 
     @EventHandler(ignoreCancelled = true)

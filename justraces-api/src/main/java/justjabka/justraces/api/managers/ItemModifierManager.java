@@ -4,12 +4,18 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.common.definition.RaceDefinition;
+import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
 
 public final class ItemModifierManager {
 
@@ -23,16 +29,32 @@ public final class ItemModifierManager {
     }
 
     @Nullable
-    public static BaseItemModifier getItemModifierForMaterial(Player player, ItemStack item) {
+    public static BaseItemModifier getItemModifierForMaterialRace(Player player, ItemStack item) {
         RaceDefinition race = RaceManager.getRace(player);
         return race.getItemModifierForMaterial(item.getType());
+    }
+
+    @Nullable
+    public static BaseItemModifier getItemModifierForMaterialPlayer(Player player, ItemStack item) {
+        BaseItemModifier raceItemModifier = getItemModifierForMaterialRace(player, item);
+        if (raceItemModifier != null) return raceItemModifier;
+
+        Set<@NotNull ItemModifierEntry> transientItemModifiers = TransientManager.getTransientItemModifiers(player);
+        for (ItemModifierEntry entry : transientItemModifiers) {
+            Set<Material> materials = entry.materials();
+
+            if (!materials.contains(item.getType())) continue;
+            return entry.modifier();
+        }
+
+        return null;
     }
 
     public static void tryApply(Player player, ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
 
-        BaseItemModifier modifier = getItemModifierForMaterial(player, item);
+        BaseItemModifier modifier = getItemModifierForMaterialPlayer(player, item);
 
         if (modifier == null) return;
         if (isModifiedWith(item, modifier)) return;
@@ -64,9 +86,10 @@ public final class ItemModifierManager {
         }
     }
 
-    public static void tryUndoInventory(ItemStack[] inventoryContents) {
-        for (ItemStack item : inventoryContents) {
+    public static void tryUndoInventory(Inventory inventory) {
+        for (ItemStack item : inventory.getContents()) {
             if (item == null) continue;
+            if (item.isEmpty()) continue;
             ItemModifierManager.tryUndo(item);
         }
     }

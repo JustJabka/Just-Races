@@ -1,9 +1,11 @@
 package justjabka.justraces.api.managers;
 
+import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.traits.generic.Trait;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,6 +50,18 @@ public final class TransientManager {
     }
 
     @NotNull
+    public static Set<@NotNull ItemModifierEntry> getTransientItemModifiers(Player player) {
+        Map<ItemModifierEntry, Long> transientItemModifiers = TransientManager.getTransientContainer(player).itemModifiers();
+
+        transientItemModifiers.entrySet().removeIf(entry -> {
+            Long stamp = entry.getValue();
+            return !TimeManager.isExpireStampValid(stamp);
+        });
+
+        return transientItemModifiers.keySet();
+    }
+
+    @NotNull
     public static Set<@NotNull Trait> getTransientTraits(Player player) {
         Map<Trait, Long> transientTraits = TransientManager.getTransientContainer(player).traits();
 
@@ -81,7 +95,24 @@ public final class TransientManager {
         TraitManager.startTrait(player, trait);
     }
 
-    // TODO: add transient item modifier
+    public static void addTransientItemModifier(Player player, ItemModifierEntry itemModifier, long ticks) {
+        TransientContainer container = getTransientContainer(player);
+        long expireStamp = TimeManager.getExpireStamp(ticks);
+
+        container.itemModifiers().put(itemModifier, expireStamp);
+
+        ItemModifierManager.refreshModifiers(player);
+
+        // Probably not the best solution, but I'm fucking tired already.
+        // Tbh I don't know what I was even thinking when creating this manager.
+        UUID pid = player.getUniqueId();
+        Bukkit.getScheduler().runTaskLater(JustRacesAPI.getInstance(), () -> {
+            Player plr = Bukkit.getPlayer(pid);
+            if (plr == null) return;
+
+            ItemModifierManager.refreshModifiers(plr);
+        }, ticks + 1L);
+    }
 
     public record TransientContainer(
             Map<BaseAbility, Long> abilities,

@@ -9,16 +9,23 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
+import io.papermc.paper.registry.RegistryKey;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
+import justjabka.justraces.api.common.entry.ItemModifierEntry;
+import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.managers.TransientManager;
 import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.core.commands.arguments.AbilityArgument;
+import justjabka.justraces.core.commands.arguments.ItemModifierArgument;
 import justjabka.justraces.core.commands.arguments.TraitArgument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
+
+import java.util.Set;
 
 public class TransCommand {
 
@@ -44,6 +51,15 @@ public class TransCommand {
                                         )
                                 )
                         )
+                        .then(Commands.literal("item_modifier")
+                                .then(Commands.argument("item_modifier", new ItemModifierArgument())
+                                        .then(Commands.argument("item", ArgumentTypes.resource(RegistryKey.ITEM))
+                                                .then(Commands.argument("ticks", LongArgumentType.longArg(0, Long.MAX_VALUE))
+                                                        .executes(TransCommand::executeItemModifier)
+                                                )
+                                        )
+                                )
+                        )
                 )
                 .build();
     }
@@ -65,6 +81,19 @@ public class TransCommand {
 
         TransientManager.addTransientTrait(target, trait, ticks);
         sendSuccess(ctx, target, trait.getKey());
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int executeItemModifier(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        Player target = resolveTarget(ctx);
+        BaseItemModifier modifier = ctx.getArgument("item_modifier", BaseItemModifier.class);
+        ItemType item = ctx.getArgument("item", ItemType.class);
+        long ticks = getTicks(ctx);
+
+        ItemModifierEntry entry = new ItemModifierEntry(modifier, Set.of(item.createItemStack().getType()));
+
+        TransientManager.addTransientItemModifier(target, entry, ticks);
+        sendSuccess(ctx, target, modifier.getKey());
         return Command.SINGLE_SUCCESS;
     }
 
