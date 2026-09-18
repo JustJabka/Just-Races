@@ -1,11 +1,11 @@
 package justjabka.justraces.api.managers;
 
+import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.abilities.generic.ValidationAbility;
 import justjabka.justraces.api.common.definition.RaceDefinition;
-import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -56,10 +56,15 @@ public final class AbilityManager {
      */
     @NotNull
     public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
-        Set<@NotNull BaseAbility> allAbilities = new HashSet<>();
+        Set<@NotNull BaseAbility> allAbilities = new HashSet<>(getAbilitiesForRace(RaceManager.getRace(player)));
 
-        allAbilities.addAll(getAbilitiesForRace(RaceManager.getRace(player)));
-        allAbilities.addAll(TransientManager.getTransientAbilities(player));
+        // TODO: optimize ts
+        for (AbilityEntry entry : TransientManager.getTransientAbilities(player)) {
+            BaseAbility ability = entry.ability();
+            if (ability == null) continue;
+
+            allAbilities.add(ability);
+        }
 
         return allAbilities;
     }
@@ -74,12 +79,7 @@ public final class AbilityManager {
         Set<@NotNull AbilityEntry> allRaceAbilities = new HashSet<>();
 
         allRaceAbilities.addAll(getAbilityEntriesForRace(RaceManager.getRace(player)));
-
-        Set<@NotNull BaseAbility> transientAbilities = TransientManager.getTransientAbilities(player);
-        transientAbilities.forEach(ability -> {
-            AbilityEntry abilityEntry = AbilityEntry.ofDefault(ability);
-            allRaceAbilities.add(abilityEntry);
-        });
+        allRaceAbilities.addAll(TransientManager.getTransientAbilities(player));
 
         return allRaceAbilities;
     }

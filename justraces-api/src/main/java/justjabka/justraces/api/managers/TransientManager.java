@@ -3,6 +3,7 @@ package justjabka.justraces.api.managers;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
+import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.Bukkit;
@@ -32,16 +33,16 @@ public final class TransientManager {
     }
 
     @NotNull
-    public static Set<@NotNull BaseAbility> getTransientAbilities(Player player) {
-        Map<BaseAbility, Long> transientAbilities = TransientManager.getTransientContainer(player).abilities();
+    public static Set<@NotNull AbilityEntry> getTransientAbilities(Player player) {
+        Map<AbilityEntry, Long> transientAbilities = TransientManager.getTransientContainer(player).abilities();
 
         transientAbilities.entrySet().removeIf(entry -> {
-            BaseAbility ability = entry.getKey();
+            AbilityEntry ability = entry.getKey();
             Long stamp = entry.getValue();
 
             boolean expired = !TimeManager.isExpireStampValid(stamp);
             if (expired) {
-                AbilityManager.endAbility(player, ability, ResettableAbility.Reason.ABILITY_END);
+                AbilityManager.endAbility(player, ability.ability(), ResettableAbility.Reason.ABILITY_END);
             }
             return expired;
         });
@@ -79,11 +80,15 @@ public final class TransientManager {
         return transientTraits.keySet();
     }
 
-    public static void addTransientAbility(Player player, BaseAbility ability, long ticks) {
+    public static void addTransientAbility(Player player, AbilityEntry ability, long ticks) {
         TransientContainer container = getTransientContainer(player);
         long expireStamp = TimeManager.getExpireStamp(ticks);
 
         container.abilities().put(ability, expireStamp);
+    }
+
+    public static void addTransientAbility(Player player, BaseAbility ability, long ticks) {
+        addTransientAbility(player, AbilityEntry.ofDefault(ability), ticks);
     }
 
     public static void addTransientTrait(Player player, Trait trait, long ticks) {
@@ -115,7 +120,7 @@ public final class TransientManager {
     }
 
     public record TransientContainer(
-            Map<BaseAbility, Long> abilities,
+            Map<AbilityEntry, Long> abilities,
             Map<Trait, Long> traits,
             Map<ItemModifierEntry, Long> itemModifiers
     ) {
