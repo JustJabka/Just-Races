@@ -56,15 +56,10 @@ public final class AbilityManager {
      */
     @NotNull
     public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
-        Set<@NotNull BaseAbility> allAbilities = new HashSet<>(getAbilitiesForRace(RaceManager.getRace(player)));
+        Set<@NotNull BaseAbility> allAbilities = new HashSet<>();
 
-        // TODO: optimize ts
-        for (AbilityEntry entry : TransientManager.getTransientAbilities(player)) {
-            BaseAbility ability = entry.ability();
-            if (ability == null) continue;
-
-            allAbilities.add(ability);
-        }
+        allAbilities.addAll(getAbilitiesForRace(RaceManager.getRace(player)));
+        allAbilities.addAll(TransientManager.getTransientAbilities(player).abilities());
 
         return allAbilities;
     }
@@ -79,7 +74,7 @@ public final class AbilityManager {
         Set<@NotNull AbilityEntry> allRaceAbilities = new HashSet<>();
 
         allRaceAbilities.addAll(getAbilityEntriesForRace(RaceManager.getRace(player)));
-        allRaceAbilities.addAll(TransientManager.getTransientAbilities(player));
+        allRaceAbilities.addAll(TransientManager.getTransientAbilities(player).entries());
 
         return allRaceAbilities;
     }

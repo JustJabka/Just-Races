@@ -4,17 +4,19 @@ import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.common.entry.AbilityEntry;
+import justjabka.justraces.api.common.entry.CachedAbilities;
+import justjabka.justraces.api.common.entry.CachedItemModifiers;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
+// TODO: Rewrite and add separate interface for transient entities
 public final class TransientManager {
 
     private TransientManager() {}
@@ -33,10 +35,11 @@ public final class TransientManager {
     }
 
     @NotNull
-    public static Set<@NotNull AbilityEntry> getTransientAbilities(Player player) {
-        Map<AbilityEntry, Long> transientAbilities = TransientManager.getTransientContainer(player).abilities();
+    public static CachedAbilities getTransientAbilities(Player player) {
+        TransientContainer container = TransientManager.getTransientContainer(player);
+        Map<AbilityEntry, Long> transientAbilities = container.abilities();
 
-        transientAbilities.entrySet().removeIf(entry -> {
+        boolean updated = transientAbilities.entrySet().removeIf(entry -> {
             AbilityEntry ability = entry.getKey();
             Long stamp = entry.getValue();
 
@@ -47,19 +50,28 @@ public final class TransientManager {
             return expired;
         });
 
-        return transientAbilities.keySet();
+        if (updated) {
+            rebuildTransientAbilitiesCache(container);
+        }
+
+        return container.cachedAbilities().get();
     }
 
     @NotNull
-    public static Set<@NotNull ItemModifierEntry> getTransientItemModifiers(Player player) {
-        Map<ItemModifierEntry, Long> transientItemModifiers = TransientManager.getTransientContainer(player).itemModifiers();
+    public static CachedItemModifiers getTransientItemModifiers(Player player) {
+        TransientContainer container = TransientManager.getTransientContainer(player);
+        Map<ItemModifierEntry, Long> transientItemModifiers = container.itemModifiers();
 
-        transientItemModifiers.entrySet().removeIf(entry -> {
+        boolean updated = transientItemModifiers.entrySet().removeIf(entry -> {
             Long stamp = entry.getValue();
             return !TimeManager.isExpireStampValid(stamp);
         });
 
-        return transientItemModifiers.keySet();
+        if (updated) {
+            rebuildTransientItemModifiersCache(container);
+        }
+
+        return container.cachedItemModifiers().get();
     }
 
     @NotNull
@@ -85,6 +97,7 @@ public final class TransientManager {
         long expireStamp = TimeManager.getExpireStamp(ticks);
 
         container.abilities().put(ability, expireStamp);
+        rebuildTransientAbilitiesCache(container);
     }
 
     public static void addTransientAbility(Player player, BaseAbility ability, long ticks) {
@@ -105,6 +118,7 @@ public final class TransientManager {
         long expireStamp = TimeManager.getExpireStamp(ticks);
 
         container.itemModifiers().put(itemModifier, expireStamp);
+        rebuildTransientItemModifiersCache(container);
 
         ItemModifierManager.refreshModifiers(player);
 
@@ -119,16 +133,30 @@ public final class TransientManager {
         }, ticks + 1L);
     }
 
+    private static void rebuildTransientAbilitiesCache(TransientContainer container) {
+        container.cachedAbilities().set(CachedAbilities.buildCache(container.abilities().keySet()));
+    }
+
+    private static void rebuildTransientItemModifiersCache(TransientContainer container) {
+        container.cachedItemModifiers().set(CachedItemModifiers.buildCache(container.itemModifiers().keySet()));
+    }
+
     public record TransientContainer(
             Map<AbilityEntry, Long> abilities,
             Map<Trait, Long> traits,
-            Map<ItemModifierEntry, Long> itemModifiers
+            Map<ItemModifierEntry, Long> itemModifiers,
+
+            AtomicReference<CachedAbilities> cachedAbilities,
+            AtomicReference<CachedItemModifiers> cachedItemModifiers
     ) {
         public static TransientContainer ofDefault() {
             return new TransientContainer(
                     new ConcurrentHashMap<>(),
                     new ConcurrentHashMap<>(),
-                    new ConcurrentHashMap<>()
+                    new ConcurrentHashMap<>(),
+
+                    new AtomicReference<>(CachedAbilities.ofEmpty()),
+                    new AtomicReference<>(CachedItemModifiers.ofEmpty())
             );
         }
     }

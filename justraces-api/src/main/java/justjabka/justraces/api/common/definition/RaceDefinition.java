@@ -2,18 +2,17 @@ package justjabka.justraces.api.common.definition;
 
 import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.common.entry.ItemModifierEntry;
-import justjabka.justraces.api.traits.generic.Trait;
+import justjabka.justraces.api.common.entry.*;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
-import justjabka.justraces.api.common.entry.AbilityEntry;
-import justjabka.justraces.api.common.entry.AttributeEntry;
+import justjabka.justraces.api.traits.generic.Trait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public class RaceDefinition extends BaseDefinition {
@@ -28,9 +27,8 @@ public class RaceDefinition extends BaseDefinition {
     private Set<ItemModifierEntry> itemModifiers;
     private Boolean hidden;
 
-    private transient Set<BaseAbility> cachedAbilities;
-
-    // region Getters
+    private transient CachedAbilities cachedAbilities;
+    private transient CachedItemModifiers cachedItemModifiers;
 
     /**
      * @return Name of the race
@@ -70,8 +68,11 @@ public class RaceDefinition extends BaseDefinition {
      */
     @NotNull
     public Set<@NotNull BaseAbility> getAbilities() {
-        if (cachedAbilities == null) buildAbilitiesCache();
-        return cachedAbilities;
+        if (cachedAbilities == null) {
+            cachedAbilities = CachedAbilities.buildCache(abilities);
+        }
+
+        return cachedAbilities.abilities();
     }
 
     /**
@@ -100,16 +101,13 @@ public class RaceDefinition extends BaseDefinition {
      */
     @Nullable
     public BaseItemModifier getItemModifierForMaterial(Material material) {
-        if (itemModifiers == null || itemModifiers.isEmpty() || material == null) return null;
+        if (material == null) return null;
 
-        for (ItemModifierEntry entry : itemModifiers) {
-            Set<Material> materials = entry.materials();
-
-            if (!materials.contains(material)) continue;
-            return entry.modifier();
+        if (cachedItemModifiers == null) {
+            cachedItemModifiers = CachedItemModifiers.buildCache(itemModifiers);
         }
 
-        return null;
+        return cachedItemModifiers.modifiers().get(material);
     }
 
     /**
@@ -118,19 +116,4 @@ public class RaceDefinition extends BaseDefinition {
     public boolean isHidden() {
         return hidden != null && hidden;
     }
-    // endregion
-
-    // region Cache
-    private void buildAbilitiesCache() {
-        if (abilities == null || abilities.isEmpty()) {
-            cachedAbilities = Collections.emptySet();
-            return;
-        }
-
-        cachedAbilities = abilities.stream()
-                .map(AbilityEntry::ability)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toUnmodifiableSet());
-    }
-    // endregion
 }
