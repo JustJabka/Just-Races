@@ -41,10 +41,17 @@ public class SelectRaceCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("selectrace")
                 .requires(stack -> stack.getSender().hasPermission("%s.command.selectrace".formatted(JustRacesAPI.NAMESPACE)))
+                .executes(ctx -> {
+                    Player sender = ctx.getSource().getPlayerOrThrow();
+
+                    openRaceDialog(sender, 0);
+
+                    return Command.SINGLE_SUCCESS;
+                })
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .executes(ctx -> {
-                            final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
-                            final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
+                            PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
+                            Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
                             openRaceDialog(target, 0);
 

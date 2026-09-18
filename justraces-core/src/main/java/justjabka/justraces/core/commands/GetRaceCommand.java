@@ -1,5 +1,6 @@
 package justjabka.justraces.core.commands;
 
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -19,21 +20,30 @@ public class GetRaceCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("getrace")
                 .requires(stack -> stack.getSender().hasPermission("%s.command.getrace".formatted(JustRacesAPI.NAMESPACE)))
+                .executes(ctx -> {
+                    Player sender = ctx.getSource().getPlayerOrThrow();
+                    return getRace(sender, ctx);
+                })
                 .then(Commands.argument("target", ArgumentTypes.player())
                         .executes(ctx -> {
-                            final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
-                            final Player target = targetResolver.resolve(ctx.getSource()).getFirst();
-                            CommandSender sender = ctx.getSource().getSender();
+                            PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("target", PlayerSelectorArgumentResolver.class);
+                            Player target = targetResolver.resolve(ctx.getSource()).getFirst();
 
-                            RaceDefinition race = RaceManager.getRace(target);
-                            Component raceName = race.getName();
-
-                            sender.sendMessage(message.arguments(target.name(), raceName));
-
-                            return !race.equals(RaceManager.NONE) ? 1 : 0;
+                            return getRace(target, ctx);
                         })
                 )
                 .build();
+    }
+
+    private static int getRace(Player target, CommandContext<CommandSourceStack> ctx) {
+        CommandSender sender = ctx.getSource().getSender();
+
+        RaceDefinition race = RaceManager.getRace(target);
+        Component raceName = race.getName();
+
+        sender.sendMessage(message.arguments(target.name(), raceName));
+
+        return !race.equals(RaceManager.NONE) ? 1 : 0;
     }
 
     public static void register(Commands registrar) {
