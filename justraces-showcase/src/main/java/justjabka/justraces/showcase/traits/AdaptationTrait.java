@@ -24,7 +24,9 @@ public class AdaptationTrait extends BaseTraitListener implements ResettableTrai
     }
 
     @Override
-    public void resetState(UUID pid) {
+    public void resetState(UUID pid, Reason reason) {
+        if (reason == Reason.QUIT) return;
+
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 

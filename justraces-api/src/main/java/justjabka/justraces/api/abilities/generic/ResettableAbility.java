@@ -37,7 +37,7 @@ public interface ResettableAbility {
          */
         RACE_CHANGE,
         /**
-         * Ability's natural duration or lifecycle ended.
+         * Ability's natural duration or lifecycle ended, or it was Transient Ability and expired.
          */
         ABILITY_END,
         /**

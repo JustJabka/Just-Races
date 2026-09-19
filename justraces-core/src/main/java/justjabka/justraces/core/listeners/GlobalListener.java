@@ -3,6 +3,7 @@ package justjabka.justraces.core.listeners;
 import io.papermc.paper.event.entity.EntityEquipmentChangedEvent;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.managers.*;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,19 +34,19 @@ public class GlobalListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        endEverything(player, ResettableAbility.Reason.QUIT);
+        endEverything(player, ResettableAbility.Reason.QUIT, ResettableTrait.Reason.QUIT);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 
-        endEverything(player, ResettableAbility.Reason.DEATH);
+        endEverything(player, ResettableAbility.Reason.DEATH, ResettableTrait.Reason.DEATH);
     }
 
-    private static void endEverything(Player player, ResettableAbility.Reason death) {
-        AbilityManager.endAbilities(player, death);
-        TraitManager.endTraits(player);
+    private static void endEverything(Player player, ResettableAbility.Reason abilityReason, ResettableTrait.Reason traitReason) {
+        AbilityManager.endAbilities(player, abilityReason);
+        TraitManager.endTraits(player, traitReason);
         TransientManager.resetTransientContainer(player);
     }
 }

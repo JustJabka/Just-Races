@@ -66,7 +66,7 @@ public class HalfLifeTrait extends BaseTraitRunnable implements ResettableTrait,
     }
 
     @Override
-    public void resetState(UUID pid) {
+    public void resetState(UUID pid, Reason reason) {
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 

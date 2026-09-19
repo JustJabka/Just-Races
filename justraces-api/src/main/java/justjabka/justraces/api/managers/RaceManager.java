@@ -8,6 +8,7 @@ import justjabka.justraces.api.events.race.Cause;
 import justjabka.justraces.api.events.race.PlayerRaceChangeEvent;
 import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
 import justjabka.justraces.api.common.entry.AttributeEntry;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -176,7 +177,7 @@ public final class RaceManager {
 
         // End Everything
         AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
-        TraitManager.endTraits(player);
+        TraitManager.endTraits(player, ResettableTrait.Reason.RACE_CHANGE);
         TransientManager.resetTransientContainer(player);
 
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ItemModifierManager.refreshModifiers(player));

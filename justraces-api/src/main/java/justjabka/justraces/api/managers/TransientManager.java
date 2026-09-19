@@ -7,6 +7,7 @@ import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.common.entry.CachedAbilities;
 import justjabka.justraces.api.common.entry.CachedItemModifiers;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
+import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -84,7 +85,7 @@ public final class TransientManager {
 
             boolean expired = !TimeManager.isExpireStampValid(stamp);
             if (expired) {
-                TraitManager.endTrait(player, trait);
+                TraitManager.endTrait(player, trait, ResettableTrait.Reason.TRAIT_END);
             }
             return expired;
         });

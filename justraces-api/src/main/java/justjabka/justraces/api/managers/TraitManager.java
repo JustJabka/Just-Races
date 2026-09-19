@@ -72,16 +72,16 @@ public final class TraitManager {
         resettable.applyState(player);
     }
 
-    public static void endTraits(Player player) {
+    public static void endTraits(Player player, ResettableTrait.Reason reason) {
         Set<@NotNull Trait> traits = getTraitsForPlayer(player);
 
         traits.forEach(trait ->
-                endTrait(player, trait)
+                endTrait(player, trait, reason)
         );
     }
 
-    public static void endTrait(Player player, Trait trait) {
+    public static void endTrait(Player player, Trait trait, ResettableTrait.Reason reason) {
         if (!(trait instanceof ResettableTrait resettable)) return;
-        resettable.resetState(player);
+        resettable.resetState(player, reason);
     }
 }
