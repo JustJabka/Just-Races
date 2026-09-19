@@ -2,20 +2,18 @@
 
 [![](https://jitpack.io/v/JustJabka/Just-Races.svg)](https://jitpack.io/#JustJabka/Just-Races)
 
-Fast, lightweight, data-driven Minecraft races framework
+Fast, lightweight, data-driven Minecraft races framework.
 
----
-
-# Creating a Project
+## Creating a Project
 
 > [!TIP]
 > If you have not set up a Paper plugin project yet, please refer to the official [Paper Documentation on Project Setup](https://docs.papermc.io/paper/dev/project-setup) first.
 
-## Adding JustRaces as a Dependency
+### Adding JustRaces as a Dependency
 
 To use the JustRaces API in your project, you need to add the repository and the dependency to your build configuration file (`build.gradle.kts`).
 
-### Configure `build.gradle.kts`
+#### Configure `build.gradle.kts`
 
 Add the JitPack repository to your `repositories` block and specify `Just-Races` under your `dependencies`:
 
@@ -37,10 +35,7 @@ dependencies {
 // ...
 ```
 
-> [!NOTE]
-> Thanks to transitive dependencies included in the JustRaces API, you do not need to manually add [Configurate](https://github.com/spongepowered/configurate) or [MorePersistentDataTypes](https://github.com/mfnalex/MorePersistentDataTypes) to your build script - Gradle will resolve them automatically.
-
-### Configure `paper-plugin.yml`
+#### Configure `paper-plugin.yml`
 
 Next, register JustRaces as a dependency in your plugin's manifest file (`src/main/resources/paper-plugin.yml`). This ensures Paper loads JustRaces before your addon and joins their classloaders.
 
