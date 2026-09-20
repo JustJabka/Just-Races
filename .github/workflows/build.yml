@@ -1,6 +1,12 @@
 name: Build Paper Plugin
 
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -31,3 +37,9 @@ jobs:
         with:
           name: JustRaces
           path: justraces-core/build/libs/*.jar
+
+      - name: capture showcase artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: JustRacesShowcase
+          path: justraces-showcase/build/libs/*.jar
