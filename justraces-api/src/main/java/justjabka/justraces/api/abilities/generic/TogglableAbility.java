@@ -1,7 +1,9 @@
 package justjabka.justraces.api.abilities.generic;
 
+import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.common.PersistentHolder;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -13,6 +15,8 @@ import java.util.UUID;
  */
 public abstract class TogglableAbility extends BaseAbility implements ValidationAbility, ResettableAbility {
 
+    protected static final NamespacedKey STATE = new NamespacedKey(JustRacesAPI.NAMESPACE, "state");
+
     /**
      * Toggles the ability's state for the given player.
      * <p>
@@ -20,7 +24,7 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
      * @param player The player whose ability state is being toggled.
      */
     public void toggle(Player player) {
-        boolean currentState = getContainerBoolean(player, getKey());
+        boolean currentState = isEnabled(player);
         boolean newState = !currentState;
 
         if (newState) {
@@ -32,6 +36,10 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
         onToggle(player, newState);
     }
 
+    public boolean isEnabled(Player player) {
+        return getEntryBoolean(player, STATE);
+    }
+
     /**
      * Enables the ability for the given player.
      * <p>
@@ -41,7 +49,7 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
      * @param player The player for whom the ability is being enabled.
      */
     public void enable(Player player) {
-        setContainerBoolean(player, getKey(), true);
+        setEntryBoolean(player, STATE, true);
     }
 
     /**
@@ -68,7 +76,7 @@ public abstract class TogglableAbility extends BaseAbility implements Validation
         Player player = Bukkit.getPlayer(pid);
         if (player == null) return;
 
-        setContainerBoolean(player, getKey(), false);
+        setEntryBoolean(player, STATE, false);
     }
 
     /**

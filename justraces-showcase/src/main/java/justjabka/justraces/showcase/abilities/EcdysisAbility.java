@@ -52,6 +52,8 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     private final Map<UUID, BukkitTask> chainTasks = new ConcurrentHashMap<>();
     private final Map<UUID, BukkitTask> effectTasks = new ConcurrentHashMap<>();
 
+    private static final NamespacedKey CHAIN_AMOUNT = new NamespacedKey(JustRacesShowcase.NAMESPACE, "chain_amount");
+
     @Override
     public NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "ecdysis");
@@ -154,10 +156,10 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
 
     private int getNextChain(Player player) {
         int maxChain = getConfigInt("max_chain_amount");
-        int currentChain = getContainerInt(player, getKey());
+        int currentChain = getEntryInt(player, CHAIN_AMOUNT);
         int nextChain = Math.clamp(currentChain + 1, 1, maxChain);
 
-        setContainerInt(player, getKey(), nextChain);
+        setEntryInt(player, CHAIN_AMOUNT, nextChain);
         return nextChain;
     }
 
@@ -176,7 +178,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     }
 
     private void onChainExpire(Player player) {
-        setContainerInt(player, getKey(), 0);
+        setEntryInt(player, CHAIN_AMOUNT, 0);
     }
 
     private static void createExplosion(Player player, Material material, float power) {

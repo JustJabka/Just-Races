@@ -18,6 +18,8 @@ import java.util.UUID;
 
 public class AdaptationTrait extends BaseTraitListener implements ResettableTrait, ConfigurableTrait {
 
+    private static final NamespacedKey ADAPTATIONS = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptations");
+
     @Override
     public NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
@@ -48,7 +50,7 @@ public class AdaptationTrait extends BaseTraitListener implements ResettableTrai
         if (DamageTypeTags.BYPASSES_RESISTANCE.isTagged(damageType)) return;
 
         // Get Adaptations
-        PersistentDataContainer adaptations = getContainerTagContainer(player, getKey());
+        PersistentDataContainer adaptations = getEntryTagContainer(player, ADAPTATIONS);
 
         // Get Current Resist Value
         final float minPercent = getConfigFloat("min_percent");
@@ -68,7 +70,7 @@ public class AdaptationTrait extends BaseTraitListener implements ResettableTrai
         final float newValue = Math.clamp(currentValue + getAdaptationAmount(damageType, adaptations, totalSum), minPercent, getMaxAdaptationPercent());
         adaptations.set(damageType.getKey(), PersistentDataType.FLOAT, newValue);
 
-        setContainerTagContainer(player, getKey(), adaptations);
+        setEntryTagContainer(player, ADAPTATIONS, adaptations);
     }
 
     private float getAdaptationAmount(DamageType damageType, PersistentDataContainer adaptations, float totalSum) {

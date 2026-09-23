@@ -36,6 +36,8 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     private static final int FIRE_TICKS = 4 * 20;
     private static final int BLOCK_COOLDOWN = 8 * 20;
 
+    private static final NamespacedKey TONGUE_TYPE = new NamespacedKey(JustRacesShowcase.NAMESPACE, "tongue_type");
+
     public enum TongueType {
         NORMAL(24, Color.fromRGB(255, 138, 138), BossBar.Color.PINK, true, true, false, false, false, 1f),
         SLIME(24, Color.fromRGB(126, 191, 110), BossBar.Color.GREEN, true, true, true, true, false, 1f),
@@ -102,12 +104,12 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     // State
     public TongueType getTongueType(Player player) {
-        String hookTypeString = getContainerString(player, getKey());
-        return hookTypeString != null ? TongueType.valueOf(hookTypeString.toUpperCase()) : TongueType.NORMAL;
+        String type = getEntryString(player, TONGUE_TYPE);
+        return type != null ? TongueType.valueOf(type.toUpperCase()) : TongueType.NORMAL;
     }
 
     public void setTongueType(Player player, TongueType type) {
-        setContainerString(player, getKey(), type.toString());
+        setEntryString(player, TONGUE_TYPE, type.toString());
     }
 
     @Override

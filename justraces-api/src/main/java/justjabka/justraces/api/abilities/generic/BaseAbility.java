@@ -5,7 +5,6 @@ import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.managers.TimeManager;
 import justjabka.justraces.api.abilities.AbilityContext;
-import justjabka.justraces.api.abilities.AbilityCooldownEntry;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import net.kyori.adventure.bossbar.BossBar;
@@ -22,8 +21,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseAbility implements Listener, PersistentHolder {
-    private final Map<UUID, AbilityCooldownEntry> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
+
+    private static final NamespacedKey COOLDOWN = new NamespacedKey(JustRacesAPI.NAMESPACE, "cooldown");
+    private static final NamespacedKey EXPIRES_AT = new NamespacedKey(JustRacesAPI.NAMESPACE, "expires_at");
 
     protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown_bar");
     protected static final Component COOLDOWN_BAR_ICON_OFFSET = Component.text("\uDB00\uDCC6").font(COOLDOWN_BAR_FONT);
@@ -92,7 +93,8 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #getCooldownTicks()
      */
     public void resetCooldown(Player player) {
-        cooldowns.remove(player.getUniqueId());
+        removeEntryData(player, COOLDOWN);
+        removeEntryData(player, EXPIRES_AT);
     }
 
     /**
@@ -105,9 +107,9 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      */
     public void setCooldownTicks(Player player, long newCooldown) {
         final long expiresAt = TimeManager.getExpireStamp(newCooldown);
-        AbilityCooldownEntry entry = new AbilityCooldownEntry(newCooldown, expiresAt);
 
-        cooldowns.put(player.getUniqueId(), entry);
+        setEntryLong(player, COOLDOWN, newCooldown);
+        setEntryLong(player, EXPIRES_AT, expiresAt);
     }
 
     /**
@@ -116,8 +118,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @return expire stamp
      */
     private long getExpireStamp(Player player) {
-        AbilityCooldownEntry entry = new AbilityCooldownEntry(getCooldownTicks(), 0L);
-        return cooldowns.getOrDefault(player.getUniqueId(), entry).expiresAt();
+        return getEntryLong(player, EXPIRES_AT);
     }
 
     /**
@@ -136,13 +137,13 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
         }
 
         float remainingTicks = (float) getRemainingTicks(player);
-        float cooldownTicks = (float) cooldowns.get(player.getUniqueId()).ticks();
+        float cooldownTicks = (float) getEntryLong(player, COOLDOWN);
 
         float progress = Math.clamp(remainingTicks / cooldownTicks, BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
         final Component iconWithOffset = getCooldownBarIcon(player).shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
         final BossBar.Color color = getCooldownBarColor(player);
 
-        BossBar cooldownBar = cooldownBars.computeIfAbsent(player.getUniqueId(), uuid -> {
+        BossBar cooldownBar = cooldownBars.computeIfAbsent(player.getUniqueId(), _ -> {
             BossBar bar = BossBar.bossBar(iconWithOffset, progress, color, BossBar.Overlay.NOTCHED_6);
             player.showBossBar(bar);
             return bar;

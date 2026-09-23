@@ -41,8 +41,7 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
 
     @Override
     public BossBar.Color getCooldownBarColor(Player player) {
-        boolean isActive = getContainerBoolean(player, getKey());
-        return isActive ? BossBar.Color.GREEN : BossBar.Color.RED;
+        return isEnabled(player) ? BossBar.Color.GREEN : BossBar.Color.RED;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     public void onArmorChange(EntityEquipmentChangedEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
-        if (!getContainerBoolean(player, getKey())) return;
+        if (!isEnabled(player)) return;
         if (isStateValid(player)) return;
 
         disable(player);
@@ -103,7 +102,7 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (!getContainerBoolean(player, getKey())) return;
+        if (!isEnabled(player)) return;
 
         double damage = event.getDamage();
         DamageSource damageSource = event.getDamageSource();

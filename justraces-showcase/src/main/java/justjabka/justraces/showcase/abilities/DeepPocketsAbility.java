@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class DeepPocketsAbility extends BaseAbility {
 
+    private static final NamespacedKey INVENTORY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "inventory");
+
     @Override
     public NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "deep_pockets");
@@ -55,7 +57,7 @@ public class DeepPocketsAbility extends BaseAbility {
 
         if (!(event.getInventory().getHolder(false) instanceof DeepPocketsAbilityInventory inventory)) return;
 
-        ItemStack[] contents = getContainerInventory(player, getKey());
+        ItemStack[] contents = getEntryInventory(player, INVENTORY);
         inventory.getInventory().setContents(contents);
     }
 
@@ -66,7 +68,7 @@ public class DeepPocketsAbility extends BaseAbility {
         if (!(event.getInventory().getHolder(false) instanceof DeepPocketsAbilityInventory inventory)) return;
 
         ItemStack[] contents = inventory.getInventory().getContents();
-        setContainerInventory(player, getKey(), contents);
+        setEntryInventory(player, INVENTORY, contents);
     }
 
     public static class DeepPocketsAbilityInventory implements InventoryHolder {
