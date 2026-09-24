@@ -120,4 +120,10 @@ public final class AttributeManager {
             }
         }
     }
+
+    public static void resetAllBaseValues(Player player) {
+        for (Attribute attribute : Registry.ATTRIBUTE) {
+            resetBaseValue(player, attribute);
+        }
+    }
 }

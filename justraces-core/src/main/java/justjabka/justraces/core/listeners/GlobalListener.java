@@ -25,9 +25,7 @@ public class GlobalListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        // TODO: fix cooldown reset exploit
-        // TODO: fix cooldown memory leak
-        RaceManager.reloadRace(player);
+        RaceManager.resyncRace(player);
     }
 
     @EventHandler(ignoreCancelled = true)

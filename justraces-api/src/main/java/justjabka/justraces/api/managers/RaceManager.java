@@ -4,14 +4,13 @@ import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.abilities.generic.ResettableAbility;
 import justjabka.justraces.api.common.definition.RaceDefinition;
+import justjabka.justraces.api.common.entry.AttributeEntry;
 import justjabka.justraces.api.events.race.Cause;
 import justjabka.justraces.api.events.race.PlayerRaceChangeEvent;
 import justjabka.justraces.api.events.race.PlayerRaceChangePreEvent;
-import justjabka.justraces.api.common.entry.AttributeEntry;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -94,6 +93,11 @@ public final class RaceManager {
     }
 
     private static void initRace(@NotNull Player player, @NotNull RaceDefinition race) {
+        applyRaceAttributes(player, race);
+        TraitManager.startTraits(player);
+    }
+
+    private static void applyRaceAttributes(@NotNull Player player, @NotNull RaceDefinition race) {
         List<AttributeEntry> attributes = race.getAttributeEntries();
 
         for (AttributeEntry attributeEntry : attributes) {
@@ -107,8 +111,6 @@ public final class RaceManager {
                 AttributeManager.addModifier(player, attribute, modifier);
             }
         }
-
-        TraitManager.startTraits(player);
     }
 
     /**
@@ -165,24 +167,32 @@ public final class RaceManager {
         setRace(player, race, Cause.RELOAD);
     }
 
+    public static void resyncRace(Player player) {
+        resetAttributes(player);
+        initRace(player, getRace(player));
+    }
+
     /**
      * Resets player's race
      * @param player Player which race would be reset
      * @apiNote Don't confuse with {@link reloadRace(Player)}
      */
     public static void resetRace(@NotNull Player player) {
-        // Reset Attributes
-        AttributeManager.removeAllModifiers(player);
-        Registry.ATTRIBUTE.forEach(attribute -> AttributeManager.resetBaseValue(player, attribute));
+        resetAttributes(player);
+        endEverything(player);
+        player.getPersistentDataContainer().remove(RACE_KEY);
+    }
 
-        // End Everything
+    private static void resetAttributes(@NotNull Player player) {
+        AttributeManager.removeAllModifiers(player);
+        AttributeManager.resetAllBaseValues(player);
+    }
+
+    private static void endEverything(@NotNull Player player) {
         AbilityManager.endAbilities(player, ResettableAbility.Reason.RACE_CHANGE);
         TraitManager.endTraits(player, ResettableTrait.Reason.RACE_CHANGE);
         TransientManager.resetTransientContainer(player);
 
         Bukkit.getScheduler().runTask(JustRacesAPI.getInstance(), () -> ItemModifierManager.refreshModifiers(player));
-
-        // Remove Race
-        player.getPersistentDataContainer().remove(RACE_KEY);
     }
 }

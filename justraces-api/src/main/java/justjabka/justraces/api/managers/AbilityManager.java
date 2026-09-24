@@ -89,9 +89,13 @@ public final class AbilityManager {
     }
 
     public static void endAbility(Player player, BaseAbility ability, ResettableAbility.Reason reason) {
-        ability.resetCooldown(player);
+        if (shouldResetAbilityCooldown(reason)) ability.resetCooldown(player);
         ability.removeCooldownBar(player);
         clearAbilityStates(player, ability, reason);
+    }
+
+    private static boolean shouldResetAbilityCooldown(ResettableAbility.Reason reason) {
+        return reason == ResettableAbility.Reason.DEATH || reason == ResettableAbility.Reason.RACE_CHANGE;
     }
 
     public static void clearAbilitiesStates(Player player, ResettableAbility.Reason reason) {
