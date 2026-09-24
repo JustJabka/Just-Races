@@ -9,12 +9,13 @@ import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@NullMarked
 public final class AbilityManager {
 
     private AbilityManager() {}
@@ -22,9 +23,14 @@ public final class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
 
     //region Registry Related
-    @Nullable
     public static BaseAbility getByKey(NamespacedKey key) {
-        return JustRacesRegistries.ABILITIES.get(key);
+        BaseAbility ability = JustRacesRegistries.ABILITIES.get(key);
+
+        if (ability == null) {
+            throw new IllegalArgumentException("Unregistered Ability: %s".formatted(key));
+        }
+
+        return ability;
     }
 
     @SuppressWarnings("unchecked")
@@ -43,8 +49,7 @@ public final class AbilityManager {
      * @param race Race that abilities will be got
      * @return Abilities of the race
      */
-    @NotNull
-    public static Set<@NotNull BaseAbility> getAbilitiesForRace(RaceDefinition race) {
+    public static Set<BaseAbility> getAbilitiesForRace(RaceDefinition race) {
         return race.getAbilities();
     }
 
@@ -54,9 +59,8 @@ public final class AbilityManager {
      * @see #getAbilitiesForRace(RaceDefinition)
      * @return Abilities of the player
      */
-    @NotNull
-    public static Set<@NotNull BaseAbility> getAbilitiesForPlayer(Player player) {
-        Set<@NotNull BaseAbility> allAbilities = new HashSet<>();
+    public static Set<BaseAbility> getAbilitiesForPlayer(Player player) {
+        Set<BaseAbility> allAbilities = new HashSet<>();
 
         allAbilities.addAll(getAbilitiesForRace(RaceManager.getRace(player)));
         allAbilities.addAll(TransientManager.getTransientAbilities(player).abilities());
@@ -64,14 +68,12 @@ public final class AbilityManager {
         return allAbilities;
     }
 
-    @NotNull
-    public static Set<@NotNull AbilityEntry> getAbilityEntriesForRace(RaceDefinition race) {
+    public static Set<AbilityEntry> getAbilityEntriesForRace(RaceDefinition race) {
         return race.getAbilityEntries();
     }
 
-    @NotNull
-    public static Set<@NotNull AbilityEntry> getAbilityEntriesForPlayer(Player player) {
-        Set<@NotNull AbilityEntry> allRaceAbilities = new HashSet<>();
+    public static Set<AbilityEntry> getAbilityEntriesForPlayer(Player player) {
+        Set<AbilityEntry> allRaceAbilities = new HashSet<>();
 
         allRaceAbilities.addAll(getAbilityEntriesForRace(RaceManager.getRace(player)));
         allRaceAbilities.addAll(TransientManager.getTransientAbilities(player).entries());
@@ -79,6 +81,27 @@ public final class AbilityManager {
         return allRaceAbilities;
     }
     //endregion
+
+    /**
+     * Checks if player has this ability
+     * @param player Player
+     * @param ability Ability
+     * @return {@code true} if player has this ability
+     */
+    public static boolean playerHasAbility(Player player, BaseAbility ability) {
+        return AbilityManager.getAbilitiesForPlayer(player).contains(ability);
+    }
+
+    /**
+     * Checks if player has this ability
+     * @param player Player
+     * @param key Key of the ability
+     * @return {@code true} if player has this ability
+     */
+    public static boolean playerHasAbility(Player player, NamespacedKey key) {
+        BaseAbility ability = getByKey(key);
+        return playerHasAbility(player, ability);
+    }
 
     public static void endAbilities(Player player, ResettableAbility.Reason reason) {
         Set<BaseAbility> abilities = getAbilitiesForPlayer(player);

@@ -125,7 +125,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     @EventHandler(ignoreCancelled = true)
     public void resetTongueType(PlayerItemConsumeEvent event) {
         Player player = event.getPlayer();
-        if (!playerHasAbility(player)) return;
+        if (!isRequiredAbility(player)) return;
 
         ItemStack item = event.getItem();
 

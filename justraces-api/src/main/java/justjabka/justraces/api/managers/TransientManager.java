@@ -11,13 +11,16 @@ import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 // TODO: Rewrite and add separate interface for transient entities
+@NullMarked
 public final class TransientManager {
 
     private TransientManager() {}
@@ -35,7 +38,6 @@ public final class TransientManager {
         TRANSIENT_CONTAINER.remove(player.getUniqueId());
     }
 
-    @NotNull
     public static CachedAbilities getTransientAbilities(Player player) {
         TransientContainer container = TransientManager.getTransientContainer(player);
         Map<AbilityEntry, Long> transientAbilities = container.abilities();
@@ -58,7 +60,6 @@ public final class TransientManager {
         return container.cachedAbilities().get();
     }
 
-    @NotNull
     public static CachedItemModifiers getTransientItemModifiers(Player player) {
         TransientContainer container = TransientManager.getTransientContainer(player);
         Map<ItemModifierEntry, Long> transientItemModifiers = container.itemModifiers();
@@ -75,8 +76,7 @@ public final class TransientManager {
         return container.cachedItemModifiers().get();
     }
 
-    @NotNull
-    public static Set<@NotNull Trait> getTransientTraits(Player player) {
+    public static Set<Trait> getTransientTraits(Player player) {
         Map<Trait, Long> transientTraits = TransientManager.getTransientContainer(player).traits();
 
         transientTraits.entrySet().removeIf(entry -> {

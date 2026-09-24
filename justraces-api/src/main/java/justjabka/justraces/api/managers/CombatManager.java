@@ -9,7 +9,9 @@ import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public final class CombatManager {
 
     private CombatManager() {}

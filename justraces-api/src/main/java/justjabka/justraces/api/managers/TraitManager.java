@@ -1,27 +1,32 @@
 package justjabka.justraces.api.managers;
 
+import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
-import justjabka.justraces.api.JustRacesAPI;
-import justjabka.justraces.api.JustRacesRegistries;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@NullMarked
 public final class TraitManager {
 
     private TraitManager() {}
 
     public static final NamespacedKey TRAITS_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "traits");
 
-    @Nullable
     public static Trait getByKey(NamespacedKey key) {
-        return JustRacesRegistries.TRAITS.get(key);
+        Trait trait = JustRacesRegistries.TRAITS.get(key);
+
+        if (trait == null) {
+            throw new IllegalArgumentException("Unregistered Trait: %s".formatted(key));
+        }
+
+        return trait;
     }
 
     /**
@@ -30,8 +35,7 @@ public final class TraitManager {
      * @return Traits of the race
      * @see #getTraitsForRace(RaceDefinition)
      */
-    @NotNull
-    public static Set<@NotNull Trait> getTraitsForRace(RaceDefinition race) {
+    public static Set<Trait> getTraitsForRace(RaceDefinition race) {
         return race.getTraits();
     }
 
@@ -41,9 +45,8 @@ public final class TraitManager {
      * @return Traits of the player
      * @see #getTraitsForRace(RaceDefinition)
      */
-    @NotNull
-    public static Set<@NotNull Trait> getTraitsForPlayer(Player player) {
-        Set<@NotNull Trait> allTraits = new HashSet<>();
+    public static Set<Trait> getTraitsForPlayer(Player player) {
+        Set<Trait> allTraits = new HashSet<>();
 
         allTraits.addAll(getTraitsForRace(RaceManager.getRace(player)));
         allTraits.addAll(TransientManager.getTransientTraits(player));
@@ -51,16 +54,28 @@ public final class TraitManager {
         return allTraits;
     }
 
+    /**
+     * Checks if player has this trait
+     * @param player Player
+     * @param trait Trait
+     * @return {@code true} if player has this trait
+     */
     public static boolean playerHasTrait(Player player, Trait trait) {
         return TraitManager.getTraitsForPlayer(player).contains(trait);
     }
 
-    public static boolean playerHasTrait(Player player, NamespacedKey traitKey) {
-        return playerHasTrait(player, getByKey(traitKey));
+    /**
+     * Checks if player has this trait
+     * @param player Player
+     * @param key Key of the trait
+     * @return {@code true} if player has this trait
+     */
+    public static boolean playerHasTrait(Player player, NamespacedKey key) {
+        return playerHasTrait(player, getByKey(key));
     }
 
     public static void startTraits(Player player) {
-        Set<@NotNull Trait> traits = getTraitsForRace(RaceManager.getRace(player));
+        Set<Trait> traits = getTraitsForRace(RaceManager.getRace(player));
 
         traits.forEach(trait ->
                 startTrait(player, trait)
@@ -73,7 +88,7 @@ public final class TraitManager {
     }
 
     public static void endTraits(Player player, ResettableTrait.Reason reason) {
-        Set<@NotNull Trait> traits = getTraitsForPlayer(player);
+        Set<Trait> traits = getTraitsForPlayer(player);
 
         traits.forEach(trait ->
                 endTrait(player, trait, reason)

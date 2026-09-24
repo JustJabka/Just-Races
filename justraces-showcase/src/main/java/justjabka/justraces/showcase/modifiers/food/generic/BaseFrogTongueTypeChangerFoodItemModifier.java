@@ -1,4 +1,4 @@
-package justjabka.justraces.showcase.modifiers.food.Generic;
+package justjabka.justraces.showcase.modifiers.food.generic;
 
 import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.itemmodifiers.generic.BaseFoodItemModifier;
@@ -22,7 +22,7 @@ public abstract class BaseFrogTongueTypeChangerFoodItemModifier extends BaseFood
         FrogTongueAbility frogTongueAbility = AbilityManager.getByClass(FrogTongueAbility.class);
         if (frogTongueAbility == null) return;
 
-        if (!frogTongueAbility.playerHasAbility(player)) return;
+        if (!frogTongueAbility.isRequiredAbility(player)) return;
         frogTongueAbility.setTongueType(player, getFrogTongueType());
     }
 }

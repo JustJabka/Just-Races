@@ -34,12 +34,6 @@ public class TraitArgument extends CustomRegistryArgument<Trait> {
             throw ERROR_INVALID_TRAIT.create(nativeType);
         }
 
-        Trait trait = TraitManager.getByKey(key);
-
-        if (trait == null) {
-            throw ERROR_INVALID_TRAIT.create(nativeType);
-        }
-
-        return trait;
+        return TraitManager.getByKey(key);
     }
 }

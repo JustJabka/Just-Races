@@ -1,11 +1,11 @@
 package justjabka.justraces.core.gson.deserializer.entry;
 
 import com.google.gson.*;
-import justjabka.justraces.api.abilities.generic.BaseAbility;
-import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.api.abilities.AbilityTriggerCondition;
+import justjabka.justraces.api.abilities.generic.BaseAbility;
+import justjabka.justraces.api.common.entry.AbilityEntry;
+import justjabka.justraces.api.managers.AbilityManager;
 import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NonNull;
 
@@ -27,12 +27,17 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
     private static @NonNull AbilityEntry deserializeDefault(JsonElement json) {
         String id = json.getAsString();
 
-        BaseAbility ability = AbilityManager.getByKey(NamespacedKey.fromString(id));
-        if (ability == null) {
-            throw new JsonParseException("Unknown ability %s".formatted(id));
+        NamespacedKey key = NamespacedKey.fromString(id);
+        if (key == null) {
+            throw new JsonParseException("Invalid NamespacedKey format: %s".formatted(id));
         }
 
-        return AbilityEntry.ofDefault(ability);
+        try {
+            BaseAbility ability = AbilityManager.getByKey(key);
+            return AbilityEntry.ofDefault(ability);
+        } catch (IllegalArgumentException _) {
+            throw new JsonParseException("Unknown Ability %s".formatted(id));
+        }
     }
 
     private static @NonNull AbilityEntry deserializeOverride(JsonElement json) {
@@ -44,15 +49,20 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
 
         String id = obj.get("id").getAsString();
 
-        BaseAbility ability = AbilityManager.getByKey(NamespacedKey.fromString(id));
-        if (ability == null) {
-            throw new JsonParseException("Unknown ability in Ability Entry %s".formatted(id));
+        NamespacedKey key = NamespacedKey.fromString(id);
+        if (key == null) {
+            throw new JsonParseException("Invalid NamespacedKey format: %s".formatted(id));
         }
 
-        AbilityTrigger trigger = getTrigger(ability, obj);
-        Set<AbilityTriggerCondition> conditions = getConditions(ability, obj);
+        try {
+            BaseAbility ability = AbilityManager.getByKey(key);
+            AbilityTrigger trigger = getTrigger(ability, obj);
+            Set<AbilityTriggerCondition> conditions = getConditions(ability, obj);
 
-        return new AbilityEntry(ability, trigger, Collections.unmodifiableSet(conditions));
+            return new AbilityEntry(ability, trigger, Collections.unmodifiableSet(conditions));
+        } catch (IllegalArgumentException _) {
+            throw new JsonParseException("Unknown ability in Ability Entry %s".formatted(id));
+        }
     }
 
     private static AbilityTrigger getTrigger(BaseAbility ability, JsonObject obj) {

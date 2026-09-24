@@ -122,12 +122,12 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
     }
 
     /**
-     * Check if player has this ability
-     * @param player Player that will be checked
+     * Checks if player has this ability
+     * @param player Player
      * @return {@code true} if player has this ability
      */
-    public boolean playerHasAbility(Player player) {
-        return AbilityManager.getAbilitiesForPlayer(player).contains(this);
+    public boolean isRequiredAbility(Player player) {
+        return AbilityManager.playerHasAbility(player, this);
     }
 
     public void updateCooldownBar(Player player) {
@@ -195,7 +195,7 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #onActivation(Player, AbilityContext)
      */
     public boolean tryActivate(Player player, AbilityContext ctx) {
-        if (!playerHasAbility(player)) return false;
+        if (!isRequiredAbility(player)) return false;
 
         if (!canActivate(player)) return false;
 

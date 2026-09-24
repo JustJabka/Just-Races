@@ -2,6 +2,7 @@ package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.JustRacesAPI;
 import org.bukkit.plugin.Plugin;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
@@ -16,6 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@NullMarked
 public final class ResourceManager {
 
     private ResourceManager() {}

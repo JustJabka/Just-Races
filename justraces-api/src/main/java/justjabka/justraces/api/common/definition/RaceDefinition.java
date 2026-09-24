@@ -7,33 +7,34 @@ import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.traits.generic.Trait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+@NullMarked
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
 public class RaceDefinition extends BaseDefinition {
-    private Component name;
-    private List<Component> description;
-    private Component icon;
-    private List<AttributeEntry> attributes;
-    private Set<AbilityEntry> abilities;
-    private Set<Trait> traits;
+    @Nullable private Component name;
+    @Nullable private List<Component> description;
+    @Nullable private Component icon;
+    @Nullable private List<AttributeEntry> attributes;
+    @Nullable private Set<AbilityEntry> abilities;
+    @Nullable private Set<Trait> traits;
 
     @SerializedName("item_modifiers")
-    private Set<ItemModifierEntry> itemModifiers;
-    private Boolean hidden;
+    @Nullable private Set<ItemModifierEntry> itemModifiers;
 
-    private transient CachedAbilities cachedAbilities;
-    private transient CachedItemModifiers cachedItemModifiers;
+    @Nullable private Boolean hidden;
+
+    @Nullable private transient CachedAbilities cachedAbilities;
+    @Nullable private transient CachedItemModifiers cachedItemModifiers;
 
     /**
      * @return Name of the race
      */
-    @NotNull
     public Component getName() {
         return name != null ? name : Component.empty();
     }
@@ -41,15 +42,13 @@ public class RaceDefinition extends BaseDefinition {
     /**
      * @return Description of the race
      */
-    @NotNull
-    public List<@NotNull Component> getDescription() {
+    public List<Component> getDescription() {
         return description != null ? Collections.unmodifiableList(description) : Collections.emptyList();
     }
 
     /**
      * @return Icon of the race
      */
-    @NotNull
     public Component getIcon() {
         return icon != null ? icon : Component.empty();
     }
@@ -57,8 +56,7 @@ public class RaceDefinition extends BaseDefinition {
     /**
      * @return Base Attribute Entries of the race
      */
-    @NotNull
-    public List<@NotNull AttributeEntry> getAttributeEntries() {
+    public List<AttributeEntry> getAttributeEntries() {
         return attributes != null ? Collections.unmodifiableList(attributes) : Collections.emptyList();
     }
 
@@ -66,8 +64,7 @@ public class RaceDefinition extends BaseDefinition {
      * @return Abilities of the race
      * @see BaseAbility
      */
-    @NotNull
-    public Set<@NotNull BaseAbility> getAbilities() {
+    public Set<BaseAbility> getAbilities() {
         if (cachedAbilities == null) {
             cachedAbilities = CachedAbilities.buildCache(abilities);
         }
@@ -79,8 +76,7 @@ public class RaceDefinition extends BaseDefinition {
      * @return Ability Entries of the race
      * @see AbilityEntry
      */
-    @NotNull
-    public Set<@NotNull AbilityEntry> getAbilityEntries() {
+    public Set<AbilityEntry> getAbilityEntries() {
         return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
     }
 
@@ -88,8 +84,7 @@ public class RaceDefinition extends BaseDefinition {
      * @return Traits of the race
      * @see Trait
      */
-    @NotNull
-    public Set<@NotNull Trait> getTraits() {
+    public Set<Trait> getTraits() {
         return traits != null ? Collections.unmodifiableSet(traits) : Collections.emptySet();
     }
 
@@ -99,8 +94,7 @@ public class RaceDefinition extends BaseDefinition {
      * @return Modifier assigned for the material
      * @see BaseItemModifier
      */
-    @Nullable
-    public BaseItemModifier getItemModifierForMaterial(Material material) {
+    public @Nullable BaseItemModifier getItemModifierForMaterial(@Nullable Material material) {
         if (material == null) return null;
 
         if (cachedItemModifiers == null) {

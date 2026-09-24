@@ -3,7 +3,9 @@ package justjabka.justraces.api.managers;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public final class HealthManager {
 
     private HealthManager() {}
@@ -41,7 +43,7 @@ public final class HealthManager {
 
         double finalHealth = Math.min(maxHealth * clampedPercent, maxHealth);
 
-        if (canBeLethal && finalHealth <= 0) {
+        if (!canBeLethal && finalHealth <= 0) {
             player.setHealth(0.1);
         } else {
             player.setHealth(maxHealth * percent);

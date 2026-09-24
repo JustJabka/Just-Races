@@ -37,15 +37,15 @@ public class ItemModifierEntryDeserializer implements JsonDeserializer<Set<ItemM
         NamespacedKey key = NamespacedKey.fromString(keyStr);
 
         if (key == null) {
-            throw new JsonParseException("Invalid NamespacedKey format for Item Modifier: " + keyStr);
+            throw new JsonParseException("Invalid NamespacedKey format: " + keyStr);
         }
 
-        BaseItemModifier modifier = ItemModifierManager.getByKey(key);
-        if (modifier == null) {
+        try {
+            return ItemModifierManager.getByKey(key);
+        }
+        catch (IllegalArgumentException _){
             throw new JsonParseException("Unknown Item Modifier key: " + keyStr);
         }
-
-        return modifier;
     }
 
     @NonNull

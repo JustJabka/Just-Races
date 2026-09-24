@@ -89,7 +89,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     @EventHandler(ignoreCancelled = true)
     public void onCloudApply(AreaEffectCloudApplyEvent event) {
         if (!(event.getEntity().getSource() instanceof Player sourcePlayer)) return;
-        if (!playerHasAbility(sourcePlayer)) return;
+        if (!isRequiredAbility(sourcePlayer)) return;
 
         event.getAffectedEntities().remove(sourcePlayer);
     }

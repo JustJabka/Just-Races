@@ -8,9 +8,11 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Map;
 
+@NullMarked
 public final class AttributeManager {
 
     private AttributeManager() {}

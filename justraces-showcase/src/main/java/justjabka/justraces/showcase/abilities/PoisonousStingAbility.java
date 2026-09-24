@@ -46,7 +46,7 @@ public class PoisonousStingAbility extends BaseAbility implements ConfigurableAb
         if (!(event.getEntity() instanceof Player player)) return;
         if (!(event.getDamager() instanceof LivingEntity attacker)) return;
 
-        if (!playerHasAbility(player)) return;
+        if (!isRequiredAbility(player)) return;
 
         DamageSource damageSource = event.getDamageSource();
         if (damageSource.isIndirect()) return;

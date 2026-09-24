@@ -7,7 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.UnknownNullability;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public final class ArmorManager {
     private ArmorManager() {}
 
@@ -18,14 +21,14 @@ public final class ArmorManager {
      * @param player Player whose armor set will be updated
      */
     public static void updateArmorSet(Player player) {
-        ItemStack[] equipment = player.getEquipment().getArmorContents();
+        @UnknownNullability ItemStack[] equipment = getArmorContents(player);
 
         // Set armor set to NONE if armor is incomplete
         for (ItemStack item : equipment) {
-            if (item == null || item.isEmpty()) {
-                setStoredArmor(player, ArmorSet.NONE);
-                return;
-            }
+            if (item != null && !item.isEmpty()) continue;
+
+            setStoredArmor(player, ArmorSet.NONE);
+            return;
         }
 
         // Get first item piece
@@ -50,7 +53,7 @@ public final class ArmorManager {
      * @return {@code true} if player has any armor
      */
     public static boolean hasAnyArmor(Player player) {
-        ItemStack[] equipment = player.getEquipment().getArmorContents();
+        @UnknownNullability ItemStack[] equipment = getArmorContents(player);
 
         for (ItemStack item : equipment) {
             if (item == null) continue;
@@ -98,7 +101,7 @@ public final class ArmorManager {
         int count = 0;
         double totalPercent = 0;
 
-        ItemStack[] equipment = player.getEquipment().getArmorContents();
+        @UnknownNullability ItemStack[] equipment = getArmorContents(player);
 
         for (ItemStack item : equipment) {
             if (item == null) continue;
@@ -118,6 +121,10 @@ public final class ArmorManager {
         }
 
         return count == 0 ? 0 : (totalPercent / count);
+    }
+
+    private static @UnknownNullability ItemStack[] getArmorContents(Player player) {
+        return player.getEquipment().getArmorContents();
     }
 
     public enum ArmorSet {

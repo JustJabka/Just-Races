@@ -34,12 +34,6 @@ public class AbilityArgument extends CustomRegistryArgument<BaseAbility> {
             throw ERROR_INVALID_ABILITY.create(nativeType);
         }
 
-        BaseAbility ability = AbilityManager.getByKey(key);
-
-        if (ability == null) {
-            throw ERROR_INVALID_ABILITY.create(nativeType);
-        }
-
-        return ability;
+        return AbilityManager.getByKey(key);
     }
 }

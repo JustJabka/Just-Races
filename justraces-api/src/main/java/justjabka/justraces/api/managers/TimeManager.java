@@ -1,7 +1,9 @@
 package justjabka.justraces.api.managers;
 
 import org.bukkit.Bukkit;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public final class TimeManager {
 
     private TimeManager() {}

@@ -12,28 +12,38 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Map;
 
+@NullMarked
 public final class ItemModifierManager {
 
     private ItemModifierManager() {}
 
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
-    @Nullable
     public static BaseItemModifier getByKey(NamespacedKey key) {
-        return JustRacesRegistries.ITEM_MODIFIERS.get(key);
+        BaseItemModifier modifier = JustRacesRegistries.ITEM_MODIFIERS.get(key);
+        if (modifier == null) {
+            throw new IllegalArgumentException("Unregistered Item Modifier: %s".formatted(key));
+        }
+
+        return modifier;
     }
 
     @Nullable
-    public static BaseItemModifier getItemModifierForMaterialRace(Player player, ItemStack item) {
+    public static BaseItemModifier getItemModifierForMaterialRace(Player player, @Nullable ItemStack item) {
+        if (item == null) return null;
+
         RaceDefinition race = RaceManager.getRace(player);
         return race.getItemModifierForMaterial(item.getType());
     }
 
     @Nullable
-    public static BaseItemModifier getItemModifierForMaterialPlayer(Player player, ItemStack item) {
+    public static BaseItemModifier getItemModifierForMaterialPlayer(Player player, @Nullable ItemStack item) {
+        if (item == null) return null;
+
         BaseItemModifier raceItemModifier = getItemModifierForMaterialRace(player, item);
         if (raceItemModifier != null) return raceItemModifier;
 
@@ -41,7 +51,7 @@ public final class ItemModifierManager {
         return transientModifiers.get(item.getType());
     }
 
-    public static void tryApply(Player player, ItemStack item) {
+    public static void tryApply(Player player, @Nullable ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
 
@@ -55,9 +65,10 @@ public final class ItemModifierManager {
         addMarker(item, modifier);
     }
 
-    public static void tryUndo(ItemStack item) {
+    public static void tryUndo(@Nullable ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
+
         if (!item.getPersistentDataContainer().has(ITEM_MODIFIED_KEY)) return;
 
         BaseItemModifier modifier = getAppliedModifier(item);
@@ -65,7 +76,7 @@ public final class ItemModifierManager {
         if (modifier == null) {
             removeMarker(item);
 
-            JustRacesAPI.getLogger().warn("Tried to undo unknown or unregistered modifier");
+            JustRacesAPI.getLogger().warn("Tried to undo unknown or unregistered Item Modifier");
             return;
         }
 
@@ -73,7 +84,7 @@ public final class ItemModifierManager {
             modifier.undo(item);
             removeMarker(item);
         } catch (IllegalArgumentException e) {
-            JustRacesAPI.getLogger().error("Error while undoing modifier {} on item {}", modifier.getKey(), item.getType(), e);
+            JustRacesAPI.getLogger().error("Error while undoing Item Modifier {} on item {}", modifier.getKey(), item.getType(), e);
         }
     }
 
@@ -81,11 +92,12 @@ public final class ItemModifierManager {
         for (ItemStack item : inventory.getContents()) {
             if (item == null) continue;
             if (item.isEmpty()) continue;
+
             ItemModifierManager.tryUndo(item);
         }
     }
 
-    public static void refreshModifiersOnItem(Player player, ItemStack item) {
+    public static void refreshModifiersOnItem(Player player, @Nullable ItemStack item) {
         if (item == null) return;
         if (item.isEmpty()) return;
 
@@ -95,7 +107,7 @@ public final class ItemModifierManager {
 
     public static void refreshModifiers(Player player) {
         ItemStack cursorItem = player.getItemOnCursor();
-        ItemStack[] inventoryContents = player.getInventory().getContents();
+        @Nullable ItemStack[] inventoryContents = player.getInventory().getContents();
 
         for (ItemStack item : inventoryContents) {
             refreshModifiersOnItem(player, item);
@@ -124,13 +136,15 @@ public final class ItemModifierManager {
         );
     }
 
-    public static boolean isModifiedWith(ItemStack item, BaseItemModifier modifier) {
+    public static boolean isModifiedWith(@Nullable ItemStack item, @Nullable BaseItemModifier modifier) {
         if (modifier == null) return false;
         return modifier.equals(getAppliedModifier(item));
     }
 
-    @Nullable
-    public static BaseItemModifier getAppliedModifier(ItemStack item) {
+    public static @Nullable BaseItemModifier getAppliedModifier(@Nullable ItemStack item) {
+        if (item == null) return null;
+        if (item.isEmpty()) return null;
+
         PersistentDataContainerView pdc = item.getPersistentDataContainer();
 
         String keyStr = pdc.get(ITEM_MODIFIED_KEY, PersistentDataType.STRING);
