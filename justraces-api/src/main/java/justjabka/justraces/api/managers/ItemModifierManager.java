@@ -4,6 +4,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.api.common.definition.RaceDefinition;
+import justjabka.justraces.api.events.itemmodifier.PlayerItemModifierPreApplyEvent;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -60,6 +61,13 @@ public final class ItemModifierManager {
         if (modifier == null) return;
         if (isModifiedWith(item, modifier)) return;
         if (isCustomItem(item)) return;
+
+        PlayerItemModifierPreApplyEvent preEvent = new PlayerItemModifierPreApplyEvent(
+                player,
+                modifier,
+                item
+        );
+        if (!preEvent.callEvent()) return;
 
         modifier.apply(item);
         addMarker(item, modifier);

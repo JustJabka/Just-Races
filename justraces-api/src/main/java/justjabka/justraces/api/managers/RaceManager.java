@@ -69,15 +69,22 @@ public final class RaceManager {
         RaceDefinition currentRace = getRace(player);
         RaceDefinition newRace = getByKey(raceKey);
 
-        PlayerRaceChangePreEvent pre = new PlayerRaceChangePreEvent(player, currentRace, newRace, cause);
-        pre.callEvent();
-        if (pre.isCancelled()) return false;
+        // Pre Event
+        PlayerRaceChangePreEvent preEvent = new PlayerRaceChangePreEvent(
+                player,
+                currentRace,
+                newRace,
+                cause
+        );
+        if (!preEvent.callEvent()) return false;
 
-        RaceDefinition finalRace = pre.getNewRace();
-        applyRace(pre.getPlayer(), finalRace);
+        // Change Race
+        RaceDefinition finalRace = preEvent.getNewRace();
+        applyRace(preEvent.getPlayer(), finalRace);
 
-        PlayerRaceChangeEvent post = new PlayerRaceChangeEvent(player, currentRace, finalRace, cause);
-        post.callEvent();
+        // Post Event
+        PlayerRaceChangeEvent postEvent = new PlayerRaceChangeEvent(player, currentRace, finalRace, cause);
+        postEvent.callEvent();
 
         return true;
     }

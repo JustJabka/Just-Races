@@ -2,6 +2,8 @@ package justjabka.justraces.api.abilities.generic;
 
 import justjabka.justraces.api.common.PersistentHolder;
 import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.events.ability.PlayerAbilityTriggerEvent;
+import justjabka.justraces.api.events.ability.PlayerAbilityTriggerPreEvent;
 import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.managers.TimeManager;
 import justjabka.justraces.api.abilities.AbilityContext;
@@ -195,14 +197,26 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      * @see #onActivation(Player, AbilityContext)
      */
     public boolean tryActivate(Player player, AbilityContext ctx) {
+        // Validate
         if (!isRequiredAbility(player)) return false;
-
         if (!canActivate(player)) return false;
-
         if (isOnCooldown(player)) return false;
 
+        // Pre Event
+        PlayerAbilityTriggerPreEvent preEvent = new PlayerAbilityTriggerPreEvent(
+                player,
+                this,
+                ctx
+        );
+        if (!preEvent.callEvent()) return false;
+
+        // Activate
         if (!onActivation(player, ctx)) return false;
         putOnCooldown(player);
+
+        // Post Event
+        PlayerAbilityTriggerEvent postEvent = new PlayerAbilityTriggerEvent(player, this, ctx);
+        postEvent.callEvent();
 
         return true;
     }
