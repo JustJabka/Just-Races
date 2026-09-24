@@ -5,6 +5,7 @@ import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.managers.ItemModifierManager;
+import justjabka.justraces.core.gson.deserializer.DeserializationExceptions;
 import org.bukkit.*;
 import org.jspecify.annotations.NonNull;
 
@@ -16,7 +17,7 @@ public class ItemModifierEntryDeserializer implements JsonDeserializer<Set<ItemM
     @Override
     public Set<ItemModifierEntry> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (!json.isJsonObject()) {
-            throw new JsonParseException("Expected a JsonObject for Item Modifiers map, but got: " + json);
+            throw new JsonParseException("Expected a JsonObject for Item Modifiers map, but got: %s".formatted(json));
         }
 
         JsonObject obj = json.getAsJsonObject();
@@ -37,14 +38,14 @@ public class ItemModifierEntryDeserializer implements JsonDeserializer<Set<ItemM
         NamespacedKey key = NamespacedKey.fromString(keyStr);
 
         if (key == null) {
-            throw new JsonParseException("Invalid NamespacedKey format: " + keyStr);
+            throw DeserializationExceptions.invalidKeyFormat(keyStr);
         }
 
         try {
             return ItemModifierManager.getByKey(key);
         }
         catch (IllegalArgumentException _){
-            throw new JsonParseException("Unknown Item Modifier key: " + keyStr);
+            throw DeserializationExceptions.unknownKey("Item Modifier", keyStr);
         }
     }
 

@@ -6,6 +6,7 @@ import justjabka.justraces.api.abilities.AbilityTriggerCondition;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.managers.AbilityManager;
+import justjabka.justraces.core.gson.deserializer.DeserializationExceptions;
 import org.bukkit.NamespacedKey;
 import org.jspecify.annotations.NonNull;
 
@@ -29,29 +30,31 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
 
         NamespacedKey key = NamespacedKey.fromString(id);
         if (key == null) {
-            throw new JsonParseException("Invalid NamespacedKey format: %s".formatted(id));
+            throw DeserializationExceptions.invalidKeyFormat(id);
         }
 
         try {
             BaseAbility ability = AbilityManager.getByKey(key);
             return AbilityEntry.ofDefault(ability);
         } catch (IllegalArgumentException _) {
-            throw new JsonParseException("Unknown Ability %s".formatted(id));
+            throw DeserializationExceptions.unknownKey("Ability", id);
         }
     }
 
     private static @NonNull AbilityEntry deserializeOverride(JsonElement json) {
         JsonObject obj = json.getAsJsonObject();
 
-        if (!obj.has("id") || !obj.get("id").isJsonPrimitive()) {
-            throw new JsonParseException("Missing or invalid id field in Ability Entry");
+        final String idField = "id";
+
+        if (!obj.has(idField) || !obj.get(idField).isJsonPrimitive()) {
+            throw DeserializationExceptions.missingOrInvalidField(idField, "Ability Entry");
         }
 
-        String id = obj.get("id").getAsString();
+        String id = obj.get(idField).getAsString();
 
         NamespacedKey key = NamespacedKey.fromString(id);
         if (key == null) {
-            throw new JsonParseException("Invalid NamespacedKey format: %s".formatted(id));
+            throw DeserializationExceptions.invalidKeyFormat(id);
         }
 
         try {
@@ -61,7 +64,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
 
             return new AbilityEntry(ability, trigger, Collections.unmodifiableSet(conditions));
         } catch (IllegalArgumentException _) {
-            throw new JsonParseException("Unknown ability in Ability Entry %s".formatted(id));
+            throw DeserializationExceptions.unknownKey("Ability", "Ability Entry", id);
         }
     }
 
@@ -76,7 +79,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
             trigger = AbilityTrigger.valueOf(triggerStr);
             return trigger;
         } catch (IllegalArgumentException e) {
-            throw new JsonParseException("Unknown trigger in Ability Entry %s".formatted(triggerStr));
+            throw DeserializationExceptions.unknownKey("Ability Trigger", "Ability Entry", triggerStr);
         }
     }
 
@@ -95,7 +98,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
 
             return conditions;
         } catch (Exception e) {
-            throw new JsonParseException("Invalid conditions array in Ability Entry");
+            throw new JsonParseException("Invalid 'conditions' array in Ability Entry");
         }
     }
 }

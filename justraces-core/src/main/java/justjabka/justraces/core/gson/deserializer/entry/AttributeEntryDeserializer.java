@@ -2,6 +2,7 @@ package justjabka.justraces.core.gson.deserializer.entry;
 
 import com.google.gson.*;
 import justjabka.justraces.api.common.entry.AttributeEntry;
+import justjabka.justraces.core.gson.deserializer.DeserializationExceptions;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -26,26 +27,39 @@ public class AttributeEntryDeserializer implements JsonDeserializer<AttributeEnt
     }
 
     private static Attribute getAttribute(JsonObject obj) {
-        String idStr = obj.get("id").getAsString();
-        NamespacedKey id = NamespacedKey.fromString(idStr);
+        final String idField = "id";
 
-        if (id == null) {
-            throw new JsonParseException("Invalid NamespacedKey format: %s".formatted(idStr));
+        if (!obj.has(idField) || !obj.get(idField).isJsonPrimitive()) {
+            throw DeserializationExceptions.missingOrInvalidField(idField, "Attribute Entry");
         }
 
-        return Registry.ATTRIBUTE.getOrThrow(id);
+        String id = obj.get(idField).getAsString();
+        NamespacedKey key = NamespacedKey.fromString(id);
+
+        if (key == null) {
+            throw DeserializationExceptions.invalidKeyFormat(id);
+        }
+
+        return Registry.ATTRIBUTE.getOrThrow(key);
     }
 
     private static double getAmount(JsonObject obj) {
-        return obj.get("amount").getAsDouble();
+        final String amountField = "amount";
+
+        if (!obj.has(amountField) || !obj.get(amountField).isJsonPrimitive()) {
+            throw DeserializationExceptions.missingOrInvalidField(amountField, "Attribute Entry");
+        }
+        return obj.get(amountField).getAsDouble();
     }
 
     private static Optional<AttributeModifier.Operation> getOperation(JsonObject obj) {
-        if (!obj.has("operation") || obj.get("operation").isJsonNull()) {
+        final String operationField = "operation";
+
+        if (!obj.has(operationField) || obj.get(operationField).isJsonNull()) {
             return Optional.empty();
         }
 
-        String opStr = obj.get("operation").getAsString();
+        String opStr = obj.get(operationField).getAsString();
 
         try {
             return Optional.of(AttributeModifier.Operation.valueOf(opStr.toUpperCase()));

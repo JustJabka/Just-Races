@@ -17,6 +17,9 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 public final class GsonManager {
+
+    private GsonManager() {}
+
     private static final Type SET_ITEM_MODIFIER_ENTRIES = new TypeToken<Set<ItemModifierEntry>>(){}.getType();
 
     public static final Gson GSON = GsonComponentSerializer.gson().populator()
@@ -26,6 +29,4 @@ public final class GsonManager {
             .registerTypeAdapter(SET_ITEM_MODIFIER_ENTRIES, new ItemModifierEntryDeserializer())
             .registerTypeAdapter(Trait.class, new TraitDeserializer())
             .create();
-
-    private GsonManager() {}
 }

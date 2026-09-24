@@ -37,7 +37,7 @@ public class TransCommand {
 
     private static final DynamicCommandExceptionType ERROR_INVALID_ABILITY_ENTRY = new DynamicCommandExceptionType(
             error -> MessageComponentSerializer.message().serialize(
-                    Component.text("Invalid Ability Entry: %s".formatted(error))
+                    Component.text("Invalid Ability Entry. %s".formatted(error))
             )
     );
 
