@@ -88,6 +88,11 @@ public final class EffectManager {
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
     }
 
+    /**
+     * Enables glider flight (the same as an elytra) for player
+     * @param player Player
+     * @param gliderFlight {@code true} to enable. {@code false} to disable
+     */
     public static void setGliderFlight(Player player, boolean gliderFlight) {
         ItemStack glider;
 
