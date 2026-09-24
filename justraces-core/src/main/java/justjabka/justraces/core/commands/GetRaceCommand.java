@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class GetRaceCommand {
-    private static final TranslatableComponent message = Component.translatable("commands.getrace.success").fallback("%s's race is %s");
+    private static final TranslatableComponent MESSAGE = Component.translatable("commands.getrace.success").fallback("%s's race is %s");
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("getrace")
@@ -41,7 +41,7 @@ public class GetRaceCommand {
         RaceDefinition race = RaceManager.getRace(target);
         Component raceName = race.getName();
 
-        sender.sendMessage(message.arguments(target.name(), raceName));
+        sender.sendMessage(MESSAGE.arguments(target.name(), raceName));
 
         return !race.equals(RaceManager.NONE) ? 1 : 0;
     }
