@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JustRacesAPI {
+public final class JustRacesAPI {
     private static Plugin INSTANCE;
     public static final String NAMESPACE = "justraces";
     private static Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
@@ -32,7 +32,7 @@ public class JustRacesAPI {
             Registry<BaseAbility> abilities,
             Registry<Trait> traits,
             Registry<BaseItemModifier> itemModifiers
-            ) {
+    ) {
         INSTANCE = plugin;
         LOGGER = logger;
 
