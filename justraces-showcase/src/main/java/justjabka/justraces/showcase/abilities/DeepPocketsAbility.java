@@ -33,7 +33,7 @@ public class DeepPocketsAbility extends BaseAbility {
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE006").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 

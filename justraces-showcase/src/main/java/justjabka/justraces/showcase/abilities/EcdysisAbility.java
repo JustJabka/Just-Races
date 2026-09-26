@@ -70,12 +70,12 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     }
 
     @Override
-    public BossBar.Color getCooldownBarColor(Player player) {
+    public BossBar.Color getBarColor(Player player) {
         return isSuicideUse(player) ? BossBar.Color.RED : BossBar.Color.PURPLE;
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE001").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 

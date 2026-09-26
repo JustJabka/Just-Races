@@ -32,6 +32,7 @@ public class GlobalListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
+        TimerBarManager.removeAllBars(player);
         endEverything(player, ResettableAbility.Reason.QUIT, ResettableTrait.Reason.QUIT);
     }
 

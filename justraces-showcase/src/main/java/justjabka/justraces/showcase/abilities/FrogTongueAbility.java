@@ -92,14 +92,14 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE002").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
-    public BossBar.Color getCooldownBarColor(Player player) {
+    public BossBar.Color getBarColor(Player player) {
         BossBar.Color cooldownBarColor = getTongueType(player).cooldownBarColor;
-        return cooldownBarColor != null ? cooldownBarColor : super.getCooldownBarColor(player);
+        return cooldownBarColor != null ? cooldownBarColor : super.getBarColor(player);
     }
 
     // State

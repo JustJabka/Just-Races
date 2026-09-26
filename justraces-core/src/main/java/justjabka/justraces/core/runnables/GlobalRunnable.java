@@ -2,6 +2,7 @@ package justjabka.justraces.core.runnables;
 
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.managers.AbilityManager;
+import justjabka.justraces.api.managers.TimerBarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,7 +21,7 @@ public class GlobalRunnable extends BukkitRunnable {
         Set<BaseAbility> abilities = AbilityManager.getAbilitiesForPlayer(player);
 
         for (BaseAbility ability : abilities) {
-            ability.updateCooldownBar(player);
+            TimerBarManager.updateBar(player, ability);
         }
     }
 }

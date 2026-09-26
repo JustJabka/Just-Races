@@ -40,12 +40,12 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     }
 
     @Override
-    public BossBar.Color getCooldownBarColor(Player player) {
+    public BossBar.Color getBarColor(Player player) {
         return isEnabled(player) ? BossBar.Color.GREEN : BossBar.Color.RED;
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE000").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 

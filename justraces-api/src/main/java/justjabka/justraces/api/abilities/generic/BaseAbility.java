@@ -1,45 +1,51 @@
 package justjabka.justraces.api.abilities.generic;
 
-import justjabka.justraces.api.common.PersistentHolder;
 import justjabka.justraces.api.JustRacesAPI;
+import justjabka.justraces.api.abilities.AbilityContext;
+import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.AbilityTriggerCondition;
+import justjabka.justraces.api.common.PersistentHolder;
+import justjabka.justraces.api.common.TimerBar;
 import justjabka.justraces.api.events.ability.PlayerAbilityTriggerEvent;
 import justjabka.justraces.api.events.ability.PlayerAbilityTriggerPreEvent;
 import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.managers.TimeManager;
-import justjabka.justraces.api.abilities.AbilityContext;
-import justjabka.justraces.api.abilities.AbilityTrigger;
-import justjabka.justraces.api.abilities.AbilityTriggerCondition;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class BaseAbility implements Listener, PersistentHolder {
-    private final Map<UUID, BossBar> cooldownBars = new ConcurrentHashMap<>();
+public abstract class BaseAbility implements Listener, TimerBar, PersistentHolder {
 
     private static final NamespacedKey COOLDOWN = new NamespacedKey(JustRacesAPI.NAMESPACE, "cooldown");
     private static final NamespacedKey EXPIRES_AT = new NamespacedKey(JustRacesAPI.NAMESPACE, "expires_at");
 
-    protected static final Key COOLDOWN_BAR_FONT = Key.key(JustRacesAPI.NAMESPACE, "cooldown_bar");
-    protected static final Component COOLDOWN_BAR_ICON_OFFSET = Component.text("\uDB00\uDCC6").font(COOLDOWN_BAR_FONT);
-
     public abstract NamespacedKey getKey();
     public abstract long getCooldownTicks();
 
-    public BossBar.Color getCooldownBarColor(Player player) {
-        return BossBar.Color.WHITE;
+    public AbilityTrigger getDefaultTrigger() {
+        return AbilityTrigger.CUSTOM;
     }
-    public Component getCooldownBarIcon(Player player) {
-        return Component.text("\uE000")
-                .font(COOLDOWN_BAR_FONT);
+
+    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+        return Set.of();
+    }
+
+    @Override
+    public float getBarProgress(Player player) {
+        float remainingTicks = (float) getRemainingTicks(player);
+        if (remainingTicks <= 0) return 0f;
+
+        float cooldownTicks = (float) getEntryLong(player, COOLDOWN);
+        if (cooldownTicks <= 0) return 0f;
+
+        return remainingTicks / cooldownTicks;
+    }
+
+    @Override
+    public boolean shouldBarDisplay(Player player) {
+        return isOnCooldown(player);
     }
 
     @Override
@@ -130,44 +136,6 @@ public abstract class BaseAbility implements Listener, PersistentHolder {
      */
     public boolean isRequiredAbility(Player player) {
         return AbilityManager.playerHasAbility(player, this);
-    }
-
-    public void updateCooldownBar(Player player) {
-        if (!isOnCooldown(player)) {
-            removeCooldownBar(player);
-            return;
-        }
-
-        float remainingTicks = (float) getRemainingTicks(player);
-        float cooldownTicks = (float) getEntryLong(player, COOLDOWN);
-
-        float progress = Math.clamp(remainingTicks / cooldownTicks, BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
-        final Component iconWithOffset = getCooldownBarIcon(player).shadowColor(ShadowColor.none()).append(COOLDOWN_BAR_ICON_OFFSET);
-        final BossBar.Color color = getCooldownBarColor(player);
-
-        BossBar cooldownBar = cooldownBars.computeIfAbsent(player.getUniqueId(), _ -> {
-            BossBar bar = BossBar.bossBar(iconWithOffset, progress, color, BossBar.Overlay.NOTCHED_6);
-            player.showBossBar(bar);
-            return bar;
-        });
-
-        cooldownBar.name(iconWithOffset);
-        cooldownBar.color(color);
-        cooldownBar.progress(progress);
-    }
-
-    public void removeCooldownBar(Player player) {
-        BossBar bossBar = cooldownBars.remove(player.getUniqueId());
-        if (bossBar == null) return;
-        player.hideBossBar(bossBar);
-    }
-
-    public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.CUSTOM;
-    }
-
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of();
     }
 
     /**

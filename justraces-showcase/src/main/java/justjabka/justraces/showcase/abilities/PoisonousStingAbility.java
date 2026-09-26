@@ -32,12 +32,12 @@ public class PoisonousStingAbility extends BaseAbility implements ConfigurableAb
     }
 
     @Override
-    public BossBar.Color getCooldownBarColor(Player player) {
+    public BossBar.Color getBarColor(Player player) {
         return BossBar.Color.GREEN;
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE005").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 

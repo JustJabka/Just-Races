@@ -98,7 +98,7 @@ public class HalfLifeTrait extends BaseTraitRunnable implements ResettableTrait,
 
     private static void revealActiveAbilities(Player player) {
         List<Component> abilities = AbilityManager.getAbilitiesForPlayer(player).stream()
-                .map(ability -> ability.getCooldownBarIcon(player))
+                .map(ability -> ability.getBarIcon(player))
                 .toList();
 
         Component message = Component.join(

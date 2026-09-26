@@ -113,7 +113,7 @@ public final class AbilityManager {
 
     public static void endAbility(Player player, BaseAbility ability, ResettableAbility.Reason reason) {
         if (shouldResetAbilityCooldown(reason)) ability.resetCooldown(player);
-        ability.removeCooldownBar(player);
+        TimerBarManager.removeBar(player, ability);
         clearAbilityStates(player, ability, reason);
     }
 

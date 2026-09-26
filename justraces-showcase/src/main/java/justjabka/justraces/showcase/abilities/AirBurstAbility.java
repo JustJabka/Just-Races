@@ -36,7 +36,7 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
     }
 
     @Override
-    public Component getCooldownBarIcon(Player player) {
+    public Component getBarIcon(Player player) {
         return Component.text("\uE004").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
