@@ -168,6 +168,7 @@ public class ArmorResonanceTrait extends BaseTraitListener implements Resettable
         world.playSound(location, Sound.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 2f, 1f);
     }
 
+    // TODO: Thank you Paper for "parity"
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;

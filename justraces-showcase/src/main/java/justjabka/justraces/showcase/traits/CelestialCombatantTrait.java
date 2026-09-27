@@ -17,6 +17,7 @@ public class CelestialCombatantTrait extends BaseTraitListener implements Config
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "celestial_combatant");
     }
 
+    // TODO: Thank you Paper for "parity"
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof LivingEntity victim)) return;
