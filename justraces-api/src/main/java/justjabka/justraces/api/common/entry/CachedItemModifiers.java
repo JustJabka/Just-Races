@@ -15,10 +15,7 @@ public record CachedItemModifiers(Map<Material, BaseItemModifier> modifiers, Set
     }
 
     public static CachedItemModifiers buildCache(Set<ItemModifierEntry> entries) {
-        if (entries == null || entries.isEmpty()) return new CachedItemModifiers(
-                Collections.emptyMap(),
-                Collections.emptySet()
-        );
+        if (entries == null || entries.isEmpty()) return ofEmpty();
 
         final Map<Material, BaseItemModifier> cachedModifiers = new HashMap<>();
 

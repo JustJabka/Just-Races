@@ -13,10 +13,7 @@ public record CachedAbilities(Set<BaseAbility> abilities, Set<AbilityEntry> entr
     }
 
     public static CachedAbilities buildCache(Set<AbilityEntry> entries) {
-        if (entries == null || entries.isEmpty()) return new CachedAbilities(
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        if (entries == null || entries.isEmpty()) return ofEmpty();
 
         final Set<BaseAbility> cachedAbilities = new HashSet<>();
 

@@ -7,6 +7,7 @@ import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.traits.generic.Trait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.inventory.CraftingRecipe;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
@@ -27,10 +28,12 @@ public class RaceDefinition extends BaseDefinition {
     @SerializedName("item_modifiers")
     @Nullable private Set<ItemModifierEntry> itemModifiers;
 
+    @Nullable private Set<CraftingRecipe> recipes;
     @Nullable private Boolean hidden;
 
     @Nullable private transient CachedAbilities cachedAbilities;
     @Nullable private transient CachedItemModifiers cachedItemModifiers;
+    @Nullable private transient CachedRecipes cachedRecipes;
 
     /**
      * @return Name of the race
@@ -89,6 +92,14 @@ public class RaceDefinition extends BaseDefinition {
     }
 
     /**
+     * @return Item Modifier Entries of the race
+     * @see ItemModifierEntry
+     */
+    public Set<ItemModifierEntry> getItemModifiers() {
+        return itemModifiers != null ? Collections.unmodifiableSet(itemModifiers) : Collections.emptySet();
+    }
+
+    /**
      * Gets modifier assigned for the material
      * @param material Material
      * @return Modifier assigned for the material
@@ -102,6 +113,27 @@ public class RaceDefinition extends BaseDefinition {
         }
 
         return cachedItemModifiers.modifiers().get(material);
+    }
+
+    /**
+     * @return Recipes of the race
+     * @see CraftingRecipe
+     */
+    public Set<CraftingRecipe> getRecipes() {
+        return recipes != null ? Collections.unmodifiableSet(recipes) : Collections.emptySet();
+    }
+
+    /**
+     * Checks if the race has this recipe
+     * @param recipe Recipe
+     * @return {@code true} if the race has this recipe
+     */
+    public boolean hasRecipe(CraftingRecipe recipe) {
+        if (cachedRecipes == null) {
+            cachedRecipes = CachedRecipes.buildCache(getRecipes());
+        }
+
+        return cachedRecipes.recipes().containsKey(recipe.getKey());
     }
 
     /**

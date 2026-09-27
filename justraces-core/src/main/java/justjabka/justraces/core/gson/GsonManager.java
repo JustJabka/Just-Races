@@ -7,11 +7,13 @@ import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.common.entry.AttributeEntry;
 import justjabka.justraces.api.common.entry.ItemModifierEntry;
 import justjabka.justraces.api.traits.generic.Trait;
+import justjabka.justraces.core.gson.deserializer.CraftingRecipeDeserializer;
 import justjabka.justraces.core.gson.deserializer.TraitDeserializer;
 import justjabka.justraces.core.gson.deserializer.entry.AbilityEntryDeserializer;
 import justjabka.justraces.core.gson.deserializer.entry.AttributeEntryDeserializer;
 import justjabka.justraces.core.gson.deserializer.entry.ItemModifierEntryDeserializer;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.inventory.CraftingRecipe;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -28,5 +30,6 @@ public final class GsonManager {
             .registerTypeAdapter(AttributeEntry.class, new AttributeEntryDeserializer())
             .registerTypeAdapter(SET_ITEM_MODIFIER_ENTRIES, new ItemModifierEntryDeserializer())
             .registerTypeAdapter(Trait.class, new TraitDeserializer())
+            .registerTypeAdapter(CraftingRecipe.class, new CraftingRecipeDeserializer())
             .create();
 }

@@ -34,5 +34,11 @@
     "justracesshowcase:bound_shell",
     "justracesshowcase:armor_resonance",
     "justracesshowcase:sinks_in_water"
+  ],
+  "recipes": [
+    "justraces:chainmail_helmet",
+    "justraces:chainmail_chestplate",
+    "justraces:chainmail_leggings",
+    "justraces:chainmail_boots"
   ]
 }
