@@ -71,7 +71,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
 
     @Override
     public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
+        return getConfigConditions();
     }
 
     @Override

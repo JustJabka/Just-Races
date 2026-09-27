@@ -5,5 +5,9 @@
     "default": 12
   },
   "trigger": "offhand_swap",
+  "conditions": [
+    "sneaking",
+    "empty_hand"
+  ],
   "size": 0.8
 }

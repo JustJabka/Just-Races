@@ -56,7 +56,7 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
 
     @Override
     public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
+        return getConfigConditions();
     }
 
     @Override

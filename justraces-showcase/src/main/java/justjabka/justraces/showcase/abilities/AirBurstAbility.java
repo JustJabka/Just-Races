@@ -47,7 +47,7 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
 
     @Override
     public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
+        return getConfigConditions();
     }
 
     @Override

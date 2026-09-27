@@ -86,7 +86,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
 
     @Override
     public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
+        return getConfigConditions();
     }
 
     @Override

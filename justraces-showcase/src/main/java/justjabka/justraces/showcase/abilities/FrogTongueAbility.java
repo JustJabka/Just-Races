@@ -179,7 +179,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     @Override
     public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of(AbilityTriggerCondition.SNEAKING, AbilityTriggerCondition.EMPTY_HAND);
+        return getConfigConditions();
     }
 
     @Override

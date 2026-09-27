@@ -2,6 +2,10 @@
   "cooldown": 960,
   "duration": 120,
   "trigger": "left_click",
+  "conditions": [
+    "sneaking",
+    "empty_hand"
+  ],
   "trail": {
     "radius": 1.2,
     "duration": 120,
