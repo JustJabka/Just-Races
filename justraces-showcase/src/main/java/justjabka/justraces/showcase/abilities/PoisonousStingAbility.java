@@ -19,6 +19,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
+
 public class PoisonousStingAbility extends BaseAbility implements ConfigurableAbility {
 
     @Override
@@ -39,6 +41,11 @@ public class PoisonousStingAbility extends BaseAbility implements ConfigurableAb
     @Override
     public Component getBarIcon(Player player) {
         return Component.text("\uE005").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("When you take damage, a poisonous stinger strikes back at the attacker."));
     }
 
     @EventHandler(ignoreCancelled = true)

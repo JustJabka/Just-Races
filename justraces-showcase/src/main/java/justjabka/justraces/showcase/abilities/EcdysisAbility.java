@@ -25,6 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -72,6 +73,14 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     @Override
     public BossBar.Color getBarColor(Player player) {
         return isSuicideUse(player) ? BossBar.Color.RED : BossBar.Color.PURPLE;
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("Sacrifices armor durability to trigger an explosive burst, granting extreme resistance, speed, and knockback immunity. " +
+                "This effect can be chained. Activating at critically low durability can be lethal. " +
+                "Requires a full set of Netherite Armor."
+        ));
     }
 
     @Override

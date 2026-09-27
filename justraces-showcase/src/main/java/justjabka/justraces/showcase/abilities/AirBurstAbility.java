@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jspecify.annotations.NonNull;
 
+import java.util.List;
 import java.util.Set;
 
 public class AirBurstAbility extends BaseAbility implements ConfigurableAbility {
@@ -38,6 +39,13 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
     @Override
     public Component getBarIcon(Player player) {
         return Component.text("\uE004").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("Releases a powerful burst of air that knockbacks enemies in front of you. " +
+                "Can be blocked by shields (disabling them) and is mitigated by knockback resistance."
+        ));
     }
 
     @Override

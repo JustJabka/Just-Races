@@ -12,31 +12,47 @@ import io.papermc.paper.registry.data.dialog.DialogBase;
 import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import io.papermc.paper.registry.data.dialog.body.DialogBody;
 import io.papermc.paper.registry.data.dialog.type.DialogType;
-import justjabka.justraces.api.events.race.Cause;
-import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
+import justjabka.justraces.api.abilities.generic.BaseAbility;
+import justjabka.justraces.api.common.definition.RaceDefinition;
+import justjabka.justraces.api.common.entry.AbilityEntry;
+import justjabka.justraces.api.events.race.Cause;
 import justjabka.justraces.api.managers.RaceManager;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ObjectComponent;
 import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.object.ObjectContents;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class SelectRaceCommand {
     private static final int DIALOG_COLUMNS = 2;
     private static final int NAVIGATION_ACTIONS_WIDTH = 100;
 
-    private static final Component RACE_SELECTION_TITLE = Component.translatable("gui.race_selection.title").fallback("Select Race");
+    private static final Component TITLE = Component.translatable("gui.race_selection.title").fallback("Select Race");
 
-    private static final Component RACE_SELECTION_PAGE_PREV = Component.translatable("book.page_button.previous");
-    private static final Component RACE_SELECTION_PAGE_NEXT = Component.translatable("book.page_button.next");
-    private static final Component RACE_SELECTION_SELECT = Component.translatable("mco.template.button.select");
+    private static final Component PAGE_PREV = Component.translatable("book.page_button.previous");
+    private static final Component PAGE_NEXT = Component.translatable("book.page_button.next");
+    private static final Component SELECT = Component.translatable("mco.template.button.select");
+
+    private static final Component ABILITY_BADGE = getBadge("race_selection/ability");
+    private static final Component INFO_BADGE = getBadge("race_selection/info");
+
+    private static @NonNull ObjectComponent getBadge(String path) {
+        return Component.object(
+                ObjectContents.sprite(
+                        Key.key(Key.MINECRAFT_NAMESPACE, "gui"),
+                        Key.key(JustRacesAPI.NAMESPACE, path)
+                )
+        );
+    }
 
     public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("selectrace")
@@ -92,42 +108,28 @@ public class SelectRaceCommand {
     }
 
     private static Dialog buildDialog(Player player, RaceDefinition selectedRace, int currentPage) {
-        List<DialogBody> body = new ArrayList<>();
-
-        Component selectedRaceName = selectedRace.name();
-        List<Component> selectedRaceDescription = selectedRace.description();
-        Component selectedRaceIcon = selectedRace.getIcon();
-
-        Component selectedRaceTitle = Component.empty() // using empty component to prevent icon from mutating race name properties
-                .append(selectedRaceIcon, Component.space(), selectedRaceName);
-
-        body.add(DialogBody.plainMessage(selectedRaceTitle));
-        for (Component line : selectedRaceDescription) {
-            body.add(DialogBody.plainMessage(line));
-        }
-
-        DialogBase base = DialogBase.builder(RACE_SELECTION_TITLE)
-                .body(body)
+        final DialogBase base = DialogBase.builder(TITLE)
+                .body(buildDialogBody(selectedRace))
                 .pause(true)
                 .canCloseWithEscape(false)
                 .build();
 
-        List<ActionButton> navigationActions = List.of(
-                ActionButton.builder(RACE_SELECTION_PAGE_PREV)
+        final List<ActionButton> navigationActions = List.of(
+                ActionButton.builder(PAGE_PREV)
                         .width(NAVIGATION_ACTIONS_WIDTH)
                         .action(changePage(player, currentPage - 1))
                         .build(),
-                ActionButton.builder(RACE_SELECTION_PAGE_NEXT)
+                ActionButton.builder(PAGE_NEXT)
                         .width(NAVIGATION_ACTIONS_WIDTH)
                         .action(changePage(player, currentPage + 1))
                         .build()
         );
 
-        ActionButton selectAction = ActionButton
-                .builder(RACE_SELECTION_SELECT)
+        final ActionButton selectAction = ActionButton
+                .builder(SELECT)
                 .action(DialogAction.customClick(
                         (_, audience) -> handleRaceSelection(audience, selectedRace),
-                        singeUseOption()
+                        singleUseOption()
                 ))
                 .build();
 
@@ -138,14 +140,76 @@ public class SelectRaceCommand {
         );
     }
 
+    private static @NonNull List<DialogBody> buildDialogBody(RaceDefinition selectedRace) {
+        List<DialogBody> body = new ArrayList<>();
+
+        addRaceTitle(selectedRace, body);
+        addRaceAbilities(selectedRace, body);
+        addRaceDescription(selectedRace, body);
+
+        return body;
+    }
+
+    private static void addRaceTitle(RaceDefinition selectedRace, List<DialogBody> body) {
+        Component name = selectedRace.name();
+        Component icon = selectedRace.getIcon();
+
+        addHeader(icon, name, body);
+    }
+
+    private static void addRaceAbilities(RaceDefinition selectedRace, List<DialogBody> body) {
+        Set<AbilityEntry> abilities = selectedRace.getAbilityEntries();
+
+        for (AbilityEntry entry : abilities) {
+            BaseAbility ability = entry.ability();
+
+            Component name = ability.name();
+            List<Component> description = ability.description();
+
+            addHeader(
+                    ABILITY_BADGE,
+                    name.decorate(TextDecoration.UNDERLINED),
+                    body
+            );
+
+            addDescription(description, body);
+        }
+    }
+
+    private static void addRaceDescription(RaceDefinition selectedRace, List<DialogBody> body) {
+        List<Component> description = selectedRace.description();
+
+        addHeader(
+                INFO_BADGE,
+                Component.text("Information").decorate(TextDecoration.UNDERLINED),
+                body
+        );
+        addDescription(description, body);
+    }
+
+    private static void addHeader(Component prefix, Component title, List<DialogBody> body) {
+        Component finalTitle = Component.empty()
+                .append(prefix)
+                .appendSpace()
+                .append(title);
+
+        body.add(DialogBody.plainMessage(finalTitle));
+    }
+
+    private static void addDescription(List<Component> description, List<DialogBody> body) {
+        for (Component line : description) {
+            body.add(DialogBody.plainMessage(line.color(NamedTextColor.GRAY)));
+        }
+    }
+
     private static DialogAction.@NonNull CustomClickAction changePage(Player player, int page) {
         return DialogAction.customClick(
                 (_, _) -> openRaceDialog(player, page),
-                singeUseOption()
+                singleUseOption()
         );
     }
 
-    private static ClickCallback.Options singeUseOption() {
+    private static ClickCallback.Options singleUseOption() {
         return ClickCallback.Options.builder()
                 .uses(1)
                 .lifetime(ClickCallback.DEFAULT_LIFETIME)

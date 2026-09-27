@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbility {
 
     private static final NamespacedKey INVENTORY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "inventory");
@@ -42,6 +44,11 @@ public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbili
     @Override
     public BossBar.Color getBarColor(Player player) {
         return BossBar.Color.YELLOW;
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("Access an additional inventory, that keeps your items completely safe even through death."));
     }
 
     @Override

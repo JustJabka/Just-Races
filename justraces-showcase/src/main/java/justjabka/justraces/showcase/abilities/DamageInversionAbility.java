@@ -24,6 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public class DamageInversionAbility extends TogglableAbility implements ConfigurableAbility {
@@ -47,6 +48,13 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     @Override
     public Component getBarIcon(Player player) {
         return Component.text("\uE000").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("Flips incoming damage. Heavy hits become minor scratches, while minor ones deal fatal damage. " +
+                "Requires a full set of Leather Armor. Magic bypasses this effect."
+        ));
     }
 
     @Override

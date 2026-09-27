@@ -97,6 +97,14 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     @Override
+    public List<Component> description() {
+        return List.of(Component.text("Launches a long-range tongue hook. " +
+                "Grapple to blocks or pull entities toward you. " +
+                "Consuming slimeballs changes tongue effects. Effects can be cleared by drinking milk."
+        ));
+    }
+
+    @Override
     public BossBar.Color getBarColor(Player player) {
         BossBar.Color cooldownBarColor = getTongueType(player).cooldownBarColor;
         return cooldownBarColor != null ? cooldownBarColor : super.getBarColor(player);

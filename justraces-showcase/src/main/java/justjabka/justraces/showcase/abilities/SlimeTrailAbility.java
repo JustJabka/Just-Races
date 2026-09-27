@@ -25,6 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -62,6 +63,13 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     @Override
     public BossBar.Color getBarColor(Player player) {
         return BossBar.Color.GREEN;
+    }
+
+    @Override
+    public List<Component> description() {
+        return List.of(Component.text("Leaves a sticky trail of slime under your feet. " +
+                "Enemies stepping into the trail are drastically slowed down."
+        ));
     }
 
     @Override
