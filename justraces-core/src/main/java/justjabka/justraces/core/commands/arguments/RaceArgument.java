@@ -34,6 +34,6 @@ public class RaceArgument extends CustomRegistryArgument<RaceDefinition> {
             throw ERROR_INVALID_RACE.create(nativeType);
         }
 
-        return RaceManager.getByKey(key);
+        return RaceManager.getOrThrow(key);
     }
 }

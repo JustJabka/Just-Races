@@ -34,6 +34,6 @@ public class TraitArgument extends CustomRegistryArgument<Trait> {
             throw ERROR_INVALID_TRAIT.create(nativeType);
         }
 
-        return TraitManager.getByKey(key);
+        return TraitManager.getOrThrow(key);
     }
 }

@@ -24,13 +24,12 @@ public final class ItemModifierManager {
 
     public static final NamespacedKey ITEM_MODIFIED_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "item_modified");
 
-    public static BaseItemModifier getByKey(NamespacedKey key) {
-        BaseItemModifier modifier = JustRacesRegistries.ITEM_MODIFIERS.get(key);
-        if (modifier == null) {
-            throw new IllegalArgumentException("Unregistered Item Modifier: %s".formatted(key));
-        }
+    public static @Nullable BaseItemModifier get(NamespacedKey key) {
+        return JustRacesRegistries.ITEM_MODIFIERS.get(key);
+    }
 
-        return modifier;
+    public static BaseItemModifier getOrThrow(NamespacedKey key) {
+        return JustRacesRegistries.ITEM_MODIFIERS.getOrThrow(key);
     }
 
     @Nullable
@@ -161,6 +160,6 @@ public final class ItemModifierManager {
         NamespacedKey key = NamespacedKey.fromString(keyStr, JustRacesAPI.getInstance());
         if (key == null) return null;
 
-        return getByKey(key);
+        return get(key);
     }
 }

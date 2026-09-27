@@ -13,6 +13,7 @@ import org.jspecify.annotations.NonNull;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> {
@@ -34,9 +35,9 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
         }
 
         try {
-            BaseAbility ability = AbilityManager.getByKey(key);
+            BaseAbility ability = AbilityManager.getOrThrow(key);
             return AbilityEntry.ofDefault(ability);
-        } catch (IllegalArgumentException _) {
+        } catch (NoSuchElementException _) {
             throw DeserializationExceptions.unknownKey("Ability", id);
         }
     }
@@ -58,12 +59,12 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
         }
 
         try {
-            BaseAbility ability = AbilityManager.getByKey(key);
+            BaseAbility ability = AbilityManager.getOrThrow(key);
             AbilityTrigger trigger = getTrigger(ability, obj);
             Set<AbilityTriggerCondition> conditions = getConditions(ability, obj);
 
             return new AbilityEntry(ability, trigger, Collections.unmodifiableSet(conditions));
-        } catch (IllegalArgumentException _) {
+        } catch (NoSuchElementException _) {
             throw DeserializationExceptions.unknownKey("Ability", "Ability Entry", id);
         }
     }
@@ -78,7 +79,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
         try {
             trigger = AbilityTrigger.valueOf(triggerStr);
             return trigger;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException _) {
             throw DeserializationExceptions.unknownKey("Ability Trigger", "Ability Entry", triggerStr);
         }
     }
@@ -97,7 +98,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
             }
 
             return conditions;
-        } catch (Exception e) {
+        } catch (Exception _) {
             throw new JsonParseException("Invalid 'conditions' array in Ability Entry");
         }
     }

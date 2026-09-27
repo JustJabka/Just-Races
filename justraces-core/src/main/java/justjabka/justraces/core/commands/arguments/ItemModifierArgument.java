@@ -34,6 +34,6 @@ public class ItemModifierArgument extends CustomRegistryArgument<BaseItemModifie
             throw ERROR_INVALID_MODIFIER.create(nativeType);
         }
 
-        return ItemModifierManager.getByKey(key);
+        return ItemModifierManager.getOrThrow(key);
     }
 }

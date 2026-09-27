@@ -16,6 +16,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
@@ -28,7 +29,15 @@ public final class RaceManager {
     public static final NamespacedKey RACE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "race");
 
     public static final NamespacedKey NONE_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "none");
-    public static final RaceDefinition NONE = getByKey(NONE_KEY);
+    public static final RaceDefinition NONE = getOrThrow(NONE_KEY);
+
+    public static @Nullable RaceDefinition get(NamespacedKey key) {
+        return JustRacesRegistries.RACES.get(key);
+    }
+
+    public static RaceDefinition getOrThrow(NamespacedKey key) {
+        return JustRacesRegistries.RACES.getOrThrow(key);
+    }
 
     /**
      * Gets player's race
@@ -42,18 +51,10 @@ public final class RaceManager {
 
         if (raceString == null) return NONE;
         NamespacedKey raceKey = NamespacedKey.fromString(raceString);
+        if (raceKey == null) return NONE;
 
-        RaceDefinition instance = JustRacesRegistries.RACES.get(raceKey);
+        RaceDefinition instance = get(raceKey);
         return instance != null ? instance : NONE;
-    }
-
-    public static RaceDefinition getByKey(NamespacedKey key) {
-        RaceDefinition instance = JustRacesRegistries.RACES.get(key);
-        if (instance == null) {
-            throw new IllegalArgumentException("Unregistered Race: %s".formatted(key));
-        }
-
-        return instance;
     }
 
     /**
@@ -63,11 +64,11 @@ public final class RaceManager {
      * @param cause Cause of race change
      * @return {@code true} if race set successfully
      * @see setRace(Player, RaceDefinition, Cause)
-     * @see getByKey(NamespacedKey)
+     * @see getOrThrow(NamespacedKey)
      */
     public static boolean setRace(Player player, NamespacedKey raceKey, Cause cause) {
         RaceDefinition currentRace = getRace(player);
-        RaceDefinition newRace = getByKey(raceKey);
+        RaceDefinition newRace = getOrThrow(raceKey);
 
         // Pre Event
         PlayerRaceChangePreEvent preEvent = new PlayerRaceChangePreEvent(

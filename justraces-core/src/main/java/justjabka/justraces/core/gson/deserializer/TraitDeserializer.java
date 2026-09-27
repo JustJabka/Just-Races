@@ -4,11 +4,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import justjabka.justraces.api.traits.generic.Trait;
 import justjabka.justraces.api.managers.TraitManager;
+import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.NamespacedKey;
 
 import java.lang.reflect.Type;
+import java.util.NoSuchElementException;
 
 public class TraitDeserializer implements JsonDeserializer<Trait> {
 
@@ -26,8 +27,8 @@ public class TraitDeserializer implements JsonDeserializer<Trait> {
         }
 
         try {
-            return TraitManager.getByKey(key);
-        } catch (IllegalArgumentException _) {
+            return TraitManager.getOrThrow(key);
+        } catch (NoSuchElementException _) {
             throw DeserializationExceptions.unknownKey("Trait", keyStr);
         }
     }

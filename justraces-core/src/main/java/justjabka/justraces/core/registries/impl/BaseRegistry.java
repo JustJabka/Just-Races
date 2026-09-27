@@ -3,18 +3,21 @@ package justjabka.justraces.core.registries.impl;
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.common.registry.Registry;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
+@NullMarked
 public abstract class BaseRegistry<T> implements Registry<T> {
     protected final Map<NamespacedKey, T> storage = new ConcurrentHashMap<>();
     protected final List<BiConsumer<NamespacedKey, T>> hooks = new ArrayList<>();
 
     public void register(NamespacedKey key, T value) {
         if (storage.containsKey(key)) {
-            JustRacesAPI.getLogger().warn("Object with {} is already registered!", key);
+            JustRacesAPI.getLogger().warn("Value with {} is already registered", key);
         }
 
         storage.put(key, value);
@@ -28,8 +31,18 @@ public abstract class BaseRegistry<T> implements Registry<T> {
         this.hooks.add(hook);
     }
 
-    public T get(NamespacedKey key) {
+    public @Nullable T get(NamespacedKey key) {
         return storage.get(key);
+    }
+
+    public T getOrThrow(NamespacedKey key) {
+        T value = this.get(key);
+
+        if (value == null) {
+            throw new NoSuchElementException("No value for %s".formatted(key));
+        }
+
+        return value;
     }
 
     public Collection<T> values() {

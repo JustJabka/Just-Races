@@ -23,14 +23,12 @@ public final class AbilityManager {
     public static final NamespacedKey ABILITIES_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "abilities");
 
     //region Registry Related
-    public static BaseAbility getByKey(NamespacedKey key) {
-        BaseAbility ability = JustRacesRegistries.ABILITIES.get(key);
+    public static @Nullable BaseAbility get(NamespacedKey key) {
+        return JustRacesRegistries.ABILITIES.get(key);
+    }
 
-        if (ability == null) {
-            throw new IllegalArgumentException("Unregistered Ability: %s".formatted(key));
-        }
-
-        return ability;
+    public static BaseAbility getOrThrow(NamespacedKey key) {
+        return JustRacesRegistries.ABILITIES.getOrThrow(key);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +97,9 @@ public final class AbilityManager {
      * @return {@code true} if player has this ability
      */
     public static boolean playerHasAbility(Player player, NamespacedKey key) {
-        BaseAbility ability = getByKey(key);
+        BaseAbility ability = get(key);
+        if (ability == null) return false;
+
         return playerHasAbility(player, ability);
     }
 

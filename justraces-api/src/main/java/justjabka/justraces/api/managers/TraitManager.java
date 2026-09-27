@@ -2,11 +2,13 @@ package justjabka.justraces.api.managers;
 
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.JustRacesRegistries;
+import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.common.definition.RaceDefinition;
 import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.HashSet;
@@ -19,14 +21,12 @@ public final class TraitManager {
 
     public static final NamespacedKey TRAITS_CONTAINER_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "traits");
 
-    public static Trait getByKey(NamespacedKey key) {
-        Trait trait = JustRacesRegistries.TRAITS.get(key);
+    public static @Nullable Trait get(NamespacedKey key) {
+        return JustRacesRegistries.TRAITS.get(key);
+    }
 
-        if (trait == null) {
-            throw new IllegalArgumentException("Unregistered Trait: %s".formatted(key));
-        }
-
-        return trait;
+    public static Trait getOrThrow(NamespacedKey key) {
+        return JustRacesRegistries.TRAITS.getOrThrow(key);
     }
 
     /**
@@ -71,7 +71,10 @@ public final class TraitManager {
      * @return {@code true} if player has this trait
      */
     public static boolean playerHasTrait(Player player, NamespacedKey key) {
-        return playerHasTrait(player, getByKey(key));
+        Trait trait = get(key);
+        if (trait == null) return false;
+
+        return playerHasTrait(player, getOrThrow(key));
     }
 
     public static void startTraits(Player player) {

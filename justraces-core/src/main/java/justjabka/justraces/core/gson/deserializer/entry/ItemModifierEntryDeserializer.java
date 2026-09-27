@@ -42,9 +42,9 @@ public class ItemModifierEntryDeserializer implements JsonDeserializer<Set<ItemM
         }
 
         try {
-            return ItemModifierManager.getByKey(key);
+            return ItemModifierManager.getOrThrow(key);
         }
-        catch (IllegalArgumentException _){
+        catch (NoSuchElementException _){
             throw DeserializationExceptions.unknownKey("Item Modifier", keyStr);
         }
     }
