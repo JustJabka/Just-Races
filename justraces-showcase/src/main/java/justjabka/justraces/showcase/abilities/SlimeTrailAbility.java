@@ -66,7 +66,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
 
     @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.LEFT_CLICK;
+        return getConfigTrigger();
     }
 
     @Override

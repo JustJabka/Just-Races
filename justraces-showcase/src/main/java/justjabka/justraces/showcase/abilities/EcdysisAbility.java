@@ -81,7 +81,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
 
     @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.OFFHAND_SWAP;
+        return getConfigTrigger();
     }
 
     @Override

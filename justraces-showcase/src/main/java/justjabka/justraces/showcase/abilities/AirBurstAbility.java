@@ -42,7 +42,7 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
 
     @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.OFFHAND_SWAP;
+        return getConfigTrigger();
     }
 
     @Override

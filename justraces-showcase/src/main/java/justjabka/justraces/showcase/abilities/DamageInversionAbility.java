@@ -51,7 +51,7 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
 
     @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.OFFHAND_SWAP;
+        return getConfigTrigger();
     }
 
     @Override

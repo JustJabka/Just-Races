@@ -174,7 +174,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     // Triggers
     @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.OFFHAND_SWAP;
+        return getConfigTrigger();
     }
 
     @Override

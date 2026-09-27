@@ -3,7 +3,9 @@ package justjabka.justraces.showcase.abilities;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.AbilityContext;
 import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.showcase.JustRacesShowcase;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -18,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-public class DeepPocketsAbility extends BaseAbility {
+public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbility {
 
     private static final NamespacedKey INVENTORY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "inventory");
 
@@ -29,7 +31,7 @@ public class DeepPocketsAbility extends BaseAbility {
 
     @Override
     public long getCooldownTicks() {
-        return 0;
+        return getConfigCooldown();
     }
 
     @Override
@@ -38,8 +40,13 @@ public class DeepPocketsAbility extends BaseAbility {
     }
 
     @Override
+    public BossBar.Color getBarColor(Player player) {
+        return BossBar.Color.YELLOW;
+    }
+
+    @Override
     public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.RIGHT_CLICK_CHESTPLATE;
+        return getConfigTrigger();
     }
 
     @Override

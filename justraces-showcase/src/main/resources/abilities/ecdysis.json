@@ -1,6 +1,7 @@
 {
   "cooldown": 180,
   "duration": 220,
+  "trigger": "offhand_swap",
   "explosion_power": {
     "normal": 6.0,
     "suicide": 7.0
