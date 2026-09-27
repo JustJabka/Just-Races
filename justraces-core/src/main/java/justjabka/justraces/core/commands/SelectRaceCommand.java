@@ -94,8 +94,8 @@ public class SelectRaceCommand {
     private static Dialog buildDialog(Player player, RaceDefinition selectedRace, int currentPage) {
         List<DialogBody> body = new ArrayList<>();
 
-        Component selectedRaceName = selectedRace.getName();
-        List<Component> selectedRaceDescription = selectedRace.getDescription();
+        Component selectedRaceName = selectedRace.name();
+        List<Component> selectedRaceDescription = selectedRace.description();
         Component selectedRaceIcon = selectedRace.getIcon();
 
         Component selectedRaceTitle = Component.empty() // using empty component to prevent icon from mutating race name properties

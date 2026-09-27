@@ -4,25 +4,46 @@ import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.AbilityContext;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.api.abilities.AbilityTriggerCondition;
+import justjabka.justraces.api.common.Displayable;
 import justjabka.justraces.api.common.PersistentHolder;
 import justjabka.justraces.api.common.TimerBar;
 import justjabka.justraces.api.events.ability.PlayerAbilityTriggerEvent;
 import justjabka.justraces.api.events.ability.PlayerAbilityTriggerPreEvent;
 import justjabka.justraces.api.managers.AbilityManager;
+import justjabka.justraces.api.managers.ComponentManager;
 import justjabka.justraces.api.managers.TimeManager;
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
-public abstract class BaseAbility implements Listener, TimerBar, PersistentHolder {
+public abstract class BaseAbility implements Listener, Displayable, TimerBar, PersistentHolder {
 
     private static final NamespacedKey COOLDOWN = new NamespacedKey(JustRacesAPI.NAMESPACE, "cooldown");
     private static final NamespacedKey EXPIRES_AT = new NamespacedKey(JustRacesAPI.NAMESPACE, "expires_at");
 
     public abstract NamespacedKey getKey();
     public abstract long getCooldownTicks();
+
+    @Override
+    public Component name() {
+        final String translate = "ability.%s.%s".formatted(
+                getKey().getNamespace(),
+                getKey().getKey()
+        );
+        final String fallback = ComponentManager.fallbackFromKey(getKey());
+
+        return Component.translatable(translate).fallback(fallback);
+    }
+
+    @Override
+    public List<Component> description() {
+        return Collections.emptyList();
+    }
 
     public AbilityTrigger getDefaultTrigger() {
         return AbilityTrigger.CUSTOM;

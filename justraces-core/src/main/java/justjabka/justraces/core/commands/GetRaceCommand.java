@@ -39,7 +39,7 @@ public class GetRaceCommand {
         CommandSender sender = ctx.getSource().getSender();
 
         RaceDefinition race = RaceManager.getRace(target);
-        Component raceName = race.getName();
+        Component raceName = race.name();
 
         sender.sendMessage(MESSAGE.arguments(target.name(), raceName));
 

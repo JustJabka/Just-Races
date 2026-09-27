@@ -10,7 +10,6 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import justjabka.justraces.api.JustRacesAPI;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.api.abilities.AbilityTriggerCondition;
-import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.managers.AbilityManager;
 import net.kyori.adventure.text.Component;
@@ -50,11 +49,11 @@ public class GetAbilitiesCommand {
         Component message = Component.empty();
 
         for (AbilityEntry entry : entries) {
-            String abilityName = getAbilityName(entry);
+            Component abilityName = getAbilityName(entry);
             String triggerName = getTriggerName(entry);
 
             message = message
-                    .append(Component.text("%s:".formatted(abilityName)))
+                    .append(abilityName.append(Component.text(":")))
                     .appendNewline()
                     .append(Component.text("- Trigger: %s".formatted(triggerName)).color(NamedTextColor.GRAY))
                     .appendNewline();
@@ -74,10 +73,8 @@ public class GetAbilitiesCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static @NonNull String getAbilityName(AbilityEntry entry) {
-        BaseAbility ability = entry.ability();
-        String name = ability.getKey().getKey();
-        return formatName(name);
+    private static @NonNull Component getAbilityName(AbilityEntry entry) {
+        return entry.ability().name();
     }
 
     private static @NonNull String getTriggerName(AbilityEntry entry) {

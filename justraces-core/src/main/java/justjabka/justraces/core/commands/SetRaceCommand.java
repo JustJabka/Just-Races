@@ -44,7 +44,7 @@ public class SetRaceCommand {
                                         throw FAIL_MESSAGE.create();
                                     }
 
-                                    Component raceName = race.getName();
+                                    Component raceName = race.name();
                                     sender.sendMessage(MESSAGE.arguments(target.name(), raceName));
 
                                     return Command.SINGLE_SUCCESS;

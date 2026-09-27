@@ -2,6 +2,7 @@ package justjabka.justraces.api.common.definition;
 
 import com.google.gson.annotations.SerializedName;
 import justjabka.justraces.api.abilities.generic.BaseAbility;
+import justjabka.justraces.api.common.Displayable;
 import justjabka.justraces.api.common.entry.*;
 import justjabka.justraces.api.itemmodifiers.generic.BaseItemModifier;
 import justjabka.justraces.api.traits.generic.Trait;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @NullMarked
 @SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfCollection"})
-public class RaceDefinition extends BaseDefinition {
+public class RaceDefinition extends BaseDefinition implements Displayable {
     @Nullable private Component name;
     @Nullable private List<Component> description;
     @Nullable private Component icon;
@@ -38,14 +39,16 @@ public class RaceDefinition extends BaseDefinition {
     /**
      * @return Name of the race
      */
-    public Component getName() {
+    @Override
+    public Component name() {
         return name != null ? name : Component.empty();
     }
 
     /**
      * @return Description of the race
      */
-    public List<Component> getDescription() {
+    @Override
+    public List<Component> description() {
         return description != null ? Collections.unmodifiableList(description) : Collections.emptyList();
     }
 
