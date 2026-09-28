@@ -11,8 +11,8 @@ public record AbilityEntry(BaseAbility ability, AbilityTrigger trigger, Set<Abil
     public static AbilityEntry ofDefault(BaseAbility ability) {
         return new AbilityEntry(
                 ability,
-                ability.getDefaultTrigger(),
-                ability.getDefaultTriggerConditions()
+                ability.trigger(),
+                ability.triggerConditions()
         );
     }
 }

@@ -2,11 +2,11 @@ package justjabka.justraces.api.traits.generic;
 
 import justjabka.justraces.api.common.PersistentHolder;
 import justjabka.justraces.api.managers.TraitManager;
+import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
-public interface Trait extends PersistentHolder {
-    NamespacedKey getKey();
+public interface Trait extends Keyed, PersistentHolder {
 
     @Override
     default NamespacedKey getContainerKey() {

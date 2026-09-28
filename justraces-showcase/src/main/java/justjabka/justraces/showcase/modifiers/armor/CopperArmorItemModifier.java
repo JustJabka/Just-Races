@@ -7,15 +7,16 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class CopperArmorItemModifier extends BaseArmorItemModifier implements ConfigurableItemModifier {
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/copper");
     }
 
     @Override
-    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+    public @Nullable UnkeyedAttributeModifier attributeModifier() {
         return new UnkeyedAttributeModifier(
                 Attribute.BLOCK_INTERACTION_RANGE,
                 getConfigDouble("attribute_amount"),

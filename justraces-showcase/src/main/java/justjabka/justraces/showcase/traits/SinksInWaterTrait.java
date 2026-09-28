@@ -11,18 +11,19 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
 public class SinksInWaterTrait extends BaseTraitRunnable implements ResettableTrait, ConfigurableTrait {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "sinks_in_water");
     }
 
     @Override
-    public long getTickPeriod() {
+    public long tickPeriod() {
         return 5;
     }
 

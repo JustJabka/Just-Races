@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class BaseTraitRunnable extends BukkitRunnable implements PlayerTickRunnable, Trait {
 
-    public abstract long getTickPeriod();
+    public abstract long tickPeriod();
 
     @Override
     public void run() {

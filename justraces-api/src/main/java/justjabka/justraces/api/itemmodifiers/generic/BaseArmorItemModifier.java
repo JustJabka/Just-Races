@@ -17,14 +17,14 @@ import java.util.function.Consumer;
 @SuppressWarnings("UnstableApiUsage")
 public abstract class BaseArmorItemModifier extends BaseItemModifier {
 
-    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+    public @Nullable UnkeyedAttributeModifier attributeModifier() {
         return null;
     }
 
-    public @Nullable Consumer<Equippable.Builder> getEquippable() {
+    public @Nullable Consumer<Equippable.Builder> equippable() {
         return null;
     }
-    public @NotNull EquipmentSlot getEquippableSlotFallBack() {
+    public @NotNull EquipmentSlot equippableSlotFallBack() {
         return EquipmentSlot.HAND;
     }
 
@@ -41,22 +41,24 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
     }
 
     private void applyEquippable(ItemStack item) {
-        if (getEquippable() == null) return;
+        Consumer<Equippable.Builder> equippable = equippable();
+
+        if (equippable == null) return;
         mergeComponent(
                 item,
                 DataComponentTypes.EQUIPPABLE,
-                getEquippable(),
-                Equippable.equippable(getEquippableSlotFallBack())
+                equippable,
+                Equippable.equippable(equippableSlotFallBack())
         );
     }
 
     private void undoEquippable(ItemStack item) {
-        if (getEquippable() == null) return;
+        if (equippable() == null) return;
         item.resetData(DataComponentTypes.EQUIPPABLE);
     }
 
     private void applyAttributeModifier(ItemStack item) {
-        UnkeyedAttributeModifier modifier = getAttributeModifier();
+        UnkeyedAttributeModifier modifier = attributeModifier();
         if (modifier == null) return;
 
         ItemAttributeModifiers.Builder attributes = ItemAttributeModifiers.itemAttributes();
@@ -81,7 +83,7 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
     }
 
     private void undoAttributeModifier(ItemStack item) {
-        UnkeyedAttributeModifier modifier = getAttributeModifier();
+        UnkeyedAttributeModifier modifier = attributeModifier();
         if (modifier == null) return;
 
         ItemAttributeModifiers currentAttributes = item.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
@@ -103,7 +105,7 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
 
     private EquipmentSlotGroup getItemGroupSlot(ItemStack item) {
         Equippable equippable = item.getData(DataComponentTypes.EQUIPPABLE);
-        if (equippable == null) return getEquippableSlotFallBack().getGroup();
+        if (equippable == null) return equippableSlotFallBack().getGroup();
 
         return equippable.slot().getGroup();
     }

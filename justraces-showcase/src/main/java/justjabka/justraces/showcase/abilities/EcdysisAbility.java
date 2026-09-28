@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -56,22 +57,22 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     private static final NamespacedKey CHAIN_AMOUNT = new NamespacedKey(JustRacesShowcase.NAMESPACE, "chain_amount");
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "ecdysis");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public long getDurationTicks() {
+    public long duration() {
         return getConfigDuration();
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         return isSuicideUse(player) ? BossBar.Color.RED : BossBar.Color.PURPLE;
     }
 
@@ -84,17 +85,17 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE001").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 
     @Override
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> triggerConditions() {
         return getConfigConditions();
     }
 
@@ -132,7 +133,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
 
     private void handleNormalUse(Player player) {
         int nextChain = getNextChain(player);
-        int effectDuration = Math.toIntExact(getDurationTicks() * nextChain);
+        int effectDuration = Math.toIntExact(duration() * nextChain);
         UUID pid = player.getUniqueId();
 
         damageArmor(player);
@@ -153,7 +154,7 @@ public class EcdysisAbility extends BaseAbility implements DurationAbility, Conf
         BukkitTask chainTask = scheduler.runTaskLater(JustRacesShowcase.INSTANCE, () -> {
             onChainExpire(player);
             chainTasks.remove(pid);
-        }, getDurationTicks());
+        }, duration());
         chainTasks.put(pid, chainTask);
 
         BukkitTask effectTask = scheduler.runTaskLater(JustRacesShowcase.INSTANCE, () -> {

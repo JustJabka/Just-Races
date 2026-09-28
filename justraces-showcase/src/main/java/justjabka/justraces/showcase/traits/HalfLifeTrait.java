@@ -15,6 +15,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
@@ -46,12 +47,12 @@ public class HalfLifeTrait extends BaseTraitRunnable implements ResettableTrait,
     );
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "half_life");
     }
 
     @Override
-    public long getTickPeriod() {
+    public long tickPeriod() {
         return getConfigTickPeriod();
     }
 
@@ -98,7 +99,7 @@ public class HalfLifeTrait extends BaseTraitRunnable implements ResettableTrait,
 
     private static void revealActiveAbilities(Player player) {
         List<Component> abilities = AbilityManager.getAbilitiesForPlayer(player).stream()
-                .map(ability -> ability.getBarIcon(player))
+                .map(ability -> ability.barIcon(player))
                 .toList();
 
         Component message = Component.join(

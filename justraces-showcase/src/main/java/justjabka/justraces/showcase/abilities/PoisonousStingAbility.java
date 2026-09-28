@@ -18,28 +18,29 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
 public class PoisonousStingAbility extends BaseAbility implements ConfigurableAbility {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "poisonous_sting");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         return BossBar.Color.GREEN;
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE005").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 

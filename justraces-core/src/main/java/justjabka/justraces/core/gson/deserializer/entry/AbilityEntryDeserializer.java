@@ -72,7 +72,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
     private static AbilityTrigger getTrigger(BaseAbility ability, JsonObject obj) {
         final String triggerField = "trigger";
 
-        AbilityTrigger trigger = ability.getDefaultTrigger();
+        AbilityTrigger trigger = ability.trigger();
         if (!obj.has(triggerField)) return trigger;
 
         String triggerStr = obj.get(triggerField).getAsString().toUpperCase();
@@ -87,7 +87,7 @@ public class AbilityEntryDeserializer implements JsonDeserializer<AbilityEntry> 
     private static Set<AbilityTriggerCondition> getConditions(BaseAbility ability, JsonObject obj) {
         final String conditionsField = "conditions";
 
-        Set<AbilityTriggerCondition> conditions = ability.getDefaultTriggerConditions();
+        Set<AbilityTriggerCondition> conditions = ability.triggerConditions();
         if (!obj.has(conditionsField)) return conditions;
 
         try {

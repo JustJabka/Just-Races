@@ -13,6 +13,7 @@ import justjabka.justraces.api.managers.AbilityManager;
 import justjabka.justraces.api.managers.ComponentManager;
 import justjabka.justraces.api.managers.TimeManager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -21,19 +22,31 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public abstract class BaseAbility implements Listener, Displayable, TimerBar, PersistentHolder {
+public abstract class BaseAbility implements Listener, Keyed, Displayable, TimerBar, PersistentHolder {
 
     private static final NamespacedKey COOLDOWN = new NamespacedKey(JustRacesAPI.NAMESPACE, "cooldown");
     private static final NamespacedKey EXPIRES_AT = new NamespacedKey(JustRacesAPI.NAMESPACE, "expires_at");
 
-    public abstract NamespacedKey getKey();
-    public abstract long getCooldownTicks();
+    public abstract long cooldown();
+
+    public AbilityTrigger trigger() {
+        return AbilityTrigger.CUSTOM;
+    }
+
+    public Set<AbilityTriggerCondition> triggerConditions() {
+        return Set.of();
+    }
+
+    @Override
+    public NamespacedKey getContainerKey() {
+        return AbilityManager.ABILITIES_CONTAINER_KEY;
+    }
 
     @Override
     public Component name() {
         final String translate = "ability.%s.%s".formatted(
-                getKey().getNamespace(),
-                getKey().getKey()
+                key().namespace(),
+                key().value()
         );
         final String fallback = ComponentManager.fallbackFromKey(getKey());
 
@@ -45,23 +58,15 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
         return Collections.emptyList();
     }
 
-    public AbilityTrigger getDefaultTrigger() {
-        return AbilityTrigger.CUSTOM;
-    }
-
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
-        return Set.of();
-    }
-
     @Override
-    public float getBarProgress(Player player) {
-        float remainingTicks = (float) getRemainingTicks(player);
-        if (remainingTicks <= 0) return 0f;
+    public float barProgress(Player player) {
+        float remainingCooldown = (float) remainingCooldown(player);
+        if (remainingCooldown <= 0) return 0f;
 
-        float cooldownTicks = (float) getEntryLong(player, COOLDOWN);
-        if (cooldownTicks <= 0) return 0f;
+        float totalCooldown = (float) getEntryLong(player, COOLDOWN);
+        if (totalCooldown <= 0) return 0f;
 
-        return remainingTicks / cooldownTicks;
+        return remainingCooldown / totalCooldown;
     }
 
     @Override
@@ -69,30 +74,13 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
         return isOnCooldown(player);
     }
 
-    @Override
-    public NamespacedKey getContainerKey() {
-        return AbilityManager.ABILITIES_CONTAINER_KEY;
-    }
-
     /**
      * Gets remaining ticks that ability need to recharge
      * @param player Player for which we are getting the remaining ticks
      * @return Remaining ticks
-     * @see #getRemainingSeconds(Player)
      */
-    public long getRemainingTicks(Player player) {
-        return TimeManager.getRemainingExpireStampTicks(getExpireStamp(player));
-    }
-
-    /**
-     * Gets remaining seconds that ability need to recharge
-     * @param player Player for which we are getting the remaining seconds
-     * @return Remaining seconds
-     * @see #getRemainingTicks(Player)
-     */
-    public long getRemainingSeconds(Player player) {
-        final float remainingSeconds = getRemainingTicks(player) / 20f;
-        return (long) remainingSeconds;
+    public long remainingCooldown(Player player) {
+        return TimeManager.getRemainingExpireStampTicks(cooldownExpireStamp(player));
     }
 
     /**
@@ -101,17 +89,17 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
      * @return {@code true} if ability is on cooldown
      */
     public boolean isOnCooldown(Player player) {
-        return TimeManager.isExpireStampValid(getExpireStamp(player));
+        return TimeManager.isExpireStampValid(cooldownExpireStamp(player));
     }
 
     /**
      * Puts ability on cooldown
      * @param player Player for which we set the ability on cooldown
      * @see #setCooldownTicks(Player, long)
-     * @see #getCooldownTicks()
+     * @see #cooldown()
      */
     public void putOnCooldown(Player player) {
-        setCooldownTicks(player, getCooldownTicks());
+        setCooldownTicks(player, cooldown());
     }
 
     /**
@@ -119,7 +107,7 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
      *
      * @param player the player whose ability cooldown is being reset
      * @see #setCooldownTicks(Player, long)
-     * @see #getCooldownTicks()
+     * @see #cooldown()
      */
     public void resetCooldown(Player player) {
         removeEntryData(player, COOLDOWN);
@@ -132,7 +120,7 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
      * @param newCooldown Cooldown that be set
      * @apiNote This method don't override ability original cooldown
      * @see #putOnCooldown(Player)
-     * @see #getCooldownTicks()
+     * @see #cooldown()
      */
     public void setCooldownTicks(Player player, long newCooldown) {
         final long expiresAt = TimeManager.getExpireStamp(newCooldown);
@@ -146,7 +134,7 @@ public abstract class BaseAbility implements Listener, Displayable, TimerBar, Pe
      * @param player Player from which we are getting ability cooldown
      * @return expire stamp
      */
-    private long getExpireStamp(Player player) {
+    private long cooldownExpireStamp(Player player) {
         return getEntryLong(player, EXPIRES_AT);
     }
 

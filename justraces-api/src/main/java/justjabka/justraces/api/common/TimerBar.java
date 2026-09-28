@@ -8,14 +8,14 @@ import static justjabka.justraces.api.managers.TimerBarManager.TIMER_BAR_FONT;
 
 public interface TimerBar {
 
-    default BossBar.Color getBarColor(Player player) {
+    default BossBar.Color barColor(Player player) {
         return BossBar.Color.WHITE;
     }
 
-    default Component getBarIcon(Player player) {
+    default Component barIcon(Player player) {
         return Component.text("\uE000").font(TIMER_BAR_FONT);
     }
 
-    float getBarProgress(Player player);
+    float barProgress(Player player);
     boolean shouldBarDisplay(Player player);
 }

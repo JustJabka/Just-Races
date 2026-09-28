@@ -31,6 +31,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Random;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class ArmorResonanceTrait extends BaseTraitListener implements Resettable
     );
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor_resonance");
     }
 

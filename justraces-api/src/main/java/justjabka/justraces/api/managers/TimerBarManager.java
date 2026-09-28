@@ -32,11 +32,11 @@ public final class TimerBarManager {
             return;
         }
 
-        final float progress = Math.clamp(bar.getBarProgress(player), BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
-        final Component icon = bar.getBarIcon(player)
+        final float progress = Math.clamp(bar.barProgress(player), BossBar.MIN_PROGRESS, BossBar.MAX_PROGRESS);
+        final Component icon = bar.barIcon(player)
                 .shadowColor(ShadowColor.none())
                 .append(TIMER_BAR_ICON_OFFSET);
-        final BossBar.Color color = bar.getBarColor(player);
+        final BossBar.Color color = bar.barColor(player);
 
         Map<TimerBar, BossBar> playerBars = getPlayerBars(player);
 

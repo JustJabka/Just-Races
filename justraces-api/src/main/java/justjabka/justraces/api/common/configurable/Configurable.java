@@ -1,15 +1,14 @@
 package justjabka.justraces.api.common.configurable;
 
-import org.bukkit.NamespacedKey;
+import org.bukkit.Keyed;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.util.Arrays;
 import java.util.List;
 
-public interface Configurable {
-    NamespacedKey getKey();
-    ConfigurationNode getConfigNode();
+public interface Configurable extends Keyed {
+    ConfigurationNode configNode();
     void reloadConfigFile();
 
     default void initializeConfigFile() {
@@ -17,7 +16,7 @@ public interface Configurable {
     }
 
     private ConfigurationNode getRawConfigNode(Object... path) {
-        ConfigurationNode root = getConfigNode();
+        ConfigurationNode root = configNode();
         if (path.length == 0) return root;
 
         ConfigurationNode node = root.node(path);

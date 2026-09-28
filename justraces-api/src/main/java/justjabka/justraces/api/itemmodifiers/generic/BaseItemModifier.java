@@ -4,13 +4,12 @@ import io.papermc.paper.datacomponent.BuildableDataComponent;
 import io.papermc.paper.datacomponent.DataComponentBuilder;
 import io.papermc.paper.datacomponent.DataComponentType;
 import justjabka.justraces.api.managers.ItemModifierManager;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Keyed;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public abstract class BaseItemModifier {
-    public abstract NamespacedKey getKey();
+public abstract class BaseItemModifier implements Keyed {
     public abstract void apply(ItemStack item);
     public abstract void undo(ItemStack item);
 

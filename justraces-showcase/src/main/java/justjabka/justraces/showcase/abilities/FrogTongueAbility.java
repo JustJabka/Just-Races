@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -82,17 +83,17 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "frog_tongue");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigLong("cooldown", "default");
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE002").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
@@ -105,9 +106,9 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         BossBar.Color cooldownBarColor = getTongueType(player).cooldownBarColor;
-        return cooldownBarColor != null ? cooldownBarColor : super.getBarColor(player);
+        return cooldownBarColor != null ? cooldownBarColor : super.barColor(player);
     }
 
     // State
@@ -181,12 +182,12 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
     // Triggers
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 
     @Override
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> triggerConditions() {
         return getConfigConditions();
     }
 

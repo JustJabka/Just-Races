@@ -22,6 +22,7 @@ import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,22 +32,22 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     private static final Collection<DamageType> bypassesDamageInversion = DamageTypeTagKeysProvider.getTagValues(DamageTypeTagKeysProvider.BYPASSES_DAMAGE_INVERSION);
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "damage_inversion");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         return isEnabled(player) ? BossBar.Color.GREEN : BossBar.Color.RED;
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE000").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
@@ -58,12 +59,12 @@ public class DamageInversionAbility extends TogglableAbility implements Configur
     }
 
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 
     @Override
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> triggerConditions() {
         return getConfigConditions();
     }
 

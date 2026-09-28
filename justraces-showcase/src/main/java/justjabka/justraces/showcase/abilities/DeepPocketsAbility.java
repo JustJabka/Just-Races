@@ -19,6 +19,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -27,22 +28,22 @@ public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbili
     private static final NamespacedKey INVENTORY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "inventory");
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "deep_pockets");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE006").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         return BossBar.Color.YELLOW;
     }
 
@@ -52,7 +53,7 @@ public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbili
     }
 
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 

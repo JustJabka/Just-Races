@@ -49,7 +49,7 @@ public final class JustRaces extends JavaPlugin {
             }
 
             if (trait instanceof BaseTraitRunnable runnable) {
-                runnable.runTaskTimer(JustRacesAPI.getInstance(), 0L, runnable.getTickPeriod());
+                runnable.runTaskTimer(JustRacesAPI.getInstance(), 0L, runnable.tickPeriod());
             }
 
             if (trait instanceof PluginConfigurable configurable) {

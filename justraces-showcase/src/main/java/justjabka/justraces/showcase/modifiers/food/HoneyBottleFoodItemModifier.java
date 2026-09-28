@@ -11,6 +11,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,12 +19,12 @@ import java.util.function.Consumer;
 public class HoneyBottleFoodItemModifier extends BaseFoodItemModifier implements ConfigurableItemModifier {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "food/honey_bottle");
     }
 
     @Override
-    public Consumer<Consumable.Builder> getConsumable() {
+    public Consumer<Consumable.Builder> consumable() {
         final List<PotionEffect> consumeEffects = List.of(
                 new PotionEffect(PotionEffectType.HASTE, getConfigInt("duration", "haste"), 0, false, true, true),
                 new PotionEffect(PotionEffectType.SPEED, getConfigInt("duration", "speed"), 0, false, true, true),
@@ -39,14 +40,14 @@ public class HoneyBottleFoodItemModifier extends BaseFoodItemModifier implements
     }
 
     @Override
-    public Consumer<FoodProperties.Builder> getFoodProperties() {
+    public Consumer<FoodProperties.Builder> foodProperties() {
         return builder -> builder
                 .nutrition(getConfigInt("nutrition"))
                 .saturation(getConfigFloat("saturation"));
     }
 
     @Override
-    public @Nullable UseCooldown getUseCooldown() {
+    public @Nullable UseCooldown useCooldown() {
         return null;
     }
 }

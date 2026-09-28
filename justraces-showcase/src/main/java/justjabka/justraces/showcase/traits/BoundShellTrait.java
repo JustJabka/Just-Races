@@ -11,13 +11,14 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
 public class BoundShellTrait extends BaseTraitListener implements ResettableTrait {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "bound_shell");
     }
 

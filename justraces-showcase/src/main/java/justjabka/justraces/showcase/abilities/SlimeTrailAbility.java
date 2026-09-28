@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -41,27 +42,27 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     private static final Color TRAIL_COLOR = Color.fromRGB(153, 255, 163);
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "slime_trail");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public long getDurationTicks() {
+    public long duration() {
         return getConfigDuration();
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE003").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
     @Override
-    public BossBar.Color getBarColor(Player player) {
+    public BossBar.Color barColor(Player player) {
         return BossBar.Color.GREEN;
     }
 
@@ -73,12 +74,12 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     }
 
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 
     @Override
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> triggerConditions() {
         return getConfigConditions();
     }
 
@@ -105,7 +106,7 @@ public class SlimeTrailAbility extends BaseAbility implements DurationAbility, R
     @Override
     public BukkitRunnable createRunnable(Player player) {
         return new BukkitRunnable() {
-            long durationLeft = getDurationTicks();
+            long durationLeft = duration();
             final float trailRadius = getConfigFloat("trail", "radius");
             final int trailDuration = getConfigInt("trail", "duration");
 

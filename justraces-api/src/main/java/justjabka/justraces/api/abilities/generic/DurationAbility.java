@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Interface for abilities that have a finite duration after activation.
  * <p>
- * Subclasses must define the duration via {@link #getDurationTicks()}
+ * Subclasses must define the duration via {@link #duration()}
  * and should schedule their own expiration logic (e.g., a {@link org.bukkit.scheduler.BukkitTask} or {@link org.bukkit.scheduler.BukkitScheduler})
  * that calls {@link #onExpire(Player)} when the time runs out.
  * <p>
@@ -22,7 +22,7 @@ public interface DurationAbility extends ResettableAbility {
      *
      * @return Duration in ticks
      */
-    long getDurationTicks();
+    long duration();
 
     /**
      * Convenience wrapper that resets the ability state with {@link Reason#ABILITY_END}.

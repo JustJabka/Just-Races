@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.tag.DamageTypeTags;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class AdaptationTrait extends BaseTraitListener implements ResettableTrai
     private static final NamespacedKey ADAPTATIONS = new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptations");
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "adaptation");
     }
 

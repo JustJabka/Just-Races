@@ -7,11 +7,12 @@ import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.jspecify.annotations.NonNull;
 
 public class BerryBushImmunityTrait extends BaseTraitListener {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "berry_bush_immunity");
     }
 

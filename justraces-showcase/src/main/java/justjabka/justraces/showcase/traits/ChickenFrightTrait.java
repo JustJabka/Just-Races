@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.EnumSet;
@@ -27,7 +28,7 @@ public class ChickenFrightTrait extends BaseTraitListener {
     private static final NamespacedKey CHICKEN_FRIGHT_KEY = new NamespacedKey(JustRacesShowcase.NAMESPACE, "chicken_fright");
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return CHICKEN_FRIGHT_KEY;
     }
 

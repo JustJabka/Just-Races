@@ -13,15 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface PluginConfigurable extends Configurable {
     ConcurrentHashMap<NamespacedKey, ConfigurationNode> cachedConfig = new ConcurrentHashMap<>();
 
-    Category getCategory();
+    Category category();
 
     default String getInternalResourcePath() {
-        return getCategory() + "/" + getKey().getKey() + ".json";
+        return category() + "/" + getKey().getKey() + ".json";
     }
 
     default File getConfigFile() {
         File baseDir = JustRacesAPI.getInstance().getDataFolder();
-        String relativePath = getCategory().toString() + "/" + getKey().getNamespace() + "/" + getKey().getKey() + ".json";
+        String relativePath = category().toString() + "/" + getKey().getNamespace() + "/" + getKey().getKey() + ".json";
 
         File configFile = new File(baseDir, relativePath);
         if (configFile.getParentFile() != null && !configFile.getParentFile().exists()) {
@@ -36,12 +36,12 @@ public interface PluginConfigurable extends Configurable {
             ConfigurationNode node = getConfigNodeFromDisk();
             cachedConfig.put(getKey(), node);
         } catch (Exception e) {
-            JustRacesAPI.getLogger().error("Failed to initialize config for '{}' in {}", getKey(), getCategory().toString(), e);
+            JustRacesAPI.getLogger().error("Failed to initialize config for '{}' in {}", getKey(), category().toString(), e);
         }
     }
 
     @Override
-    default ConfigurationNode getConfigNode() {
+    default ConfigurationNode configNode() {
         return cachedConfig.computeIfAbsent(getKey(), key -> {
             try {
                 return getConfigNodeFromDisk();

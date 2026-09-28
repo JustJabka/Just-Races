@@ -9,13 +9,14 @@ import justjabka.justraces.showcase.JustRacesShowcase;
 import justjabka.justraces.showcase.modifiers.food.generic.BaseFrogTongueTypeChangerFoodItemModifier;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
 public class SlimeBallFoodItemModifier extends BaseFrogTongueTypeChangerFoodItemModifier {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "food/slime_ball");
     }
 
@@ -25,7 +26,7 @@ public class SlimeBallFoodItemModifier extends BaseFrogTongueTypeChangerFoodItem
     }
 
     @Override
-    public Consumer<Consumable.Builder> getConsumable() {
+    public Consumer<Consumable.Builder> consumable() {
         return builder -> builder
                 .animation(ItemUseAnimation.EAT)
                 .consumeSeconds(0.8f)
@@ -33,14 +34,14 @@ public class SlimeBallFoodItemModifier extends BaseFrogTongueTypeChangerFoodItem
     }
 
     @Override
-    public Consumer<FoodProperties.Builder> getFoodProperties() {
+    public Consumer<FoodProperties.Builder> foodProperties() {
         return builder -> builder
                 .nutrition(3)
                 .canAlwaysEat(true);
     }
 
     @Override
-    public @Nullable UseCooldown getUseCooldown() {
+    public @Nullable UseCooldown useCooldown() {
         return null;
     }
 }

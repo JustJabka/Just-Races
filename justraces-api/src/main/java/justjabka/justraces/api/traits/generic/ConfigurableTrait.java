@@ -5,7 +5,7 @@ import justjabka.justraces.api.common.configurable.PluginConfigurable;
 public interface ConfigurableTrait extends PluginConfigurable {
 
     @Override
-    default Category getCategory() {
+    default Category category() {
         return Category.TRAITS;
     }
 

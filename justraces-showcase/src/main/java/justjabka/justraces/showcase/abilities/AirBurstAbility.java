@@ -27,17 +27,17 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
     private  static final double DOT = 0.45;
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "air_burst");
     }
 
     @Override
-    public long getCooldownTicks() {
+    public long cooldown() {
         return getConfigCooldown();
     }
 
     @Override
-    public Component getBarIcon(Player player) {
+    public Component barIcon(Player player) {
         return Component.text("\uE004").font(Key.key(JustRacesShowcase.NAMESPACE, "cooldown_bar"));
     }
 
@@ -49,12 +49,12 @@ public class AirBurstAbility extends BaseAbility implements ConfigurableAbility 
     }
 
     @Override
-    public AbilityTrigger getDefaultTrigger() {
+    public AbilityTrigger trigger() {
         return getConfigTrigger();
     }
 
     @Override
-    public Set<AbilityTriggerCondition> getDefaultTriggerConditions() {
+    public Set<AbilityTriggerCondition> triggerConditions() {
         return getConfigConditions();
     }
 

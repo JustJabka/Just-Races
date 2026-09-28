@@ -52,7 +52,7 @@ public interface ConfigurableAbility extends PluginConfigurable {
     }
 
     @Override
-    default Category getCategory() {
+    default Category category() {
         return Category.ABILITIES;
     }
 }

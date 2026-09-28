@@ -7,16 +7,17 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class LeatherArmorItemModifier extends BaseArmorItemModifier implements ConfigurableItemModifier {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "armor/leather");
     }
 
     @Override
-    public @Nullable UnkeyedAttributeModifier getAttributeModifier() {
+    public @Nullable UnkeyedAttributeModifier attributeModifier() {
         return new UnkeyedAttributeModifier(
                 Attribute.MOVEMENT_SPEED,
                 getConfigDouble("attribute_amount"),

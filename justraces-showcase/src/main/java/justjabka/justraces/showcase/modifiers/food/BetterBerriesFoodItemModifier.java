@@ -8,30 +8,31 @@ import justjabka.justraces.api.itemmodifiers.generic.BaseFoodItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;
 
 public class BetterBerriesFoodItemModifier extends BaseFoodItemModifier implements ConfigurableItemModifier {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "food/better_berries");
     }
 
     @Override
-    public @Nullable Consumer<FoodProperties.Builder> getFoodProperties() {
+    public @Nullable Consumer<FoodProperties.Builder> foodProperties() {
         return builder -> builder
                 .nutrition(getConfigInt("nutrition"))
                 .saturation(getConfigFloat("saturation"));
     }
 
     @Override
-    public @Nullable Consumer<Consumable.Builder> getConsumable() {
+    public @Nullable Consumer<Consumable.Builder> consumable() {
         return null;
     }
 
     @Override
-    public @Nullable UseCooldown getUseCooldown() {
+    public @Nullable UseCooldown useCooldown() {
         return null;
     }
 }

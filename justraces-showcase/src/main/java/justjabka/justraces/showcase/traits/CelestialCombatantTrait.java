@@ -9,11 +9,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jspecify.annotations.NonNull;
 
 public class CelestialCombatantTrait extends BaseTraitListener implements ConfigurableTrait {
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "celestial_combatant");
     }
 

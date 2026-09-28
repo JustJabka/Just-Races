@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +18,12 @@ public class CropPollinatorTrait extends BaseTraitRunnable implements Configurab
     private static final Random RANDOM = new Random();
 
     @Override
-    public NamespacedKey getKey() {
+    public @NonNull NamespacedKey getKey() {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, "crop_pollinator");
     }
 
     @Override
-    public long getTickPeriod() {
+    public long tickPeriod() {
         return 200;
     }
 

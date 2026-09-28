@@ -1,6 +1,7 @@
 package justjabka.justraces.api.common;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
+import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,8 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public interface PersistentHolder {
-    NamespacedKey getKey();
+public interface PersistentHolder extends Keyed {
     NamespacedKey getContainerKey();
 
     @NotNull
