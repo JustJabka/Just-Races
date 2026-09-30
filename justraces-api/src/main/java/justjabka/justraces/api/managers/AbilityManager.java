@@ -48,7 +48,7 @@ public final class AbilityManager {
      * @return Abilities of the race
      */
     public static Set<BaseAbility> getAbilitiesForRace(RaceDefinition race) {
-        return race.getAbilities();
+        return race.abilities();
     }
 
     /**
@@ -67,7 +67,7 @@ public final class AbilityManager {
     }
 
     public static Set<AbilityEntry> getAbilityEntriesForRace(RaceDefinition race) {
-        return race.getAbilityEntries();
+        return race.abilityEntries();
     }
 
     public static Set<AbilityEntry> getAbilityEntriesForPlayer(Player player) {

@@ -152,13 +152,13 @@ public class SelectRaceCommand {
 
     private static void addRaceTitle(RaceDefinition selectedRace, List<DialogBody> body) {
         Component name = selectedRace.name();
-        Component icon = selectedRace.getIcon();
+        Component icon = selectedRace.icon();
 
         addHeader(icon, name, body);
     }
 
     private static void addRaceAbilities(RaceDefinition selectedRace, List<DialogBody> body) {
-        Set<AbilityEntry> abilities = selectedRace.getAbilityEntries();
+        Set<AbilityEntry> abilities = selectedRace.abilityEntries();
 
         for (AbilityEntry entry : abilities) {
             BaseAbility ability = entry.ability();

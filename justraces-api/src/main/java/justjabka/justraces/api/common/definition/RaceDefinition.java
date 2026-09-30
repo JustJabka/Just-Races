@@ -55,14 +55,14 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
     /**
      * @return Icon of the race
      */
-    public Component getIcon() {
+    public Component icon() {
         return icon != null ? icon : Component.empty();
     }
 
     /**
      * @return Base Attribute Entries of the race
      */
-    public List<AttributeEntry> getAttributeEntries() {
+    public List<AttributeEntry> attributeEntries() {
         return attributes != null ? Collections.unmodifiableList(attributes) : Collections.emptyList();
     }
 
@@ -70,7 +70,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      * @return Abilities of the race
      * @see BaseAbility
      */
-    public Set<BaseAbility> getAbilities() {
+    public Set<BaseAbility> abilities() {
         if (cachedAbilities == null) {
             cachedAbilities = CachedAbilities.buildCache(abilities);
         }
@@ -82,7 +82,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      * @return Ability Entries of the race
      * @see AbilityEntry
      */
-    public Set<AbilityEntry> getAbilityEntries() {
+    public Set<AbilityEntry> abilityEntries() {
         return abilities != null ? Collections.unmodifiableSet(abilities) : Collections.emptySet();
     }
 
@@ -90,7 +90,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      * @return Traits of the race
      * @see Trait
      */
-    public Set<Trait> getTraits() {
+    public Set<Trait> traits() {
         return traits != null ? Collections.unmodifiableSet(traits) : Collections.emptySet();
     }
 
@@ -98,7 +98,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      * @return Item Modifier Entries of the race
      * @see ItemModifierEntry
      */
-    public Set<ItemModifierEntry> getItemModifiers() {
+    public Set<ItemModifierEntry> itemModifiers() {
         return itemModifiers != null ? Collections.unmodifiableSet(itemModifiers) : Collections.emptySet();
     }
 
@@ -122,7 +122,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      * @return Recipes of the race
      * @see CraftingRecipe
      */
-    public Set<CraftingRecipe> getRecipes() {
+    public Set<CraftingRecipe> recipes() {
         return recipes != null ? Collections.unmodifiableSet(recipes) : Collections.emptySet();
     }
 
@@ -133,7 +133,7 @@ public class RaceDefinition extends BaseDefinition implements Displayable {
      */
     public boolean hasRecipe(CraftingRecipe recipe) {
         if (cachedRecipes == null) {
-            cachedRecipes = CachedRecipes.buildCache(getRecipes());
+            cachedRecipes = CachedRecipes.buildCache(recipes());
         }
 
         return cachedRecipes.recipes().containsKey(recipe.getKey());

@@ -35,7 +35,7 @@ public final class TraitManager {
      * @see #getTraitsForRace(RaceDefinition)
      */
     public static Set<Trait> getTraitsForRace(RaceDefinition race) {
-        return race.getTraits();
+        return race.traits();
     }
 
     /**

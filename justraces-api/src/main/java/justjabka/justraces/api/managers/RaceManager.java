@@ -105,7 +105,7 @@ public final class RaceManager {
     }
 
     private static void applyRaceAttributes(Player player, RaceDefinition race) {
-        List<AttributeEntry> attributes = race.getAttributeEntries();
+        List<AttributeEntry> attributes = race.attributeEntries();
 
         for (AttributeEntry attributeEntry : attributes) {
             Attribute attribute = attributeEntry.attribute();
