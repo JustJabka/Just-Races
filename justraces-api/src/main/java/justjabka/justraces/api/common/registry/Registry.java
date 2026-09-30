@@ -1,7 +1,7 @@
 package justjabka.justraces.api.common.registry;
 
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.Collection;

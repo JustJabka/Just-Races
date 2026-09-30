@@ -7,7 +7,7 @@ import justjabka.justraces.api.traits.generic.ResettableTrait;
 import justjabka.justraces.api.traits.generic.Trait;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.HashSet;

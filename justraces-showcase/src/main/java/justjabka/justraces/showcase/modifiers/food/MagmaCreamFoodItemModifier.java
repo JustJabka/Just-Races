@@ -8,7 +8,7 @@ import justjabka.justraces.showcase.abilities.FrogTongueAbility;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import justjabka.justraces.showcase.modifiers.food.generic.BaseFrogTongueTypeChangerFoodItemModifier;
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;

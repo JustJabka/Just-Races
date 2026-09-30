@@ -3,7 +3,7 @@ package justjabka.justraces.showcase.dataprovider;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class RaceProvider {
     public static final NamespacedKey HUMAN = create("human");
@@ -13,8 +13,8 @@ public class RaceProvider {
     public static final NamespacedKey BUZZLING = create("buzzling");
     public static final NamespacedKey PROWLER = create("prowler");
 
-    @NotNull
-    private static NamespacedKey create(@NotNull @KeyPattern.Value String key) {
+    @NonNull
+    private static NamespacedKey create(@NonNull @KeyPattern.Value String key) {
         return new NamespacedKey(JustRacesShowcase.NAMESPACE, key);
     }
 }

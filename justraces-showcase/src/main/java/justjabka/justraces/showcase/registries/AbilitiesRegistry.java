@@ -4,7 +4,7 @@ import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.JustRacesRegistries;
 import justjabka.justraces.showcase.abilities.*;
 import justjabka.justraces.showcase.JustRacesShowcase;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class AbilitiesRegistry {
     private static void registerAbilities() {
@@ -23,7 +23,7 @@ public class AbilitiesRegistry {
         JustRacesShowcase.LOGGER.info("Successfully registered {} abilities!", JustRacesRegistries.ABILITIES.keys().size());
     }
 
-    private static void registerAbility(@NotNull BaseAbility ability) {
+    private static void registerAbility(@NonNull BaseAbility ability) {
         JustRacesRegistries.ABILITIES.register(ability.getKey(), ability);
     }
 }

@@ -17,7 +17,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Set;
@@ -88,7 +87,7 @@ public class GetAbilitiesCommand {
         return formatName(name);
     }
 
-    private static @NotNull String formatName(String name) {
+    private static @NonNull String formatName(String name) {
         if (name == null || name.isEmpty()) return "";
 
         String[] words = StringUtils.split(name.toLowerCase(), '_');

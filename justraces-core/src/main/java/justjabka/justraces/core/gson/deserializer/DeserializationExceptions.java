@@ -1,7 +1,7 @@
 package justjabka.justraces.core.gson.deserializer;
 
 import com.google.gson.JsonParseException;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public final class DeserializationExceptions {
 

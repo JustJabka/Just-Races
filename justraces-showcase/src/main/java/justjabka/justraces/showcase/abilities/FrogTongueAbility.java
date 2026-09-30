@@ -24,7 +24,7 @@ import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
 
         private final double maxDistance;
         private final Color color;
-        @Nullable private final BossBar.Color cooldownBarColor;
+        private final BossBar.@Nullable Color cooldownBarColor;
         private final boolean hooksEntities;
         private final boolean hooksBlocks;
         private final boolean bypassesShields;
@@ -57,7 +57,7 @@ public class FrogTongueAbility extends BaseHookAbility implements ResettableAbil
         TongueType(
                 double maxDistance,
                 Color tongueColor,
-                @Nullable BossBar.Color cooldownBarColor,
+                BossBar.@Nullable Color cooldownBarColor,
                 boolean hooksEntities,
                 boolean hooksToBlocks,
                 boolean bypassesShields,

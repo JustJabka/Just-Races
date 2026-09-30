@@ -9,8 +9,8 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 
@@ -24,7 +24,7 @@ public abstract class BaseArmorItemModifier extends BaseItemModifier {
     public @Nullable Consumer<Equippable.Builder> equippable() {
         return null;
     }
-    public @NotNull EquipmentSlot equippableSlotFallBack() {
+    public @NonNull EquipmentSlot equippableSlotFallBack() {
         return EquipmentSlot.HAND;
     }
 

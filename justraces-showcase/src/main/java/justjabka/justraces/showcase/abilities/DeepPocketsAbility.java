@@ -18,7 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
@@ -98,7 +98,7 @@ public class DeepPocketsAbility extends BaseAbility implements ConfigurableAbili
         }
 
         @Override
-        public @NotNull Inventory getInventory() {
+        public @NonNull Inventory getInventory() {
             return this.inventory;
         }
     }

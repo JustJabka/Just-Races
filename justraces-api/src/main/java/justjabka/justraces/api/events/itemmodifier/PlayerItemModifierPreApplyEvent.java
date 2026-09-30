@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class PlayerItemModifierPreApplyEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
@@ -19,21 +19,21 @@ public class PlayerItemModifierPreApplyEvent extends PlayerEvent implements Canc
 
     @ApiStatus.Internal
     public PlayerItemModifierPreApplyEvent(
-            @NotNull Player player,
-            @NotNull BaseItemModifier modifier,
-            @NotNull ItemStack item
+            @NonNull Player player,
+            @NonNull BaseItemModifier modifier,
+            @NonNull ItemStack item
     ) {
         super(player);
         this.modifier = modifier;
         this.item = item;
     }
 
-    @NotNull
+    @NonNull
     public BaseItemModifier getModifier() {
         return modifier;
     }
 
-    @NotNull
+    @NonNull
     public ItemStack getItem() {
         return item;
     }
@@ -48,13 +48,13 @@ public class PlayerItemModifierPreApplyEvent extends PlayerEvent implements Canc
         this.cancelled = cancel;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    @NotNull
+    @NonNull
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }

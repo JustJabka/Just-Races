@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Called when player's race is changed
@@ -20,10 +20,10 @@ public class PlayerRaceChangeEvent extends PlayerEvent {
 
     @ApiStatus.Internal
     public PlayerRaceChangeEvent(
-            @NotNull Player player,
-            @NotNull RaceDefinition oldRace,
-            @NotNull RaceDefinition newRace,
-            @NotNull Cause cause
+            @NonNull Player player,
+            @NonNull RaceDefinition oldRace,
+            @NonNull RaceDefinition newRace,
+            @NonNull Cause cause
     ) {
         super(player);
         this.oldRace = oldRace;
@@ -34,7 +34,7 @@ public class PlayerRaceChangeEvent extends PlayerEvent {
     /**
      * @return Player's race, that was changed
      */
-    @NotNull
+    @NonNull
     public RaceDefinition getOldRace() {
         return oldRace;
     }
@@ -42,7 +42,7 @@ public class PlayerRaceChangeEvent extends PlayerEvent {
     /**
      * @return Player's race, that was set
      */
-    @NotNull
+    @NonNull
     public RaceDefinition getNewRace() {
         return newRace;
     }
@@ -50,18 +50,18 @@ public class PlayerRaceChangeEvent extends PlayerEvent {
     /**
      * @return Cause of the race change
      */
-    @NotNull
+    @NonNull
     public Cause getCause() {
         return cause;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    @NotNull
+    @NonNull
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }

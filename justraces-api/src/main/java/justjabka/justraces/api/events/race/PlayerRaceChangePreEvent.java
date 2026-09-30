@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Called when player's race is changing
@@ -23,10 +23,10 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
 
     @ApiStatus.Internal
     public PlayerRaceChangePreEvent(
-            @NotNull Player player,
-            @NotNull RaceDefinition oldRace,
-            @NotNull RaceDefinition newRace,
-            @NotNull Cause cause
+            @NonNull Player player,
+            @NonNull RaceDefinition oldRace,
+            @NonNull RaceDefinition newRace,
+            @NonNull Cause cause
     ) {
         super(player);
         this.oldRace = oldRace;
@@ -37,7 +37,7 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
     /**
      * @return Player's race, that will be changed
      */
-    @NotNull
+    @NonNull
     public RaceDefinition getOldRace() {
         return oldRace;
     }
@@ -45,7 +45,7 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
     /**
      * @return Player's race, that will be set
      */
-    @NotNull
+    @NonNull
     public RaceDefinition getNewRace() {
         return newRace;
     }
@@ -53,14 +53,14 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
     /**
      * @param race Player's new race
      */
-    public void setNewRace(@NotNull RaceDefinition race) {
+    public void setNewRace(@NonNull RaceDefinition race) {
         this.newRace = race;
     }
 
     /**
      * @return Cause of the race change
      */
-    @NotNull
+    @NonNull
     public Cause getCause() {
         return cause;
     }
@@ -75,13 +75,13 @@ public class PlayerRaceChangePreEvent extends PlayerEvent implements Cancellable
         this.cancelled = cancel;
     }
 
-    @NotNull
+    @NonNull
     @Override
     public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    @NotNull
+    @NonNull
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }

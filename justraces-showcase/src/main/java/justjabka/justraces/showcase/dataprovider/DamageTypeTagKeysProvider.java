@@ -8,7 +8,7 @@ import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.key.KeyPattern;
 import org.bukkit.damage.DamageType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 
@@ -17,7 +17,7 @@ public class DamageTypeTagKeysProvider {
     public static final TagKey<DamageType> BYPASSES_DODGE = create("bypasses_dodge");
     public static final TagKey<DamageType> BYPASSES_DAMAGE_INVERSION = create("bypasses_damage_inversion");
 
-    private static TagKey<DamageType> create(@NotNull @KeyPattern.Value String key) {
+    private static TagKey<DamageType> create(@NonNull @KeyPattern.Value String key) {
         return DamageTypeTagKeys.create(Key.key(JustRacesShowcase.NAMESPACE, key));
     }
 

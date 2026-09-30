@@ -7,7 +7,7 @@ import justjabka.justraces.api.itemmodifiers.generic.ConfigurableItemModifier;
 import justjabka.justraces.api.itemmodifiers.generic.BaseFoodItemModifier;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import org.bukkit.NamespacedKey;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import java.util.function.Consumer;

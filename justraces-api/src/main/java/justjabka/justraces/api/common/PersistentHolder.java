@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.UUID;
 
 public interface PersistentHolder extends Keyed {
     NamespacedKey getContainerKey();
 
-    @NotNull
+    @NonNull
     default PersistentDataContainer getContainer(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         return pdc.getOrDefault(
@@ -33,7 +33,7 @@ public interface PersistentHolder extends Keyed {
         );
     }
 
-    @NotNull
+    @NonNull
     default PersistentDataContainer getEntry(Player player) {
         PersistentDataContainer container = getContainer(player);
 
