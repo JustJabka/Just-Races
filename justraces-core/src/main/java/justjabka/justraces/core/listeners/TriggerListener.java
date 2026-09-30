@@ -1,13 +1,12 @@
 package justjabka.justraces.core.listeners;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
-import justjabka.justraces.api.managers.AbilityManager;
-import justjabka.justraces.api.common.entry.AbilityEntry;
 import justjabka.justraces.api.abilities.AbilityTrigger;
 import justjabka.justraces.api.abilities.AbilityTriggerCondition;
+import justjabka.justraces.api.common.entry.AbilityEntry;
+import justjabka.justraces.api.managers.AbilityManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -21,7 +20,10 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import java.util.Set;
 
 public class TriggerListener implements Listener {
+    private static final int HELMET_SLOT = 39;
     private static final int CHESTPLATE_SLOT = 38;
+    private static final int LEGGINGS_SLOT = 37;
+    private static final int BOOTS_SLOT = 36;
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -69,17 +71,32 @@ public class TriggerListener implements Listener {
         if (event.getClick() != ClickType.RIGHT) return;
 
         if (event.getSlotType() != InventoryType.SlotType.ARMOR) return;
-        if (event.getSlot() != CHESTPLATE_SLOT) return;
 
-        triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_CHESTPLATE, event);
+        switch (event.getSlot()) {
+            case HELMET_SLOT: {
+                triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_HELMET, event);
+                break;
+            }
+            case CHESTPLATE_SLOT: {
+                triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_CHESTPLATE, event);
+                break;
+            }
+            case LEGGINGS_SLOT: {
+                triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_LEGGINGS, event);
+                break;
+            }
+            case BOOTS_SLOT: {
+                triggerAndCancel(player, AbilityTrigger.RIGHT_CLICK_BOOTS, event);
+                break;
+            }
+        }
     }
 
-    private static boolean triggerAndCancel(Player player, AbilityTrigger requiredTrigger, Event event) {
+    private static boolean triggerAndCancel(Player player, AbilityTrigger requiredTrigger, Cancellable event) {
         boolean triggered = triggerAbilities(player, requiredTrigger);
         if (!triggered) return false;
 
-        if (!(event instanceof Cancellable cancellable)) return false;
-        cancellable.setCancelled(true);
+        event.setCancelled(true);
 
         return true;
     }

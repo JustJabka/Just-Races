@@ -21,7 +21,11 @@ public enum AbilityTrigger {
 
     JUMP,
     OFFHAND_SWAP,
+
+    RIGHT_CLICK_HELMET,
     RIGHT_CLICK_CHESTPLATE,
+    RIGHT_CLICK_LEGGINGS,
+    RIGHT_CLICK_BOOTS,
 
     CUSTOM;
 
