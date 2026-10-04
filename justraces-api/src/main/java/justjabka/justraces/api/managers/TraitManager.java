@@ -60,7 +60,7 @@ public final class TraitManager {
      * @return {@code true} if player has this trait
      */
     public static boolean playerHasTrait(Player player, Trait trait) {
-        return TraitManager.getTraitsForPlayer(player).contains(trait);
+        return getTraitsForPlayer(player).contains(trait);
     }
 
     /**

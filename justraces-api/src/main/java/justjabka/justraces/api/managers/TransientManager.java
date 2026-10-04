@@ -39,7 +39,7 @@ public final class TransientManager {
     }
 
     public static CachedAbilities getTransientAbilities(Player player) {
-        TransientContainer container = TransientManager.getTransientContainer(player);
+        TransientContainer container = getTransientContainer(player);
         Map<AbilityEntry, Long> transientAbilities = container.abilities();
 
         boolean updated = transientAbilities.entrySet().removeIf(entry -> {
@@ -61,7 +61,7 @@ public final class TransientManager {
     }
 
     public static CachedItemModifiers getTransientItemModifiers(Player player) {
-        TransientContainer container = TransientManager.getTransientContainer(player);
+        TransientContainer container = getTransientContainer(player);
         Map<ItemModifierEntry, Long> transientItemModifiers = container.itemModifiers();
 
         boolean updated = transientItemModifiers.entrySet().removeIf(entry -> {
@@ -77,7 +77,7 @@ public final class TransientManager {
     }
 
     public static Set<Trait> getTransientTraits(Player player) {
-        Map<Trait, Long> transientTraits = TransientManager.getTransientContainer(player).traits();
+        Map<Trait, Long> transientTraits = getTransientContainer(player).traits();
 
         transientTraits.entrySet().removeIf(entry -> {
             Trait trait = entry.getKey();

@@ -100,7 +100,7 @@ public final class ItemModifierManager {
             if (item == null) continue;
             if (item.isEmpty()) continue;
 
-            ItemModifierManager.tryUndo(item);
+            tryUndo(item);
         }
     }
 

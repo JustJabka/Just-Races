@@ -87,7 +87,7 @@ public final class AbilityManager {
      * @return {@code true} if player has this ability
      */
     public static boolean playerHasAbility(Player player, BaseAbility ability) {
-        return AbilityManager.getAbilitiesForPlayer(player).contains(ability);
+        return getAbilitiesForPlayer(player).contains(ability);
     }
 
     /**

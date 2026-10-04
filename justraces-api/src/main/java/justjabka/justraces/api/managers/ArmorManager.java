@@ -12,6 +12,7 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public final class ArmorManager {
+
     private ArmorManager() {}
 
     private static final NamespacedKey ARMOR_SET_KEY = new NamespacedKey(JustRacesAPI.NAMESPACE, "armor_set");
