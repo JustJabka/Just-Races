@@ -10,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
 
     api("com.jeff-media:MorePersistentDataTypes:2.4.0")
     api("org.spongepowered:configurate-gson:4.2.0")

@@ -1,8 +1,8 @@
 package justjabka.justraces.showcase.abilities;
 
-import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.AbilityContext;
 import justjabka.justraces.api.abilities.AbilityTrigger;
+import justjabka.justraces.api.abilities.generic.BaseAbility;
 import justjabka.justraces.api.abilities.generic.ConfigurableAbility;
 import justjabka.justraces.showcase.JustRacesShowcase;
 import net.kyori.adventure.bossbar.BossBar;
@@ -18,7 +18,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;

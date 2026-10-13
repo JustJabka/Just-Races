@@ -12,7 +12,7 @@ dependencies {
     compileOnly(project(":justraces-api"))
     compileOnly(project(":justraces-core"))
 
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
 }
 
@@ -22,7 +22,7 @@ java {
 
 tasks {
     runServer {
-        minecraftVersion("26.2")
+        minecraftVersion("26.3")
         jvmArgs("-Xms2G", "-Xmx2G")
         runDirectory.set(rootProject.file("run"))
 

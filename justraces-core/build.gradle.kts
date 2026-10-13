@@ -13,10 +13,10 @@ repositories {
 dependencies {
     implementation(project(":justraces-api"))
 
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
     compileOnly("org.jetbrains:annotations:24.1.0")
 
-    compileOnly("com.github.retrooper:packetevents-spigot:2.13.0")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
     implementation("com.jeff-media:MorePersistentDataTypes:2.4.0")
     implementation("org.spongepowered:configurate-gson:4.2.0")
 }
@@ -37,7 +37,7 @@ tasks {
         // Configure the Minecraft version for our task.
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("26.2")
+        minecraftVersion("26.3")
         jvmArgs("-Xms2G", "-Xmx2G")
         runDirectory.set(rootProject.file("run"))
     }
